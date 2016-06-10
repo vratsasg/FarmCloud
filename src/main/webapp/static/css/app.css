@@ -1,0 +1,478 @@
+/*LOGIN PAGE ***********************************************************************************  */
+
+@font-face {
+    font-family: exo-reg;
+    src: url("../../../../../../FarmCloud/src/main/webapp/static/fonts/Exo-Regular.otf") format("opentype");
+}
+
+@font-face {
+    font-family: exo-bold;
+    font-weight: bold;
+    src: url("../../../../../../FarmCloud/src/main/webapp/static/fonts/Exo-Bold.otf") format("opentype");
+}
+
+@font-face {
+    font-family: exo-med;
+    src: url("../../../../../../FarmCloud/src/main/webapp/static/fonts/Exo-Medium.otf") format("opentype");
+}
+
+/* NAVIGATION BAR*/
+.navbar.navbar-fixed-top.navbar-default {
+    position: relative;
+    margin-top: 0px;
+    height: 12%;
+    background: #09b83e;
+
+    border-style: none;
+    padding-top: 5px;
+}
+
+.navbar-header {
+    width: auto;
+    height: auto;
+}
+
+.navbar-brand {
+    height: auto;
+    margin-top: -8%;
+
+}
+
+.navbar-brand img {
+
+    margin-top: 9px;
+
+}
+
+/* AGRIC CLOUD BRAND NAME*/
+.headerspan {
+    font-family: exo-bold;
+    width: auto;
+    margin-left: 60px;
+    margin-top: -20%;
+    font-size: 28px;
+    color: white;
+}
+
+/*quote under navigation bar*/
+.headerp {
+    color: green;
+    font-family: exo-med;
+
+}
+
+#allheader {
+
+    height: 73px;
+}
+
+/*login */
+
+#rightlog {
+
+    border-top-color: green;
+    border-top-style: solid;
+    border-top-width: 3px;
+
+    border-left-color: green;
+    border-left-style: solid;
+    border-left-width: 1px;
+
+    box-shadow: 10px 10px 5px #888888;
+
+    padding-left: 40px;
+
+    margin-top: 10px;
+
+}
+
+#rightlog img {
+
+    margin-left: 90px;
+
+}
+
+#rightlog h4 {
+
+    margin-left: 50px;
+
+}
+
+/*carousel */
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+    width: 100%;
+    margin: auto;
+}
+
+/*footer info quotes*/
+
+.animated1 {
+
+    animation: fadein 4s;
+    -moz-animation: fadein 4s; /* Firefox */
+    -webkit-animation: fadein 4s; /* Safari and Chrome */
+    -o-animation: fadein 4s; /* Opera */
+
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadein {
+    /* Firefox */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadein {
+    /* Safari and Chrome */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadein {
+    /* Opera */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.animated2 {
+
+    animation: fadein2 4s;
+    -moz-animation: fadein2 8s; /* Firefox */
+    -webkit-animation: fadein2 4s; /* Safari and Chrome */
+    -o-animation: fadein2 4s; /* Opera */
+
+}
+
+@keyframes fadein2 {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadein2 {
+    /* Firefox */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadein2 {
+    /* Safari and Chrome */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadein2 {
+    /* Opera */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.animated3 {
+
+    animation: fadein3 10s;
+    -moz-animation: fadein3 12s; /* Firefox */
+    -webkit-animation: fadein3 4s; /* Safari and Chrome */
+    -o-animation: fadein3 4s; /* Opera */
+
+}
+
+@keyframes fadein3 {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadein3 {
+    /* Firefox */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadein3 {
+    /* Safari and Chrome */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadein3 {
+    /* Opera */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.animated1 h3,
+.animated2 h3,
+.animated3 h3 {
+    font-family: exo-med;
+}
+
+.animated1 p,
+.animated2 p,
+.animated3 p {
+    font-family: exo-med;
+}
+
+#logbutton {
+
+    margin-left: 40px;
+
+}
+
+/*.alert_messa{
+    animation: fadeinal 7s;
+    -moz-animation: fadeinal 7s;
+    -webkit-animation: fadeinal 7s;
+    -o-animation: fadeinal 7s;
+
+
+    opacity: 0;
+}
+
+@keyframes fadeinal {
+    0% {
+        opacity:0;
+    }
+    10% {
+        opacity:1;
+    }90%{
+         opacity:1;
+     }100%{
+          opacity:0;
+      }
+}
+@-moz-keyframes fadeinal {
+    0% {
+        opacity:0;
+    }
+    10% {
+        opacity:1;
+    }90%{
+         opacity:1;
+     }100%{
+          opacity:0;
+      }
+}
+@-webkit-keyframes fadeinal {
+    0% {
+        opacity:0;
+    }
+    10% {
+        opacity:1;
+    }90%{
+         opacity:1;
+     }100%{
+          opacity:0;
+      }
+
+}
+@-o-keyframes fadeinal {
+    0% {
+        opacity:0;
+    }
+    10% {
+        opacity:1;
+    }90%{
+         opacity:1;
+     }100%{
+          opacity:0;
+      }
+}
+*/
+
+/*888888888888888888888888888888888888888888   LOGIN PAGE       88888888888888888888888888888888888888888888888888888*/
+
+/* NAVIGATION DEKSIA*/
+.nav.navbar-nav.navbar-right {
+    font-family: exo-reg;
+    font-size: 20px;
+    margin-top: 15px;
+    font-color: white;
+}
+
+.nav.navbar-nav.navbar-right a {
+
+    color: white;
+}
+
+.nav.navbar-nav.navbar-right a:hover {
+
+    border-radius: 113px 113px 113px 113px;
+    -moz-border-radius: 113px 113px 113px 113px;
+    -webkit-border-radius: 113px 113px 113px 113px;
+    border: 1px solid #000000;
+
+}
+
+/*..........NAVIGATION VERTICAL.................................*/
+
+#sidebarleft {
+    background: #87d37c;
+    border-radius: 0px 23px 20px 0px;
+    -moz-border-radius: 0px 23px 20px 0px;
+    -webkit-border-radius: 0px 23px 20px 0px;
+    border: 2px solid #000000;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+/* MEGETHOS GLYPHICON ICON*/
+
+span.glyphicon-scale,
+span.glyphicon-grain,
+span.glyphicon-apple,
+span.glyphicon-tint,
+span.glyphicon-leaf,
+span.glyphicon-tree-conifer,
+span.glyphicon-globe {
+    font-size: 1.1em;
+}
+
+#sidebarleft a {
+
+    font-family: exo-reg;
+    font-size: 16px;
+    color: black;
+
+}
+
+#sidebarleft a:hover {
+
+    border-radius: 0px 23px 20px 0px;
+    -moz-border-radius: 0px 23px 20px 0px;
+    -webkit-border-radius: 0px 23px 20px 0px;
+    border: 2px solid #000000;
+    background: #26A65B;
+}
+
+.killmargin {
+
+    margin: 0 !important;
+}
+
+#datacontent {
+
+    background: white;
+
+
+    height: 80%;
+
+}
+
+/* Heading Line hr attribute html5*/
+#headline {
+    height: 10px;
+    border: 0;
+    box-shadow: 0 10px 10px -10px #8c8b8b inset;
+}
+
+/*..........   FOOTER     .................................*/
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
+}
+
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+#logbutton {
+    margin-left: 40px;
+}
+
+/* 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888*/
+
+/* --------------------------------------VALIDATION FORM INPUTS CSS --------------------------*/
+
+input:focus:invalid, textarea:focus:invalid,input[type=radio]:required,textarea:invalid{
+
+    border-color: #FF0000;
+    box-shadow: 0 0 5px #FF0000;
+    background: #fff url(../images/invalid.png) 98% center no-repeat ;
+    background-size: 22px 22px;
+
+}
+
+input:required, textarea:required{
+    background: white;
+}
+
+input:focus:invalid + div > span{
+    display: block;
+    color: #FF0000;
+}
+
+input:invalid + div > span{
+    display: block;
+    color: #FF0000;
+}
+
+
+input:required:valid, textarea:required:valid{
+    border-color: #56c93f;
+    box-shadow: 0 0 5px #56c93f;
+    background: #fff url(../images/valid.png) 98% center no-repeat ;
+    background-size: 22px 22px;
+    /*@include single-vbox-shadow(#56c93f, 0,0,5px);*/
+}
+input:valid,textarea:valid{
+    background-image: none;
+}
+
+/* ----------------------------------------------------------------------------------------------*/
