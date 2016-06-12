@@ -31,12 +31,24 @@
             crossorigin="anonymous"></script>
     <script src="<c:url value='/static/js/app.js' />"></script>
     <script src="<c:url value='/static/js/shared/topbar/topbar.js' />"></script>
+    <script scr="<c:url value='/static/js/shared/leftbar/leftbar.js'/>"></script>
 
 </head>
 
 
 <body ng-cloak>
 <topbar></topbar>
+
+<div class="fullcont">
+    <div class="container-fluid">
+        <!--fixed width no full width container -->
+        <div class="row row-offcanvas row-offcanvas-left" id="mynavbar2">
+            <div class="row row-offcanvas row-offcanvas-right">
+                <leftbar></leftbar>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 
 </html>
