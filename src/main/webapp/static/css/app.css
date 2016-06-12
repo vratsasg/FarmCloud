@@ -20,11 +20,9 @@
 .navbar.navbar-fixed-top.navbar-default {
     position: relative;
     margin-top: 0px;
-    height: 12%;
-    background: #09b83e;
-
+    color: whitesmoke;
+    background: #71843f!important;
     border-style: none;
-    padding-top: 5px;
 }
 
 .navbar-header {
@@ -346,24 +344,31 @@
 }
 
 .nav.navbar-nav.navbar-right a:hover {
-
     border-radius: 113px 113px 113px 113px;
     -moz-border-radius: 113px 113px 113px 113px;
     -webkit-border-radius: 113px 113px 113px 113px;
-    border: 1px solid #000000;
+    background-color: white;
+    color: black;
+}
 
+.nav.navbar-nav.navbar-right a:active{
+    border-radius: 113px 113px 113px 113px;
+    -moz-border-radius: 113px 113px 113px 113px;
+    -webkit-border-radius: 113px 113px 113px 113px;
+    background-color: white;
+    color: black;
 }
 
 /*..........NAVIGATION VERTICAL.................................*/
 
 #sidebarleft {
-    background: #87d37c;
+    color: black;
     border-radius: 0px 23px 20px 0px;
     -moz-border-radius: 0px 23px 20px 0px;
     -webkit-border-radius: 0px 23px 20px 0px;
-    border: 2px solid #000000;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    border: 2px solid #71843f;
+    /*padding-top: 2px;*/
+    /*padding-bottom: 2px;*/
 }
 
 /* MEGETHOS GLYPHICON ICON*/
@@ -379,34 +384,26 @@ span.glyphicon-globe {
 }
 
 #sidebarleft a {
-
+    color: black;
     font-family: exo-reg;
     font-size: 16px;
-    color: black;
-
 }
 
 #sidebarleft a:hover {
-
-    border-radius: 0px 23px 20px 0px;
-    -moz-border-radius: 0px 23px 20px 0px;
-    -webkit-border-radius: 0px 23px 20px 0px;
-    border: 2px solid #000000;
-    background: #26A65B;
+    /*border-radius: 0px 23px 20px 0px;*/
+    /*-moz-border-radius: 0px 23px 20px 0px;*/
+    /*-webkit-border-radius: 0px 23px 20px 0px;*/
+    background-color: #71843f!important;
+    color: whitesmoke;
 }
 
 .killmargin {
-
     margin: 0 !important;
 }
 
 #datacontent {
-
     background: white;
-
-
     height: 80%;
-
 }
 
 /* Heading Line hr attribute html5*/
