@@ -2,18 +2,18 @@
 
 @font-face {
     font-family: exo-reg;
-    src: url("../../../../../../FarmCloud/src/main/webapp/static/fonts/Exo-Regular.otf") format("opentype");
+    src: url("/static/fonts/Exo-Regular.otf") format("opentype");
 }
 
 @font-face {
     font-family: exo-bold;
     font-weight: bold;
-    src: url("../../../../../../FarmCloud/src/main/webapp/static/fonts/Exo-Bold.otf") format("opentype");
+    src: url("/static/fonts/Exo-Bold.otf") format("opentype");
 }
 
 @font-face {
     font-family: exo-med;
-    src: url("../../../../../../FarmCloud/src/main/webapp/static/fonts/Exo-Medium.otf") format("opentype");
+    src: url("/static/fonts/Exo-Medium.otf") format("opentype");
 }
 
 /* NAVIGATION BAR*/

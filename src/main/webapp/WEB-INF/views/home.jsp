@@ -22,7 +22,6 @@
 
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/app.css">
 
-
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <script src="<c:url value='/static/js/ui-bootstrap-tpls-1.3.3.min.js'/>"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -31,7 +30,8 @@
             crossorigin="anonymous"></script>
     <script src="<c:url value='/static/js/app.js' />"></script>
     <script src="<c:url value='/static/js/shared/topbar/topbar.js' />"></script>
-    <script scr="<c:url value='/static/js/shared/leftbar/leftbar.js'/>"></script>
+    <script src="<c:url value='/static/js/shared/leftbar/leftbar.js' />"></script>
+
 
 </head>
 
