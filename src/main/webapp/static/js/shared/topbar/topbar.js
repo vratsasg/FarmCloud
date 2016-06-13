@@ -4,13 +4,14 @@
 'use strict';
 App.component('topbar',{
     templateUrl:'/static/js/shared/topbar/top-bar-component.html',
-    controller: "TopbarCtrl"
+    controllerAs: "model",
+    controller: function(){
+        var model = this;
+        model.username = "";
 
-
+        //components have lifecycles this is before the component is rendered
+        model.$onInit = function () {
+            model.username = "test user";
+        }
+    }
 });
-
-
-function TopbarCtrl() {
-
-
-}
