@@ -38,13 +38,13 @@
 
 <body ng-cloak>
 <topbar></topbar>
-
+<leftbar></leftbar>
 <div class="fullcont">
     <div class="container-fluid">
         <!--fixed width no full width container -->
         <div class="row row-offcanvas row-offcanvas-left" id="mynavbar2">
             <div class="row row-offcanvas row-offcanvas-right">
-                <leftbar></leftbar>
+
             </div>
         </div>
     </div>
