@@ -44,7 +44,7 @@
 
 /* AGRIC CLOUD BRAND NAME*/
 .headerspan {
-    font-family: exo-bold;
+    font-family: exo-reg;
     width: auto;
     margin-left: 60px;
     margin-top: -20%;
@@ -55,7 +55,7 @@
 /*quote under navigation bar*/
 .headerp {
     color: green;
-    font-family: exo-med;
+    font-family: exo-reg;
 
 }
 
@@ -389,13 +389,30 @@ span.glyphicon-globe {
     font-size: 16px;
 }
 
-#sidebarleft a:hover {
+#sidebarleft li:first-child:hover a {
+
+    border-top-right-radius: 17px;
+
+}
+
+#sidebarleft li:last-child:hover a {
+
+    border-bottom-right-radius: 16px;
+
+}
+
+#sidebarleft li > a:hover {
     /*border-radius: 0px 23px 20px 0px;*/
     /*-moz-border-radius: 0px 23px 20px 0px;*/
     /*-webkit-border-radius: 0px 23px 20px 0px;*/
     background-color: #71843f!important;
     color: whitesmoke;
+    border-radius: 0px;
+
 }
+
+/*-----------------------------------------------*/
+
 
 .killmargin {
     margin: 0 !important;
