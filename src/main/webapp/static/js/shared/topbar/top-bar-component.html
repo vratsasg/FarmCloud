@@ -21,7 +21,7 @@
         <div class="collapse navbar-collapse" id="myNavbar1">
 
             <ul class="nav navbar-nav navbar-right">
-                <li role="presentation"><a href="#" onclick=""><b>{{model.username}}</b></a>
+                <li role="presentation"><a href="" onclick=""><b>{{model.username}}</b></a>
                 </li>
                 <li class="dropdown">
                     <a href="" onclick="" class="dropdown-toggle" id="notifanime" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -35,7 +35,7 @@
                 <li role="presentation" data-toggle="modal" data-target="#myprofilemodal"><a href="#/myprofile">My
                     Profile</a>
                 </li>
-                <li role="presentation" data-toggle="modal" data-target="#logoutmodal"><a href="#logoutmodal">Logout</a>
+                <li role="presentation" data-toggle="modal" data-target="#logoutmodal"><a ng-click="model.showModal()">Logout</a>
                 </li>
 
                 <li role="presentation">

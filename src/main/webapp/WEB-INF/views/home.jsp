@@ -24,6 +24,9 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <script src="https://npmcdn.com/@angular/router@0.2.0/angular1/angular_1_router.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.5.5/angular-sanitize.min.js"></script>
+    <script src="http://openlayers.org/en/v3.16.0/build/ol.js" type="text/javascript"></script>
+    <script src="http://tombatossals.github.io/angular-openlayers-directive/dist/angular-openlayers-directive.min.js"></script>
 
     <script src="<c:url value='/static/js/ui-bootstrap-tpls-1.3.3.min.js'/>"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -37,6 +40,7 @@
     <script src="<c:url value='/static/js/components/my-profile/my-profile.component.js' />"></script>
     <script src="<c:url value='/static/js/components/home/first-page.component.js' />"></script>
     <script src="<c:url value='/static/js/components/my-profile/my-profile.service.js' />"></script>
+    <script src="<c:url value='/static/js/shared/topbar/logout.modal.component.js' />"></script>
 
 
 </head>
