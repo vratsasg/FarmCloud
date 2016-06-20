@@ -1,0 +1,36 @@
+<h4><span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>My Profile</h4>
+<hr id="headline">
+
+<div class="col-sm-4">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">Crop</h3>
+        </div>
+        <div class="panel-body">
+            <div>Crop Name: {{model.myprofile.crop.identifier}}</div>
+            <div>Crop Description: {{model.myprofile.crop.description}}</div>
+        </div>
+    </div>
+</div>
+<div class="col-sm-4" ng-repeat="st in model.myprofile.stations">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Station {{$index+1}} </h3>
+        </div>
+        <div class="panel-body">
+            <div>Station Name: {{st.identifier}}</div>
+            <div>Station Description: {{st.description}}</div>
+        </div>
+    </div>
+</div>
+<div class="col-sm-4" ng-repeat="dv in model.myprofile.devices">
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h3 class="panel-title">EndDevice {{$index+1}}</h3>
+        </div>
+        <div class="panel-body">
+            <div>EndDevice Name: {{dv.identifier}}</div>
+            <div>EndDevice Description: {{dv.description}}</div>
+        </div>
+    </div>
+</div>

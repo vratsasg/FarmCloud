@@ -5,9 +5,6 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 
-/**
- * Created by George on 9/6/2016.
- */
 @Embeddable
 public class MyKey implements Serializable {
 

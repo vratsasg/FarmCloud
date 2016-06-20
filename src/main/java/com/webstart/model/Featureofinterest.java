@@ -16,9 +16,29 @@ import java.util.List;
 @Table(name = "featureofinterest")
 public class Featureofinterest {
 
+
+    public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, Featureofinteresttype featureofinteresttype, Geometry geom, int userid, Users usersfeatures) {
+        this.hibernatediscriminator = hibernatediscriminator;
+        this.featureofinteresttypeid = featureofinteresttypeid;
+        this.identifier = identifier;
+        this.codespaceid = codespaceid;
+        this.name = name;
+        this.descriptionxml = descriptionxml;
+        this.url = url;
+        this.featureofinteresttype = featureofinteresttype;
+        this.geom = geom;
+        this.userid = userid;
+        this.usersfeatures = usersfeatures;
+    }
+
+    public Featureofinterest() {
+
+    }
+
     @Id
+
     @GeneratedValue
-    private long featureofinterestid;
+    private Integer featureofinterestid;
 
     @Column(length = 1, name = "hibernatediscriminator")
     private String hibernatediscriminator;
@@ -31,15 +51,8 @@ public class Featureofinterest {
     private String identifier;
 
     @Column(name = "codespaceid")
-    private long codespaceid;
+    private Long codespaceid;
 
-    public Featureofinteresttype getFeatureofinteresttype() {
-        return featureofinteresttype;
-    }
-
-    public void setFeatureofinteresttype(Featureofinteresttype featureofinteresttype) {
-        this.featureofinteresttype = featureofinteresttype;
-    }
 
     @Column(name = "name")
 
@@ -50,26 +63,7 @@ public class Featureofinterest {
     @Column(length = 255, name = "url")
     private String url;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "featureofinteresttypeid",insertable=false, updatable=false)
-    private Featureofinteresttype featureofinteresttype;
-
-    @Column(name = "geom", columnDefinition = "Geometry")
-    private Geometry geom;
-
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
-
-    public long getFeatureofinterestid() {
-        return featureofinterestid;
-    }
-
-    public void setFeatureofinterestid(long featureofinterestid) {
+    public void setFeatureofinterestid(Integer featureofinterestid) {
         this.featureofinterestid = featureofinterestid;
     }
 
@@ -89,11 +83,19 @@ public class Featureofinterest {
         this.featureofinteresttypeid = featureofinteresttypeid;
     }
 
-    public long getCodespaceid() {
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public Long getCodespaceid() {
         return codespaceid;
     }
 
-    public void setCodespaceid(long codespaceid) {
+    public void setCodespaceid(Long codespaceid) {
         this.codespaceid = codespaceid;
     }
 
@@ -113,6 +115,22 @@ public class Featureofinterest {
         this.descriptionxml = descriptionxml;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Featureofinteresttype getFeatureofinteresttype() {
+        return featureofinteresttype;
+    }
+
+    public void setFeatureofinteresttype(Featureofinteresttype featureofinteresttype) {
+        this.featureofinteresttype = featureofinteresttype;
+    }
+
     public Geometry getGeom() {
         return geom;
     }
@@ -121,17 +139,36 @@ public class Featureofinterest {
         this.geom = geom;
     }
 
-    public String getUrl() {
-
-        return url;
+    public int getUserid() {
+        return userid;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
+    public Users getUsersfeatures() {
+        return usersfeatures;
+    }
+
+    public void setUsersfeatures(Users usersfeatures) {
+        this.usersfeatures = usersfeatures;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "featureofinteresttypeid", insertable = false, updatable = false)
+    private Featureofinteresttype featureofinteresttype;
+
+    @Column(name = "geom", columnDefinition = "Geometry")
+    private Geometry geom;
 
 
+    @Column(name = "userid")
+    private int userid;
 
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userid", insertable = false, updatable = false)
+    private Users usersfeatures;
 
 }

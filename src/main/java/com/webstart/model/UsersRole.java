@@ -23,7 +23,7 @@ public class UsersRole {
     private String description;
 
 
-    @OneToMany(mappedBy ="usersRole",cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "usersRole", cascade = {CascadeType.ALL})
     private List<Users> users_list= new ArrayList<Users>();
 
 

@@ -23,32 +23,26 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/app.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="https://npmcdn.com/@angular/router@0.2.0/angular1/angular_1_router.js"></script>
+
     <script src="<c:url value='/static/js/ui-bootstrap-tpls-1.3.3.min.js'/>"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
             integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
             crossorigin="anonymous"></script>
     <script src="<c:url value='/static/js/app.js' />"></script>
+    <script src="<c:url value='/static/js/components/crop-app/crop-app.component.js' />"></script>
     <script src="<c:url value='/static/js/shared/topbar/topbar.js' />"></script>
     <script src="<c:url value='/static/js/shared/leftbar/leftbar.js' />"></script>
+    <script src="<c:url value='/static/js/components/my-profile/my-profile.component.js' />"></script>
+    <script src="<c:url value='/static/js/components/home/first-page.component.js' />"></script>
+    <script src="<c:url value='/static/js/components/my-profile/my-profile.service.js' />"></script>
 
 
 </head>
 
 
 <body ng-cloak>
-<topbar></topbar>
-<leftbar></leftbar>
-<div class="fullcont">
-    <div class="container-fluid">
-        <!--fixed width no full width container -->
-        <div class="row row-offcanvas row-offcanvas-left" id="mynavbar2">
-            <div class="row row-offcanvas row-offcanvas-right">
-
-            </div>
-        </div>
-    </div>
-</div>
+<crop-app></crop-app>
 </body>
-
 </html>

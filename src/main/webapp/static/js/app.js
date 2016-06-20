@@ -1,8 +1,7 @@
-/**
- * Created by George on 16/5/2016.
- */
-'use strict';
+(function () {
+    'use strict';
 
-var App = angular.module("myApp",['ui.bootstrap']);
+    var module = angular.module("myApp", ['ngComponentRouter']);
 
-
+    module.value("$routerRootComponent", "cropApp");
+}());
