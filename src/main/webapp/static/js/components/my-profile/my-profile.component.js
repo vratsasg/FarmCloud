@@ -8,6 +8,10 @@
             var model = this;
 
             model.myprofile = {};
+            /*{"devices":[{"identifier":"40E7CC39","description":"Its an end device"},{"identifier":"40D6A2C9","description"
+             :"its a end device name"},{"identifier":"40D6A2CF","description":"its an end device"}],"stations":[{"identifier"
+             :"40E7CC41","description":"Its a base station"}],"crop":{"identifier":"Crop Name","description":"Its
+             the main crop"}}*/
 
             model.$onInit = function () {
 
