@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by George on 9/6/2016.
  */
-public interface AddCropService {
+public interface FeatureofInterest {
 
 
         boolean addCrop(Crop crop);

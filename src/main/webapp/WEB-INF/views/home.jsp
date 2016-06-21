@@ -37,6 +37,7 @@
     <script src="<c:url value='/static/js/components/crop-app/crop-app.component.js' />"></script>
     <script src="<c:url value='/static/js/shared/topbar/topbar.js' />"></script>
     <script src="<c:url value='/static/js/shared/leftbar/leftbar.js' />"></script>
+    <script src="<c:url value='/static/js/shared/leftbar/leftbar.service.js' />"></script>
     <script src="<c:url value='/static/js/components/my-profile/my-profile.component.js' />"></script>
     <script src="<c:url value='/static/js/components/home/first-page.component.js' />"></script>
     <script src="<c:url value='/static/js/components/my-profile/my-profile.service.js' />"></script>

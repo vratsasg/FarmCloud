@@ -17,7 +17,7 @@ import org.json.simple.JSONObject;
 
 @Service("addCropService")
 @Transactional
-public class AddCropServiceImpl implements AddCropService {
+public class FeatureofInterestImpl implements FeatureofInterest {
 
     @Autowired
     FeatureofinterestJpaRepository featureofinterestJpaRepository;

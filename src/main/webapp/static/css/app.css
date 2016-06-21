@@ -367,6 +367,8 @@
     -moz-border-radius: 0px 23px 20px 0px;
     -webkit-border-radius: 0px 23px 20px 0px;
     border: 2px solid #71843f;
+    height: 100%;
+    background-color: #F2F2F2;
     /*padding-top: 2px;*/
     /*padding-bottom: 2px;*/
 }
@@ -383,7 +385,7 @@ span.glyphicon-globe {
     font-size: 1.1em;
 }
 
-#sidebarleft a {
+#sidebarleft li > a {
     color: black;
     font-family: exo-reg;
     font-size: 16px;

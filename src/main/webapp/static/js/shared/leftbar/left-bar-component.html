@@ -1,27 +1,18 @@
 <div class="col-sm-2 col-xs-4 sidebar-offcanvas" role="navigation">
     <div class="sidebar-nav" id="sidebarleft">
         <ul class="nav nav-pills nav-stacked ">
-            <li role="presentation" style="cursor: pointer;"><a onclick=""><span
-                    class="glyphicon glyphicon-apple" aria-hidden="true"></span>My Title</a>
-            </li>
-            <li role="presentation" style="cursor: pointer;"><a onclick=""> <span
-                    class="glyphicon glyphicon-grain" aria-hidden="true"> </span>My Title2
-            </a>
-            </li>
-            <li role="presentation" style="cursor: pointer;"><a onclick=""><span
-                    class="glyphicon glyphicon-scale" aria-hidden="true"></span>My Title3</a>
+            <li role="presentation" style="cursor: pointer;" ng-repeat="obs in model.observations.obsprop"
+                id={{obs.observablepropertyid}}>
+                <a onclick="">
+                    <span class="glyphicon glyphicon-grain" aria-hidden="true"></span>
+                    {{obs.description}}
+                </a>
             </li>
             <li role="presentation" style="cursor: pointer;"><a onclick=""><span
-                    class="glyphicon glyphicon-tint" aria-hidden="true"></span>My Title4</a>
+                    class="glyphicon glyphicon-scale" aria-hidden="true"></span>Watering</a>
             </li>
             <li role="presentation" style="cursor: pointer;"><a onclick=""><span
-                    class="glyphicon glyphicon-leaf" aria-hidden="true"></span>My Title5</a>
-            </li>
-            <li role="presentation" style="cursor: pointer;"><a onclick=""><span
-                    class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>My Title6</a>
-            </li>
-            <li role="presentation" style="cursor: pointer;"><a onclick=""><span
-                    class="glyphicon glyphicon-globe" aria-hidden="true"></span>My Title7</a>
+                    class="glyphicon glyphicon-scale" aria-hidden="true"></span>Control Panel</a>
             </li>
         </ul>
 </div>

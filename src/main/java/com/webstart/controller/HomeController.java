@@ -1,7 +1,9 @@
 package com.webstart.controller;
 
 import com.webstart.model.Crop;
-import com.webstart.service.AddCropService;
+import com.webstart.service.FeatureofInterest;
+import com.webstart.service.ObservationProperyService;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 
    @Autowired
-   AddCropService addCropService;
+   FeatureofInterest featureofInterest;
 
-    @RequestMapping(value = "/home", method = RequestMethod.POST)
+    @RequestMapping(value = "/ffffff", method = RequestMethod.POST)
     public ResponseEntity<Void> createcrop(@RequestBody Crop crop) {
 
         crop.getCropname();
 
-        addCropService.addCrop(crop);
+        featureofInterest.addCrop(crop);
 
         System.out.println("oooooooo");
         /*System.out.println("Creating User " + user.getUsername());
@@ -40,4 +42,23 @@ public class HomeController {
 
         return new ResponseEntity<Void>( HttpStatus.CREATED);
     }
+
+    @Autowired
+    ObservationProperyService observationProperyService;
+
+    @RequestMapping(value = "/getobsproperties", method = RequestMethod.GET)
+    public ResponseEntity<String> getObsProperties() {
+
+        JSONObject obj = new JSONObject();
+
+        obj = observationProperyService.getAllObsPropeties();
+
+
+        return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.CREATED);
+    }
+
+
+
+
+
 }
