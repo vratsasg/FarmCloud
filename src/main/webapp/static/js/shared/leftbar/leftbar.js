@@ -20,17 +20,11 @@
                         defer.resolve(model.observations);
 
                     }, function (errResponse) {
-                        console.log("Error fetching osb");
+                        console.log("Error fetching obs");
                     }
                 );
-
-
             }
-
-
         }
-
-
     });
 
 }());

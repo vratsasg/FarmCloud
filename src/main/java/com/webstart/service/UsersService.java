@@ -1,6 +1,7 @@
 package com.webstart.service;
 
 import com.webstart.model.Users;
+import org.json.simple.JSONObject;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface UsersService {
 
     Users findUser(String username,String password);
     Users findUser(int id);
+
+    JSONObject userByJson(Integer userid);
 }

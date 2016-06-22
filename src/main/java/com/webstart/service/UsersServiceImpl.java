@@ -2,6 +2,7 @@ package com.webstart.service;
 
 import com.webstart.model.Users;
 import com.webstart.repository.UsersJpaRepository;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +57,14 @@ public class UsersServiceImpl implements UsersService{
     }
 
 
+    public JSONObject userByJson(Integer userid) {
+        JSONObject jsonObject = new JSONObject();
+        Users user;
+        user = usersJpaRepository.findOne(userid);
 
+        jsonObject.put("username", user.getUsername());
+
+        return jsonObject;
+    }
 
 }

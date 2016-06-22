@@ -5,12 +5,22 @@
     module.component('topBar', {
         templateUrl: 'static/js/shared/topbar/top-bar-component.html',
         controllerAs: "model",
-        controller: function ($uibModal, $document) {
+        controller: function ($uibModal, $document, userService, $q) {
             var model = this;
-            model.username = "";
+            model.user = {};
+
             //components have lifecycles this is before the component is rendered
             model.$onInit = function () {
-                model.username = "test user";
+                var defer = $q.defer();
+                userService.getuser().then(
+                    function (data) {
+
+                        model.user = data;
+                        defer.resolve(model.user);
+
+                    }, function (errResponse) {
+                        console.log("error fetching user");
+                    });
 
 
                 model.showModal = function () {

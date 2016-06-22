@@ -334,7 +334,7 @@
 .nav.navbar-nav.navbar-right {
     font-family: exo-reg;
     font-size: 20px;
-    margin-top: 15px;
+    margin-top: 22px;
     font-color: white;
 }
 
@@ -342,7 +342,6 @@
 
     color: white;
 }
-
 .nav.navbar-nav.navbar-right a:hover {
     border-radius: 113px 113px 113px 113px;
     -moz-border-radius: 113px 113px 113px 113px;
@@ -351,12 +350,27 @@
     color: black;
 }
 
+.nav.navbar-nav.navbar-right a:focus {
+    border-radius: 113px 113px 113px 113px;
+    -moz-border-radius: 113px 113px 113px 113px;
+    -webkit-border-radius: 113px 113px 113px 113px;
+    background-color: white;
+    color: black;
+}
+
+
 .nav.navbar-nav.navbar-right a:active{
     border-radius: 113px 113px 113px 113px;
     -moz-border-radius: 113px 113px 113px 113px;
     -webkit-border-radius: 113px 113px 113px 113px;
     background-color: white;
     color: black;
+}
+
+.nav.navbar-nav.navbar-right > li > ul {
+
+    background-color: #71843f !important;
+
 }
 
 /*..........NAVIGATION VERTICAL.................................*/

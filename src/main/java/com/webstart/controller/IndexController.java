@@ -1,8 +1,14 @@
 package com.webstart.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.model.Users;
 import com.webstart.service.UsersService;
+import jdk.nashorn.api.scripting.JSObject;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +36,7 @@ public class IndexController {
     public String getIndexPage() {
 
 
-        usersList= usersService.findAll();
+        //  usersList= usersService.findAll();
 
         return "index";
     }
@@ -72,6 +78,21 @@ public class IndexController {
         return "index";
     }
 
+    @RequestMapping(value = "/topbaruser", method = RequestMethod.GET)
+    public ResponseEntity<String> getObsProperties(HttpServletRequest request) throws JsonProcessingException {
+        Users users = new Users();
+        Users finalUser = new Users();
+        JSONObject jsonObject = new JSONObject();
 
+
+        users = (Users) request.getSession().getAttribute("current_user");
+
+        jsonObject = usersService.userByJson(users.getUser_id());
+
+
+        System.out.println(jsonObject.toJSONString());
+
+        return new ResponseEntity<String>(jsonObject.toJSONString(), HttpStatus.OK);
+    }
 
 }

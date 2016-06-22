@@ -27,7 +27,7 @@
 
 </head>
 <body>
-<div class="navbar navbar-fixed-top navbar-default" role="navigation" >
+<div class="navbar navbar-fixed-top navbar-default" role="navigation">
     <div class="container">
 
         <div class="navbar-header">
