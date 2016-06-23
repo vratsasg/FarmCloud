@@ -2,6 +2,8 @@ package com.webstart.model;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -22,14 +24,18 @@ public class ObservableProperty {
     private String Description;
 
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "observableProperty", cascade = {CascadeType.ALL})
+    private List<Series> seriesList = new ArrayList<Series>();
+
     public ObservableProperty() {
     }
 
-    public ObservableProperty(Long observablePropertyId, String hibernateDiscriminator, String identifier, String description) {
+    public ObservableProperty(Long observablePropertyId, String hibernateDiscriminator, String identifier, String description, List<Series> seriesList) {
         ObservablePropertyId = observablePropertyId;
         HibernateDiscriminator = hibernateDiscriminator;
         Identifier = identifier;
         Description = description;
+        this.seriesList = seriesList;
     }
 
     public Long getObservablePropertyId() {
@@ -62,5 +68,13 @@ public class ObservableProperty {
 
     public void setDescription(String description) {
         Description = description;
+    }
+
+    public List<Series> getSeriesList() {
+        return seriesList;
+    }
+
+    public void setSeriesList(List<Series> seriesList) {
+        this.seriesList = seriesList;
     }
 }

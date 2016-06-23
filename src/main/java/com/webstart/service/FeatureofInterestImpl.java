@@ -25,6 +25,7 @@ public class FeatureofInterestImpl implements FeatureofInterest {
 
     Featureofinterest featureofinterest = new Featureofinterest();
 
+
     @Override
     public boolean addCrop(Crop crop) {
 
@@ -58,6 +59,21 @@ public class FeatureofInterestImpl implements FeatureofInterest {
         List<Featureofinterest> featureofinterestList = new ArrayList<Featureofinterest>();
 
         featureofinterestList = featureofinterestJpaRepository.findByUserid(id);
+
+
+        List<Integer> featureids = new ArrayList<Integer>();
+
+        for (int k = 0; k < featureofinterestList.size(); k++) {
+
+
+            featureids.add(k, featureofinterestList.get(k).getFeatureofinterestid());
+
+
+        }
+
+        List<Object[]> objects = new ArrayList<Object[]>();
+        objects = featureofinterestJpaRepository.find(featureids);
+
 
         JSONObject obj = new JSONObject();
         JSONObject obj1 = new JSONObject();

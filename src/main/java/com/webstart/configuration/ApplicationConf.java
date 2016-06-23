@@ -23,7 +23,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @EnableWebMvc
 @Import( {DataSourceConfig.class, JpaConfig.class, RepositoryConfig.class} )
-@ComponentScan(basePackages = "com.webstart.")
+@ComponentScan(basePackages = "com.webstart")
 public class ApplicationConf extends WebMvcConfigurerAdapter {
 
     @Override

@@ -1,10 +1,9 @@
 package com.webstart.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Created by DimDesktop on 6/1/2016.
- */
 
 @Entity
 @Table(name = "procedure")
@@ -15,33 +14,29 @@ public class Procedure {
     @GeneratedValue
     private long procedureid;
 
-    @Column(length = 1,name="hibernatediscriminator")
+    @Column(length = 1, name = "hibernatediscriminator")
     private String hibernatediscriminator;
 
-    @Column(name="proceduredescriptionformatid")
+    @Column(name = "proceduredescriptionformatid")
     private long proceduredescriptionformatid;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "proceduredescriptionformatid",insertable=false, updatable=false)
+    @JoinColumn(name = "proceduredescriptionformatid", insertable = false, updatable = false)
     private ProcedureDescriptionFormat procedureDescriptionFormat;
 
-    @Column(length = 255,name="identifier")
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "procedure", cascade = {CascadeType.ALL})
+    private List<Series> seriesList = new ArrayList<Series>();
+
+
+    @Column(length = 255, name = "identifier")
     private String identifier;
 
-    @Column(name="deleted")
+    @Column(name = "deleted")
     private boolean deleted;
 
-    @Column(length = 2000,name="descriptionfile")
+    @Column(length = 2000, name = "descriptionfile")
     private String descriptionfile;
-
-    public Procedure(String hibernatediscriminator, long proceduredescriptionformatid, ProcedureDescriptionFormat procedureDescriptionFormat, String identifier, boolean deleted, String descriptionfile) {
-        this.hibernatediscriminator = hibernatediscriminator;
-        this.proceduredescriptionformatid = proceduredescriptionformatid;
-        this.procedureDescriptionFormat = procedureDescriptionFormat;
-        this.identifier = identifier;
-        this.deleted = deleted;
-        this.descriptionfile = descriptionfile;
-    }
 
     public long getProcedureid() {
         return procedureid;
@@ -59,12 +54,28 @@ public class Procedure {
         this.hibernatediscriminator = hibernatediscriminator;
     }
 
+    public long getProceduredescriptionformatid() {
+        return proceduredescriptionformatid;
+    }
+
+    public void setProceduredescriptionformatid(long proceduredescriptionformatid) {
+        this.proceduredescriptionformatid = proceduredescriptionformatid;
+    }
+
     public ProcedureDescriptionFormat getProcedureDescriptionFormat() {
         return procedureDescriptionFormat;
     }
 
     public void setProcedureDescriptionFormat(ProcedureDescriptionFormat procedureDescriptionFormat) {
         this.procedureDescriptionFormat = procedureDescriptionFormat;
+    }
+
+    public List<Series> getSeriesList() {
+        return seriesList;
+    }
+
+    public void setSeriesList(List<Series> seriesList) {
+        this.seriesList = seriesList;
     }
 
     public String getIdentifier() {
@@ -91,11 +102,17 @@ public class Procedure {
         this.descriptionfile = descriptionfile;
     }
 
-    public long getProceduredescriptionformatid() {
-        return proceduredescriptionformatid;
+    public Procedure(String hibernatediscriminator, long proceduredescriptionformatid, ProcedureDescriptionFormat procedureDescriptionFormat, List<Series> seriesList, String identifier, boolean deleted, String descriptionfile) {
+        this.hibernatediscriminator = hibernatediscriminator;
+        this.proceduredescriptionformatid = proceduredescriptionformatid;
+        this.procedureDescriptionFormat = procedureDescriptionFormat;
+        this.seriesList = seriesList;
+        this.identifier = identifier;
+        this.deleted = deleted;
+        this.descriptionfile = descriptionfile;
     }
 
-    public void setProceduredescriptionformatid(long proceduredescriptionformatid) {
-        this.proceduredescriptionformatid = proceduredescriptionformatid;
+
+    public Procedure() {
     }
 }

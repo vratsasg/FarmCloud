@@ -16,8 +16,7 @@ import java.util.List;
 @Table(name = "featureofinterest")
 public class Featureofinterest {
 
-
-    public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, Featureofinteresttype featureofinteresttype, Geometry geom, int userid, Users usersfeatures) {
+    public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, Featureofinteresttype featureofinteresttype, Geometry geom, int userid, Users usersfeatures, List<Series> seriesList) {
         this.hibernatediscriminator = hibernatediscriminator;
         this.featureofinteresttypeid = featureofinteresttypeid;
         this.identifier = identifier;
@@ -29,39 +28,12 @@ public class Featureofinterest {
         this.geom = geom;
         this.userid = userid;
         this.usersfeatures = usersfeatures;
+        this.seriesList = seriesList;
     }
 
-    public Featureofinterest() {
-
+    public Integer getFeatureofinterestid() {
+        return featureofinterestid;
     }
-
-    @Id
-
-    @GeneratedValue
-    private Integer featureofinterestid;
-
-    @Column(length = 1, name = "hibernatediscriminator")
-    private String hibernatediscriminator;
-
-    @Column(name = "featureofinteresttypeid")
-    private long featureofinteresttypeid;
-
-    @Column(length = 255, name = "identifier")
-
-    private String identifier;
-
-    @Column(name = "codespaceid")
-    private Long codespaceid;
-
-
-    @Column(name = "name")
-
-    private String name;
-    @Column(name = "descriptionxml")
-    private String descriptionxml;
-
-    @Column(length = 255, name = "url")
-    private String url;
 
     public void setFeatureofinterestid(Integer featureofinterestid) {
         this.featureofinterestid = featureofinterestid;
@@ -131,20 +103,20 @@ public class Featureofinterest {
         this.featureofinteresttype = featureofinteresttype;
     }
 
-    public Geometry getGeom() {
-        return geom;
-    }
-
-    public void setGeom(Geometry geom) {
-        this.geom = geom;
-    }
-
     public int getUserid() {
         return userid;
     }
 
     public void setUserid(int userid) {
         this.userid = userid;
+    }
+
+    public Geometry getGeom() {
+        return geom;
+    }
+
+    public void setGeom(Geometry geom) {
+        this.geom = geom;
     }
 
     public Users getUsersfeatures() {
@@ -154,6 +126,47 @@ public class Featureofinterest {
     public void setUsersfeatures(Users usersfeatures) {
         this.usersfeatures = usersfeatures;
     }
+
+    public List<Series> getSeriesList() {
+        return seriesList;
+    }
+
+    public void setSeriesList(List<Series> seriesList) {
+        this.seriesList = seriesList;
+    }
+
+    public Featureofinterest() {
+
+    }
+
+    @Id
+
+    @GeneratedValue
+    private Integer featureofinterestid;
+
+    @Column(length = 1, name = "hibernatediscriminator")
+    private String hibernatediscriminator;
+
+    @Column(name = "featureofinteresttypeid")
+    private long featureofinteresttypeid;
+
+    @Column(length = 255, name = "identifier")
+
+    private String identifier;
+
+    @Column(name = "codespaceid")
+    private Long codespaceid;
+
+
+    @Column(name = "name")
+
+    private String name;
+    @Column(name = "descriptionxml")
+    private String descriptionxml;
+
+    @Column(length = 255, name = "url")
+    private String url;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "featureofinteresttypeid", insertable = false, updatable = false)
@@ -170,5 +183,9 @@ public class Featureofinterest {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userid", insertable = false, updatable = false)
     private Users usersfeatures;
+
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "observableProperty", cascade = {CascadeType.ALL})
+    private List<Series> seriesList = new ArrayList<Series>();
 
 }

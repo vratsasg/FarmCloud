@@ -14,19 +14,15 @@ public class ProcedureDescriptionFormat {
 
     @Id
     @GeneratedValue
-    public long proceduredescriptionformatid;
+    private long proceduredescriptionformatid;
 
     @Column(length = 255)
-    public String proceduredescriptionformat;
+    private String proceduredescriptionformat;
+
 
     @OneToMany(mappedBy = "procedureDescriptionFormat", cascade = {CascadeType.ALL})
+
     private List<Procedure> procedure_list = new ArrayList<Procedure>();
-
-
-    public ProcedureDescriptionFormat(long proceduredescriptionformatid, String proceduredescriptionformat) {
-        this.proceduredescriptionformatid = proceduredescriptionformatid;
-        this.proceduredescriptionformat = proceduredescriptionformat;
-    }
 
     public long getProceduredescriptionformatid() {
         return proceduredescriptionformatid;
@@ -51,4 +47,14 @@ public class ProcedureDescriptionFormat {
     public void setProcedure_list(List<Procedure> procedure_list) {
         this.procedure_list = procedure_list;
     }
+
+    public ProcedureDescriptionFormat(String proceduredescriptionformat, List<Procedure> procedure_list) {
+        this.proceduredescriptionformat = proceduredescriptionformat;
+        this.procedure_list = procedure_list;
+    }
+
+    public ProcedureDescriptionFormat() {
+    }
+
+
 }
