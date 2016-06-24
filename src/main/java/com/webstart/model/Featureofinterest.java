@@ -185,7 +185,7 @@ public class Featureofinterest {
     private Users usersfeatures;
 
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "observableProperty", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "featureofinterest", cascade = {CascadeType.ALL})
     private List<Series> seriesList = new ArrayList<Series>();
 
 }

@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+
+import java.util.HashSet;
 import java.util.List;
+
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,11 +26,9 @@ public class FeatureofInterestImpl implements FeatureofInterest {
     FeatureofinterestJpaRepository featureofinterestJpaRepository;
 
 
-    Featureofinterest featureofinterest = new Featureofinterest();
-
-
     @Override
     public boolean addCrop(Crop crop) {
+        Featureofinterest featureofinterest = new Featureofinterest();
 
         crop.getCropname();
         crop.getCropdescription();
@@ -58,15 +59,41 @@ public class FeatureofInterestImpl implements FeatureofInterest {
     public JSONObject findCropInfo(int id) {
         List<Featureofinterest> featureofinterestList = new ArrayList<Featureofinterest>();
 
-        featureofinterestList = featureofinterestJpaRepository.findByUserid(id);
 
+        featureofinterestList = featureofinterestJpaRepository.findByUserid(id);
 
         List<Integer> featureids = new ArrayList<Integer>();
 
+        JSONObject obj1 = new JSONObject();
+        JSONArray list = new JSONArray();
+        JSONObject obj = new JSONObject();
+
+
         for (int k = 0; k < featureofinterestList.size(); k++) {
+            int indexl = 0;
+            if (featureofinterestList.get(k).getFeatureofinteresttypeid() == 3) {
+
+                featureids.add(indexl, featureofinterestList.get(k).getFeatureofinterestid());
+                indexl++;
+
+            } else if (featureofinterestList.get(k).getFeatureofinteresttypeid() == 1) {
+
+                ///CROP
+                obj1.put("identifier", featureofinterestList.get(k).getIdentifier());
+                obj1.put("description", featureofinterestList.get(k).getName());
 
 
-            featureids.add(k, featureofinterestList.get(k).getFeatureofinterestid());
+            } else if (featureofinterestList.get(k).getFeatureofinteresttypeid() == 2) {
+
+                JSONObject obj2 = new JSONObject();
+
+                //STATION
+                obj2.put("identifier", featureofinterestList.get(k).getIdentifier());
+                obj2.put("description", featureofinterestList.get(k).getName());
+                list.add(obj2);
+
+
+            }
 
 
         }
@@ -74,57 +101,65 @@ public class FeatureofInterestImpl implements FeatureofInterest {
         List<Object[]> objects = new ArrayList<Object[]>();
         objects = featureofinterestJpaRepository.find(featureids);
 
-
-        JSONObject obj = new JSONObject();
-        JSONObject obj1 = new JSONObject();
+        List<String> tempList = new ArrayList<String>();
 
 
-        JSONArray list = new JSONArray();
-        JSONArray list2 = new JSONArray();
+        //END DEVICE
+
+        JSONArray finallist = new JSONArray();
+        int i = 0;
+        for (Object[] obje : objects) {
+
+            tempList.add(i, String.valueOf((obje[0])));
+            i++;
+        }
+
+        HashSet hs = new HashSet(tempList);
+        tempList.clear();
+        tempList.addAll(hs);
 
 
-        for (int i = 0; i < featureofinterestList.size(); i++) {
+        for (int j = 0; j < tempList.size(); j++) {
+            JSONObject finalobject = new JSONObject();
+            JSONArray list2 = new JSONArray();
 
-            if (featureofinterestList.get(i).getFeatureofinteresttypeid() == 1) {
+            int tmcounter = 0;
+            for (Object[] objet : objects) {
 
-                obj1.put("identifier", featureofinterestList.get(i).getIdentifier());
-                obj1.put("description", featureofinterestList.get(i).getName());
+                if (tempList.get(j).equals(String.valueOf((objet[0])))) {
 
+                    JSONObject tempobj = new JSONObject();
 
-            } else if (featureofinterestList.get(i).getFeatureofinteresttypeid() == 2) {
+                    tempobj.put("kindofmeasurement", String.valueOf((objet[2])));
+                    tempobj.put("sensorname", String.valueOf((objet[3])));
+                    tempobj.put("typeofmeasurement", String.valueOf((objet[4])));
 
-                JSONObject obj2 = new JSONObject();
+                    list2.add(tempobj);
+                }
 
-                obj2.put("identifier", featureofinterestList.get(i).getIdentifier());
-                obj2.put("description", featureofinterestList.get(i).getName());
-                list.add(obj2);
-
-
-            } else if (featureofinterestList.get(i).getFeatureofinteresttypeid() == 3) {
-
-                JSONObject obj3 = new JSONObject();
-                obj3.put("identifier", featureofinterestList.get(i).getIdentifier());
-                obj3.put("description", featureofinterestList.get(i).getName());
-                list2.add(obj3);
-
-
-            } else {
-
-                return null;
+                if (tmcounter == 0) {
+                    finalobject.put("description", String.valueOf((objet[1])));
+                }
+                tmcounter++;
             }
 
+            finalobject.put("sensors", list2);
+            finalobject.put("identifier", tempList.get(j));
 
+            finallist.add(finalobject);
         }
+
 
         obj.put("crop", obj1);
         obj.put("stations", list);
-        obj.put("devices", list2);
+        obj.put("devices", finallist);
 
 
         String temp = obj.toJSONString();
 
-        System.out.println(temp);
 
         return obj;
     }
+
+
 }

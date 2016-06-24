@@ -1,6 +1,6 @@
 <h4><span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>My Profile</h4>
 <hr id="headline">
-
+<div class="row">
 <div class="col-sm-4">
     <div class="panel panel-success">
         <div class="panel-heading">
@@ -23,6 +23,9 @@
         </div>
     </div>
 </div>
+</div>
+
+<div class="row">
 <div class="col-sm-4" ng-repeat="dv in model.myprofile.devices">
     <div class="panel panel-warning">
         <div class="panel-heading">
@@ -31,6 +34,20 @@
         <div class="panel-body">
             <div>EndDevice Name: {{dv.identifier}}</div>
             <div>EndDevice Description: {{dv.description}}</div>
+            <ul class="nav nav-stacked">
+                <li>Sensors :</li>
+                <ul class="nav nav-stacked" ng-repeat="sens in model.myprofile.devices[$index].sensors">
+                    <li> Sensor name:{{sens.sensorname}}</li>
+                    <li> Kind of measurement:{{sens.kindofmeasurement}}</li>
+                    <li> Type of measurement:{{sens.typeofmeasurement}}</li>
+
+
+                </ul>
+            </ul>
+
+
         </div>
     </div>
+</div>
+
 </div>

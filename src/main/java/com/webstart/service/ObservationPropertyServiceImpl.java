@@ -37,7 +37,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
 
         finalobj.put("obsprop", list);
         String temp = finalobj.toJSONString();
-        System.out.println(temp);
+
 
         return finalobj;
     }
