@@ -34,7 +34,7 @@ public class Series {
     @JoinColumn(name = "observablepropertyid", insertable = false, updatable = false)
     private ObservableProperty observableProperty;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, optional=true)
     @JoinColumn(name = "featureofinterestid", insertable = false, updatable = false)
     private Featureofinterest featureofinterest;
 

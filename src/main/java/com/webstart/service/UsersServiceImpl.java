@@ -67,4 +67,17 @@ public class UsersServiceImpl implements UsersService{
         return jsonObject;
     }
 
+    public JSONObject getUserprofileuserByJson(Integer userid) {
+        JSONObject jsonObject = new JSONObject();
+        Users user = usersJpaRepository.findOne(userid);
+
+        jsonObject.put("firstname", user.getUserProfile().getFirstname());
+        jsonObject.put("lastname", user.getUserProfile().getLastname());
+        jsonObject.put("fathersname", user.getUserProfile().getFathersname());
+
+        return jsonObject;
+    }
+
+
+
 }

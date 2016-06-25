@@ -16,4 +16,5 @@ public interface UsersService {
     Users findUser(int id);
 
     JSONObject userByJson(Integer userid);
+    JSONObject getUserprofileuserByJson(Integer userid);
 }

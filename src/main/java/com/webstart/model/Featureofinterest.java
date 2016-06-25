@@ -8,15 +8,16 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by George on 7/6/2016.
- */
 
 @Entity
 @Table(name = "featureofinterest")
 public class Featureofinterest {
 
-    public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, Featureofinteresttype featureofinteresttype, Geometry geom, int userid, Users usersfeatures, List<Series> seriesList) {
+    public Featureofinterest() {
+
+    }
+
+    public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, /*Long parentid,*/ Geometry geom, int userid) {
         this.hibernatediscriminator = hibernatediscriminator;
         this.featureofinteresttypeid = featureofinteresttypeid;
         this.identifier = identifier;
@@ -24,12 +25,71 @@ public class Featureofinterest {
         this.name = name;
         this.descriptionxml = descriptionxml;
         this.url = url;
-        this.featureofinteresttype = featureofinteresttype;
+        this.parentid = parentid;
         this.geom = geom;
         this.userid = userid;
-        this.usersfeatures = usersfeatures;
-        this.seriesList = seriesList;
     }
+
+    @Id
+    @GeneratedValue
+    private Integer featureofinterestid;
+
+    @Column(length = 1, name = "hibernatediscriminator")
+    private String hibernatediscriminator;
+
+    @Column(name = "featureofinteresttypeid")
+    private long featureofinteresttypeid;
+
+    @Column(length = 255, name = "identifier")
+    private String identifier;
+
+    @Column(name = "codespaceid")
+    private Long codespaceid;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "descriptionxml")
+    private String descriptionxml;
+
+    @Column(length = 255, name = "url")
+    private String url;
+
+    @Column(name="parentId")
+    private Long parentid;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "featureofinteresttypeid", insertable = false, updatable = false)
+    private Featureofinteresttype featureofinteresttype;
+
+    @Column(name = "geom", columnDefinition = "Geometry")
+    private Geometry geom;
+
+
+    @Column(name = "userid")
+    private int userid;
+
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "userid", insertable = false, updatable = false)
+    private Users userfeature;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "featureofinterest", cascade = {CascadeType.ALL})
+    private List<Series> seriesList = new ArrayList<Series>();
+
+    ////Autorelation
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "parentid", insertable = false, updatable = false)
+    private Featureofinterest parentFeature;
+
+    @OneToMany(mappedBy = "parentFeature",fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    private List<Featureofinterest> childrenFeatures;
+
+    //@ManyToOne(fetch = FetchType.LAZY, optional = true)
+    //private Featureofinterest parentFeature;
+    //
+    //@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "parentFeature")
+    //private List<Featureofinterest> childrenFeatures;
 
     public Integer getFeatureofinterestid() {
         return featureofinterestid;
@@ -95,20 +155,20 @@ public class Featureofinterest {
         this.url = url;
     }
 
+    public Long getParentid() {
+        return parentid;
+    }
+
+    public void setParentid(Long parentid) {
+        this.parentid = parentid;
+    }
+
     public Featureofinteresttype getFeatureofinteresttype() {
         return featureofinteresttype;
     }
 
     public void setFeatureofinteresttype(Featureofinteresttype featureofinteresttype) {
         this.featureofinteresttype = featureofinteresttype;
-    }
-
-    public int getUserid() {
-        return userid;
-    }
-
-    public void setUserid(int userid) {
-        this.userid = userid;
     }
 
     public Geometry getGeom() {
@@ -119,12 +179,20 @@ public class Featureofinterest {
         this.geom = geom;
     }
 
-    public Users getUsersfeatures() {
-        return usersfeatures;
+    public int getUserid() {
+        return userid;
     }
 
-    public void setUsersfeatures(Users usersfeatures) {
-        this.usersfeatures = usersfeatures;
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
+    public Users getUserfeature() {
+        return userfeature;
+    }
+
+    public void setUserfeature(Users usersfeatures) {
+        this.userfeature = usersfeatures;
     }
 
     public List<Series> getSeriesList() {
@@ -135,57 +203,21 @@ public class Featureofinterest {
         this.seriesList = seriesList;
     }
 
-    public Featureofinterest() {
-
+    public Featureofinterest getParentFeature() {
+        return parentFeature;
     }
 
-    @Id
+    public void setParentFeature(Featureofinterest parentFeature) {
+        this.parentFeature = parentFeature;
+    }
 
-    @GeneratedValue
-    private Integer featureofinterestid;
+    public List<Featureofinterest> getChildrenFeatures() {
+        return childrenFeatures;
+    }
 
-    @Column(length = 1, name = "hibernatediscriminator")
-    private String hibernatediscriminator;
+    public void setChildrenFeatures(List<Featureofinterest> childrenFeatures) {
+        this.childrenFeatures = childrenFeatures;
+    }
 
-    @Column(name = "featureofinteresttypeid")
-    private long featureofinteresttypeid;
-
-    @Column(length = 255, name = "identifier")
-
-    private String identifier;
-
-    @Column(name = "codespaceid")
-    private Long codespaceid;
-
-
-    @Column(name = "name")
-
-    private String name;
-    @Column(name = "descriptionxml")
-    private String descriptionxml;
-
-    @Column(length = 255, name = "url")
-    private String url;
-
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "featureofinteresttypeid", insertable = false, updatable = false)
-    private Featureofinteresttype featureofinteresttype;
-
-    @Column(name = "geom", columnDefinition = "Geometry")
-    private Geometry geom;
-
-
-    @Column(name = "userid")
-    private int userid;
-
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userid", insertable = false, updatable = false)
-    private Users usersfeatures;
-
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "featureofinterest", cascade = {CascadeType.ALL})
-    private List<Series> seriesList = new ArrayList<Series>();
 
 }

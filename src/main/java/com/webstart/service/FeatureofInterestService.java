@@ -5,14 +5,8 @@ import org.json.simple.JSONObject;
 
 import java.util.List;
 
-/**
- * Created by George on 9/6/2016.
- */
-public interface FeatureofInterest {
 
-
+public interface FeatureofInterestService {
         boolean addCrop(Crop crop);
-
         public JSONObject findCropInfo(int id);
-
 }

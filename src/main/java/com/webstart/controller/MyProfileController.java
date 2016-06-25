@@ -1,7 +1,7 @@
 package com.webstart.controller;
 
 import com.webstart.model.Users;
-import com.webstart.service.FeatureofInterest;
+import com.webstart.service.FeatureofInterestService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,17 +19,14 @@ public class MyProfileController {
 
 
     @Autowired
-    FeatureofInterest featureofInterest;
-
+    FeatureofInterestService featureofInterestService;
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public ResponseEntity<String> getProfile(HttpServletRequest request) {
-
-
         Users users = (Users) request.getSession().getAttribute("current_user");
         JSONObject obj = new JSONObject();
 
-        obj = featureofInterest.findCropInfo(users.getUser_id());
+        obj = featureofInterestService.findCropInfo(users.getUser_id());
 
 
         System.out.println("mphka sto profile");

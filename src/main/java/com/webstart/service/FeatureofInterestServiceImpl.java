@@ -10,17 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-
-import java.util.HashSet;
 import java.util.List;
-
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 @Service("addCropService")
 @Transactional
-public class FeatureofInterestImpl implements FeatureofInterest {
+public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
     @Autowired
     FeatureofinterestJpaRepository featureofinterestJpaRepository;
@@ -83,17 +80,16 @@ public class FeatureofInterestImpl implements FeatureofInterest {
                 obj1.put("description", featureofinterestList.get(k).getName());
 
 
-            } else if (featureofinterestList.get(k).getFeatureofinteresttypeid() == 2) {
-
-                JSONObject obj2 = new JSONObject();
-
-                //STATION
-                obj2.put("identifier", featureofinterestList.get(k).getIdentifier());
-                obj2.put("description", featureofinterestList.get(k).getName());
-                list.add(obj2);
+        List<Object[]> objects = new ArrayList<Object[]>();
+        objects = featureofinterestJpaRepository.find(featureids);
 
 
-            }
+        JSONObject obj = new JSONObject();
+        JSONObject obj1 = new JSONObject();
+
+
+        JSONArray list = new JSONArray();
+        JSONArray list2 = new JSONArray();
 
 
         }
@@ -149,17 +145,15 @@ public class FeatureofInterestImpl implements FeatureofInterest {
             finallist.add(finalobject);
         }
 
-
         obj.put("crop", obj1);
         obj.put("stations", list);
-        obj.put("devices", finallist);
+        obj.put("devices", list2);
 
 
         String temp = obj.toJSONString();
 
+        System.out.println(temp);
 
         return obj;
     }
-
-
 }

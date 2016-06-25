@@ -45,7 +45,7 @@ public class IndexController {
     @RequestMapping(value="/login",method=RequestMethod.POST)
     public String validate(@RequestParam("username_n") String username, @RequestParam("password_n") String password,Model model,HttpServletRequest request ){
 
-        System.out.println(username + "" + password);
+        System.out.println("user: " + username + "\n pass: " + password);
 
         Users users;
         users=usersService.findUser(username,password);
@@ -59,7 +59,6 @@ public class IndexController {
         }else{
 
             request.getSession().setAttribute("current_user",users);
-
             users=(Users)request.getSession().getAttribute("current_user");
 
             model.addAttribute("current_user",users);
@@ -71,7 +70,7 @@ public class IndexController {
     @RequestMapping(value="/logout",method=RequestMethod.POST)
     public String signout(Model model,HttpServletRequest request){
 
-            request.getSession().removeAttribute("current_user");
+        request.getSession().removeAttribute("current_user");
         model.addAttribute("alert_message", "You have successfully log out!");
         model.addAttribute("alert_class", "alert alert-success alert_messa");
 

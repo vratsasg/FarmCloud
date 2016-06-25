@@ -3,18 +3,37 @@ package com.webstart.model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/**
- * Created by George on 24/12/2015.
- */
+
 @Entity
 @Table(name="users")
 public class Users {
+    @JsonIgnore
+    @Id
+    @GeneratedValue
+    private Integer user_id;
 
+    @Column(length = 20)
+    private String username;
 
-    public Integer getUser_id() {
-        return user_id;
-    }
+    @Column(length = 20)
+    private String password;
+
+    @Column(length = 30)
+    private String email;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+
+    @JoinColumn(name="user_role_id")
+    private UsersRole usersRole;
+
+    @OneToOne(fetch = FetchType.EAGER, mappedBy="user", cascade=CascadeType.ALL)
+    private UserProfile userProfile;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "userfeature", cascade = {CascadeType.ALL})
+    private List<Featureofinterest> featureofinterestList = new ArrayList<Featureofinterest>();
 
     public Users(String username, String password, String email, UsersRole usersRole, List<Featureofinterest> featureofinterestList) {
         this.username = username;
@@ -28,9 +47,12 @@ public class Users {
 
     }
 
+    public Integer getUser_id() {
+        return user_id;
+    }
+
     public void setUser_id(Integer user_id) {
         this.user_id = user_id;
-
     }
 
     public String getUsername() {
@@ -73,42 +95,11 @@ public class Users {
         this.featureofinterestList = featureofinterestList;
     }
 
-    @Id
-    @GeneratedValue
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
 
-    private Integer user_id;
-
-    @Column(length = 20)
-
-    private String username;
-
-
-    @Column(length = 20)
-    private String password;
-
-    @Column(length = 30)
-    private String email;
-
-
-    @ManyToOne(fetch = FetchType.EAGER)
-
-    @JoinColumn(name="user_role_id")
-    private UsersRole usersRole;
-
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "usersfeatures", cascade = {CascadeType.ALL})
-    private List<Featureofinterest> featureofinterestList = new ArrayList<Featureofinterest>();
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
 }

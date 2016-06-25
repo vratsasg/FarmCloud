@@ -34,15 +34,23 @@
             integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
             crossorigin="anonymous"></script>
     <script src="<c:url value='/static/js/app.js' />"></script>
-    <script src="<c:url value='/static/js/components/crop-app/crop-app.component.js' />"></script>
+
+    ////Shared
     <script src="<c:url value='/static/js/shared/topbar/topbar.js' />"></script>
     <script src="<c:url value='/static/js/shared/topbar/topbar.service.js' />"></script>
     <script src="<c:url value='/static/js/shared/leftbar/leftbar.js' />"></script>
     <script src="<c:url value='/static/js/shared/leftbar/leftbar.service.js' />"></script>
+    <script src="<c:url value='/static/js/shared/topbar/logout.modal.component.js' />"></script>
+
+    ////Compnents
+    <script src="<c:url value='/static/js/components/crop-app/crop-app.component.js' />"></script>
     <script src="<c:url value='/static/js/components/my-profile/my-profile.component.js' />"></script>
     <script src="<c:url value='/static/js/components/home/first-page.component.js' />"></script>
     <script src="<c:url value='/static/js/components/my-profile/my-profile.service.js' />"></script>
-    <script src="<c:url value='/static/js/shared/topbar/logout.modal.component.js' />"></script>
+    <script src="<c:url value='/static/js/components/user-profile/user-profile.component.js' />"></script>
+    <script src="<c:url value='/static/js/components/user-profile/user-profile.service.js' />"></script>
+
+
 
 
 </head>

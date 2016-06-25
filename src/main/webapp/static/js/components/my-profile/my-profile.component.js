@@ -11,10 +11,9 @@
 
 
             model.$onInit = function () {
-                var defer = $q.defer();
+
                 ProfileService.getProfile().then(
                     function (d) {
-
                         model.myprofile = d;
                         defer.resolve(model.myprofile);
                         $log.info('Crop name: ' + model.myprofile.crop.identifier);
