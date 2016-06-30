@@ -10,13 +10,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.List;
+
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-@Service("addCropService")
+@Service("featureofInterestService")
 @Transactional
 public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
@@ -46,6 +48,7 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         //featureofinterest.setGeom(null);
 
         if ((featureofinterestJpaRepository.save(featureofinterest)) != null) {
+
             return true;
         }
 
@@ -157,4 +160,30 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
         return obj;
     }
+
+
+    public JSONObject findByUserAndType(int id) {
+
+        JSONObject finobj=new JSONObject();
+        List<Featureofinterest> objects = new ArrayList<Featureofinterest>();
+        JSONArray nlist=new JSONArray();
+
+        long l=3L;
+
+        objects=featureofinterestJpaRepository.findByUseridAndFeatureofinteresttypeid(id, l);
+
+        for(int c=0;c<objects.size();c++){
+
+            JSONObject tmpObj=new JSONObject();
+
+            tmpObj.put("identifier", objects.get(c).getIdentifier());
+            nlist.add(tmpObj);
+        }
+
+        finobj.put("enddevices",nlist);
+
+        return finobj;
+    }
+
+
 }

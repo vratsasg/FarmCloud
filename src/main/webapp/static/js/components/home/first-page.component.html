@@ -1,3 +1,39 @@
 <h4><span class="glyphicon glyphicon glyphicon-home" aria-hidden="true"></span>Home</h4>
 <hr id="headline">
-<openlayers class ="col-md-6 col-xs-8"  height="400px"></openlayers>
+<div class="row" id="home-button-bar">
+    <div class="control-group col-sm-2">
+        <label class="control-label">View By End Device</label>
+
+        <div class="controls">
+
+            <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice"
+                    ng-options="dev.identifier as dev.identifier for dev in model.devices.enddevices">
+            </select>
+
+
+            <!--  Second way without ng-options <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice">
+
+                   <option ng-repeat="dev in model.devices.enddevices" value="{{dev.identifier}}">{{dev.identifier}}</option>
+               </select>    <-->
+
+
+            {{model.myDevice}}
+
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-sm-3">
+        <openlayers width="100%" height="400px"></openlayers>
+
+    </div>
+    <div class="col-sm-6">
+
+        <chart-graph ng-if="model.myDevice" enddev="model.myDevice"></chart-graph>
+    </div>
+</div>
+
+

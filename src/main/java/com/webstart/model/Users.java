@@ -1,3 +1,4 @@
+
 package com.webstart.model;
 
 import javax.persistence.*;
