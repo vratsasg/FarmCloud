@@ -15,10 +15,9 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     List<Featureofinterest> findByUserid(int id);
 
 
-    @Query(" from Featureofinterest as fi inner join fetch fi.seriesList as flist inner join Series.featureofinterestid WHERE fi.featureofinterestid IN :inclList")
+    @Query("select fi.identifier ,fi.name,obs.Identifier,prc.identifier,prc.descriptionfile from Featureofinterest as fi inner join fi.seriesList as flist inner join flist.observableProperty as obs inner join flist.procedure as prc WHERE fi.featureofinterestid IN :inclList")
     List<Object[]> find(@Param("inclList") List<Integer> featuresid);
 
 
-
-
+    List<Featureofinterest> findByUseridAndFeatureofinteresttypeid(int id, long l);
 }

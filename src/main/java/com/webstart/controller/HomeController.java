@@ -2,14 +2,17 @@ package com.webstart.controller;
 
 import com.webstart.model.Crop;
 import com.webstart.model.Users;
+
 import com.webstart.service.FeatureofInterestService;
+import com.webstart.service.MeasureService;
 import com.webstart.service.ObservationProperyService;
-import com.webstart.service.UsersService;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,8 +25,6 @@ public class HomeController {
 
     @Autowired
     FeatureofInterestService featureofInterestService;
-    @Autowired
-    UsersService usersService;
 
     @RequestMapping(value = "/ffffff", method = RequestMethod.POST)
     public ResponseEntity<Void> createcrop(@RequestBody Crop crop) {
@@ -32,6 +33,7 @@ public class HomeController {
 
         featureofInterestService.addCrop(crop);
 
+        System.out.println("oooooooo");
         /*System.out.println("Creating User " + user.getUsername());
 
         if (userService.isUserExist(user)) {
@@ -45,7 +47,7 @@ public class HomeController {
         headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);*/
 
-        return new ResponseEntity<Void>( HttpStatus.CREATED);
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
     @Autowired
@@ -62,13 +64,41 @@ public class HomeController {
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/userprofile", method = RequestMethod.GET)
-    public ResponseEntity<String> getUserProfile(HttpServletRequest httpServletRequest) {
-        JSONObject obj = new JSONObject();
-        Users user = new Users();
-        user = (Users)httpServletRequest.getSession().getAttribute("current_user");
-        obj = usersService.getUserprofileuserByJson(user.getUser_id());
+    @RequestMapping(value = "/firstPDev", method = RequestMethod.GET)
+    public ResponseEntity<String> getFeatureEndDevices(HttpServletRequest request) {
+        Users users = new Users();
 
-        return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.CREATED);
+        JSONObject obj = new JSONObject();
+        users = (Users) request.getSession().getAttribute("current_user");
+
+        obj = featureofInterestService.findByUserAndType(users.getUser_id());
+
+        System.out.println(obj.toJSONString());
+
+        return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
+
+
     }
+
+
+    @Autowired
+    MeasureService measurement;
+
+    @RequestMapping(value = "/charthome/{id}", method = RequestMethod.GET)
+    public ResponseEntity<String> getChartByDevice(@PathVariable("id") String id, HttpServletRequest request) {
+        //   Users users=new Users();
+        String temp = "40E7CC39";
+        JSONArray obj = new JSONArray();
+        //  users=(Users)request.getSession().getAttribute("current_user");
+
+        obj = measurement.findDailyMeasure(id);
+
+
+        System.out.println(obj.toJSONString());
+
+        return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
+
+
+    }
+
 }

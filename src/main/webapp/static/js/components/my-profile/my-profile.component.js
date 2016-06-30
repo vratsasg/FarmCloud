@@ -1,4 +1,5 @@
 (function () {
+    'use strict';
     var module = angular.module("myApp");
 
     module.component('myProfile', {
@@ -11,7 +12,7 @@
 
 
             model.$onInit = function () {
-
+                var defer = $q.defer();
                 ProfileService.getProfile().then(
                     function (d) {
                         model.myprofile = d;

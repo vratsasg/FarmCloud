@@ -10,12 +10,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+
+import java.util.HashSet;
 import java.util.List;
+
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-@Service("addCropService")
+@Service("featureofInterestService")
 @Transactional
 public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
@@ -80,16 +83,17 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
                 obj1.put("description", featureofinterestList.get(k).getName());
 
 
-        List<Object[]> objects = new ArrayList<Object[]>();
-        objects = featureofinterestJpaRepository.find(featureids);
+            } else if (featureofinterestList.get(k).getFeatureofinteresttypeid() == 2) {
+
+                JSONObject obj2 = new JSONObject();
+
+                //STATION
+                obj2.put("identifier", featureofinterestList.get(k).getIdentifier());
+                obj2.put("description", featureofinterestList.get(k).getName());
+                list.add(obj2);
 
 
-        JSONObject obj = new JSONObject();
-        JSONObject obj1 = new JSONObject();
-
-
-        JSONArray list = new JSONArray();
-        JSONArray list2 = new JSONArray();
+            }
 
 
         }
@@ -145,15 +149,41 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             finallist.add(finalobject);
         }
 
+
         obj.put("crop", obj1);
         obj.put("stations", list);
-        obj.put("devices", list2);
+        obj.put("devices", finallist);
 
 
         String temp = obj.toJSONString();
 
-        System.out.println(temp);
 
         return obj;
     }
+
+
+    public JSONObject findByUserAndType(int id) {
+
+        JSONObject finobj=new JSONObject();
+        List<Featureofinterest> objects = new ArrayList<Featureofinterest>();
+        JSONArray nlist=new JSONArray();
+
+        long l=3L;
+
+        objects=featureofinterestJpaRepository.findByUseridAndFeatureofinteresttypeid(id, l);
+
+        for(int c=0;c<objects.size();c++){
+
+            JSONObject tmpObj=new JSONObject();
+
+            tmpObj.put("identifier", objects.get(c).getIdentifier());
+            nlist.add(tmpObj);
+        }
+
+        finobj.put("enddevices",nlist);
+
+        return finobj;
+    }
+
+
 }

@@ -1,16 +1,16 @@
+
 package com.webstart.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import com.fasterxml.jackson.*;
+//import com.fasterxml.jackson.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
 @Table(name="users")
 public class Users {
-    @JsonIgnore
     @Id
     @GeneratedValue
     private Integer user_id;
@@ -29,10 +29,12 @@ public class Users {
     @JoinColumn(name="user_role_id")
     private UsersRole usersRole;
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.EAGER, mappedBy="user", cascade=CascadeType.ALL)
     private UserProfile userProfile;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "userfeature", cascade = {CascadeType.ALL})
+    @JsonIgnore
     private List<Featureofinterest> featureofinterestList = new ArrayList<Featureofinterest>();
 
     public Users(String username, String password, String email, UsersRole usersRole, List<Featureofinterest> featureofinterestList) {

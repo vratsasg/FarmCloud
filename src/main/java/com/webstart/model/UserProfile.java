@@ -1,17 +1,20 @@
+
 package com.webstart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table(name="userprofile")
 public class UserProfile {
-
+    @JsonIgnore
     @Id
     @Column(name = "user_id", unique=true, nullable=false)
     @GeneratedValue(generator="gen")
@@ -44,8 +47,11 @@ public class UserProfile {
 
     private LocalDateTime dateofbirth;
 
-    @OneToOne
+    //    @OneToOne
+//    @JoinColumn(name="user_id")
+    @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
+    @JsonIgnore
     private Users user;
 
     public UserProfile() {
@@ -152,4 +158,3 @@ public class UserProfile {
         this.user = user;
     }
 }
-

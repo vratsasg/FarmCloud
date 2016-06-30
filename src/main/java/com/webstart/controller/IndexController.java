@@ -47,7 +47,7 @@ public class IndexController {
 
         System.out.println("user: " + username + "\n pass: " + password);
 
-        Users users;
+        Users users = new Users();
         users=usersService.findUser(username,password);
 
 
