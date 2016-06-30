@@ -1,5 +1,7 @@
 package com.webstart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name="user_role")
 public class UsersRole {
-
+    @JsonIgnore
     @Id
     @GeneratedValue
 

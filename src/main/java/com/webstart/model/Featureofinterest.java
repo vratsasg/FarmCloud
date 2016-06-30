@@ -2,6 +2,7 @@ package com.webstart.model;
 
 //import org.geolatte.geom.Geometry;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vividsolutions.jts.geom.Geometry;
 
 import javax.persistence.*;
@@ -13,23 +14,7 @@ import java.util.List;
 @Table(name = "featureofinterest")
 public class Featureofinterest {
 
-    public Featureofinterest() {
-
-    }
-
-    public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, /*Long parentid,*/ Geometry geom, int userid) {
-        this.hibernatediscriminator = hibernatediscriminator;
-        this.featureofinteresttypeid = featureofinteresttypeid;
-        this.identifier = identifier;
-        this.codespaceid = codespaceid;
-        this.name = name;
-        this.descriptionxml = descriptionxml;
-        this.url = url;
-        this.parentid = parentid;
-        this.geom = geom;
-        this.userid = userid;
-    }
-
+    @JsonIgnore
     @Id
     @GeneratedValue
     private Integer featureofinterestid;
@@ -82,7 +67,7 @@ public class Featureofinterest {
     @JoinColumn(name = "parentid", insertable = false, updatable = false)
     private Featureofinterest parentFeature;
 
-    @OneToMany(mappedBy = "parentFeature",fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "parentFeature",fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<Featureofinterest> childrenFeatures;
 
     //@ManyToOne(fetch = FetchType.LAZY, optional = true)
@@ -90,6 +75,23 @@ public class Featureofinterest {
     //
     //@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "parentFeature")
     //private List<Featureofinterest> childrenFeatures;
+
+    public Featureofinterest() {
+
+    }
+
+    public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, Long parentid, Geometry geom, int userid) {
+        this.hibernatediscriminator = hibernatediscriminator;
+        this.featureofinteresttypeid = featureofinteresttypeid;
+        this.identifier = identifier;
+        this.codespaceid = codespaceid;
+        this.name = name;
+        this.descriptionxml = descriptionxml;
+        this.url = url;
+        this.parentid = parentid;
+        this.geom = geom;
+        this.userid = userid;
+    }
 
     public Integer getFeatureofinterestid() {
         return featureofinterestid;

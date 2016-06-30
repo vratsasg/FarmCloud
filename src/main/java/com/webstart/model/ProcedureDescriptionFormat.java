@@ -1,5 +1,7 @@
 package com.webstart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "proceduredescriptionformat")
 public class ProcedureDescriptionFormat {
-
+    @JsonIgnore
     @Id
     @GeneratedValue
     private long proceduredescriptionformatid;

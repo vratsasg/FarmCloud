@@ -1,5 +1,6 @@
 package com.webstart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -7,11 +8,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.annotations.Parameter;
+import java.sql.Date;
 
 @Entity
 @Table(name="userprofile")
 public class UserProfile {
-
     @Id
     @Column(name = "user_id", unique=true, nullable=false)
     @GeneratedValue(generator="gen")
@@ -42,16 +43,19 @@ public class UserProfile {
     @Column(length = 15)
     private String mobile;
 
-    private LocalDateTime dateofbirth;
 
-    @OneToOne
+    private Date dateofbirth;
+
+    //@JoinColumn(name="user_id")
+    @OneToOne(cascade=CascadeType.ALL)
     @PrimaryKeyJoinColumn
+    @JsonIgnore
     private Users user;
 
     public UserProfile() {
     }
 
-    public UserProfile(String firstname, String address, String fathersname, String lastname, String addressnum, String zipcode, String telephone, String mobile, LocalDateTime dateofbirth, Users employeeDetail, Users user) {
+    public UserProfile(String firstname, String address, String fathersname, String lastname, String addressnum, String zipcode, String telephone, String mobile, Date dateofbirth, Users employeeDetail, Users user) {
         this.firstname = firstname;
         this.address = address;
         this.fathersname = fathersname;
@@ -136,11 +140,11 @@ public class UserProfile {
         this.mobile = mobile;
     }
 
-    public LocalDateTime getDateofbirth() {
+    public Date getDateofbirth() {
         return dateofbirth;
     }
 
-    public void setDateofbirth(LocalDateTime dateofbirth) {
+    public void setDateofbirth(Date dateofbirth) {
         this.dateofbirth = dateofbirth;
     }
 

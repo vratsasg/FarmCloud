@@ -1,5 +1,7 @@
 package com.webstart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.List;
 @Table(name = "featureofinteresttype")
 public class Featureofinteresttype {
 
-
+    @JsonIgnore
     @Id
     @Column(name = "featureofinteresttypeid")
     private long featureofinteresttypeid;

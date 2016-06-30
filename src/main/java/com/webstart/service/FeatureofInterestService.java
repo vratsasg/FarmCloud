@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface FeatureofInterestService {
         boolean addCrop(Crop crop);
-        public JSONObject findCropInfo(int id);
+        JSONObject findCropInfo(int id);
 }

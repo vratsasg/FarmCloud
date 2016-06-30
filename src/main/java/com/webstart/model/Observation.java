@@ -1,5 +1,7 @@
 package com.webstart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -10,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "observation")
 public class Observation {
-
+    @JsonIgnore
     @Id
     @GeneratedValue
     private long observationid;

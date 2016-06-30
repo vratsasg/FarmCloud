@@ -1,6 +1,8 @@
 package com.webstart.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.model.Crop;
+import com.webstart.model.UserProfile;
 import com.webstart.model.Users;
 import com.webstart.service.FeatureofInterestService;
 import com.webstart.service.ObservationProperyService;
@@ -53,22 +55,20 @@ public class HomeController {
 
     @RequestMapping(value = "/getobsproperties", method = RequestMethod.GET)
     public ResponseEntity<String> getObsProperties() {
-
         JSONObject obj = new JSONObject();
-
         obj = observationProperyService.getAllObsPropeties();
-
 
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/userprofile", method = RequestMethod.GET)
     public ResponseEntity<String> getUserProfile(HttpServletRequest httpServletRequest) {
-        JSONObject obj = new JSONObject();
         Users user = new Users();
         user = (Users)httpServletRequest.getSession().getAttribute("current_user");
-        obj = usersService.getUserprofileuserByJson(user.getUser_id());
 
-        return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.CREATED);
+        UserProfile userprofile = new UserProfile();
+        String obj = usersService.getUserprofileuserByJson(user.getUser_id());
+
+        return new ResponseEntity<String>(obj, HttpStatus.CREATED);
     }
 }

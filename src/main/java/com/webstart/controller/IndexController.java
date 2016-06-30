@@ -45,10 +45,9 @@ public class IndexController {
     @RequestMapping(value="/login",method=RequestMethod.POST)
     public String validate(@RequestParam("username_n") String username, @RequestParam("password_n") String password,Model model,HttpServletRequest request ){
 
-        System.out.println("user: " + username + "\n pass: " + password);
+        //System.out.println("user: " + username + "\n pass: " + password);
 
-        Users users;
-        users=usersService.findUser(username,password);
+        Users users = usersService.findUser(username,password);
 
 
         if(users==null){

@@ -1,12 +1,14 @@
 package com.webstart.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "series")
 public class Series {
-
+    @JsonIgnore
     @Id
     @GeneratedValue
     private Long seriesid;
@@ -37,6 +39,18 @@ public class Series {
     @ManyToOne(fetch = FetchType.EAGER, optional=true)
     @JoinColumn(name = "featureofinterestid", insertable = false, updatable = false)
     private Featureofinterest featureofinterest;
+
+    public Series(Long featureofinterestid, Long observablepropertyid, Long procedureid, String deleted, Procedure procedure, ObservableProperty observableProperty) {
+        this.featureofinterestid = featureofinterestid;
+        this.observablepropertyid = observablepropertyid;
+        this.procedureid = procedureid;
+        this.deleted = deleted;
+        this.procedure = procedure;
+        this.observableProperty = observableProperty;
+    }
+
+    public Series() {
+    }
 
     public Long getSeriesid() {
         return seriesid;
@@ -103,16 +117,5 @@ public class Series {
         this.featureofinterest = featureofinterest;
     }
 
-    public Series(Long featureofinterestid, Long observablepropertyid, Long procedureid, String deleted, Procedure procedure, ObservableProperty observableProperty, Featureofinterest featureofinterest) {
-        this.featureofinterestid = featureofinterestid;
-        this.observablepropertyid = observablepropertyid;
-        this.procedureid = procedureid;
-        this.deleted = deleted;
-        this.procedure = procedure;
-        this.observableProperty = observableProperty;
-        this.featureofinterest = featureofinterest;
-    }
 
-    public Series() {
-    }
 }

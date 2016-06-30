@@ -1,5 +1,6 @@
 package com.webstart.service;
 
+import com.webstart.model.UserProfile;
 import com.webstart.model.Users;
 import org.json.simple.JSONObject;
 
@@ -10,11 +11,10 @@ import java.util.List;
  */
 public interface UsersService {
 
-    public List<Users> findAll();
-
+    //List<Users> findAll();
     Users findUser(String username,String password);
-    Users findUser(int id);
-
+    //Users findUser(int id);
     JSONObject userByJson(Integer userid);
-    JSONObject getUserprofileuserByJson(Integer userid);
+    String getUserprofileuserByJson(Integer userid);
+
 }

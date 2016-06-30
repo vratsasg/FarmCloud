@@ -1,5 +1,7 @@
 package com.webstart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -11,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "featurerelation")
 public class Featurerelation {
 
-
+    @JsonIgnore
     @EmbeddedId
     MyKey myKey;
 
