@@ -1,0 +1,91 @@
+<h4><span class="glyphicon glyphicon-user" aria-hidden="true"></span>My Profile</h4>
+<hr id="headline">
+
+<div id="alertAreaid"></div>
+
+<form ng-submit="model.submit()" name="userProfileForm" class="form-horizontal" method="post" role="form">
+
+    <div class="form-group row">
+        <div class="col-md-3 col-xs-4">
+            <label for="inputfirstname" class="control-label">firstname</label>
+            <input class="form-control" type="text" id="inputfirstname" name="firstname"
+                   ng-model="model.userprofile.firstname" placeholder="Enter your name" required ng-minlength="3"/>
+
+            <div class="has-error" ng-show="userProfileForm.$dirty">
+                <span ng-show="userProfileForm.firstname.$error.required">This is a required field</span>
+                <span ng-show="userProfileForm.firstname.$error.minlength">Minimum length required is 3</span>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-xs-4">
+            <label for="inputlastname" class="control-label">lastname</label>
+            <input class="form-control" type="text" id="inputlastname" name="lastname"
+                   ng-model="model.userprofile.lastname"/>
+        </div>
+
+        <div class="col-md-3 col-xs-4">
+            <label for="inputfathersname" class="control-label">fatherstname:</label>
+            <input class="form-control" type="text" id="inputfathersname" name="firstname"
+                   ng-model="model.userprofile.fathersname"/>
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <div class="col-md-3 col-xs-4">
+            <label for="inputaddress" class="control-label">address</label>
+            <input class="form-control" type="text" id="inputaddress" name="address"
+                   ng-model="model.userprofile.address"/>
+        </div>
+
+        <div class="col-md-3 col-xs-4">
+            <label for="inputaddressnum" class="control-label">number</label>
+            <input class="form-control" type="text" id="inputaddressnum" name="addressnum"
+                   ng-model="model.userprofile.addressnum"/>
+        </div>
+
+        <div class="col-md-3 col-xs-4">
+            <label for="zipcode" class="control-label">zipcode</label>
+            <input class="form-control" type="text" id="zipcode" name="zipcode" ng-model="model.userprofile.zipcode"/>
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <div class="col-md-3 col-xs-4">
+            <label for="telephone" class="control-label">telephone</label>
+            <input class="form-control" type="text" id="telephone" name="telephone"
+                   ng-model="model.userprofile.telephone"/>
+        </div>
+
+        <div class="col-md-3 col-xs-4">
+            <label for="mobile" class="control-label">mobile</label>
+            <input class="form-control" type="text" id="mobile" name="mobile" ng-model="model.userprofile.mobile"/>
+        </div>
+
+        <div class="col-md-3 col-xs-4">
+            <label for="dateofbirth" class="control-label">dateofbirth</label>
+
+            <p id="dateofbirth" class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup="{{model.format}}"
+                       ng-model="model.userprofile.dateofbirth" is-open="model.popup1.opened"
+                       datepicker-options="model.dateOptions" ng-required="true" close-text="Close"
+                       alt-input-formats="model.altInputFormats"/>
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="model.open1()"><i
+                        class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+        </div>
+
+    </div>
+
+    <div clas="col-md-12 col-xs-12">
+        <button class="btn btn-danger" id="clearUserProfile" value="Clear">Clear</button>
+        <button class="btn btn-success" type="submit" id="submitUserProfile" ng-disabled="userProfileForm.$invalid">
+            Save
+        </button>
+        <!--<input type="submit"  value="{{model.userprofile}}" class="btn btn-primary btn-sm" ng-disabled="myForm.$invalid">-->
+    </div>
+
+</form>
