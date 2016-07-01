@@ -4,6 +4,7 @@ package com.webstart.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -47,8 +48,8 @@ public class Featureofinterest {
     @JoinColumn(name = "featureofinteresttypeid", insertable = false, updatable = false)
     private Featureofinteresttype featureofinteresttype;
 
-    @Column(name = "geom", columnDefinition = "Geometry")
-    private Geometry geom;
+    @Column(name = "geom", columnDefinition = "Point")
+    private Point geom;
 
 
     @Column(name = "userid")
@@ -80,7 +81,7 @@ public class Featureofinterest {
 
     }
 
-    public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, Long parentid, Geometry geom, int userid) {
+    public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, Long parentid, Point geom, int userid) {
         this.hibernatediscriminator = hibernatediscriminator;
         this.featureofinteresttypeid = featureofinteresttypeid;
         this.identifier = identifier;
@@ -173,11 +174,11 @@ public class Featureofinterest {
         this.featureofinteresttype = featureofinteresttype;
     }
 
-    public Geometry getGeom() {
+    public Point getGeom() {
         return geom;
     }
 
-    public void setGeom(Geometry geom) {
+    public void setGeom(Point geom) {
         this.geom = geom;
     }
 

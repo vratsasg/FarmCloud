@@ -275,13 +275,11 @@
 
 }
 
-/*.alert_messa{
+.alert_messa {
     animation: fadeinal 7s;
     -moz-animation: fadeinal 7s;
     -webkit-animation: fadeinal 7s;
     -o-animation: fadeinal 7s;
-
-
     opacity: 0;
 }
 
@@ -334,7 +332,6 @@
           opacity:0;
       }
 }
-*/
 
 /*888888888888888888888888888888888888888888   LOGIN PAGE       88888888888888888888888888888888888888888888888888888*/
 

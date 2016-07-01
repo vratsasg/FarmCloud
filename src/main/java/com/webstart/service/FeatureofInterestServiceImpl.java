@@ -1,16 +1,22 @@
 package com.webstart.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.model.Crop;
 import com.webstart.model.Featureofinterest;
+import com.webstart.model.UserProfile;
 import com.webstart.repository.FeatureofinterestJpaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.geo.Point;
 
+import java.awt.*;
 import java.util.ArrayList;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -169,7 +175,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         JSONArray nlist=new JSONArray();
 
         long l=3L;
-
         objects=featureofinterestJpaRepository.findByUseridAndFeatureofinteresttypeid(id, l);
 
         for(int c=0;c<objects.size();c++){
@@ -183,6 +188,25 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         finobj.put("enddevices",nlist);
 
         return finobj;
+    }
+
+    public String findByFeatureofinterestid(int id) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        //Object to JSON in String
+        String jsonInString = null;
+        int key = 2;
+        Featureofinterest featureofinterest = featureofinterestJpaRepository.findOne(key);
+        try {
+            List<Double> coords = Arrays.asList(featureofinterest.getGeom().getX(), featureofinterest.getGeom().getY());
+            jsonInString = mapper.writeValueAsString(coords);
+            //jsonInString = mapper.writeValueAsString(featureofinterest.getGeom().toString());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(jsonInString);
+        return jsonInString;
     }
 
 

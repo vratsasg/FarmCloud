@@ -93,6 +93,18 @@ public class UsersServiceImpl implements UsersService{
         return jsonInString;
     }
 
+    public boolean saveUserProfiledata(UserProfile usprof) {
+        try {
+            userProfileJpaRepository.save(usprof);
+        } catch (Exception exc) {
+            exc.printStackTrace();
+            return false;
+        }
+
+        return true;
+
+    }
+
 
 
 }

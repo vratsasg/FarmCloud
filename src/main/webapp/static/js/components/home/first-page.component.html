@@ -25,13 +25,11 @@
 </div>
 
 <div class="row">
-
-    <div class="col-sm-3">
-        <openlayers width="100%" height="400px"></openlayers>
-
+    <div class="col-md-4 col-sm-4 col-xs-4">
+        <openlayers ol-center="model.center" width="100%" height="400px"></openlayers>
     </div>
-    <div class="col-sm-6">
 
+    <div class="col-md-5 col-sm-4 col-xs-4">
         <chart-graph ng-if="model.myDevice" enddev="model.myDevice"></chart-graph>
     </div>
 </div>

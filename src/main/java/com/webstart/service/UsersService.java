@@ -17,4 +17,6 @@ public interface UsersService {
     JSONObject userByJson(Integer userid);
     String getUserprofileuserByJson(Integer userid);
 
+    boolean saveUserProfiledata(UserProfile usprof);
+
 }
