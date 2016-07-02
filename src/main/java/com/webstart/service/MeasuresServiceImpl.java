@@ -29,7 +29,7 @@ public class MeasuresServiceImpl implements MeasureService {
 
     public JSONArray findDailyMeasure(String id) {
 
-        JSONObject Finalobj = new JSONObject();
+        JSONObject obj = new JSONObject();
 
         List<CurrentMeasure> observationList = new ArrayList<CurrentMeasure>();
 
@@ -59,19 +59,26 @@ public class MeasuresServiceImpl implements MeasureService {
 
         observationList = observationJpaRepository.findCurrentMeasure(id, t1, t2);
 
-        String temp = "Temperature";
-        String itemp = "Internal Temperature";
-
         Iterator itr = observationList.iterator();
+
+        String temp = "Temperature";
+        String ihum = "InternalHumidity";
+        String itemp = "Internal Temperature";
+        String soil = "Soil Moisture";
+
+        JSONArray finalDataList = new JSONArray();
+
         JSONArray temperatureList = new JSONArray();
         JSONArray intertemperatureList = new JSONArray();
+
+        JSONArray internHumidity = new JSONArray();
+        JSONArray internSoilMoisture = new JSONArray();
 
         while (itr.hasNext()) {
             Object[] objec = (Object[]) itr.next();
 
 
             JSONArray internvalues = new JSONArray();
-
 
             if (temp.equals(String.valueOf(objec[0]))) {
 
@@ -89,6 +96,8 @@ public class MeasuresServiceImpl implements MeasureService {
                 temperatureList.add(internvalues);
 
             }
+
+
             if (itemp.replaceAll("\\s+", "").equalsIgnoreCase(String.valueOf(objec[0]).replaceAll("\\s+", ""))) {
 
                 Timestamp timestamp = (Timestamp) objec[1];
@@ -106,10 +115,47 @@ public class MeasuresServiceImpl implements MeasureService {
 
             }
 
+            if (soil.replaceAll("\\s+", "").equalsIgnoreCase(String.valueOf(objec[0]).replaceAll("\\s+", ""))) {
+
+                Timestamp timestamp = (Timestamp) objec[1];
+                String value = String.valueOf(objec[2]);
+
+                long stampTime = timestamp.getTime() / 1000L;
+
+                String strTd = String.valueOf(stampTime);
+
+
+                internvalues.add(strTd);
+                internvalues.add(value);
+
+                internSoilMoisture.add(internvalues);
+
+            }
+
+            if (ihum.replaceAll("\\s+", "").equalsIgnoreCase(String.valueOf(objec[0]).replaceAll("\\s+", ""))) {
+
+                Timestamp timestamp = (Timestamp) objec[1];
+                String value = String.valueOf(objec[2]);
+
+                long stampTime = timestamp.getTime() / 1000L;
+
+                String strTd = String.valueOf(stampTime);
+
+
+                internvalues.add(strTd);
+                internvalues.add(value);
+
+                internHumidity.add(internvalues);
+
+            }
+
         }
 
         JSONObject tempobject = new JSONObject();
         JSONObject internaltempobject = new JSONObject();
+
+        JSONObject Temperatures = new JSONObject();
+
 
         tempobject.put("key", "Temperature");
         tempobject.put("values", temperatureList);
@@ -118,12 +164,43 @@ public class MeasuresServiceImpl implements MeasureService {
         internaltempobject.put("values", intertemperatureList);
         internaltempobject.put("key", "Internal Temperature");
 
-
         JSONArray finalTempList = new JSONArray();
 
         finalTempList.add(tempobject);
         finalTempList.add(internaltempobject);
 
-        return finalTempList;
+        Temperatures.put("Temperatures", finalTempList);
+
+
+        JSONObject Humidities = new JSONObject();
+        JSONArray finalHumList = new JSONArray();
+        JSONObject soilobject = new JSONObject();
+        JSONObject internalhum = new JSONObject();
+
+        soilobject.put("key", "Soil Moisture");
+        soilobject.put("values", internSoilMoisture);
+
+        internalhum.put("key", "Internal Humidity");
+        internalhum.put("values", internHumidity);
+
+
+        finalHumList.add(soilobject);
+        finalHumList.add(internalhum);
+
+
+        Humidities.put("Humidities", finalHumList);
+
+        finalDataList.add(Temperatures);
+        finalDataList.add(Humidities);
+
+
+        System.out.println("eeee");
+
+        String finalsended = finalDataList.toJSONString();
+
+        System.out.println(finalDataList);
+
+        return finalDataList;
+
     }
 }

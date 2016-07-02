@@ -17,10 +17,10 @@
                </select>    <-->
 
 
-            {{model.myDevice}}
-
         </div>
     </div>
+
+    <div class="col-sm-3"><strong>End Device :</strong> <span ng-bind="model.myDevice">   </span></div>
 
 </div>
 
@@ -29,9 +29,9 @@
         <openlayers ol-center="model.center" width="100%" height="400px"></openlayers>
     </div>
 
-    <div class="col-md-5 col-sm-4 col-xs-4">
-        <chart-graph ng-if="model.myDevice" enddev="model.myDevice"></chart-graph>
-    </div>
+
+    <chart-graph ng-if="model.myDevice" enddev="model.myDevice"></chart-graph>
+
 </div>
 
 
