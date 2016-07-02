@@ -10,7 +10,36 @@
             var model = this;
             model.devices = {enddevices: [{identifier: ""}]};
 
+            //openlayers controls            
+            // model.mapcontrols = [
+            //             { name: 'zoom', active: true },
+            //             { name: 'rotate', active: true },
+            //             { name: 'attribution', active: true }
+            //         ];
 
+            model.defaults = {
+                interactions: {
+                    mouseWheelZoom: true,
+                    KeyboardZoom: true,
+                    KeyboardPan: true
+
+                },
+                controls: {
+                    zoom: true,
+                    rotate: false,
+                    attribution: false,
+                    ZoomSlider: true
+                }
+                // ,view: {
+                //     projection: '4326'
+                //     //resolutions: apphelper.getResolutions()
+                // }
+                // ,events: {
+                //     map: ['pointermove']
+                // }
+            };
+                    
+                    
             model.$onInit = function () {
                 var defer = $q.defer();
                 firstPageDevices.getDevices().then(
@@ -29,10 +58,12 @@
                         //TODO set model.center now bitch
                         console.log(d);
                         model.center = {
-                            lon: d[1],
-                            lat: d[0],
-                            zoom: 10
+                            lon: d[0],
+                            lat: d[1],
+                            zoom: 12
                         }
+
+
                     },
                     function (errResponse) {
                         console.error('Error while fetching devices for firstpage');

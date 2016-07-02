@@ -30,17 +30,16 @@ public class MeasuresServiceImpl implements MeasureService {
     public JSONArray findDailyMeasure(String id) {
 
         JSONObject obj = new JSONObject();
-
         List<CurrentMeasure> observationList = new ArrayList<CurrentMeasure>();
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = null;
         try {
             date = dateFormat.parse("2015-05-21 00:00:00");
-
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         long time = date.getTime();
         Timestamp t1 = new Timestamp(time);
 

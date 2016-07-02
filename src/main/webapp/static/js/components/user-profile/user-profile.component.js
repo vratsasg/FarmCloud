@@ -50,7 +50,6 @@
                         };
 
                         model.submit = function () {
-                            console.log(model.userprofile);
                             UserProfileService.saveUserProfile(model.userprofile).then(
                                 function (response) {
                                     if (response === true || response == "true") {
@@ -67,6 +66,22 @@
                                     console.error('Error while fetching Currencies');
                                 }
                             );
+                        };
+
+                        model.reset = function () {
+                            model.userprofile = {
+                                userId: null,
+                                firstname: "",
+                                lastname: "",
+                                fathersname: "",
+                                address: "",
+                                addressnum: "",
+                                zipcode: "",
+                                telephone: "",
+                                mobile: "",
+                                dateofbirth: ""
+                            };
+                            model.userProfileForm.$setPristine(); //reset Form    
                         };
 
                     },

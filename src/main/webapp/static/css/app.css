@@ -521,3 +521,28 @@ input:valid,textarea:valid{
 }
 
 /*-------------------------------------------------------------------*/
+
+/*///////////////////////   ng-errors   ////////////////////////////*/
+.fathersname.ng-dirty.ng-invalid-minlength {
+    background-color: yellow;
+}
+
+.fathersname.ng-dirty.ng-invalid-maxlength {
+    background-color: yellow;
+}
+
+model.userprofile.firstname.ng-dirty.ng-invalid-minlength {
+    background-color: yellow;
+}
+
+model.userprofile.firstname.ng-dirty.ng-invalid-maxlength {
+    background-color: yellow;
+}
+
+.lastname.ng-dirty.ng-invalid-minlength {
+    background-color: yellow;
+}
+
+.lastname.ng-dirty.ng-invalid-maxlength {
+    background-color: yellow;
+}

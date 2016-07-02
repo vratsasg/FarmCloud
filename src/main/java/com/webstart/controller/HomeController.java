@@ -108,14 +108,21 @@ public class HomeController {
     }
 
 
-
-
     @Autowired
     MeasureService measurement;
 
     @RequestMapping(value = "/charthome/{id}", method = RequestMethod.GET)
     public ResponseEntity<String> getChartByDevice(@PathVariable("id") String id, HttpServletRequest request) {
         String temp = "40E7CC39";
+        JSONArray obj = new JSONArray();
+
+        obj = measurement.findDailyMeasure(id);
+        System.out.println(obj.toJSONString());
+        return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/observableProp/{id}", method = RequestMethod.GET)
+    public ResponseEntity<String> getChartByObservableProperty(@PathVariable("id") String id, HttpServletRequest request) {
         JSONArray obj = new JSONArray();
 
         obj = measurement.findDailyMeasure(id);

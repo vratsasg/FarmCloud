@@ -24,9 +24,6 @@
 
 
                 model.showModal = function () {
-
-                    console.log("show modal");
-
                     model.modalInstance = $uibModal.open({
                         animation: model.animationsEnabled,
                         template: '<logout-modal></logout-modal>',

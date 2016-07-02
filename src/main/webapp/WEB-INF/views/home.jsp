@@ -64,6 +64,8 @@
     <script src="<c:url value='/static/js/components/home/chart-graph/chart-graph.service.js' />"></script>
     <script src="<c:url value='/static/js/components/user-profile/user-profile.component.js' />"></script>
     <script src="<c:url value='/static/js/components/user-profile/user-profile.service.js' />"></script>
+    <script src="<c:url value='/static/js/components/observable-property/observable-property.component.js'/>"></script>
+    <script src="<c:url value='/static/js/components/observable-property/observable-property.service.js'/>"></script>
 
 </head>
 
