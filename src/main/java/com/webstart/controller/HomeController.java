@@ -14,12 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Controller
@@ -29,7 +30,10 @@ public class HomeController {
     FeatureofInterestService featureofInterestService;
     @Autowired
     UsersService usersService;
-
+    @Autowired
+    ObservationProperyService observationProperyService;
+    @Autowired
+    MeasureService measurement;
 
     @RequestMapping(value = "/ffffff", method = RequestMethod.POST)
     public ResponseEntity<Void> createcrop(@RequestBody Crop crop) {
@@ -54,8 +58,7 @@ public class HomeController {
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
-    @Autowired
-    ObservationProperyService observationProperyService;
+
 
     @RequestMapping(value = "/getobsproperties", method = RequestMethod.GET)
     public ResponseEntity<String> getObsProperties() {
@@ -110,8 +113,7 @@ public class HomeController {
     }
 
 
-    @Autowired
-    MeasureService measurement;
+
 
     @RequestMapping(value = "/charthome/{id}", method = RequestMethod.GET)
     public ResponseEntity<String> getChartByDevice(@PathVariable("id") String id) {
@@ -123,18 +125,24 @@ public class HomeController {
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/getObspMeasures/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Void> getMeasuresByObsProperty(@PathVariable("id") Long id, HttpServletRequest request) {
+    @RequestMapping(value = "/getObspMeasures", params = {"id", "mydevice"}, method = RequestMethod.GET)
+    public ResponseEntity<String> getMeasuresByObsProperty(@RequestParam("id") Long id, @RequestParam("mydevice") String mydevice, HttpServletRequest request) {
         JSONArray obj = new JSONArray();
-
         Users users = (Users) request.getSession().getAttribute("current_user");
 
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        System.out.println("emphka sta obs");
+        String sentData = null;
+        try {
+            Date from = dateFormat.parse("2015-05-21 00:00:00");
+            Date to = dateFormat.parse("2015-05-21 23:59:59");
+            sentData = observationProperyService.getObservationsData(id, users.getUser_id(), mydevice, from, to);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
 
-        // obj = measurement.findDailyMeasure(id);
-        //  System.out.println(obj.toJSONString());
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<String>(sentData, HttpStatus.OK);
     }
 
 

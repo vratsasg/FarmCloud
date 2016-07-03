@@ -1,2 +1,16 @@
 <!--<span ng-bind="model.id"></span>-->
 <h1>Hello</h1>
+<div class="control-group col-sm-2">
+    <label class="control-label">View By End Device</label>
+
+    <div class="controls">
+        <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice"
+                ng-options="dev.identifier as dev.identifier for dev in model.devices.enddevices">
+        </select>
+        <!--  Second way without ng-options <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice">
+               <option ng-repeat="dev in model.devices.enddevices" value="{{dev.identifier}}">{{dev.identifier}}</option>
+           </select>    <-->
+    </div>
+
+</div>
+<table datatable="" dt-options="model.dtOptions" dt-columns="model.dtColumns" class="row-border hover"></table>
