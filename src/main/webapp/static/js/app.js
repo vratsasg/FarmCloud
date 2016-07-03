@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var module = angular.module("myApp", ['nvd3', 'openlayers-directive', 'ngComponentRouter', 'ui.bootstrap']);
+    var module = angular.module("myApp", ['nvd3', 'openlayers-directive', 'ngComponentRouter', 'ui.bootstrap', 'datatables']);
     module.value("$routerRootComponent", "cropApp");
 
 

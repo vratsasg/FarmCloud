@@ -7,7 +7,7 @@
 
     <div class="form-group row">
         <div class="col-md-3 col-xs-4">
-            <label for="inputfirstname" class="control-label">firstname</label>
+            <label for="inputfirstname" class="control-label">firstname *</label>
             <input class="form-control" type="text" id="inputfirstname" name="firstname"
                    ng-model="model.userprofile.firstname" placeholder="Enter your name" required ng-minlength="3"
                    ng-maxlength="20"/>
@@ -20,7 +20,7 @@
         </div>
 
         <div class="col-md-3 col-xs-4">
-            <label for="inputlastname" class="control-label">lastname</label>
+            <label for="inputlastname" class="control-label">lastname *</label>
             <input class="form-control" type="text" id="inputlastname" name="lastname"
                    ng-model="model.userprofile.lastname" placeholder="Enter your lastname" required ng-minlength="3"
                    ng-maxlength="20"/>
@@ -33,7 +33,7 @@
         </div>
 
         <div class="col-md-3 col-xs-4">
-            <label for="inputfathersname" class="control-label">fatherstname:</label>
+            <label for="inputfathersname" class="control-label">fatherstname*</label>
             <input class="form-control" type="text" id="inputfathersname" name="fathersname"
                    ng-model="model.userprofile.fathersname" placeholder="Enter your fathersname" required
                    ng-minlength="3" ng-maxlength="20"/>
@@ -79,7 +79,7 @@
         </div>
 
         <div class="col-md-3 col-xs-4">
-            <label for="dateofbirth" class="control-label">dateofbirth</label>
+            <label for="dateofbirth" class="control-label">dateofbirth *</label>
 
             <p id="dateofbirth" class="input-group">
                 <input type="text" class="form-control" uib-datepicker-popup="{{model.format}}"

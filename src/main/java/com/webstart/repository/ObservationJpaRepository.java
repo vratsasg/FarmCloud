@@ -23,13 +23,13 @@ public interface ObservationJpaRepository extends JpaRepository<Observation, Lon
             nativeQuery = true)
     List<CurrentMeasure> findCurrentMeasure(String ident, Timestamp t1, Timestamp t2);
 
-    @Query(value = "select obs.Identifier, obs.phenomenontimestart, num.value, u.unit " +
-            "from observation obs " +
-            "inner join numericvalue num on obs.observationid = num.observationid " +
+    @Query(value = "select obs.identifier, obs.phenomenontimestart, num.value, u.unit " +
+            "from Observation obs " +
+            "inner join NumericValue num on obs.observationid = num.observationid " +
             "inner join unit u on obs.unitid = u.unitid " +
-            "inner join series s on obs.seriesid = s.seriesid " +
-            "inner join observableproperty obsprop on s.observablepropertyid = obsprop.observablepropertyid " +
-            "where obsprop.observablepropertyid = ?1 AND obs.phenomenontimestart >= ?2 AND obs.phenomenontimestart <= ?3 " +
+            "inner join Series s on obs.seriesid = s.seriesid " +
+            "inner join ObservableProperty obsprop on s.observablepropertyid = obsprop.ObservablePropertyId " +
+            "where obsprop.ObservablePropertyId = ?1 AND obs.phenomenontimestart >= ?2 AND obs.phenomenontimestart <= ?3 " +
             "order by obs.phenomenontimestart",
             nativeQuery = true)
     List<CurrentMeasure> findMeasureByObsPropId(String obspropid, Timestamp t1, Timestamp t2);

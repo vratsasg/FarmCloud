@@ -7,19 +7,32 @@
         controllerAs: "model",
         controller: function (ObservablePropertyService, $log, $q) {
             var model = this;
-            model.data = {};
+
 
             model.$onInit = function () {
-                var defer = $q.defer();
 
-                ObservablePropertyService.getUserProfile().then(
-                    function (d) {
-                        console.log('Something in the way!');
-                    },
-                    function (errResponse) {
-                        console.error('Error while fetching user profile!!!');
-                    }
-                );
+                model.$routerOnActivate = function (next) {
+
+                    console.log(next);
+                    model.id = next.params.id;
+
+
+                    var defer = $q.defer();
+
+                    ObservablePropertyService.getMeasuresByProperty(model.id).then(
+                        function (d) {
+                            console.log('Something in the way!');
+                        },
+                        function (errResponse) {
+                            console.error('Error while fetching MeasuresByProperty!!!');
+                        }
+                    );
+
+
+                };
+
+
+
 
 
             }

@@ -64,6 +64,8 @@ public class HomeController {
 
         obj = observationProperyService.getAllObsPropeties();
 
+        System.out.println(obj.toJSONString());
+
 
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.CREATED);
     }
@@ -112,7 +114,7 @@ public class HomeController {
     MeasureService measurement;
 
     @RequestMapping(value = "/charthome/{id}", method = RequestMethod.GET)
-    public ResponseEntity<String> getChartByDevice(@PathVariable("id") String id, HttpServletRequest request) {
+    public ResponseEntity<String> getChartByDevice(@PathVariable("id") String id) {
         String temp = "40E7CC39";
         JSONArray obj = new JSONArray();
 
@@ -121,13 +123,19 @@ public class HomeController {
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/observableProp/{id}", method = RequestMethod.GET)
-    public ResponseEntity<String> getChartByObservableProperty(@PathVariable("id") String id, HttpServletRequest request) {
+    @RequestMapping(value = "/getObspMeasures/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Void> getMeasuresByObsProperty(@PathVariable("id") Long id, HttpServletRequest request) {
         JSONArray obj = new JSONArray();
 
-        obj = measurement.findDailyMeasure(id);
-        System.out.println(obj.toJSONString());
-        return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
+        Users users = (Users) request.getSession().getAttribute("current_user");
+
+
+        System.out.println("emphka sta obs");
+
+        // obj = measurement.findDailyMeasure(id);
+        //  System.out.println(obj.toJSONString());
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
+
 
 }

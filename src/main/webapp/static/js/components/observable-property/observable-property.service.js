@@ -4,13 +4,13 @@
 
     module.factory('ObservablePropertyService', ['$http', '$q', '$log', function ($http, $q, $log) {
             return {
-                getUserProfile: function () {
-                    return $http.get('userprofile').then(
+                getMeasuresByProperty: function (id) {
+                    return $http.get('getObspMeasures/' + id).then(
                         function (response) {
                             return response.data;
                         },
                         function (errResponse) {
-                            console.error('Error while fetchingService user profile!!!');
+                            console.error('Error while fetchingService ObsProp Measures!!!');
                             return $q.reject(errResponse);
                         }
                     );
