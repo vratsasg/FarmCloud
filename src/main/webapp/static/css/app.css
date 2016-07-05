@@ -531,11 +531,11 @@ input:valid,textarea:valid{
     background-color: yellow;
 }
 
-model.userprofile.firstname.ng-dirty.ng-invalid-minlength {
+.model.userprofile.firstname.ng-dirty.ng-invalid-minlength {
     background-color: yellow;
 }
 
-model.userprofile.firstname.ng-dirty.ng-invalid-maxlength {
+.model.userprofile.firstname.ng-dirty.ng-invalid-maxlength {
     background-color: yellow;
 }
 
@@ -545,4 +545,33 @@ model.userprofile.firstname.ng-dirty.ng-invalid-maxlength {
 
 .lastname.ng-dirty.ng-invalid-maxlength {
     background-color: yellow;
+}
+
+#weather,
+#watering,
+#controlPanel {
+
+    margin-right: 5px;
+}
+
+.table.table-condensed.table-bordered.table-striped {
+    /*border-collapse:separate;*/
+
+    border-color: white;
+    border-width: 2px;
+    border-style: solid;
+
+}
+
+.table.table-condensed.table-bordered.table-striped th {
+
+    -webkit-border-top-left-radius: 25px;
+    -moz-border-top-left-radius: 25px;
+    -webkit-border-top-right-radius: 25px;
+    -moz-border-top-right-radius: 25px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+
+    background-color: #9CCC65 !important;
+
 }

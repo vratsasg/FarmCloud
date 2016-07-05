@@ -7,7 +7,8 @@
         $routeConfig: [
             {path: "/myprofile", component: "myProfile", name: "Profile"},
             {path: "/userprofile", component: "userProfile", name: "UserProfile"},
-            {path: "/observableProperty/:id", component: "observableProperty", name: "ObservableProperty"},
+            {path: "/observableProperty/:id/:description", component: "observableProperty", name: "ObservableProperty"},
+            {path: "/getweather", component: "weatherApi", name: "WeatherApi"},
             {path: "/**", component: "firstPage", name: "Firstpage"}
         ],
         controller: function () {

@@ -13,7 +13,7 @@
             var model = this;
 
             model.$onChanges = function (changesObj) {
-                var newValue = changesObj.enddev.currentValue
+                var newValue = changesObj.enddev.currentValue;
 
                 var defer = $q.defer();
                 chartService.getDeviceChart(newValue).then(

@@ -21,17 +21,19 @@
 
 
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/app.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/flaticon.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/_flaticon.scss">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <script src="https://npmcdn.com/@angular/router@0.2.0/angular1/angular_1_router.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.5.5/angular-sanitize.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.4/angular-datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-table/0.8.3/ng-table.min.js"></script>
 
-    <link rel="stylesheet"
-          href=" https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.4/css/angular-datatables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.min.css">
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
@@ -74,6 +76,10 @@
     <script src="<c:url value='/static/js/components/user-profile/user-profile.service.js' />"></script>
     <script src="<c:url value='/static/js/components/observable-property/observable-property.component.js'/>"></script>
     <script src="<c:url value='/static/js/components/observable-property/observable-property.service.js'/>"></script>
+    <script src="<c:url value='/static/js/components/observable-property/table-data/table-data.component.js'/>"></script>
+    <script src="<c:url value='/static/js/components/observable-property/table-data/table-data.service.js'/>"></script>
+    <script src="<c:url value='/static/js/components/weather-api/weather-api.component.js'/>"></script>
+    <script src="<c:url value='/static/js/components/weather-api/weather-api.service.js'/>"></script>
 
 </head>
 

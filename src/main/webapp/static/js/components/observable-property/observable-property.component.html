@@ -1,16 +1,30 @@
-<!--<span ng-bind="model.id"></span>-->
-<h1>Hello</h1>
-<div class="control-group col-sm-2">
-    <label class="control-label">View By End Device</label>
+<h4><span
+        ng-class="{'flaticon-temperature': model.descr == 'Temperature' || model.descr == 'Internal Temperature ' ,'glyphicon glyphicon-tint':  model.descr == 'Internal Humidity' || model.descr == 'Soil Moisture'}"
+        aria-hidden="true"></span>
+    {{model.descr}}</h4>
+<hr id="headline">
+<div class="row">
+    <div class="control-group col-sm-2">
+        <label class="control-label">View By End Device</label>
 
-    <div class="controls">
-        <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice"
-                ng-options="dev.identifier as dev.identifier for dev in model.devices.enddevices">
-        </select>
-        <!--  Second way without ng-options <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice">
-               <option ng-repeat="dev in model.devices.enddevices" value="{{dev.identifier}}">{{dev.identifier}}</option>
-           </select>    <-->
+        <div class="controls">
+            <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice"
+                    ng-options="dev.identifier as dev.identifier for dev in model.devices.enddevices">
+            </select>
+            <!--  Second way without ng-options <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice">
+                   <option ng-repeat="dev in model.devices.enddevices" value="{{dev.identifier}}">{{dev.identifier}}</option>
+               </select>    <-->
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <table-data ng-if="model.myDevice" enddevice="model.myDevice"></table-data>
     </div>
 
+    <div class="col-sm-6">
+        <h1>CHART GRAPHS</h1>
+    </div>
 </div>
-<table datatable="" dt-options="model.dtOptions" dt-columns="model.dtColumns" class="row-border hover"></table>

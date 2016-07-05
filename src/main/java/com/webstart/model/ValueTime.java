@@ -8,10 +8,10 @@ import java.sql.Timestamp;
  */
 public class ValueTime {
 
-    private Timestamp phenomenonTime;
+    private Long phenomenonTime;
     private BigDecimal value;
 
-    public ValueTime(Timestamp phenomenonTime, BigDecimal value) {
+    public ValueTime(Long phenomenonTime, BigDecimal value) {
         this.phenomenonTime = phenomenonTime;
         this.value = value;
     }
@@ -19,11 +19,11 @@ public class ValueTime {
     public ValueTime() {
     }
 
-    public Timestamp getPhenomenonTime() {
+    public Long getPhenomenonTime() {
         return phenomenonTime;
     }
 
-    public void setPhenomenonTime(Timestamp phenomenonTime) {
+    public void setPhenomenonTime(Long phenomenonTime) {
         this.phenomenonTime = phenomenonTime;
     }
 

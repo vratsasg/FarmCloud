@@ -1,18 +1,18 @@
 (function () {
+
     'use strict';
     var module = angular.module('myApp');
 
-    //{params:{"param1": val1, "param2": val2}})
 
-    module.factory('ObservablePropertyService', ['$http', '$q', '$log', function ($http, $q, $log) {
+    module.factory('WeatherApiService', ['$http', '$q', '$log', function ($http, $q, $log) {
             return {
-                getDevices: function () {
-                    return $http.get('firstPDev').then(
+                getCurrentWeather: function (longt, latid, apiId) {
+                    return $http.get('http://api.openweathermap.org/data/2.5/weather?lat=' + latid + '&lon=' + longt + '&appid=' + apiId).then(
                         function (response) {
                             return response.data;
                         },
                         function (errResponse) {
-                            console.error('Error while firstpageService devices');
+                            console.error('Error while current weather service');
                             return $q.reject(errResponse);
                         }
                     );

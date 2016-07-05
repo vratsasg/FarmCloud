@@ -15,7 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.security.Timestamp;
+
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -76,7 +77,10 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             while (itr.hasNext()) {
                 Object[] objec = (Object[]) itr.next();
                 //Object[] objValueTime = new Object[2];
-                ls.add(new ValueTime((java.sql.Timestamp) objec[2], (BigDecimal) objec[3]));
+
+                Timestamp tTime = (java.sql.Timestamp) objec[2];
+
+                ls.add(new ValueTime(tTime.getTime() / 1000L, (BigDecimal) objec[3]));
             }
 
             obsMeasure.setMeasuredata(ls);

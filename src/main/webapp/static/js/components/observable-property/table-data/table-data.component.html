@@ -1,0 +1,12 @@
+<span>Units of measurement:<strong>{{model.measures.unit}}</strong></span>
+<table ng-table="model.tableParams" class="table table-condensed table-bordered table-striped">
+    <tr ng-repeat="row in $data">
+        <td title="'Date'" sortable="'phenomenonTime'">
+            {{row.phenomenonTime}}
+        </td>
+        <td title="'Value'" sortable="'value'">
+            {{row.value}}
+        </td>
+
+    </tr>
+</table>
