@@ -75,7 +75,7 @@
                                 },
                                 title: {
                                     enable: true,
-                                    text: 'Temperature'
+                                    text: 'Temperature in °C'
                                 }
                                 //subtitle: {
                                 //    enable: true,
@@ -110,21 +110,21 @@
                                     y: function (d) {
                                         return d.y;
                                     },
-                                    useInteractiveGuideline: true,
-                                    dispatch: {
-                                        stateChange: function (e) {
-                                            console.log("stateChange");
-                                        },
-                                        changeState: function (e) {
-                                            console.log("changeState");
-                                        },
-                                        tooltipShow: function (e) {
-                                            console.log("tooltipShow");
-                                        },
-                                        tooltipHide: function (e) {
-                                            console.log("tooltipHide");
-                                        }
-                                    },
+                                    //useInteractiveGuideline: true,
+                                    //dispatch: {
+                                    //    stateChange: function (e) {
+                                    //        console.log("stateChange");
+                                    //    },
+                                    //    changeState: function (e) {
+                                    //        console.log("changeState");
+                                    //    },
+                                    //    tooltipShow: function (e) {
+                                    //        console.log("tooltipShow");
+                                    //    },
+                                    //    tooltipHide: function (e) {
+                                    //        console.log("tooltipHide");
+                                    //    }
+                                    //},
                                     xAxis: {
                                         axisLabel: 'Time (HH:MM)',
                                         tickFormat: function (d) {
@@ -138,13 +138,28 @@
                                         },
                                         axisLabelDistance: -10
                                     },
+                                    useInteractiveGuideline: true,
+                                    interactive: true,
+                                    tooltips: true,
+                                    contentGenerator: function (d) {
+                                        var header = d.value;
+                                        var headerhtml = "<thead><tr><td colspan='3'><strong class='x-value'>" + header + "</strong></td></tr></thead>";
+
+                                        var bodyhtml = "<tbody>";
+                                        var series = d.series;
+                                        series.forEach(function (d) {
+                                            bodyhtml = bodyhtml + "<tr><td class='legend-color-guide'><div style='background-color: " + d.color + ";'></div></td><td class='key'>" + d.key + "</td><td class='value'>" + d.value + "</td></tr>";
+                                        });
+                                        bodyhtml = bodyhtml + "</tbody>";
+                                        return "<table>" + headerhtml + '' + bodyhtml + "</table>";
+                                    },
                                     callback: function (chart) {
                                         console.log("!!! lineChart callback !!!");
                                     }
                                 },
                                 title: {
                                     enable: true,
-                                    text: 'Humidity'
+                                    text: 'Humidity in RH%'
                                 }
                                 //subtitle: {
                                 //    enable: true,

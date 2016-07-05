@@ -564,14 +564,17 @@ input:valid,textarea:valid{
 }
 
 .table.table-condensed.table-bordered.table-striped th {
-
-    -webkit-border-top-left-radius: 25px;
-    -moz-border-top-left-radius: 25px;
-    -webkit-border-top-right-radius: 25px;
-    -moz-border-top-right-radius: 25px;
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
-
+    /*-webkit-border-top-left-radius: 25px;*/
+    /*-moz-border-top-left-radius: 25px;*/
+    /*-webkit-border-top-right-radius: 25px;*/
+    /*-moz-border-top-right-radius: 25px;*/
+    /*border-top-left-radius: 25px;*/
+    /*border-top-right-radius: 25px;*/
     background-color: #9CCC65 !important;
+    color: whitesmoke !important;
+    line-height: 1.2;
+}
 
+.table-condensed > tbody > tr :hover {
+    background-color: #9CCC65 !important;
 }

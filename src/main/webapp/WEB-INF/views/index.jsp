@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
+
 <head>
     <title>Aggric Cloud </title>
 
@@ -9,35 +10,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/app.css">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
             integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
             crossorigin="anonymous"></script>
-
-
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/app.css">
-
-
+    <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>--%>
+    <script src="<c:url value='/static/js/js-libraries/bootbox.min.js'/>"></script>
 </head>
 
 <body>
-
 <jsp:include page="Shared/navbar.jsp"/>
-
 <div class="fullcont">
-
-
     <div class="container">
-
         <div class="row">
-
             <div id="leftstart" class="col-sm-8">
-
                 <p class="headerp">...a web application for watering crops</p>
-
 
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                     <!-- Indicators -->
@@ -74,24 +65,29 @@
 
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="animated1"><h3>Monitoring</h3>
+                        <div class="animated1">
+                            <h3>Monitoring</h3>
 
                             <p>Anytime Anywhere Monitoring enviromental parameters (luminosity, moisture, temperature,
-                                humidity) in real time.</p></div>
+                                humidity) in real time.</p>
+                        </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="animated2"><h3>Evaluating Data</h3>
+                        <div class="animated2">
+                            <h3>Evaluating Data</h3>
 
-                            <p>Graphs and pies for viewing the data p.e per month, per day, per hour,between dates all
-                                in one place</p></div>
+                            <p>Graphs and pies for viewing the data p.e per month, per day, per hour,between
+                                dates all in one place</p>
+                        </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="animated3"><h3>Watering</h3>
+                        <div class="animated3">
+                            <h3>Watering</h3>
 
-                            <p> A mechanism for automatic watering using a water pump after of monitoring and evaluation
-                                of data.</p></div>
+                            <p> A mechanism for automatic watering using a water pump after of monitoring and
+                                evaluation of data.</p>
+                        </div>
                     </div>
-
                     <div class="clearfix visible-lg"></div>
                 </div>
 
@@ -112,7 +108,6 @@
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="login-username" placeholder="Username"
                                    name="username_n" required>
-
                         </div>
                     </div>
 
@@ -124,13 +119,16 @@
                         </div>
                     </div>
 
-                    <a id="register">Register</a>
-                    <a id="forgotpassnotif">Forgot your password?</a>
+                    <%--<a id="register" style="cursor: pointer">Register</a>--%>
+                    <%--<a id="forgotpass" style="cursor: pointer">Forgot your password?</a>--%>
+
                     <button id="logbutton" type="submit" class="btn btn-primary btn-medium" name="logform" value="LOGIN"
                             form="login_form">Log in
                     </button>
-
                 </form>
+
+                <button id="register" class="btn btn-link">Register</button>
+                <button id="forgotpassbtn" class="btn btn-link">Forgot your password?</button>
             </div>
         </div>
     </div>
@@ -140,4 +138,5 @@
 
 </body>
 
+<script src="<c:url value='/static/js/user-change-password.js'/>"></script>
 </html>

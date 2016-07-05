@@ -10,7 +10,6 @@
             getObsproperties: function () {
                 return $http.get('getobsproperties').then(
                     function (response) {
-                        console.log('Test 1');
                         return response.data;
                     },
                     function (errResponse) {

@@ -22,7 +22,9 @@
 
                 model.tableParams = new ngTableParams({
                     page: 1,
-                    count: 5
+                    count: 5,
+                    paginationMaxBlocks: 10,
+                    paginationMinBlocks: 2
                 }, {
                     getData: function (params) {
 
@@ -33,9 +35,8 @@
 
 
                                 for (var i = 0; i < theMeasures.measuredata.length; i++) {
-
-                                    theMeasures.measuredata[i].phenomenonTime = (new Date(moment(parseInt(theMeasures.measuredata[i].phenomenonTime) * 1000))).toString();
-
+                                    //theMeasures.measuredata[i].phenomenonTime = (new Date(moment(parseInt(theMeasures.measuredata[i].phenomenonTime) * 1000))).toString();
+                                    theMeasures.measuredata[i].phenomenonTime = moment(parseInt(theMeasures.measuredata[i].phenomenonTime) * 1000).format('DD/MM/YYYY HH:mm:ss');
                                 }
 
                                 theMeasures.measuredata = theMeasures.measuredata.slice((params.page() - 1) * params.count(), params.page() * params.count());
@@ -43,7 +44,7 @@
                                 defer.resolve($filter('orderBy')(theMeasures.measuredata, params.orderBy()));
                                 return $filter('orderBy')(theMeasures.measuredata, params.orderBy());
 
-                                console.log('Something in the way!');
+
                             },
                             function (errResponse) {
                                 console.error('Error while fetching MeasuresByProperty!!!');

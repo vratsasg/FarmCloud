@@ -53,7 +53,7 @@
                     }
                 );
 
-                firstPageDevices.getStationCoords(2).then(
+                firstPageDevices.getStationCoords(2).then( //TODO get coordinator id
                     function (d) {
                         //TODO set model.center now bitch
                         console.log(d);
@@ -62,8 +62,6 @@
                             lat: d[1],
                             zoom: 12
                         }
-
-
                     },
                     function (errResponse) {
                         console.error('Error while fetching devices for firstpage');

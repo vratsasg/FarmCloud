@@ -16,6 +16,17 @@
                             return $q.reject(errResponse);
                         }
                     );
+                },
+                getStationCoords: function (id) {
+                    return $http.get('getStationCoords/' + id).then(
+                        function (response) {
+                            return response.data;
+                        },
+                        function (errResponse) {
+                            console.error('Error while first page Service devices');
+                            return $q.reject(errResponse);
+                        }
+                    );
                 }
             }
         }]
