@@ -59,6 +59,11 @@
                                     xAxis: {
                                         axisLabel: 'Time (HH:MM)',
                                         tickFormat: function (d) {
+                                            //return d3.time.format('%H:%M')(new Date(moment(parseInt(d))));
+                                            var returnvalue = new Date(moment(parseInt(d)));
+                                            if (isNaN(returnvalue)) {
+                                                return d3.time.format('%H:%M')(new Date(d));
+                                            }
                                             return d3.time.format('%H:%M')(new Date(moment(parseInt(d))));
                                         }
                                     },
@@ -128,6 +133,10 @@
                                     xAxis: {
                                         axisLabel: 'Time (HH:MM)',
                                         tickFormat: function (d) {
+                                            var returnvalue = new Date(moment(parseInt(d)));
+                                            if (isNaN(returnvalue)) {
+                                                return d3.time.format('%H:%M')(new Date(d));
+                                            }
                                             return d3.time.format('%H:%M')(new Date(moment(parseInt(d))));
                                         }
                                     },
