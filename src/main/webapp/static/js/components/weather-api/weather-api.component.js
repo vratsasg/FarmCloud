@@ -13,8 +13,6 @@
             //initialize api password
             var apiId = "2482652b83cd5ab077902e528b37ccd1";
 
-            model.longt = 23;
-            model.latid = 37;
 
             model.$onInit = function () {
                 var deferDev = $q.defer();
@@ -25,27 +23,35 @@
                         console.log(d);
                         model.longt = d[0];
                         model.latid = d[1];
+
+
+                        WeatherApiService.getCurrentWeather(model.longt, model.latid, apiId).then(
+                            function (ddat) {
+                                model.apirespond = ddat;
+                                model.apirespond.main.temp = (model.apirespond.main.temp - 273.15).toFixed(2);
+                                model.apirespond.dt = moment.unix(parseInt(model.apirespond.dt)).format("dddd DD/MM/YYYY HH:mm:ss");
+                                //(new Date(moment(parseInt(model.apirespond.dt) * 1000))).toString();
+                                model.apirespond.sys.sunrise = moment.unix(parseInt(model.apirespond.sys.sunrise)).format("dddd DD/MM/YYYY HH:mm:ss");
+                                model.apirespond.sys.sunset = moment.unix(parseInt(model.apirespond.sys.sunset)).format("dddd DD/MM/YYYY HH:mm:ss");
+
+                                deferDev.resolve(model.apirespond);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching current weather');
+                            }
+                        );
+
+
+
+
+
                     },
                     function (errResponse) {
                         console.error('Error while fetching devices for firstpage');
                     }
                 );
 
-                WeatherApiService.getCurrentWeather(model.longt, model.latid, apiId).then(
-                    function (d) {
-                        model.apirespond = d;
-                        model.apirespond.main.temp = (model.apirespond.main.temp - 273.15).toFixed(2);
-                        model.apirespond.dt = moment.unix(parseInt(model.apirespond.dt)).format("dddd DD/MM/YYYY HH:mm:ss");
-                        //(new Date(moment(parseInt(model.apirespond.dt) * 1000))).toString();
-                        model.apirespond.sys.sunrise = moment.unix(parseInt(model.apirespond.sys.sunrise)).format("dddd DD/MM/YYYY HH:mm:ss");
-                        model.apirespond.sys.sunset = moment.unix(parseInt(model.apirespond.sys.sunset)).format("dddd DD/MM/YYYY HH:mm:ss");
 
-                        deferDev.resolve(model.apirespond);
-                    },
-                    function (errResponse) {
-                        console.error('Error while fetching current weather');
-                    }
-                );
 
             }
 

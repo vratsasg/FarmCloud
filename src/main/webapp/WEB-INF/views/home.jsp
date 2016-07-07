@@ -80,6 +80,8 @@
     <script src="<c:url value='/static/js/components/observable-property/table-data/table-data.service.js'/>"></script>
     <script src="<c:url value='/static/js/components/weather-api/weather-api.component.js'/>"></script>
     <script src="<c:url value='/static/js/components/weather-api/weather-api.service.js'/>"></script>
+    <script src="<c:url value='/static/js/components/weather-api/weather-chart/weather-chart.component.js'/>"></script>
+    <script src="<c:url value='/static/js/components/weather-api/weather-chart/weather-chart.service.js'/>"></script>
 
 </head>
 

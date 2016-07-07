@@ -1,0 +1,30 @@
+<div class="btn-toolbar" role="toolbar">
+    <div ng-repeat="date in model.clickDates" class="btn-group" role="group">
+        <a ng-click="model.showData(model.unixDates[$index]);" class="btn btn-primary" role="button">{{date}}</a>
+    </div>
+</div>
+
+<nvd3 options="model.options" data="model.data"></nvd3>
+
+
+<table class="table table-condensed table-bordered table-striped">
+    <tbody>
+    <tr>
+
+        <td>Date</td>
+        <td>Temperature</td>
+        <td>Humidity</td>
+        <td>Weather</td>
+    </tr>
+
+    <tr ng-repeat="tabdata in model.tableData">
+        <td>{{tabdata.datime}}</td>
+        <td>{{tabdata.temp}}</td>
+        <td>{{tabdata.humidity}}</td>
+        <td><span>{{tabdata.weathermain}} <img class="img-responsive" alt="Notifications" width="70" height="60"
+                                               src="http://openweathermap.org/img/w/{{tabdata.wicon}}.png "></span></td>
+
+    </tr>
+    </tbody>
+</table>
+

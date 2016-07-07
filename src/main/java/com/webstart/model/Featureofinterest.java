@@ -3,8 +3,9 @@ package com.webstart.model;
 //import org.geolatte.geom.Geometry;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.vividsolutions.jts.geom.Geometry;
+
 import com.vividsolutions.jts.geom.Point;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class Featureofinterest {
     @JoinColumn(name = "featureofinteresttypeid", insertable = false, updatable = false)
     private Featureofinteresttype featureofinteresttype;
 
+    @Type(type = "jts_geometry")
     @Column(name = "geom", columnDefinition = "Point")
     private Point geom;
 
