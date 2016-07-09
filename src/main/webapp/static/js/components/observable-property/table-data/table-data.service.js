@@ -8,8 +8,8 @@
     module.factory('TableDataService', ['$http', '$q', '$log', function ($http, $q, $log) {
 
         return {
-            getMeasuresByProperty: function (id, mydevice) {
-                return $http.get('getObspMeasures?id=' + id + '&mydevice=' + mydevice).then(
+            getMeasuresByProperty: function (id, mydevice, datefrom, dateto) {
+                return $http.get('getObspMeasures?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto).then(
                     //"/search?fname="+fname"+"&lname="+lname
                     function (response) {
                         return response.data;

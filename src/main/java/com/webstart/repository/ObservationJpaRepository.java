@@ -31,7 +31,9 @@ public interface ObservationJpaRepository extends JpaRepository<Observation, Lon
             "inner join Featureofinterest feat on s.featureofinterestid = feat.featureofinterestid " +
             "inner join ObservableProperty obsprop on s.observablepropertyid = obsprop.ObservablePropertyId " +
             "where obsprop.ObservablePropertyId = ?1 " +
-            "AND feat.userid = ?2 AND feat.identifier = ?3 AND obs.phenomenontimestart >= ?4 AND obs.phenomenontimestart <= ?5 " +
+            "AND feat.userid = ?2 " +
+            "AND feat.identifier = ?3 " +
+            "AND obs.phenomenontimestart >= ?4 AND obs.phenomenontimestart <= ?5 " +
             "order by obs.phenomenontimestart",
             nativeQuery = true)
     List<Object[]> findMeasureByObsPropId(Long obspropid, int userId, String identifier, Timestamp t1, Timestamp t2);

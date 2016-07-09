@@ -68,6 +68,18 @@
                     }
                 );
 
+                //window.onmousemove = function (e) {
+                //    var x = e.clientX,
+                //        y = e.clientY;
+                //    var tooltipSpan = $('.nvtooltip');
+                //    if(tooltipSpan != 'undefined' && tooltipSpan != null && tooltipSpan != '') {
+                //        $('.nvtooltip')[0].style.top = (y + 10) + 'px';
+                //        $('.nvtooltip')[0].style.left = (x + 10) + 'px';
+                //        $('.nvtooltip')[1].style.top = (y + 10) + 'px';
+                //        $('.nvtooltip')[1].style.left = (x + 10) + 'px';
+                //    }
+                //};
+
 
             }
 

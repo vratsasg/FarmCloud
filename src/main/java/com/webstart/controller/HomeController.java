@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -117,7 +118,6 @@ public class HomeController {
 
     @RequestMapping(value = "/charthome/{id}", method = RequestMethod.GET)
     public ResponseEntity<String> getChartByDevice(@PathVariable("id") String id) {
-        String temp = "40E7CC39";
         JSONArray obj = new JSONArray();
 
         obj = measurement.findDailyMeasure(id);
@@ -125,19 +125,18 @@ public class HomeController {
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/getObspMeasures", params = {"id", "mydevice"}, method = RequestMethod.GET)
-    public ResponseEntity<String> getMeasuresByObsProperty(@RequestParam("id") Long id, @RequestParam("mydevice") String mydevice, HttpServletRequest request) {
+    @RequestMapping(value = "/getObspMeasures", params = {"id", "mydevice", "dtstart", "dtend"}, method = RequestMethod.GET)
+    public ResponseEntity<String> getMeasuresByObsProperty(@RequestParam("id") Long id, @RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         JSONArray obj = new JSONArray();
         Users users = (Users) request.getSession().getAttribute("current_user");
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
         String sentData = null;
         try {
-            Date from = dateFormat.parse("2015-05-21 00:00:00");
-            Date to = dateFormat.parse("2015-05-21 23:59:59");
+            Date from = dateFormat.parse(datetimestart);
+            Date to = dateFormat.parse(datetimeend);
             sentData = observationProperyService.getObservationsData(id, users.getUser_id(), mydevice, from, to);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

@@ -65,6 +65,10 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
 
             List<Object[]> listofObjs = observationJpaRepository.findMeasureByObsPropId(obspropId, userId, identifier, timeFrom, timeTo);
 
+            if (listofObjs.size() == 0) {
+                return null;
+            }
+
             ObservableMeasure obsMeasure = new ObservableMeasure();
             Object[] obj = listofObjs.get(0);
 

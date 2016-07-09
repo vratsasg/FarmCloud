@@ -34,41 +34,30 @@ public class IndexController {
 
     @RequestMapping(value="/",method= RequestMethod.GET)
     public String getIndexPage() {
-
-
         //  usersList= usersService.findAll();
-
         return "index";
     }
 
 
     @RequestMapping(value="/login",method=RequestMethod.POST)
     public String validate(@RequestParam("username_n") String username, @RequestParam("password_n") String password,Model model,HttpServletRequest request ){
-
-        System.out.println("user: " + username + "\n pass: " + password);
-
         Users users = usersService.findUser(username,password);
-
 
         if(users==null){
             model.addAttribute("alert_message", "Wrong Username/Password!");
             model.addAttribute("alert_class", "alert alert-danger");
-
             return "index";
         }else{
-
             request.getSession().setAttribute("current_user",users);
             users=(Users)request.getSession().getAttribute("current_user");
 
             model.addAttribute("current_user",users);
             return "home";
-
         }
     }
 
     @RequestMapping(value="/logout",method=RequestMethod.POST)
     public String signout(Model model,HttpServletRequest request){
-
         request.getSession().removeAttribute("current_user");
         model.addAttribute("alert_message", "You have successfully log out!");
         model.addAttribute("alert_class", "alert alert-success alert_messa");
@@ -81,14 +70,8 @@ public class IndexController {
         Users users = new Users();
         Users finalUser = new Users();
         JSONObject jsonObject = new JSONObject();
-
-
         users = (Users) request.getSession().getAttribute("current_user");
-
         jsonObject = usersService.userByJson(users.getUser_id());
-
-
-        System.out.println(jsonObject.toJSONString());
 
         return new ResponseEntity<String>(jsonObject.toJSONString(), HttpStatus.OK);
     }

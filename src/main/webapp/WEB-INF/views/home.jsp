@@ -23,6 +23,9 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/app.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/flaticon.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/_flaticon.scss">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/static/css/bootstrap-datetimepicker.min.css">
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
@@ -54,6 +57,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.0-beta.6/angular-moment.min.js"></script>
+    <script src="<c:url value='/static/js/js-libraries/datetimepicker/bootstrap-datetimepicker.min.js' />"></script>
 
 
     <script src="<c:url value='/static/js/app.js' />"></script>

@@ -8,8 +8,8 @@
         controller: function (ObservablePropertyService, $log, $q) {
             var model = this;
 
-            model.$routerOnActivate = function (next) {
 
+            model.$routerOnActivate = function (next) {
                 console.log(next);
                 model.id = next.params.id;
                 var StrDescr = next.params.description;
@@ -18,10 +18,21 @@
             };
 
             model.myDevice = "";
+            model.datefrom = "11/1/2013";
+            model.dateto = "12/1/2013";
+
+            $("#datetimepickerfrom").on("dp.change", function () {
+                model.datefrom = $("#datetimepickerfrom :input").val();
+                console.log("selected date is " + model.datefrom);
+            });
+            $("#datetimepickerto").on("dp.change", function () {
+                model.dateto = $("#datetimepickerto :input").val();
+                console.log("selected date is " + model.dateto);
+            });
 
             model.$onInit = function () {
-
                 var deferDev = $q.defer();
+
                 ObservablePropertyService.getDevices().then(
                     function (da) {
                         model.devices = da;

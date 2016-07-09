@@ -4,25 +4,22 @@
     var module = angular.module("myApp");
 
     module.component('weatherChart', {
-        templateUrl: 'static/js/components/weather-api//weather-chart/weather-chart.component.html',
+        templateUrl: 'static/js/components/weather-api/weather-chart/weather-chart.component.html',
         controllerAs: "model",
         bindings: {latit: '<', longti: '<'},
         controller: function (WeatherForecastService, $q) {
             var model = this;
 
             model.forecastData = {};
-
             model.clickDates = [];
             model.unixDates = [];
             model.tableData = [];
 
             var apiId = "2482652b83cd5ab077902e528b37ccd1";
 
-
             model.$onChanges = function (changesObj) {
                 var newlongt = changesObj.longti.currentValue;
                 var newlatid = changesObj.latit.currentValue;
-
 
                 var defer = $q.defer();
 
@@ -32,15 +29,12 @@
 
                         defer.resolve(model.forecastData);
 
-
                         for (var l = 0; l < model.forecastData.list.length; l++) {
                             if (l == 0 || ( l % 8 == 0 && l > 7)) {
                                 model.clickDates.push(moment.unix(parseInt(model.forecastData.list[l].dt)).format("dddd DD/MM/YYYY"));
                                 model.unixDates.push(parseInt(model.forecastData.list[l].dt));
                             }
-
                         }
-
 
                         var Ch = moment.unix(parseInt(model.unixDates[0])).format("DD/MM/YYYY");
                         for (var g = 0; g < model.forecastData.list.length; g++) {
@@ -56,9 +50,7 @@
                                         wicon: model.forecastData.list[g].weather[0].icon
                                     }
                                 );
-
                             }
-
                         }
 
 
@@ -74,7 +66,6 @@
                         //        });
                         //    }
                         //}
-
 
                         model.options =
                         {
@@ -139,10 +130,8 @@
                                         })
                                         html += "</ul></div>"
 
-
                                         return html;
                                     })
-
 
                                     console.log("!!! lineChart callback !!!");
                                 }
@@ -159,7 +148,6 @@
                                     'margin': '10px 13px 0px 7px'
                                 }
                             }
-
                         };
 
 
@@ -173,7 +161,6 @@
                                     y: parseFloat((model.forecastData.list[i].main.temp - 273.15).toFixed(2))
                                 });
                             }
-
 
                             //Line chart data should be sent as an array of series objects.
                             return [

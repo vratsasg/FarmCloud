@@ -75,7 +75,12 @@
 
         <div class="col-md-3 col-xs-4">
             <label for="mobile" class="control-label">mobile</label>
-            <input class="form-control" type="text" id="mobile" name="mobile" ng-model="model.userprofile.mobile"/>
+            <input class="form-control" type="text" id="mobile" name="mobile" ng-model="model.userprofile.mobile"
+                   required/>
+
+            <div class="has-error" ng-show="userProfileForm.$dirty">
+                <span ng-show="userProfileForm.mobile.$error.required">This is a required field</span>
+            </div>
         </div>
 
         <div class="col-md-3 col-xs-4">
@@ -84,7 +89,7 @@
             <p id="dateofbirth" class="input-group">
                 <input type="text" class="form-control" uib-datepicker-popup="{{model.format}}"
                        ng-model="model.userprofile.dateofbirth" is-open="model.popup1.opened"
-                       datepicker-options="model.dateOptions" ng-required="true" close-text="Close"
+                       datepicker-options="model.dateOptions" close-text="Close"
                        alt-input-formats="model.altInputFormats"/>
                 <span class="input-group-btn">
                 <button type="button" class="btn btn-default" ng-click="model.open1()"><i
