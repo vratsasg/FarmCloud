@@ -75,12 +75,25 @@
                                         axisLabelDistance: -10
                                     },
                                     callback: function (chart) {
+                                        chart.interactiveLayer.tooltip.gravity('');
+
+                                        chart.interactiveLayer.tooltip.contentGenerator(function (d) {
+                                            var html = "<div class='wtool col-sm-4'><p><b>" + d.value + "</b></p> <ul>";
+
+                                            d.series.forEach(function (elem) {
+                                                html += "<li><p><b>" + elem.key + ":" + elem.value + "</b></p></li>";
+                                            })
+                                            html += "</ul></div>"
+
+
+                                            return html;
+                                        })
                                         console.log("!!! lineChart callback !!!");
                                     }
                                 },
                                 title: {
                                     enable: true,
-                                    text: 'Temperature in °C'
+                                    text: 'Temperature in C'
                                 }
                                 //subtitle: {
                                 //    enable: true,
@@ -148,21 +161,34 @@
                                         axisLabelDistance: -10
                                     },
                                     useInteractiveGuideline: true,
-                                    interactive: true,
-                                    tooltips: true,
-                                    contentGenerator: function (d) {
-                                        var header = d.value;
-                                        var headerhtml = "<thead><tr><td colspan='3'><strong class='x-value'>" + header + "</strong></td></tr></thead>";
-
-                                        var bodyhtml = "<tbody>";
-                                        var series = d.series;
-                                        series.forEach(function (d) {
-                                            bodyhtml = bodyhtml + "<tr><td class='legend-color-guide'><div style='background-color: " + d.color + ";'></div></td><td class='key'>" + d.key + "</td><td class='value'>" + d.value + "</td></tr>";
-                                        });
-                                        bodyhtml = bodyhtml + "</tbody>";
-                                        return "<table>" + headerhtml + '' + bodyhtml + "</table>";
-                                    },
+                                    //interactive: true,
+                                    //tooltips: true,
+                                    //contentGenerator: function (d) {
+                                    //    var header = d.value;
+                                    //    var headerhtml = "<thead><tr><td colspan='3'><strong class='x-value'>" + header + "</strong></td></tr></thead>";
+                                    //
+                                    //    var bodyhtml = "<tbody>";
+                                    //    var series = d.series;
+                                    //    series.forEach(function (d) {
+                                    //        bodyhtml = bodyhtml + "<tr><td class='legend-color-guide'><div style='background-color: " + d.color + ";'></div></td><td class='key'>" + d.key + "</td><td class='value'>" + d.value + "</td></tr>";
+                                    //    });
+                                    //    bodyhtml = bodyhtml + "</tbody>";
+                                    //    return "<table>" + headerhtml + '' + bodyhtml + "</table>";
+                                    //},
                                     callback: function (chart) {
+                                        chart.interactiveLayer.tooltip.gravity('');
+
+                                        chart.interactiveLayer.tooltip.contentGenerator(function (d) {
+                                            var html = "<div class='wtool col-sm-4'><p><b>" + d.value + "</b></p> <ul>";
+
+                                            d.series.forEach(function (elem) {
+                                                html += "<li><p><b>" + elem.key + ":" + elem.value + "</b></p></li>";
+                                            })
+                                            html += "</ul></div>"
+
+
+                                            return html;
+                                        })
                                         console.log("!!! lineChart callback !!!");
                                     }
                                 },

@@ -21,7 +21,7 @@
     position: relative;
     margin-top: 0px;
     color: whitesmoke;
-    background: #71843f!important;
+    background: #71843f !important;
     border-style: none;
 }
 
@@ -52,11 +52,11 @@
     color: white;
 }
 
-.topbaritem{
+.topbaritem {
     font-size: 18px;
 }
 
-.navbar-nav>li>a {
+.navbar-nav > li > a {
     padding-top: 8px;
     padding-bottom: 8px;
 }
@@ -285,52 +285,63 @@
 
 @keyframes fadeinal {
     0% {
-        opacity:0;
+        opacity: 0;
     }
     10% {
-        opacity:1;
-    }90%{
-         opacity:1;
-     }100%{
-          opacity:0;
-      }
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
+
 @-moz-keyframes fadeinal {
     0% {
-        opacity:0;
+        opacity: 0;
     }
     10% {
-        opacity:1;
-    }90%{
-         opacity:1;
-     }100%{
-          opacity:0;
-      }
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
+
 @-webkit-keyframes fadeinal {
     0% {
-        opacity:0;
+        opacity: 0;
     }
     10% {
-        opacity:1;
-    }90%{
-         opacity:1;
-     }100%{
-          opacity:0;
-      }
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 
 }
+
 @-o-keyframes fadeinal {
     0% {
-        opacity:0;
+        opacity: 0;
     }
     10% {
-        opacity:1;
-    }90%{
-         opacity:1;
-     }100%{
-          opacity:0;
-      }
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 /*888888888888888888888888888888888888888888   LOGIN PAGE       88888888888888888888888888888888888888888888888888888*/
@@ -347,6 +358,7 @@
 
     color: white;
 }
+
 .nav.navbar-nav.navbar-right a:hover {
     border-radius: 113px 113px 113px 113px;
     -moz-border-radius: 113px 113px 113px 113px;
@@ -363,8 +375,7 @@
     color: black;
 }
 
-
-.nav.navbar-nav.navbar-right a:active{
+.nav.navbar-nav.navbar-right a:active {
     border-radius: 113px 113px 113px 113px;
     -moz-border-radius: 113px 113px 113px 113px;
     -webkit-border-radius: 113px 113px 113px 113px;
@@ -387,7 +398,8 @@
     -webkit-border-radius: 0px 23px 20px 0px;
     border: 2px solid #71843f;
     height: 100%;
-    background-color: #F2F2F2;
+
+    background-color: #F5F5F5;
     /*padding-top: 2px;*/
     /*padding-bottom: 2px;*/
 }
@@ -426,14 +438,13 @@ span.glyphicon-globe {
     /*border-radius: 0px 23px 20px 0px;*/
     /*-moz-border-radius: 0px 23px 20px 0px;*/
     /*-webkit-border-radius: 0px 23px 20px 0px;*/
-    background-color: #71843f!important;
+    background-color: #71843f !important;
     color: whitesmoke;
     border-radius: 0px;
 
 }
 
 /*-----------------------------------------------*/
-
 
 .killmargin {
     margin: 0 !important;
@@ -475,38 +486,38 @@ span.glyphicon-globe {
 
 /* --------------------------------------VALIDATION FORM INPUTS CSS --------------------------*/
 
-input:focus:invalid, textarea:focus:invalid,input[type=radio]:required,textarea:invalid{
+input:focus:invalid, textarea:focus:invalid, input[type=radio]:required, textarea:invalid {
 
     border-color: #FF0000;
     box-shadow: 0 0 5px #FF0000;
-    background: #fff url(../images/invalid.png) 98% center no-repeat ;
+    background: #fff url(../images/invalid.png) 98% center no-repeat;
     background-size: 22px 22px;
 
 }
 
-input:required, textarea:required{
+input:required, textarea:required {
     background: white;
 }
 
-input:focus:invalid + div > span{
+input:focus:invalid + div > span {
     display: block;
     color: #FF0000;
 }
 
-input:invalid + div > span{
+input:invalid + div > span {
     display: block;
     color: #FF0000;
 }
 
-
-input:required:valid, textarea:required:valid{
+input:required:valid, textarea:required:valid {
     border-color: #56c93f;
     box-shadow: 0 0 5px #56c93f;
-    background: #fff url(../images/valid.png) 98% center no-repeat ;
+    background: #fff url(../images/valid.png) 98% center no-repeat;
     background-size: 22px 22px;
     /*@include single-vbox-shadow(#56c93f, 0,0,5px);*/
 }
-input:valid,textarea:valid{
+
+input:valid, textarea:valid {
     background-image: none;
 }
 
@@ -570,11 +581,31 @@ input:valid,textarea:valid{
     /*-moz-border-top-right-radius: 25px;*/
     /*border-top-left-radius: 25px;*/
     /*border-top-right-radius: 25px;*/
-    background-color: #9CCC65 !important;
-    color: whitesmoke !important;
+    background-color: #C5E1A5 !important;
+    color: black !important;
     line-height: 1.2;
 }
 
 .table-condensed > tbody > tr :hover {
     background-color: #9CCC65 !important;
+}
+
+.wtool {
+    background-color: #C5E1A5;
+    border-radius: 24px;
+}
+
+#forecastButt .btn {
+
+    border-radius: 24px;
+    /*background-color: #9CCC65;*/
+    background-color: #C5E1A5;
+    color: #212121;
+
+}
+
+tr.weatherTable td {
+
+    background-color: #C5E1A5 !important;
+    color: black !important;
 }

@@ -1,28 +1,45 @@
-<div class="btn-toolbar" role="toolbar">
+<div id="forecastButt" class="btn-toolbar" role="toolbar">
     <div ng-repeat="date in model.clickDates" class="btn-group" role="group">
         <a ng-click="model.showData(model.unixDates[$index]);" class="btn btn-primary" role="button">{{date}}</a>
     </div>
 </div>
-
+<div class="col-sm-10">
 <nvd3 options="model.options" data="model.data"></nvd3>
-
-
-<table class="table table-condensed table-bordered table-striped">
+</div>
+<table id="weatherTable" class="table table-condensed table-bordered table-striped table-condensed ">
     <tbody>
-    <tr>
+    <tr class="weatherTable">
 
-        <td>Date</td>
-        <td>Temperature</td>
-        <td>Humidity</td>
-        <td>Weather</td>
+        <td><b>Date</b></td>
+        <td><b>Temperature</b></td>
+        <td><b>Humidity</b></td>
+        <td><b>Weather</b></td>
     </tr>
 
     <tr ng-repeat="tabdata in model.tableData">
         <td>{{tabdata.datime}}</td>
         <td>{{tabdata.temp}}</td>
         <td>{{tabdata.humidity}}</td>
-        <td><span>{{tabdata.weathermain}} <img class="img-responsive" alt="Notifications" width="70" height="60"
-                                               src="http://openweathermap.org/img/w/{{tabdata.wicon}}.png "></span></td>
+
+        <td>
+            <table>
+                <tbody>
+                <tr>
+                    <td>{{tabdata.weathermain}}</td>
+                    <td><img class="img-responsive" alt="Notifications" width="45" height="45"
+                             src="http://openweathermap.org/img/w/{{tabdata.wicon}}.png "></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </td>
+
+        <!--<div style="float:left;">{{tabdata.weathermain}}</div>-->
+        <!--<div style="float:left; margin-bottom:5px; "><img class="img-responsive" alt="Notifications" width="45" height="45"-->
+        <!--src="http://openweathermap.org/img/w/{{tabdata.wicon}}.png ">-->
+        </div>
+        </td>
+
 
     </tr>
     </tbody>

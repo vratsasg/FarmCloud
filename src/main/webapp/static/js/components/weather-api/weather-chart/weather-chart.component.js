@@ -110,7 +110,7 @@
                                     }
                                 },
                                 xAxis: {
-                                    axisLabel: 'Time (HH:MM)',
+                                    axisLabel: 'Time (MM/DD HH:MM)',
                                     tickFormat: function (d) {
 
                                         var returnvalue = new Date(moment(parseInt(d)));
@@ -128,10 +128,20 @@
                                     axisLabelDistance: -10
                                 },
                                 callback: function (chart) {
+                                    // chart.interactiveLayertooltip.enabled();
+                                    chart.interactiveLayer.tooltip.gravity('');
 
-                                    var tooltip = chart.interactiveLayer.tooltip;
-                                    tooltip.gravity('s');
-                                    //tooltip.fixedTop(1);
+                                    chart.interactiveLayer.tooltip.contentGenerator(function (d) {
+                                        var html = "<div class='wtool col-sm-2'><p><b>" + d.value + "</b></p> <ul>";
+
+                                        d.series.forEach(function (elem) {
+                                            html += "<li><p><b>" + elem.value + "</b></p></li>";
+                                        })
+                                        html += "</ul></div>"
+
+
+                                        return html;
+                                    })
 
 
                                     console.log("!!! lineChart callback !!!");
@@ -139,7 +149,15 @@
                             },
                             title: {
                                 enable: true,
-                                text: 'Temperature in &deg;C'
+                                text: 'Temperature in C'
+                            },
+                            subtitle: {
+                                enable: true,
+                                text: '5 day / 3 hour forecast',
+                                css: {
+                                    'text-align': 'center',
+                                    'margin': '10px 13px 0px 7px'
+                                }
                             }
 
                         };
@@ -168,11 +186,6 @@
                                 }
                             ];
                         }
-
-
-                        chart.interactiveLayer.tooltip.gravity('s');
-
-
                     },
                     function (errResponse) {
                         console.error('Error while fetching current weather');
