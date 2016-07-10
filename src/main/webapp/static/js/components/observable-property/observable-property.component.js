@@ -24,10 +24,12 @@
             $("#datetimepickerfrom").on("dp.change", function () {
                 model.datefrom = $("#datetimepickerfrom :input").val();
                 console.log("selected date is " + model.datefrom);
+                $(this).trigger('change');
             });
             $("#datetimepickerto").on("dp.change", function () {
                 model.dateto = $("#datetimepickerto :input").val();
                 console.log("selected date is " + model.dateto);
+                $(this).trigger('change');
             });
 
             model.$onInit = function () {

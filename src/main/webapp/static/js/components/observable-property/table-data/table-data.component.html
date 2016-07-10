@@ -1,13 +1,16 @@
 <span>Units of measurement:<strong>{{model.measures.unit}}</strong></span>
-<table ng-table="model.tableParams" class="table table-condensed table-bordered table-striped">
+<table ng-table="model.tableParams" class="table table table-condensed table-bordered table-striped">
     <tr ng-repeat="row in $data">
-        <td title="'Date'" sortable="'phenomenonTime'">
+        <td title="'Date'" filter="{phenomenonTime: 'date'}" sortable="'phenomenonTime'">
             {{row.phenomenonTime}}
         </td>
-        <td title="'Value'" sortable="'value'">
+        <td title="'Value'" filter="{value: 'number'}" sortable="'value'">
             {{row.value}}
         </td>
     </tr>
 </table>
+
+<!--<td data-title="'Name'" filter="{name: 'text'}">{{row.name}}</td>-->
+<!--<td data-title="'Age'" filter="{age: 'number'}">{{row.age}}</td>-->
 
 

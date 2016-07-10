@@ -1,0 +1,27 @@
+<h4><span class="glyphicon glyphicon-scale" aria-hidden="true"></span>Control panel</h4>
+<hr id="headline">
+
+<div class="row col-xl-6 col-md-6 col-sm-6 col-xs-6">
+    <table id="weatherTable" class="table table-condensed table-bordered table-striped table-condensed ">
+        <tbody>
+        <tr class="weatherTable">
+            <td><b>End Device</b></td>
+            <td><b>Measure</b></td>
+            <td><b>Temperature</b></td>
+            <td><b>Humidity</b></td>
+            <td><b>Weather</b></td>
+        </tr>
+
+        <tr ng-repeat="tabdata in model.tableData">
+            <td>{{tabdata.datime}}</td>
+            <td>{{tabdata.temp}}</td>
+            <td>{{tabdata.humidity}}</td>
+
+</div>
+</td>
+
+
+</tr>
+</tbody>
+</table>
+</div>

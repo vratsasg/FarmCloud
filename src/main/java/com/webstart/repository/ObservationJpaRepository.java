@@ -6,7 +6,6 @@ import com.webstart.model.Observation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -37,6 +36,17 @@ public interface ObservationJpaRepository extends JpaRepository<Observation, Lon
             "order by obs.phenomenontimestart",
             nativeQuery = true)
     List<Object[]> findMeasureByObsPropId(Long obspropid, int userId, String identifier, Timestamp t1, Timestamp t2);
+
+        @Query(value =
+                "select obs.phenomenontimestart " +
+                        "from Observation obs " +
+                        "inner join Series s on obs.seriesid = s.seriesid " +
+                        "inner join Featureofinterest feat on s.featureofinterestid = feat.featureofinterestid " +
+                        "where feat.userid = ?1 AND feat.identifier = ?2 " +
+                        "group by obs.phenomenontimestart " +
+                        "order by obs.phenomenontimestart desc limit 1 ",
+                nativeQuery = true)
+        Timestamp findlastdatetime(int userId, String identifier);
 
 
 }
