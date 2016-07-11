@@ -86,6 +86,8 @@
     <script src="<c:url value='/static/js/components/weather-api/weather-api.service.js'/>"></script>
     <script src="<c:url value='/static/js/components/weather-api/weather-chart/weather-chart.component.js'/>"></script>
     <script src="<c:url value='/static/js/components/weather-api/weather-chart/weather-chart.service.js'/>"></script>
+    <script src="<c:url value='/static/js/components/control-panel/control-panel.component.js'/>"></script>
+    <script src="<c:url value='/static/js/components/control-panel/control-panel.service.js'/>"></script>
 
 </head>
 

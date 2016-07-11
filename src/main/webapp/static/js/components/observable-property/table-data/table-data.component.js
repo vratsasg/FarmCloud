@@ -37,7 +37,7 @@
 
                 var tmp_dateto;
                 if (newValues[2] != oldValues[2]) {
-                    tmp_dateto = oldValues[2];
+                    tmp_dateto = newValues[2];
                     model.datetimeto = tmp_dateto;
                 } else {
                     tmp_dateto = oldValues[2];

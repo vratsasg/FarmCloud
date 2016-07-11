@@ -28,9 +28,6 @@ public class MyProfileController {
 
         obj = featureofInterestService.findCropInfo(users.getUser_id());
 
-
-        System.out.println("mphka sto profile");
-
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
     }
 }

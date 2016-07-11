@@ -2,10 +2,8 @@ package com.webstart.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webstart.model.ObservableMeasure;
-import com.webstart.model.ObservableProperty;
-import com.webstart.model.UserProfile;
-import com.webstart.model.ValueTime;
+import com.webstart.DTO.ObservationMeasure;
+import com.webstart.model.*;
 import com.webstart.repository.ObservablePropertyJpaRepository;
 import com.webstart.repository.ObservationJpaRepository;
 import org.json.simple.JSONArray;
@@ -98,6 +96,56 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
         }
 
         System.out.println(jsonInString);
+        return jsonInString;
+    }
+
+    public String getLastObservationsDate(int userId) {
+        String jsonInString;
+
+        try {
+            Timestamp lastdate = observationJpaRepository.findlastdatetime(userId);
+            ObjectMapper mapper = new ObjectMapper();
+            jsonInString = mapper.writeValueAsString(lastdate);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return jsonInString;
+    }
+
+    public String getLastObservationbyIdentifier(int userId, String identifier) {
+        String jsonInString = null;
+
+        try {
+            Timestamp lastdate = observationJpaRepository.findlastdatetime(userId);
+            List<Object[]> listMeasures = observationJpaRepository.findLastMeasures(userId, identifier, lastdate);
+
+            if (listMeasures.size() == 0) {
+                return null;
+            }
+
+            List<ObservationMeasure> ls = new ArrayList<ObservationMeasure>();
+            Iterator itr = listMeasures.iterator();
+
+            while (itr.hasNext()) {
+                Object[] objec = (Object[]) itr.next();
+
+                Timestamp tTime = (java.sql.Timestamp) objec[1];
+                //select obsprop.Description, obs.phenomenontimestart, num.value, u.unit
+                ls.add(new ObservationMeasure(tTime.getTime() / 1000L, (BigDecimal) objec[2], objec[3].toString(), objec[0].toString()));
+            }
+
+            ObjectMapper mapper = new ObjectMapper();
+
+            //Object to JSON in String
+            jsonInString = mapper.writeValueAsString(ls);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
+
         return jsonInString;
     }
 

@@ -18,7 +18,8 @@
             <label class="control-label">Date from</label>
 
             <div class='input-group date' id='datetimepickerfrom'>
-                <input type='text' ng-model="model.datefrom" class="form-control"/>
+                <input type='text' ng-model="model.datefrom" class="form-control"
+                       data-date-format="YYYY-MM-DD HH:mm:ss"/>
                 <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -30,7 +31,7 @@
             <label class="control-label">Date To</label>
 
             <div class='input-group date' id='datetimepickerto'>
-                <input type='text' ng-model="model.dateto" class="form-control"/>
+                <input type='text' ng-model="model.dateto" class="form-control" data-date-format="YYYY-MM-DD HH:mm:ss"/>
                 <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
                 </span>
