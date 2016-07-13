@@ -2,26 +2,138 @@
 <hr id="headline">
 
 <div class="row col-xl-12 col-md-12 col-sm-12 col-xs-12">
-    <span>Last measure for end device at <b>{{model.lastDate}}</b></span>
+    Last measure for end device at <span style="color: #71843f"><strong>{{model.lastDate}}</strong></span> from <span
+        style="color: #71843f"><strong>{{model.myDevice}}</strong></span>
 </div>
-<br>
+</br>
 
-<div class="row col-xl-5 col-md-5 col-sm-6 col-xs-6">
-    <table id="last" class="table table-condensed table-bordered table-striped table-condensed ">
-        <tbody>
-        <tr>
-            <td><b>Observable Property</b></td>
-            <td><b>Datetime</b></td>
-            <td><b>Measure Value</b></td>
-            <td><b>Unit</b></td>
-        </tr>
+<div class="row" style="padding-bottom: 5px; padding-top: 5px;">
+    <div class="col-md-2 col-lg-2 col-sm-3 col-xs-3">
+        <select class="form-control" id="editevent_repeat_time"
+                ng-model="model.myDevice"
+                ng-change="model.updateMyDevice(model.myDevice)"
+                ng-options="dev.identifier as dev.identifier for dev in model.devices.enddevices">
 
-        <tr ng-repeat="tabdata in model.lastmeasuresData">
-            <td>{{tabdata.ObservableProperty}}</td>
-            <td>{{tabdata.phenomenonTime}}</td>
-            <td>{{tabdata.value}}</td>
-            <td>{{tabdata.unit}}</td>
-        </tr>
-        </tbody>
-    </table>
+        </select>
+    </div>
 </div>
+
+<div class="row" style="padding-bottom: 5px; padding-top: 5px;">
+    <div class="col-xl-5 col-md-5 col-sm-6 col-xs-6">
+        <table id="last" class="table table-condensed table-bordered table-striped table-condensed">
+            <tbody>
+            <tr>
+                <td><b>Observable Property</b></td>
+                <td><b>Datetime</b></td>
+                <td><b>Measure Value</b></td>
+                <td><b>Unit</b></td>
+            </tr>
+
+            <tr ng-repeat="tabdata in model.lastmeasuresData">
+                <td>{{tabdata.ObservableProperty}}</td>
+                <td>{{tabdata.phenomenonTime}}</td>
+                <td>{{tabdata.value}}</td>
+                <td>{{tabdata.unit}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<button class="btn btn-success" style="margin-bottom: 20px;" id="newmeasureid">
+    New measure
+    <span class="flaticon-temperature" style="vertical-align:middle; color: whitesmoke;"></span>
+</button>
+
+<div class="row col-xl-12 col-md-12 col-sm-12 col-xs-12">
+    Last crop's Irrigation at <span style="color: #71843f"><strong>{{model.lastDate}}</strong></span>
+</div>
+
+</br>
+
+<div class="row col-xl-12 col-md-12 col-sm-12 col-xs-12">
+    <ul>
+        <li>Start Irrigation Time:</span> <span
+                style="color: #71843f"><strong>{{model.irrigationDtStart}}</strong></span></li>
+        <li>End Irrigation Time:</span> <span style="color: #71843f"><strong>{{model.irrigationDtEnd}}</strong></span>
+        </li>
+        <li>Water consume (lt):</span> <span style="color: #71843f"><strong>{{model.irrigationCosnume}}</strong></span>
+        </li>
+    </ul>
+</div>
+
+<button class="btn btn-success" id="newIrrigationid">
+    Start Irrigation
+    <span class="flaticon-bathroom-faucet-tool" style="vertical-align:middle; color: whitesmoke;"></span>
+</button>
+
+
+<script type="text/javascript">
+    $(document).ready(
+            $("#newIrrigationid").click(function () {
+
+                $('#dtpickerstart').datetimepicker({useCurrent: true});
+                $('#dtpickerend').datetimepicker({
+                    useCurrent: false //Important! See issue #1075
+                });
+                $("#dtpickerstart").on("dp.change", function (e) {
+                    $('#dtpickerend').data("DateTimePicker").minDate(e.date);
+                });
+                $("#dtpickerend").on("dp.change", function (e) {
+                    $('#dtpickerstart').data("DateTimePicker").maxDate(e.date);
+                });
+
+                var bt = bootbox.dialog({
+                    title: "Irrigation Scheduler",
+                    message: '   <div class="col-md-12"> ' +
+                    '       <form class="form-inline"> ' +
+                    '           <div class="col-md-6 col-sm-6 col-xs-12">' +
+                    '               <div class="form-group">' +
+                    '                   <label class="control-label">Start Irrigation</label>' +
+                    '                   <div class="input-group date" id="dtpickerstart">' +
+                    '                       <input type="text" class="form-control" data-date-format="YYYY-MM-DD HH:mm:ss"/>' +
+                    '                       <span class="input-group-addon"> ' +
+                    '                           <span class="glyphicon glyphicon-calendar"></span> ' +
+                    '                       </span>' +
+                    '                   </div>' +
+                    '               </div>' +
+                    '           </div>' +
+                    '           <div class="col-md-6 col-sm-6 col-xs-12">' +
+                    '               <div class="form-group">' +
+                    '                   <label class="control-label">End Irrigation</label>' +
+                    '                   <div class="input-group date" id="dtpickerend">' +
+                    '                       <input type="text" class="form-control" data-date-format="YYYY-MM-DD HH:mm:ss"/>' +
+                    '                       <span class="input-group-addon">' +
+                    '                           <span class="glyphicon glyphicon-calendar"></span>' +
+                    '                       </span>' +
+                    '                   </div>' +
+                    '               </div>' +
+                    '           </div>' +
+                    '       </form>' +
+                    '   </div>' +
+                    '</div>',
+                    buttons: {
+                        success: {
+                            label: "Start",
+                            className: "btn-success",
+                            callback: function () {
+                                //do something
+                            }
+                        },
+                        main: {
+                            label: "Cancel",
+                            className: "btn-default",
+                            callback: function () {
+                                //TODO
+                            }
+                        }
+                    }
+                })
+            })
+    );
+
+
+</script>
+
+
+

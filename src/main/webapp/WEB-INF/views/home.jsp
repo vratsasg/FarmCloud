@@ -58,7 +58,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.0-beta.6/angular-moment.min.js"></script>
     <script src="<c:url value='/static/js/js-libraries/datetimepicker/bootstrap-datetimepicker.min.js' />"></script>
-
+    <script src="<c:url value='/static/js/js-libraries/bootbox.min.js'/>"></script>
 
     <script src="<c:url value='/static/js/app.js' />"></script>
     <script src="<c:url value='/static/js/shared/topbar/topbar.js' />"></script>

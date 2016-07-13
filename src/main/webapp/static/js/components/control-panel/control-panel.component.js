@@ -8,6 +8,11 @@
         controllerAs: "model",
         controller: function (ControlPanelService, $log, $q) {
             var model = this;
+            model.devices = {enddevices: [{identifier: ""}]};
+            model.myDevice = "";
+            model.irrigationDtStart = null;
+            model.irrigationDtEnd = null;
+            model.irrigationCosnume = null;
 
             model.$onInit = function () {
                 var defer = $q.defer();
@@ -16,7 +21,9 @@
                     function (devicesdata) {
                         console.log(devicesdata);
 
-                        ControlPanelService.getMeasuresByLastDate("40E7CC39").then(
+                        model.devices = devicesdata;
+                        model.myDevice = model.devices.enddevices[0].identifier;
+                        ControlPanelService.getMeasuresByLastDate(devicesdata.enddevices[0].identifier).then(
                             function (lastDateMeasures) {
                                 console.log(lastDateMeasures);
 
@@ -44,9 +51,51 @@
                         console.error('Error while fetching devices for firstpage');
                     }
                 );
-
-
             }
+
+            model.updateMyDevice = function (myD) {
+                console.log(myD);
+                //var newValue = myD.enddev.currentValue;
+                var newValue = myD;
+                var defer = $q.defer();
+
+                ControlPanelService.getMeasuresByLastDate(newValue).then(
+                    function (lastDateMeasures) {
+                        console.log(lastDateMeasures);
+                        for (var i = 0; i < lastDateMeasures.length; i++) {
+                            lastDateMeasures[i].phenomenonTime = moment(parseInt(lastDateMeasures[i].phenomenonTime * 1000)).format("dddd, MMMM Do h:mma");
+                        }
+                        model.lastmeasuresData = lastDateMeasures;
+                    },
+                    function (errResponse) {
+                        console.error('Error while fetching devices for firstpage');
+                    }
+                );
+            };
+
+            //$scope.$watch('model.myDevice', function () {
+            //
+            //    //var newValue = changesObj.enddev.currentValue;
+            //    var newValue = model.myDevice;
+            //    var defer = $q.defer();
+            //
+            //    ControlPanelService.getMeasuresByLastDate(newValue).then(
+            //        function (lastDateMeasures) {
+            //            console.log(lastDateMeasures);
+            //
+            //            for (var i = 0; i < lastDateMeasures.length; i++) {
+            //                lastDateMeasures[i].phenomenonTime = moment(parseInt(lastDateMeasures[i].phenomenonTime * 1000)).format("dddd, MMMM Do h:mma");
+            //            }
+            //
+            //            model.lastmeasuresData = lastDateMeasures;
+            //        },
+            //        function (errResponse) {
+            //            console.error('Error while fetching devices for firstpage');
+            //        }
+            //    );
+            //});
+
+
 
 
         }
