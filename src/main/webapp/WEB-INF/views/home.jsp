@@ -24,7 +24,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/flaticon.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/_flaticon.scss">
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/static/css/bootstrap-datetimepicker.min.css">
+          href="${pageContext.request.contextPath}/static/css/datetimepicker.css">
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
