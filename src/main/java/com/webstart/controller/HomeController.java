@@ -136,6 +136,12 @@ public class HomeController {
             Date from = dateFormat.parse(datetimestart);
             Date to = dateFormat.parse(datetimeend);
             sentData = observationProperyService.getObservationsData(id, users.getUser_id(), mydevice, from, to);
+
+            if (sentData == null) {
+
+                sentData = "{\"unit\":\"\",\"measuredata\":[]}";
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;

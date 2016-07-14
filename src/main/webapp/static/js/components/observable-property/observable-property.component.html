@@ -9,7 +9,9 @@
 
         <div class="controls">
             <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice"
-                    ng-options="dev.identifier as dev.identifier for dev in model.devices.enddevices">
+                    ng-options="dev.identifier as dev.identifier for dev in model.devices.enddevices"
+                    ng-change="model.updateMyDevice(model.myDevice)">
+
             </select>
         </div>
     </div>
@@ -17,49 +19,69 @@
         <div class="form-group">
             <label class="control-label">Date from</label>
 
-            <div class='input-group date' id='datetimepickerfrom'>
-                <input type='text' ng-model="model.datefrom" class="form-control"/>
-                <span class="input-group-addon">
-                <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+            <div class="dropdown">
+                <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="" href="">
+                    <div class="input-group"><input type="text" class="form-control"
+                                                    data-ng-model="model.datefrom"><span class="input-group-addon"><i
+                            class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="model.datefrom" ng-change="model.updateDateFrom(model.datefrom)"
+                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                </ul>
             </div>
+
+            <!--<div class='input-group date' id='datetimepickerfrom'>-->
+            <!--<input data-date-format="YYYY-MM-DD HH:mm:ss" type='text' ng-model="model.datefrom"  dat-directive class="form-control" jqdatepicker />-->
+            <!--<span class="input-group-addon">-->
+            <!--<span class="glyphicon glyphicon-calendar"></span>-->
+            <!--</span>-->
+            <!--</div>-->
+
         </div>
     </div>
     <div class='col-md-2 col-sm-2 col-xs-4'>
         <div class="form-group">
             <label class="control-label">Date To</label>
 
-            <div class='input-group date' id='datetimepickerto'>
-                <input type='text' ng-model="model.dateto" class="form-control"/>
-                <span class="input-group-addon">
-                <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+
+            <div class="dropdown">
+                <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="" href="">
+                    <div class="input-group"><input type="text" class="form-control" data-ng-model="model.dateto"><span
+                            class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="model.dateto" ng-change="model.updateDateTo(model.dateto)"
+                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }"/>
+                </ul>
             </div>
+
+
+            <!--<div class='input-group date' id='datetimepickerto'>-->
+            <!--<input data-date-format="YYYY-MM-DD HH:mm:ss" type='text' ng-model="model.dateto" class="form-control"/>-->
+            <!--<span class="input-group-addon">-->
+            <!--<span class="glyphicon glyphicon-calendar"></span>-->
+            <!--</span>-->
+            <!--</div>-->
         </div>
     </div>
 </div>
-{{model.datefrom}}
-{{model.dateto}}
 <div class="row">
     <div class="col-md-5 col-sm-5 col-xs-6">
-        <table-data ng-if="model.myDevice" enddevice="model.myDevice" dtfrom="model.datefrom"
-                    dtto="model.dateto"></table-data>
+        <span>Units of measurement:<strong>{{model.measures.unit}}</strong></span>
+        <table ng-table="model.tableParams" class="table table table-condensed table-bordered table-striped">
+            <tr ng-repeat="row in $data">
+                <td title="'Date'" filter="{phenomenonTime: 'date'}" sortable="'phenomenonTime'">
+                    {{row.phenomenonTime}}
+                </td>
+                <td title="'Value'" filter="{value: 'number'}" sortable="'value'">
+                    {{row.value}}
+                </td>
+            </tr>
+        </table>
     </div>
 
-    <div class="col-md-5 col-sm-5 col-xs-6">
-        <nvd3 options="model.chartoptions" data="model.chartdata"></nvd3>
-    </div>
 </div>
 
-<script type="text/javascript">
-    $('#datetimepickerfrom').datetimepicker({});
-    $('#datetimepickerto').datetimepicker({
-        useCurrent: false //Important! See issue #1075
-    });
-    $("#datetimepickerfrom").on("dp.change", function (e) {
-        $('#datetimepickerto').data("DateTimePicker").minDate(e.date);
-    });
-    $("#datetimepickerto").on("dp.change", function (e) {
-        $('#datetimepickerfrom').data("DateTimePicker").maxDate(e.date);
-    });
-</script>
