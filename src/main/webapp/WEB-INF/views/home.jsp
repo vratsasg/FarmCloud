@@ -23,13 +23,12 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/app.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/flaticon.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/_flaticon.scss">
-
-
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/static/css/datetimepicker.css">
+          href="${pageContext.request.contextPath}/static/css/bootstrap-datetimepicker.min.css">
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
@@ -58,10 +57,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.0-beta.6/angular-moment.min.js"></script>
-
-
     <script src="<c:url value='/static/js/js-libraries/datetimepicker/datetimepicker.js' />"></script>
     <script src="<c:url value='/static/js/js-libraries/datetimepicker/datetimepicker.templates.js' />"></script>
+
 
 
     <script src="<c:url value='/static/js/app.js' />"></script>
@@ -84,12 +82,16 @@
     <script src="<c:url value='/static/js/components/user-profile/user-profile.service.js' />"></script>
     <script src="<c:url value='/static/js/components/observable-property/observable-property.component.js'/>"></script>
     <script src="<c:url value='/static/js/components/observable-property/observable-property.service.js'/>"></script>
-
+    <script src="<c:url value='/static/js/components/observable-property/table-data/table-data.component.js'/>"></script>
+    <script src="<c:url value='/static/js/components/observable-property/table-data/table-data.service.js'/>"></script>
     <script src="<c:url value='/static/js/components/weather-api/weather-api.component.js'/>"></script>
     <script src="<c:url value='/static/js/components/weather-api/weather-api.service.js'/>"></script>
     <script src="<c:url value='/static/js/components/weather-api/weather-chart/weather-chart.component.js'/>"></script>
     <script src="<c:url value='/static/js/components/weather-api/weather-chart/weather-chart.service.js'/>"></script>
-
+    
+    
+    <script src="<c:url value='/static/js/components/control-panel/control-panel.component.js'/>"></script>
+    <script src="<c:url value='/static/js/components/control-panel/control-panel.service.js'/>"></script>
 
 </head>
 

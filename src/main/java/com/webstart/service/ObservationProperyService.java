@@ -13,4 +13,8 @@ public interface ObservationProperyService {
     JSONObject getAllObsPropeties();
 
     String getObservationsData(Long obspropId, int userId, String identifier, Date from, Date to);
+
+    String getLastObservationsDate(int userId);
+
+    String getLastObservationbyIdentifier(int userId, String identifier);
 }

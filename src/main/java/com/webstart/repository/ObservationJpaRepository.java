@@ -37,16 +37,27 @@ public interface ObservationJpaRepository extends JpaRepository<Observation, Lon
             nativeQuery = true)
     List<Object[]> findMeasureByObsPropId(Long obspropid, int userId, String identifier, Timestamp t1, Timestamp t2);
 
-        @Query(value =
-                "select obs.phenomenontimestart " +
+    @Query(value = "select max(obs.phenomenontimestart) " +
                         "from Observation obs " +
                         "inner join Series s on obs.seriesid = s.seriesid " +
                         "inner join Featureofinterest feat on s.featureofinterestid = feat.featureofinterestid " +
-                        "where feat.userid = ?1 AND feat.identifier = ?2 " +
-                        "group by obs.phenomenontimestart " +
-                        "order by obs.phenomenontimestart desc limit 1 ",
+            "where feat.userid = ?1 ",
                 nativeQuery = true)
-        Timestamp findlastdatetime(int userId, String identifier);
+    Timestamp findlastdatetime(int userId);
 
+    @Query(value =
+            "select obsprop.Description, obs.phenomenontimestart, num.value, u.unit " +
+                    "from Observation obs " +
+                    "inner join NumericValue num on obs.observationid = num.observationid " +
+                    "inner join unit u on obs.unitid = u.unitid " +
+                    "inner join Series s on obs.seriesid = s.seriesid " +
+                    "inner join Featureofinterest feat on s.featureofinterestid = feat.featureofinterestid " +
+                    "inner join ObservableProperty obsprop on s.observablepropertyid = obsprop.ObservablePropertyId " +
+                    "where feat.userid = ?1 " +
+                    "AND feat.identifier = ?2 " +
+                    "AND obs.phenomenontimestart = ?3 " +
+                    "order by obsprop.Description ",
+            nativeQuery = true)
+    List<Object[]> findLastMeasures(int userId, String identifier, Timestamp t1);
 
 }

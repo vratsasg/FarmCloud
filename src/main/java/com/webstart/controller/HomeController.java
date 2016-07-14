@@ -150,5 +150,39 @@ public class HomeController {
         return new ResponseEntity<String>(sentData, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/getLastMeasureDate", method = RequestMethod.GET)
+    public ResponseEntity<String> getMeasuresByObsProperty(HttpServletRequest request) {
+        JSONArray obj = new JSONArray();
+        Users users = (Users) request.getSession().getAttribute("current_user");
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String sentData = null;
+        try {
+            sentData = observationProperyService.getLastObservationsDate(users.getUser_id());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return new ResponseEntity<String>(sentData, HttpStatus.OK);
+
+    }
+
+    //identifier
+    @RequestMapping(value = "/getLastMeasuresByDate", method = RequestMethod.GET)
+    public ResponseEntity<String> getMeasuresByObsProperty(@RequestParam("identifier") String mydevice, HttpServletRequest request) {
+        Users users = (Users) request.getSession().getAttribute("current_user");
+
+        String sentData = null;
+        try {
+            sentData = observationProperyService.getLastObservationbyIdentifier(users.getUser_id(), mydevice);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return new ResponseEntity<String>(sentData, HttpStatus.OK);
+    }
+
 
 }
