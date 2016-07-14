@@ -82,8 +82,7 @@
     <script src="<c:url value='/static/js/components/user-profile/user-profile.service.js' />"></script>
     <script src="<c:url value='/static/js/components/observable-property/observable-property.component.js'/>"></script>
     <script src="<c:url value='/static/js/components/observable-property/observable-property.service.js'/>"></script>
-    <script src="<c:url value='/static/js/components/observable-property/table-data/table-data.component.js'/>"></script>
-    <script src="<c:url value='/static/js/components/observable-property/table-data/table-data.service.js'/>"></script>
+
     <script src="<c:url value='/static/js/components/weather-api/weather-api.component.js'/>"></script>
     <script src="<c:url value='/static/js/components/weather-api/weather-api.service.js'/>"></script>
     <script src="<c:url value='/static/js/components/weather-api/weather-chart/weather-chart.component.js'/>"></script>

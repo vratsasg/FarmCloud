@@ -11,6 +11,7 @@
  */
 
 (function (factory) {
+
     'use strict';
     /* istanbul ignore if */
     if (typeof define === 'function' && /* istanbul ignore next */ define.amd) {

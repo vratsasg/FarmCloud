@@ -52,6 +52,7 @@
 
 
                 var datefrom = moment(new Date(dfr)).format("YYYY-MM-DD HH:mm:ss");
+
                 var dateto = moment(new Date(model.dateto)).format("YYYY-MM-DD HH:mm:ss");
 
                 model.tableParams = new ngTableParams({

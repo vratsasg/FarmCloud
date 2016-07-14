@@ -13,6 +13,7 @@
                         },
                         function (errResponse) {
                             console.error('Error while firstpageService devices');
+
                             return $q.reject(errResponse);
                         }
                     );
