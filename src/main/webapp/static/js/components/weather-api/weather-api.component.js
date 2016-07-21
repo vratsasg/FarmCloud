@@ -16,6 +16,7 @@
 
             model.$onInit = function () {
                 var deferDev = $q.defer();
+                var def = $q.defer();
 
                 WeatherApiService.getStationCoords(2).then( //TODO get coordinator id - featureofintrestid
                     function (d) {
@@ -23,6 +24,9 @@
                         console.log(d);
                         model.longt = d[0];
                         model.latid = d[1];
+
+                        def.resolve(model.longt, model.latid);
+
 
 
                         WeatherApiService.getCurrentWeather(model.longt, model.latid, apiId).then(

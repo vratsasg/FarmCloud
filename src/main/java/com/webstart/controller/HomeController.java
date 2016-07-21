@@ -137,6 +137,8 @@ public class HomeController {
             Date to = dateFormat.parse(datetimeend);
             sentData = observationProperyService.getObservationsData(id, users.getUser_id(), mydevice, from, to);
 
+            System.out.println(sentData);
+
             if (sentData == null) {
 
                 sentData = "{\"unit\":\"\",\"measuredata\":[]}";
