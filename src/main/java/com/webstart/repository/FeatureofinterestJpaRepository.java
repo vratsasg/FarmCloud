@@ -20,4 +20,6 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
 
 
     List<Featureofinterest> findByUseridAndFeatureofinteresttypeid(int id, long l);
+
+    Featureofinterest findByIdentifier(String identifier);
 }

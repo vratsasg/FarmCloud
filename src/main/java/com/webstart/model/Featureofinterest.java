@@ -8,6 +8,7 @@ import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +46,24 @@ public class Featureofinterest {
     @Column(name="parentId")
     private Long parentid;
 
+
+    @Column(name = "datetimefrom")
+    private Timestamp datetimefrom;
+
+    @Column(name = "datetimeto")
+    private Timestamp datetimeto;
+
+    @Column(name = "irrigation")
+    private Boolean irrigation;
+
+    @Column(name = "measuring")
+    private Boolean measuring;
+
+
+
+
+
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "featureofinteresttypeid", insertable = false, updatable = false)
     private Featureofinteresttype featureofinteresttype;
@@ -79,21 +98,58 @@ public class Featureofinterest {
     //@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "parentFeature")
     //private List<Featureofinterest> childrenFeatures;
 
+
     public Featureofinterest() {
 
     }
 
-    public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, Long parentid, Point geom, int userid) {
-        this.hibernatediscriminator = hibernatediscriminator;
-        this.featureofinteresttypeid = featureofinteresttypeid;
-        this.identifier = identifier;
-        this.codespaceid = codespaceid;
-        this.name = name;
-        this.descriptionxml = descriptionxml;
-        this.url = url;
-        this.parentid = parentid;
-        this.geom = geom;
+    public Featureofinterest(int userid, Point geom, Boolean measuring, Boolean irrigation, Timestamp datetimeto, Timestamp datetimefrom, Long parentid, String url, String descriptionxml, String name, Long codespaceid, String identifier, long featureofinteresttypeid, String hibernatediscriminator) {
         this.userid = userid;
+        this.geom = geom;
+        this.measuring = measuring;
+        this.irrigation = irrigation;
+        this.datetimeto = datetimeto;
+        this.datetimefrom = datetimefrom;
+        this.parentid = parentid;
+        this.url = url;
+        this.descriptionxml = descriptionxml;
+        this.name = name;
+        this.codespaceid = codespaceid;
+        this.identifier = identifier;
+        this.featureofinteresttypeid = featureofinteresttypeid;
+        this.hibernatediscriminator = hibernatediscriminator;
+    }
+
+    public Timestamp getDatetimefrom() {
+        return datetimefrom;
+    }
+
+    public void setDatetimefrom(Timestamp datetimefrom) {
+        this.datetimefrom = datetimefrom;
+    }
+
+    public Timestamp getDatetimeto() {
+        return datetimeto;
+    }
+
+    public void setDatetimeto(Timestamp datetimeto) {
+        this.datetimeto = datetimeto;
+    }
+
+    public Boolean getIrrigation() {
+        return irrigation;
+    }
+
+    public void setIrrigation(Boolean irrigation) {
+        this.irrigation = irrigation;
+    }
+
+    public Boolean getMeasuring() {
+        return measuring;
+    }
+
+    public void setMeasuring(Boolean measuring) {
+        this.measuring = measuring;
     }
 
     public Integer getFeatureofinterestid() {

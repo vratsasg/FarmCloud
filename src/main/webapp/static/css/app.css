@@ -399,8 +399,13 @@
     border: 2px solid #71843f;
     height: 100%;
     background-color: #F5F5F5;
-    /*padding-top: 2px;*/
-    /*padding-bottom: 2px;*/
+
+    box-shadow: 5px 5px 15px #888888;
+
+}
+
+.active {
+    background-color: #71843f;
 }
 
 /* MEGETHOS GLYPHICON ICON*/

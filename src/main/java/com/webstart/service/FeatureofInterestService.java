@@ -9,6 +9,8 @@ public interface FeatureofInterestService {
 
         String findByFeatureofinterestid(int id);
 
+        String findFeatureByIdentifier(String identi);
+
         JSONObject findCropInfo(int id);
         JSONObject findByUserAndType(int id);
 }

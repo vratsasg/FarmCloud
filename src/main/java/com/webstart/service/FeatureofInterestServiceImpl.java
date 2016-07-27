@@ -8,12 +8,14 @@ import com.webstart.model.Featureofinterest;
 import com.webstart.model.UserProfile;
 import com.webstart.repository.FeatureofinterestJpaRepository;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.geo.Point;
 
 import java.awt.*;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import java.util.Arrays;
@@ -207,6 +209,55 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
         System.out.println(jsonInString);
         return jsonInString;
+    }
+
+
+    public String findFeatureByIdentifier(String identi) {
+
+
+        String jsonRes = null;
+        Featureofinterest featureofinterest = new Featureofinterest();
+
+        featureofinterest = featureofinterestJpaRepository.findByIdentifier(identi);
+
+        featureofinterest.getDatetimefrom();
+        featureofinterest.getDatetimeto();
+
+
+        Date datefrom = new Date(featureofinterest.getDatetimefrom().getTime());
+        Date dateto = new Date(featureofinterest.getDatetimeto().getTime());
+
+        DateTime dtFROM = new DateTime(datefrom);
+        DateTime dtTO = new DateTime(dateto);
+
+
+        int frHours = dtFROM.getHourOfDay();
+        int frMinutes = dtFROM.getMinuteOfHour();
+        int frSeconds = dtFROM.getSecondOfDay();
+
+
+        int toHours = dtTO.getHourOfDay();
+        int toMinutes = dtTO.getMinuteOfHour();
+        int toSeconds = dtTO.getSecondOfDay();
+
+        JSONObject TimerSetup = new JSONObject();
+
+
+        TimerSetup.put("frHours", frHours);
+        TimerSetup.put("frMinutes", frMinutes);
+        TimerSetup.put("frSeconds", frSeconds);
+
+        TimerSetup.put("toHours", toHours);
+        TimerSetup.put("toMinutes", toMinutes);
+        TimerSetup.put("toSeconds", toSeconds);
+
+
+        jsonRes = TimerSetup.toJSONString();
+
+        System.out.println(jsonRes);
+
+
+        return jsonRes;
     }
 
 
