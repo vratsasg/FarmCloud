@@ -6,7 +6,7 @@
 
         templateUrl: 'static/js/components/control-panel/control-panel.component.html',
         controllerAs: "model",
-        controller: function (ControlPanelService, $log, $q) {
+        controller: function ($uibModal, $document, ControlPanelService, $log, $q) {
             var model = this;
             model.devices = {enddevices: [{identifier: ""}]};
             model.myDevice = "";
@@ -71,6 +71,18 @@
                         console.error('Error while fetching devices for firstpage');
                     }
                 );
+            };
+
+            model.showModal = function () {
+                model.modalInstance = $uibModal.open({
+                    animation: model.animationsEnabled,
+                    template: '<irrigation-modal></irrigation-modal>',
+                    appendTo: $document.find('control-panel')
+                });
+            };
+
+            model.toggleAnimation = function () {
+                model.animationsEnabled = !model.animationsEnabled;
             };
 
             //$scope.$watch('model.myDevice', function () {

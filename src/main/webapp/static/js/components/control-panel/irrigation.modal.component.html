@@ -1,0 +1,58 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="myModalLabel">Start irrigation</h4>
+</div>
+
+<form class="form-horizontal" id="startIrrigation_form">
+    <div class="modal-body">
+
+        <div class="form-group col-md-8 col-sm-8 cols-xl-8 xol-xs-8">
+            <label class="control-label">Date From</label>
+
+            <div class="dropdown">
+                <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="" href="">
+                    <div class="input-group"><input type="text" class="form-control" data-ng-model="model.dateto">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="model.datefrom"
+                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="form-group col-md-8 col-sm-8 cols-xl-8 xol-xs-8">
+            <label class="control-label">Date To</label>
+
+            <div class="dropdown">
+                <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="" href="">
+                    <div class="input-group"><input type="text" class="form-control" data-ng-model="model.dateto">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="model.dateto"
+                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }"/>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="form-group col-md-8 col-sm-8 cols-xl-8 xol-xs-8">
+            <label class="control-label">Irrigation measure (lt)</label>
+            <input type="number" step="any" min="0"/></input>
+        </div>
+
+        <div class="form-group col-md-8 col-sm-8 cols-xl-8 xol-xs-8">
+            <button type="submit" class="btn btn-primary" name="event" value="START" form="startIrrigation_form">Start
+            </button>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="model.cancel()">Cancel</button>
+    </div>
+</form>

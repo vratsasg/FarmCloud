@@ -53,87 +53,19 @@
 
 <div class="row col-xl-12 col-md-12 col-sm-12 col-xs-12">
     <ul>
-        <li>Start Irrigation Time:</span> <span
-                style="color: #71843f"><strong>{{model.irrigationDtStart}}</strong></span></li>
-        <li>End Irrigation Time:</span> <span style="color: #71843f"><strong>{{model.irrigationDtEnd}}</strong></span>
+        <li>
+            Start Irrigation Time: <span style="color: #71843f"><strong>{{model.irrigationDtStart}}</strong></span>
         </li>
-        <li>Water consume (lt):</span> <span style="color: #71843f"><strong>{{model.irrigationCosnume}}</strong></span>
+        <li>
+            End Irrigation Time: <span style="color: #71843f"><strong>{{model.irrigationDtEnd}}</strong></span>
+        </li>
+        <li>
+            Water consume (lt): <span style="color: #71843f"><strong>{{model.irrigationCosnume}}</strong></span>
         </li>
     </ul>
 </div>
 
-<button class="btn btn-success" id="newIrrigationid">
+<button class="btn btn-success" id="newIrrigationid" ng-click="model.showModal()">
     Start Irrigation
     <span class="flaticon-bathroom-faucet-tool" style="vertical-align:middle; color: whitesmoke;"></span>
 </button>
-
-
-<script type="text/javascript">
-    $(document).ready(
-            $("#newIrrigationid").click(function () {
-
-                $('#dtpickerstart').datetimepicker({useCurrent: true});
-                $('#dtpickerend').datetimepicker({
-                    useCurrent: false //Important! See issue #1075
-                });
-                $("#dtpickerstart").on("dp.change", function (e) {
-                    $('#dtpickerend').data("DateTimePicker").minDate(e.date);
-                });
-                $("#dtpickerend").on("dp.change", function (e) {
-                    $('#dtpickerstart').data("DateTimePicker").maxDate(e.date);
-                });
-
-                var bt = bootbox.dialog({
-                    title: "Irrigation Scheduler",
-                    message: '   <div class="col-md-12"> ' +
-                    '       <form class="form-inline"> ' +
-                    '           <div class="col-md-6 col-sm-6 col-xs-12">' +
-                    '               <div class="form-group">' +
-                    '                   <label class="control-label">Start Irrigation</label>' +
-                    '                   <div class="input-group date" id="dtpickerstart">' +
-                    '                       <input type="text" class="form-control" data-date-format="YYYY-MM-DD HH:mm:ss"/>' +
-                    '                       <span class="input-group-addon"> ' +
-                    '                           <span class="glyphicon glyphicon-calendar"></span> ' +
-                    '                       </span>' +
-                    '                   </div>' +
-                    '               </div>' +
-                    '           </div>' +
-                    '           <div class="col-md-6 col-sm-6 col-xs-12">' +
-                    '               <div class="form-group">' +
-                    '                   <label class="control-label">End Irrigation</label>' +
-                    '                   <div class="input-group date" id="dtpickerend">' +
-                    '                       <input type="text" class="form-control" data-date-format="YYYY-MM-DD HH:mm:ss"/>' +
-                    '                       <span class="input-group-addon">' +
-                    '                           <span class="glyphicon glyphicon-calendar"></span>' +
-                    '                       </span>' +
-                    '                   </div>' +
-                    '               </div>' +
-                    '           </div>' +
-                    '       </form>' +
-                    '   </div>' +
-                    '</div>',
-                    buttons: {
-                        success: {
-                            label: "Start",
-                            className: "btn-success",
-                            callback: function () {
-                                //do something
-                            }
-                        },
-                        main: {
-                            label: "Cancel",
-                            className: "btn-default",
-                            callback: function () {
-                                //TODO
-                            }
-                        }
-                    }
-                })
-            })
-    );
-
-
-</script>
-
-
-
