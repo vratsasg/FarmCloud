@@ -13,7 +13,7 @@
                 var model = this;
 
                 model.$onInit = function () {
-
+                    model.datefrom = new Date();
                     var instance = model.parent.modalInstance;
                     model.cancel = function () {
                         instance.dismiss('cancel');

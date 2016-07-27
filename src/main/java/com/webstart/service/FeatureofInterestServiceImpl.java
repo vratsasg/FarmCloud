@@ -213,8 +213,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
 
     public String findFeatureByIdentifier(String identi) {
-
-
         String jsonRes = null;
         Featureofinterest featureofinterest = new Featureofinterest();
 

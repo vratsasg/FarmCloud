@@ -29,6 +29,9 @@ public class ObservableProperty {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "observableProperty", cascade = {CascadeType.ALL})
     private List<Series> seriesList = new ArrayList<Series>();
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "observableProperty", cascade = {CascadeType.ALL})
+    private List<ObservablePropertyMinMax> observablepropertyMinMaxList = new ArrayList<ObservablePropertyMinMax>();
+
     public ObservableProperty() {
     }
 
@@ -78,5 +81,13 @@ public class ObservableProperty {
 
     public void setSeriesList(List<Series> seriesList) {
         this.seriesList = seriesList;
+    }
+
+    public List<ObservablePropertyMinMax> getObservablepropertyList() {
+        return observablepropertyMinMaxList;
+    }
+
+    public void setObservablepropertyList(List<ObservablePropertyMinMax> observablepropertyList) {
+        this.observablepropertyMinMaxList = observablepropertyList;
     }
 }

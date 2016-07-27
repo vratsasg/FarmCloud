@@ -59,11 +59,6 @@ public class Featureofinterest {
     @Column(name = "measuring")
     private Boolean measuring;
 
-
-
-
-
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "featureofinteresttypeid", insertable = false, updatable = false)
     private Featureofinteresttype featureofinteresttype;
@@ -83,6 +78,9 @@ public class Featureofinterest {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "featureofinterest", cascade = {CascadeType.ALL})
     private List<Series> seriesList = new ArrayList<Series>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "featureofinterest", cascade = {CascadeType.ALL})
+    private List<ObservablePropertyMinMax> obspropminmaxList = new ArrayList<ObservablePropertyMinMax>();
 
     ////Autorelation
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
@@ -118,6 +116,14 @@ public class Featureofinterest {
         this.identifier = identifier;
         this.featureofinteresttypeid = featureofinteresttypeid;
         this.hibernatediscriminator = hibernatediscriminator;
+    }
+
+    public List<ObservablePropertyMinMax> getObspropminmaxList() {
+        return obspropminmaxList;
+    }
+
+    public void setObspropminmaxList(List<ObservablePropertyMinMax> obspropminmaxList) {
+        this.obspropminmaxList = obspropminmaxList;
     }
 
     public Timestamp getDatetimefrom() {
