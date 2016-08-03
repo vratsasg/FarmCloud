@@ -13,6 +13,8 @@
             model.irrigationDtStart = null;
             model.irrigationDtEnd = null;
             model.irrigationCosnume = null;
+            model.disableIrrigbtn = true;
+            model.disableMeasurebtn = false;
 
             model.$onInit = function () {
                 var defer = $q.defer();
@@ -23,6 +25,7 @@
 
                         model.devices = devicesdata;
                         model.myDevice = model.devices.enddevices[0].identifier;
+
                         ControlPanelService.getMeasuresByLastDate(devicesdata.enddevices[0].identifier).then(
                             function (lastDateMeasures) {
                                 console.log(lastDateMeasures);
@@ -32,6 +35,7 @@
                                 }
 
                                 model.lastmeasuresData = lastDateMeasures;
+
                             },
                             function (errResponse) {
                                 console.error('Error while fetching devices for firstpage');

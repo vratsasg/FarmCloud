@@ -47,6 +47,15 @@
         </div>
 
         <div class="form-group col-md-8 col-sm-8 cols-xl-8 xol-xs-8">
+            <label class="control-label">Irrigation Place</label>
+            <select class="control-label" multiple="multiple">
+                <option ng-repeat="dev in model.parent.devices.enddevices" value="{{dev.identifier}}">
+                    {{dev.identifier}}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group col-md-8 col-sm-8 cols-xl-8 xol-xs-8">
             <button type="submit" class="btn btn-primary" name="event" value="START" form="startIrrigation_form">Start
             </button>
             <button type="button" class="btn btn-default" ng-click="model.cancel()">Cancel</button>

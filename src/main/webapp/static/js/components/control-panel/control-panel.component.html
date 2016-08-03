@@ -40,7 +40,8 @@
     </div>
 </div>
 
-<button class="btn btn-success" style="margin-bottom: 20px;" id="newmeasureid">
+<button class="btn btn-success" style="margin-bottom: 20px;" id="newmeasureid"
+        ng-disabled="{{model.disableMeasurebtn}}">
     New measure
     <span class="flaticon-temperature" style="vertical-align:middle; color: whitesmoke;"></span>
 </button>
@@ -65,7 +66,8 @@
     </ul>
 </div>
 
-<button class="btn btn-success" id="newIrrigationid" ng-click="model.showModal()">
+<button class="btn btn-success" id="newIrrigationid" ng-click="model.showModal()"
+        ng-disabled="{{model.disableMeasurebtn}}">
     Start Irrigation
     <span class="flaticon-bathroom-faucet-tool" style="vertical-align:middle; color: whitesmoke;"></span>
 </button>
