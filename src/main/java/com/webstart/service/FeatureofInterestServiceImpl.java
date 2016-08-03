@@ -333,5 +333,43 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
+    public String findIrrigationAndMeasuring(String corD) {
+
+        Integer idCord = null;
+
+        List<Object[]> cordinIds = featureofinterestJpaRepository.getIdbyIdent(corD);
+
+        Iterator itr = cordinIds.iterator();
+        while (itr.hasNext()) {
+            idCord = (Integer) itr.next();
+        }
+
+        Long fidg = Long.valueOf(idCord.longValue());
+
+        List<Object[]> identiFlagsObjects = featureofinterestJpaRepository.getIdentifierFlags(fidg);
+
+        JSONArray retur = new JSONArray();
+
+        for (Object[] objec : identiFlagsObjects) {
+
+            JSONObject element = new JSONObject();
+
+            element.put("identifier", String.valueOf(objec[0]));
+            element.put("irrigation", String.valueOf(objec[1]));
+            element.put("measurement", String.valueOf(objec[2]));
+
+            retur.add(element);
+        }
+
+        JSONObject finObj = new JSONObject();
+
+        finObj.put("Data", retur);
+
+
+        System.out.println(finObj.toJSONString());
+
+        return finObj.toJSONString();
+    }
+
 
 }

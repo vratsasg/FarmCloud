@@ -69,4 +69,16 @@ public class EmbeddedController {
     }
 
 
+    @RequestMapping(value = "/getMeasIrr", method = RequestMethod.GET)
+    public ResponseEntity<String> getMeasuringIrrigation(@RequestParam("identifier") String Cordinator) {
+
+        String JsonResp = null;
+
+        JsonResp = featureofInterestService.findIrrigationAndMeasuring(Cordinator);
+
+        return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
+
+    }
+
+
 }

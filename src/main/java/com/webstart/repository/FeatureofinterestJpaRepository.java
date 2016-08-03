@@ -30,4 +30,10 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     List<Object[]> serid(@Param("featid") Long fid, @Param("obs") Long obsg);
 
 
+    @Query("select fi.featureofinterestid FROM Featureofinterest as fi  WHERE fi.identifier IN :tid")
+    List<Object[]> getIdbyIdent(@Param("tid") String fidentent);
+
+    @Query("select fi.identifier,fi.irrigation,fi.measuring FROM Featureofinterest as fi  WHERE fi.parentid IN :pid")
+    List<Object[]> getIdentifierFlags(@Param("pid") Long parId);
+
 }

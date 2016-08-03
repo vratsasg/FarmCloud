@@ -19,4 +19,6 @@ public interface FeatureofInterestService {
         Long findseries(int obs, Integer fid);
 
         boolean saveTheMeasure(Long series, EmbeddedData embeddedData);
+
+        String findIrrigationAndMeasuring(String corD);
 }
