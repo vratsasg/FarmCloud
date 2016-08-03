@@ -3,11 +3,12 @@ package com.webstart.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webstart.model.Crop;
-import com.webstart.model.Featureofinterest;
-import com.webstart.model.UserProfile;
+import com.webstart.DTO.FeatureidIdentifier;
+import com.webstart.model.*;
 import com.webstart.repository.FeatureofinterestJpaRepository;
 
+import com.webstart.repository.NumericValueJpaRepository;
+import com.webstart.repository.ObservationJpaRepository;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,13 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.geo.Point;
 
 import java.awt.*;
-import java.sql.Date;
-import java.util.ArrayList;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.List;
-
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -32,7 +32,10 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
     @Autowired
     FeatureofinterestJpaRepository featureofinterestJpaRepository;
-
+    @Autowired
+    ObservationJpaRepository observationJpaRepository;
+    @Autowired
+    NumericValueJpaRepository numericValueJpaRepository;
 
     @Override
     public boolean addCrop(Crop crop) {
@@ -172,22 +175,22 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
     public JSONObject findByUserAndType(int id) {
 
-        JSONObject finobj=new JSONObject();
+        JSONObject finobj = new JSONObject();
         List<Featureofinterest> objects = new ArrayList<Featureofinterest>();
-        JSONArray nlist=new JSONArray();
+        JSONArray nlist = new JSONArray();
 
-        long l=3L;
-        objects=featureofinterestJpaRepository.findByUseridAndFeatureofinteresttypeid(id, l);
+        long l = 3L;
+        objects = featureofinterestJpaRepository.findByUseridAndFeatureofinteresttypeid(id, l);
 
-        for(int c=0;c<objects.size();c++){
+        for (int c = 0; c < objects.size(); c++) {
 
-            JSONObject tmpObj=new JSONObject();
+            JSONObject tmpObj = new JSONObject();
 
             tmpObj.put("identifier", objects.get(c).getIdentifier());
             nlist.add(tmpObj);
         }
 
-        finobj.put("enddevices",nlist);
+        finobj.put("enddevices", nlist);
 
         return finobj;
     }
@@ -214,16 +217,19 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
     public String findFeatureByIdentifier(String identi) {
         String jsonRes = null;
-        Featureofinterest featureofinterest = new Featureofinterest();
 
-        featureofinterest = featureofinterestJpaRepository.findByIdentifier(identi);
+        Timestamp timestampFrom = null;
+        Timestamp timestampTo = null;
 
-        featureofinterest.getDatetimefrom();
-        featureofinterest.getDatetimeto();
+        List<Object[]> objects = featureofinterestJpaRepository.findByIdentifier(identi);
 
+        for (Object[] obje : objects) {
+            timestampFrom = (java.sql.Timestamp) obje[0];
+            timestampTo = (java.sql.Timestamp) obje[1];
+        }
 
-        Date datefrom = new Date(featureofinterest.getDatetimefrom().getTime());
-        Date dateto = new Date(featureofinterest.getDatetimeto().getTime());
+        Date datefrom = new Date(timestampFrom.getTime());
+        Date dateto = new Date(timestampTo.getTime());
 
         DateTime dtFROM = new DateTime(datefrom);
         DateTime dtTO = new DateTime(dateto);
@@ -256,6 +262,75 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
 
         return jsonRes;
+    }
+
+    @Override
+    public List<FeatureidIdentifier> findFeatureIdByIdentifier(List<String> idStr) {
+        List<FeatureidIdentifier> returnedList = new ArrayList<FeatureidIdentifier>();
+
+        List<Object[]> list = featureofinterestJpaRepository.getIdidentif(idStr);
+
+        for (Object[] object : list) {
+            //returnedList
+            FeatureidIdentifier featureidIdentifier = new FeatureidIdentifier((Integer) object[0], object[1].toString());
+            returnedList.add(featureidIdentifier);
+        }
+
+        return returnedList;
+    }
+
+    public Long findseries(int obs, Integer fid) {
+
+        Long obsg = new Long(obs);
+
+        Long fidg = Long.valueOf(fid.longValue());
+
+        Long returnedL = null;
+
+        List<Object[]> temOb = featureofinterestJpaRepository.serid(fidg, obsg);
+
+
+        Iterator itr = temOb.iterator();
+        while (itr.hasNext()) {
+            returnedL = (Long) itr.next();
+        }
+        return returnedL;
+
+    }
+
+    public boolean saveTheMeasure(Long seriesId, EmbeddedData embeddedData) {
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date from = dateFormat.parse(embeddedData.getDatetime());
+
+
+            Observation observation = new Observation();
+
+            //observation.setObservationid(500L);
+            observation.setSeriesid(seriesId);
+            observation.setPhenomenontimestart(new Timestamp(from.getTime()));
+            observation.setPhenomenontimeend(new Timestamp(from.getTime()));
+            observation.setResulttime(new Timestamp(from.getTime()));
+            //observation.setNumericValue(numericValue);
+            observation.setIdentifier(embeddedData.getDatetime().replace("-", "").replace(":", "").replace(" ", "") + "-" + java.util.UUID.randomUUID());
+            observation.setUnitid(1L);
+            observation.setDeleted("F");
+
+            //numericValue.setObservation(observation);
+
+            observationJpaRepository.save(observation);
+
+            NumericValue numericValue = new NumericValue();
+            numericValue.setObservationid(observation.getObservationid());
+            numericValue.setValue(embeddedData.getMeasureValue());
+            numericValueJpaRepository.save(numericValue);
+
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 

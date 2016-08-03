@@ -1,19 +1,16 @@
 package com.webstart.controller;
 
-import com.webstart.model.EmbeddedData;
-import com.webstart.model.Featureofinterest;
+import com.webstart.DTO.EmbeddedDataWrapper;
+import com.webstart.DTO.FeatureidIdentifier;
+import com.webstart.model.*;
 import com.webstart.service.FeatureofInterestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.*;
+
 
 /**
  * Created by George on 22/5/2016.
@@ -26,38 +23,50 @@ public class EmbeddedController {
 
 
     @RequestMapping(value = "/embedded/", method = RequestMethod.POST)
-    public ResponseEntity<Void> postSensor(@RequestBody EmbeddedData embeddedData) {
+    public ResponseEntity<Void> postSensor(@RequestBody EmbeddedDataWrapper embeddedDataWrapper) {
 
-        String str = "1986-04-08 12:30:00";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+        List<String> identList = new ArrayList<String>();
+        List<FeatureidIdentifier> featureidIdentifiers = new ArrayList<FeatureidIdentifier>();
 
-        System.out.println(embeddedData.getZbAddress());
+        try {
+            identList = new ArrayList<String>(new LinkedHashSet<String>(embeddedDataWrapper.GetFeatureIdentifiers()));
+            featureidIdentifiers = featureofInterestService.findFeatureIdByIdentifier(identList);
 
-       // HttpHeaders headers = new HttpHeaders();
-      //  headers.setLocation(ucBuilder.path("/embedded/{id}").buildAndExpand(endDev.getHumidity()).toUri());
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
 
+            for (final EmbeddedData embeddedData : embeddedDataWrapper.getEmbeddedDataList()) {
+                int featureofinterestid = 0;
+                for (int i = 0; i < featureidIdentifiers.size(); i++) {
+                    if ((embeddedData.getZbAddress()).equals(featureidIdentifiers.get(i).getIdentifier())) {
+                        featureofinterestid = featureidIdentifiers.get(i).getFeatureinterestid();
+                    }
+                }
+
+                Long seriesId = featureofInterestService.findseries(embeddedData.getObsid(), featureofinterestid);
+                boolean check = featureofInterestService.saveTheMeasure(seriesId, embeddedData);
+
+            }
+
+
+            System.out.println("test");
+            return new ResponseEntity<Void>(HttpStatus.CREATED);
+
+        } catch (Exception exc) {
+            exc.printStackTrace();
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 
     @RequestMapping(value = "/getsetup", method = RequestMethod.GET)
     public ResponseEntity<String> getSetup(@RequestParam("identifier") String CordIdentifier) {
 
-//        @RequestParam("identifier") String CordIdentifier
-
         String JsonResp = null;
 
         JsonResp = featureofInterestService.findFeatureByIdentifier(CordIdentifier);
 
-
-        // HttpHeaders headers = new HttpHeaders();
-        //  headers.setLocation(ucBuilder.path("/embedded/{id}").buildAndExpand(endDev.getHumidity()).toUri());
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
 
     }
-
-
 
 
 }

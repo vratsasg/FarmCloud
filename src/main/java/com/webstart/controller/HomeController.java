@@ -36,30 +36,6 @@ public class HomeController {
     @Autowired
     MeasureService measurement;
 
-    @RequestMapping(value = "/ffffff", method = RequestMethod.POST)
-    public ResponseEntity<Void> createcrop(@RequestBody Crop crop) {
-
-        crop.getCropname();
-
-        featureofInterestService.addCrop(crop);
-
-        /*System.out.println("Creating User " + user.getUsername());
-
-        if (userService.isUserExist(user)) {
-            System.out.println("A User with name " + user.getUsername() + " already exist");
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-        }
-
-        userService.saveUser(user);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);*/
-
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
-    }
-
-
 
     @RequestMapping(value = "/getobsproperties", method = RequestMethod.GET)
     public ResponseEntity<String> getObsProperties() {
@@ -93,8 +69,6 @@ public class HomeController {
 
         return new ResponseEntity<Boolean>(isDone, HttpStatus.CREATED);
     }
-    
-    
     
 
     @RequestMapping(value = "/firstPDev", method = RequestMethod.GET)

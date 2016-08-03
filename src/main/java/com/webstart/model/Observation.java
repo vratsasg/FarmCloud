@@ -11,7 +11,8 @@ import java.sql.Timestamp;
 public class Observation {
     @JsonIgnore
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "observationid_seq")
+    @SequenceGenerator(name = "observationid_seq", sequenceName = "observationid_seq", allocationSize = 1)
     private Long observationid;
 
     @Column(name = "seriesid")
@@ -49,6 +50,17 @@ public class Observation {
     @Column(name = "unitid")
     private Long unitid;
 
+
+//    @OneToOne(fetch = FetchType.EAGER, mappedBy="observation", cascade=CascadeType.ALL)
+//    public NumericValue numericValue;
+
+//    public NumericValue getNumericValue() {
+//        return numericValue;
+//    }
+//
+//    public void setNumericValue(NumericValue numericValue) {
+//        this.numericValue = numericValue;
+//    }
 
     public Observation() {
     }

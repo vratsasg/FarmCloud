@@ -1,9 +1,8 @@
 package com.webstart.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -17,6 +16,12 @@ public class NumericValue {
 
     @Column(name = "value")
     private BigDecimal value;
+
+//    @JsonIgnore
+//    @OneToOne(cascade=CascadeType.ALL)
+//    @PrimaryKeyJoinColumn
+//    public Observation observation;
+
 
     public Long getObservationid() {
         return observationid;
@@ -42,4 +47,12 @@ public class NumericValue {
         this.observationid = observationid;
         this.value = value;
     }
+//
+//    public Observation getObservation() {
+//        return observation;
+//    }
+//
+//    public void setObservation(Observation observation) {
+//        this.observation = observation;
+//    }
 }

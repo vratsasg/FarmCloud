@@ -1,5 +1,6 @@
 package com.webstart.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -9,26 +10,26 @@ public class EmbeddedData {
 
 
     private String zbAddress;
-    private float humidity;
-    private float itemp;
-    private float wtemp;
-    private int soil;
-    private LocalDateTime mdate;
+    private String observableProperty;
+    private BigDecimal measureValue;
+    private String datetime;
+    private int obsid;
 
-    public float getHumidity() {
-        return humidity;
+//    private float humidity;
+//    private float itemp;
+//    private float wtemp;
+//    private int soil;
+
+
+    public EmbeddedData() {
     }
 
-    public void setHumidity(float humidity) {
-        this.humidity = humidity;
-    }
-
-    public float getItemp() {
-        return itemp;
-    }
-
-    public void setItemp(float itemp) {
-        this.itemp = itemp;
+    public EmbeddedData(String zbAddress, String observableProperty, BigDecimal measureValue, String datetime, int obsid) {
+        this.zbAddress = zbAddress;
+        this.observableProperty = observableProperty;
+        this.measureValue = measureValue;
+        this.datetime = datetime;
+        this.obsid = obsid;
     }
 
     public String getZbAddress() {
@@ -39,32 +40,36 @@ public class EmbeddedData {
         this.zbAddress = zbAddress;
     }
 
-    public float getWtemp() {
-        return wtemp;
+    public String getObservableProperty() {
+        return observableProperty;
     }
 
-    public void setWtemp(float wtemp) {
-        this.wtemp = wtemp;
+    public void setObservableProperty(String observableProperty) {
+        this.observableProperty = observableProperty;
     }
 
-    public int getSoil() {
-        return soil;
+    public BigDecimal getMeasureValue() {
+        return measureValue;
     }
 
-    public LocalDateTime getMdate() {
-        return mdate;
+    public void setMeasureValue(BigDecimal measureValue) {
+        this.measureValue = measureValue;
     }
 
-    public void setMdate(LocalDateTime mdate) {
-        this.mdate = mdate;
+    public String getDatetime() {
+        return datetime;
     }
 
-    public void setSoil(int soil) {
-        this.soil = soil;
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
     }
 
+    public int getObsid() {
+        return obsid;
+    }
 
-
-
+    public void setObsid(int obsid) {
+        this.obsid = obsid;
+    }
 }
 
