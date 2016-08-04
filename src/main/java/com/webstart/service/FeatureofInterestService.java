@@ -21,4 +21,6 @@ public interface FeatureofInterestService {
         boolean saveTheMeasure(Long series, EmbeddedData embeddedData);
 
         String findIrrigationAndMeasuring(String corD);
+
+        String changeMeasuringFlag(int usid, long typeId);
 }

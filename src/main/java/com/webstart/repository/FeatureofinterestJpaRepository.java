@@ -3,9 +3,11 @@ package com.webstart.repository;
 import com.webstart.DTO.FeatureidIdentifier;
 import com.webstart.model.Featureofinterest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -36,4 +38,19 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     @Query("select fi.identifier,fi.irrigation,fi.measuring FROM Featureofinterest as fi  WHERE fi.parentid IN :pid")
     List<Object[]> getIdentifierFlags(@Param("pid") Long parId);
 
+    @Modifying
+    @Query("update Featureofinterest f set f.measuring = true where f.userid IN :usid and f.featureofinteresttypeid IN :tpid")
+    @Transactional
+    void setMeasuringFlag(@Param("usid") int useid, @Param("tpid") long ftypeid);
+
+//
+//    @Modifying
+//    @Query("update User u set u.firstname = ?1, u.lastname = ?2 where u.id = ?3")
+//    void setUserInfoById(String firstname, String lastname, Integer userId);
+//
+//
+//    @Modifying
+//    @Query("update JsonContactImport x set x.isImported = true where x.id in :ids")
+//    @Transactional
+//    void updateImported(@Param("ids") List<Long> ids);
 }

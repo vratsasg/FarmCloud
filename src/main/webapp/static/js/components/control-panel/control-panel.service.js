@@ -38,6 +38,17 @@
                         return $q.reject(errResponse);
                     }
                 );
+            },
+            setMeasuringFlags: function () {
+                return $http.get('takeMeasures').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (errResponse) {
+                        console.error('Error while send request for start measuring Service');
+                        return $q.reject(errResponse);
+                    }
+                );
             }
         }
 

@@ -85,6 +85,22 @@
                 });
             };
 
+            model.showModalMeasuring = function () {
+                model.modalInstance = $uibModal.open({
+                    animation: model.animationsEnabled,
+                    template: '<measuring-modal></measuring-modal>',
+                    appendTo: $document.find('control-panel')
+                });
+
+                model.modalInstance.result.then(function (selectedItem) {
+                    console.log('EEEEEEE :' + selectedItem);
+                }, function () {
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+
+
+
             model.toggleAnimation = function () {
                 model.animationsEnabled = !model.animationsEnabled;
             };

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 
@@ -77,7 +78,23 @@ public class EmbeddedController {
         JsonResp = featureofInterestService.findIrrigationAndMeasuring(Cordinator);
 
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
+    }
 
+
+    @RequestMapping(value = "/takeMeasures", method = RequestMethod.GET)
+    public ResponseEntity<String> startMeasuring(HttpServletRequest request) {
+
+        String JsonResp = null;
+
+        Users user = (Users) request.getSession().getAttribute("current_user");
+
+
+        JsonResp = featureofInterestService.changeMeasuringFlag(user.getUser_id(), 3L);
+
+
+        // JsonResp = featureofInterestService.findIrrigationAndMeasuring(Cordinator);
+
+        return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
     }
 
 
