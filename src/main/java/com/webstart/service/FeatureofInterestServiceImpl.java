@@ -381,14 +381,21 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
             featureofinterestJpaRepository.setMeasuringFlag(usid, typeId);
 
-            return returned.put("Flag", "true").toString();
+            returned.put("Flag", "true");
+
+
         } catch (Exception e) {
 
 
             System.out.println(e);
 
-            return returned.put("Flag", "false").toString();
+            returned.put("Flag", "false").toString();
         }
+
+
+        System.out.println(returned.toJSONString());
+
+        return returned.toJSONString();
 
 
     }
