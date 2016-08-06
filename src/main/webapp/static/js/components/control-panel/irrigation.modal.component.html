@@ -1,7 +1,8 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
     </button>
-    <h4 class="modal-title" id="myModalLabel">Start irrigation</h4>
+    <h4 class="modal-title" id="myModalLabel">Start irrigation for the: <span style="color: #71843f"><strong>{{model.parent.myDevice}}</strong></span>
+    </h4>
 </div>
 
 <form class="form-horizontal" id="startIrrigation_form">
@@ -12,13 +13,14 @@
 
             <div class="dropdown">
                 <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="" href="">
-                    <div class="input-group"><input type="text" class="form-control" data-ng-model="model.dateto">
+                    <div class="input-group"><input type="text" class="form-control" data-ng-model="model.datefrom">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                 </a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <datetimepicker data-ng-model="model.datefrom"
-                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2', modelType: 'moment', startView: 'hour', minView: 'minute' }"
+                                    data-before-render="model.beforeRenderStartDate($view, $dates, $leftDate, $upDate, $rightDate)"/>
                 </ul>
             </div>
         </div>
@@ -35,7 +37,8 @@
                 </a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <datetimepicker data-ng-model="model.dateto"
-                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }"/>
+                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown3',  modelType: 'moment', startView: 'hour', minView: 'minute' }"
+                                    data-before-render=" model.beforeRenderEndDate($view, $dates, $leftDate, $upDate, $rightDate)"/>
                 </ul>
             </div>
         </div>
@@ -43,26 +46,19 @@
 
         <div class="form-group col-md-8 col-sm-8 cols-xl-8 xol-xs-8">
             <label class="control-label">Irrigation measure (lt)</label>
-            <input type="number" step="any" min="0"/></input>
+            <input type="number" class="form-control" step="any" min="0" ng-model="model.modWaterConsume"/></input>
         </div>
 
         <div class="form-group col-md-8 col-sm-8 cols-xl-8 xol-xs-8">
-            <label class="control-label">Irrigation Place</label>
-            <select class="control-label" multiple="multiple">
-                <option ng-repeat="dev in model.parent.devices.enddevices" value="{{dev.identifier}}">
-                    {{dev.identifier}}
-                </option>
-            </select>
-        </div>
-
-        <div class="form-group col-md-8 col-sm-8 cols-xl-8 xol-xs-8">
-            <button type="submit" class="btn btn-primary" name="event" value="START" form="startIrrigation_form">Start
+            <button type="submit" class="btn btn-primary" name="event" value="START" form="startIrrigation_form"
+                    ng-click="model.submit()">Start
             </button>
             <button type="button" class="btn btn-default" ng-click="model.cancel()">Cancel</button>
         </div>
 
     </div>
-    <div class="modal-footer">
 
+    <div class="modal-footer">
     </div>
+
 </form>

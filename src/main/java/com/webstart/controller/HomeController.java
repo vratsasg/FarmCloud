@@ -160,5 +160,30 @@ public class HomeController {
         return new ResponseEntity<String>(sentData, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/setIrrigationDates", method = RequestMethod.POST)
+    public ResponseEntity<String> setIrrigationDates(@RequestParam("identifier") String device, @RequestParam("dtfrom") String datefrom, @RequestParam("dtto") String dateto, HttpServletRequest request) {
+        Users users = (Users) request.getSession().getAttribute("current_user");
+
+        boolean sentData;
+
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date from = dateFormat.parse(datefrom);
+            Date to = dateFormat.parse(dateto);
+
+            sentData = featureofInterestService.setDeviceIrrigaDate(users.getUser_id(), device, from, to);
+            if (!sentData)
+                return new ResponseEntity<String>("false", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>("false", HttpStatus.EXPECTATION_FAILED);
+        }
+
+        return new ResponseEntity<String>("true", HttpStatus.OK);
+    }
+
+    //    @RequestMapping(value = "/userprofile", method = RequestMethod.POST)
+    //    public ResponseEntity<Boolean> saveUserProfile(HttpServletRequest httpServletRequest, @RequestBody UserProfile userprofile) {
+
 
 }

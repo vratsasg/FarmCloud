@@ -10,6 +10,7 @@ import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.Date;
 import java.util.List;
 
 public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofinterest, Integer> {
@@ -43,6 +44,11 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     @Transactional
     void setMeasuringFlag(@Param("usid") int useid, @Param("tpid") long ftypeid);
 
+
+    @Modifying
+    @Query("update Featureofinterest f set f.irrigation = true, f.datetimefrom = :dtfrom, f.datetimeto = :dtto where f.userid = :usid and f.identifier = :identifier")
+    @Transactional
+    void setDeviceIrrigDates(@Param("usid") int userid, @Param("identifier") String device, @Param("dtfrom") Date datetimefrom, @Param("dtto") Date datetimeto); //TODO return boolean true/false
 //
 //    @Modifying
 //    @Query("update User u set u.firstname = ?1, u.lastname = ?2 where u.id = ?3")

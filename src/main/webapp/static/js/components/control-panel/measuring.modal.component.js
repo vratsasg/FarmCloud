@@ -25,21 +25,15 @@
 
                         ControlPanelService.setMeasuringFlags().then(
                             function (returnedData) {
-
                                 defer.resolve(returnedData);
-
                                 instance.close(returnedData);
-
                             }, function (errResponse) {
                                 console.error('Error while sending request for starting measuring');
                             });
-
-
                     };
 
                     instance.result.then(function (returnedData) {
-
-                        console.log('testModal Measur');
+                        console.log('testModal Measure');
                     }, function () {
                         console.log('Modal dismissed at: ' + new Date());
                     });

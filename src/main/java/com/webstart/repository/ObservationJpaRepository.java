@@ -60,4 +60,5 @@ public interface ObservationJpaRepository extends JpaRepository<Observation, Lon
             nativeQuery = true)
     List<Object[]> findLastMeasures(int userId, String identifier, Timestamp t1);
 
+
 }

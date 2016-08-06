@@ -40,12 +40,23 @@
                 );
             },
             setMeasuringFlags: function () {
-                return $http.get('takeMeasures').then(
+                return $http.post('takeMeasures').then(
                     function (response) {
                         return response.data;
                     },
                     function (errResponse) {
                         console.error('Error while send request for start measuring Service');
+                        return $q.reject(errResponse);
+                    }
+                );
+            },
+            setFeatureDates: function (identifier, dtfrom, dtto) {
+                return $http.post('setIrrigationDates?identifier=' + identifier + "&dtfrom=" + dtfrom.format("YYYY-MM-DD HH:mm:ss") + "&dtto=" + dtto.format("YYYY-MM-DD HH:mm:ss")).then(
+                    function (response) {
+                        return response;
+                    },
+                    function (errResponse) {
+                        console.error('Error while firstpageService devices');
                         return $q.reject(errResponse);
                     }
                 );
