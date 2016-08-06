@@ -36,11 +36,12 @@
                             }
                         }
 
-                        var Ch = moment.unix(parseInt(model.unixDates[0])).format("DD/MM/YYYY");
+                        var ch = moment.unix(parseInt(model.unixDates[0])).format("DD/MM/YYYY");
                         for (var g = 0; g < model.forecastData.list.length; g++) {
-                            var Chk = moment.unix(parseInt(model.forecastData.list[g].dt)).format("DD/MM/YYYY");
+                            // var Chk = moment.unix(parseInt(model.forecastData.list[g].dt)).format("DD/MM/YYYY");
+                            var chk = moment(model.forecastData.list[g].dt_txt).format("DD/MM/YYYY");
 
-                            if (Ch === Chk) {
+                            if (ch === chk) {
                                 model.tableData.push(
                                     {
                                         temp: (model.forecastData.list[g].main.temp - 273.15).toFixed(2),
@@ -187,11 +188,11 @@
 
                 model.tableData = [];
 
-                var Ch = moment.unix(parseInt(parm)).format("DD/MM/YYYY");
+                var ch = moment.unix(parseInt(parm)).format("DD/MM/YYYY");
                 for (var g = 0; g < model.forecastData.list.length; g++) {
-                    var Chk = moment.unix(parseInt(model.forecastData.list[g].dt)).format("DD/MM/YYYY");
+                    var chk = moment(model.forecastData.list[g].dt_txt).format("DD/MM/YYYY");
 
-                    if (Ch === Chk) {
+                    if (ch === chk) {
                         model.tableData.push(
                             {
                                 temp: (model.forecastData.list[g].main.temp - 273.15).toFixed(2),
