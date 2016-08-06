@@ -14,8 +14,8 @@
                 var defer = $q.defer();
 
                 model.$onInit = function () {
-                    model.datefrom = new Date();
-                    //model.dateto = new Date();
+                    model.datefrom = moment();
+                    model.irrigationDuration = "0 hours and 0 minutes";
                     model.modWaterConsume = 0;
                     var instance = model.parent.modalInstance;
 
@@ -23,8 +23,10 @@
                         instance.dismiss('cancel');
                     };
                     model.submit = function () {
+                        console.log(model.datefrom);
+                        console.log(model.dateto);
                         //setIrrigationDates
-                        ControlPanelService.setFeatureDates(model.parent.myDevice, model.datefrom, model.dateto).then(
+                        ControlPanelService.setFeatureDates(model.parent.myDevice, model.datefrom.format("YYYY-MM-DD HH:mm:ss"), model.dateto.format("YYYY-MM-DD HH:mm:ss")).then(
                             function (returnedData) {
                                 defer.resolve(returnedData);
                                 instance.close(returnedData);
@@ -39,6 +41,23 @@
                         console.log('Modal dismissed at: ' + new Date());
                     });
                 };
+
+                model.$onChanges = function (changesObj) {
+                    var newstarttime = changesObj.datefrom;
+                    var newendtime = changesObj.dateto;
+
+                    if (newstarttime && newendtime) {
+                        var totalHours = (newendtime.diff(newstarttime, 'hours'));
+                        if (totalHours > 12) { //12 hours of irrigation is too much???
+                            model.dateto = "";
+                        }
+
+                        var totalMinutes = newendtime.diff(newstarttime, 'minutes');
+                        var clearMinutes = totalMinutes % 60;
+                        model.irrigationDuration = totalHours + " hours and " + clearMinutes + " minutes";
+                        console.log(totalHours + " hours and " + clearMinutes + " minutes");
+                    }
+                }
 
                 model.beforeRenderStartDate = function ($view, $dates, $leftDate, $upDate, $rightDate) {
                     var now = moment();

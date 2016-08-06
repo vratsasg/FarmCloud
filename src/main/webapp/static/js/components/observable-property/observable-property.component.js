@@ -49,10 +49,7 @@
 
 
             model.updateDateFrom = function (dfr) {
-
-
                 var datefrom = moment(new Date(dfr)).format("YYYY-MM-DD HH:mm:ss");
-
                 var dateto = moment(new Date(model.dateto)).format("YYYY-MM-DD HH:mm:ss");
 
                 model.tableParams = new ngTableParams({
@@ -68,9 +65,6 @@
                         return TableData(model.myDevice, params, datefrom, dateto);
                     }
                 });
-
-                console.log(dfr);
-
 
             }
 
@@ -94,15 +88,7 @@
                     }
                 });
 
-                console.log(dto);
-
-
             }
-
-
-
-
-
 
             model.$onInit = function () {
                 var deferDev = $q.defer();
@@ -287,6 +273,28 @@
                         classed: 'dashed'
                     }
                 ];
+            }
+
+            model.beforeRenderStartDate = function ($view, $dates, $leftDate, $upDate, $rightDate) {
+                if (model.dateto) {
+                    var activeDate = moment(model.dateto);
+                    for (var i = 0; i < $dates.length; i++) {
+                        if ($dates[i].localDateValue() >= activeDate.valueOf()) {
+                            $dates[i].selectable = false;
+                        }
+                    }
+                }
+            }
+
+            model.beforeRenderEndDate = function ($view, $dates, $leftDate, $upDate, $rightDate) {
+                if (model.datefrom) {
+                    var activeDate = moment(model.datefrom).subtract(1, $view).add(1, 'minute');
+                    for (var i = 0; i < $dates.length; i++) {
+                        if ($dates[i].localDateValue() <= activeDate.valueOf()) {
+                            $dates[i].selectable = false;
+                        }
+                    }
+                }
             }
 
 

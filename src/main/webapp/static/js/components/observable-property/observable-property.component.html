@@ -28,7 +28,8 @@
                 </a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <datetimepicker data-ng-model="model.datefrom" ng-change="model.updateDateFrom(model.datefrom)"
-                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"
+                                    data-before-render="model.beforeRenderStartDate($view, $dates, $leftDate, $upDate, $rightDate)"/>
                 </ul>
             </div>
 
@@ -54,7 +55,8 @@
                 </a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <datetimepicker data-ng-model="model.dateto" ng-change="model.updateDateTo(model.dateto)"
-                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }"/>
+                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }"
+                                    data-before-render=" model.beforeRenderEndDate($view, $dates, $leftDate, $upDate, $rightDate)"/>
                 </ul>
             </div>
 

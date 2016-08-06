@@ -114,7 +114,6 @@ public class HomeController {
             System.out.println(sentData);
 
             if (sentData == null) {
-
                 sentData = "{\"unit\":\"\",\"measuredata\":[]}";
             }
 
@@ -181,9 +180,4 @@ public class HomeController {
 
         return new ResponseEntity<String>("true", HttpStatus.OK);
     }
-
-    //    @RequestMapping(value = "/userprofile", method = RequestMethod.POST)
-    //    public ResponseEntity<Boolean> saveUserProfile(HttpServletRequest httpServletRequest, @RequestBody UserProfile userprofile) {
-
-
 }
