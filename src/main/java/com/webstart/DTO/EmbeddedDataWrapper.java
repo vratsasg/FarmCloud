@@ -1,7 +1,5 @@
 package com.webstart.DTO;
 
-import com.webstart.model.EmbeddedData;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -29,12 +29,10 @@ public class ObservablePropertyMinMax {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "featureofinterestid", insertable = false, updatable = false)
-    @JsonIgnore
     private Featureofinterest featureofinterest;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "observablepropertyid", insertable = false, updatable = false)
-    @JsonIgnore
     private ObservableProperty observableProperty;
 
     public ObservablePropertyMinMax() {

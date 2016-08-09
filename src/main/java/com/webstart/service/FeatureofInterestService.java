@@ -1,8 +1,8 @@
 package com.webstart.service;
 
 import com.webstart.DTO.FeatureidIdentifier;
-import com.webstart.model.Crop;
-import com.webstart.model.EmbeddedData;
+import com.webstart.DTO.Crop;
+import com.webstart.DTO.EmbeddedData;
 import org.json.simple.JSONObject;
 
 import java.util.Date;
@@ -16,6 +16,8 @@ public interface FeatureofInterestService {
         List<FeatureidIdentifier> findFeatureIdByIdentifier(List<String> stringList);
         JSONObject findCropInfo(int id);
         JSONObject findByUserAndType(int id);
+
+        String findMinMaxbyUserId(Integer userid);
 
         Long findseries(int obs, Integer fid);
         String findIrrigationAndMeasuring(String corD);

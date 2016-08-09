@@ -1,7 +1,8 @@
-package com.webstart.model;
+package com.webstart.DTO;
+
+import com.webstart.DTO.ValueTime;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by DimDesktop on 3/7/2016.

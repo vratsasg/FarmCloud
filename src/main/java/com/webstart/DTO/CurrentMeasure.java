@@ -1,4 +1,4 @@
-package com.webstart.model;
+package com.webstart.DTO;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

@@ -9,7 +9,7 @@
                 parent: '^controlPanel'
             },
             controllerAs: "model",
-            controller: function (ControlPanelService, $q) {
+            controller: function (ControlPanelService, $q, $scope) {
                 var model = this;
                 var defer = $q.defer();
 
@@ -23,33 +23,47 @@
                         instance.dismiss('cancel');
                     };
                     model.submit = function () {
-                        console.log(model.datefrom);
-                        console.log(model.dateto);
-                        //setIrrigationDates
-                        ControlPanelService.setFeatureDates(model.parent.myDevice, model.datefrom.format("YYYY-MM-DD HH:mm:ss"), model.dateto.format("YYYY-MM-DD HH:mm:ss")).then(
-                            function (returnedData) {
-                                defer.resolve(returnedData);
-                                instance.close(returnedData);
-                            }, function (errResponse) {
-                                console.error('Error while sending request for starting measuring');
-                            });
+                        //console.log(model.datefrom);
+                        //console.log(model.dateto);
+                        if (model.datefrom && model.dateto) {
+                            //setIrrigationDates
+                            ControlPanelService.setFeatureDates(model.parent.myDevice, model.datefrom.format("YYYY-MM-DD HH:mm:ss"), model.dateto.format("YYYY-MM-DD HH:mm:ss")).then(
+                                function (returnedData) {
+                                    defer.resolve(returnedData);
+                                    instance.close(returnedData);
+                                }, function (errResponse) {
+                                    console.error('Error while sending request for starting measuring');
+                                });
+                        }
                     }
 
-                    instance.result.then(function () {
-                        console.log('test');
-                    }, function () {
-                        console.log('Modal dismissed at: ' + new Date());
-                    });
                 };
 
-                model.$onChanges = function (changesObj) {
-                    var newstarttime = changesObj.datefrom;
-                    var newendtime = changesObj.dateto;
+                model.updateDateFrom = function (newstarttime) {
+                    var newendtime = model.dateto;
 
                     if (newstarttime && newendtime) {
                         var totalHours = (newendtime.diff(newstarttime, 'hours'));
                         if (totalHours > 12) { //12 hours of irrigation is too much???
                             model.dateto = "";
+                            return;
+                        }
+
+                        var totalMinutes = newendtime.diff(newstarttime, 'minutes');
+                        var clearMinutes = totalMinutes % 60;
+                        model.irrigationDuration = totalHours + " hours and " + clearMinutes + " minutes";
+                        console.log(totalHours + " hours and " + clearMinutes + " minutes");
+                    }
+                }
+
+                model.updateDateTo = function (newendtime) {
+                    var newstarttime = model.datefrom;
+
+                    if (newstarttime && newendtime) {
+                        var totalHours = (newendtime.diff(newstarttime, 'hours'));
+                        if (totalHours > 12) { //12 hours of irrigation is too much???
+                            model.dateto = "";
+                            return;
                         }
 
                         var totalMinutes = newendtime.diff(newstarttime, 'minutes');

@@ -40,7 +40,7 @@
                 );
             },
             setMeasuringFlags: function () {
-                return $http.post('takeMeasures').then(
+                return $http.get('takeMeasures').then(
                     function (response) {
                         return response.data;
                     },

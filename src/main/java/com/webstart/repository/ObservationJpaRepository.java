@@ -1,11 +1,11 @@
 package com.webstart.repository;
 
 
-import com.webstart.model.CurrentMeasure;
+import com.webstart.DTO.CurrentMeasure;
 import com.webstart.model.Observation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+
 import java.sql.Timestamp;
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.webstart.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webstart.model.Crop;
+import com.webstart.DTO.FeatureObsProp;
 import com.webstart.model.UserProfile;
 import com.webstart.model.Users;
 import com.webstart.service.FeatureofInterestService;
@@ -17,11 +17,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 
 @Controller
@@ -86,9 +85,6 @@ public class HomeController {
         String stationcoords = featureofInterestService.findByFeatureofinterestid(Integer.parseInt(id));
         return new ResponseEntity<String>(stationcoords, HttpStatus.OK);
     }
-
-
-
 
     @RequestMapping(value = "/charthome/{id}", method = RequestMethod.GET)
     public ResponseEntity<String> getChartByDevice(@PathVariable("id") String id) {
@@ -162,7 +158,6 @@ public class HomeController {
     @RequestMapping(value = "/setIrrigationDates", method = RequestMethod.POST)
     public ResponseEntity<String> setIrrigationDates(@RequestParam("identifier") String device, @RequestParam("dtfrom") String datefrom, @RequestParam("dtto") String dateto, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
-
         boolean sentData;
 
         try {
@@ -180,4 +175,22 @@ public class HomeController {
 
         return new ResponseEntity<String>("true", HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/wateringprofile/minmax", method = RequestMethod.GET)
+    public ResponseEntity<String> getStationCoords(HttpServletRequest request) {
+        String jsonInString = null;
+
+        try {
+//            Users users = (Users) request.getSession().getAttribute("current_user");
+//            jsonInString = featureofInterestService.findMinMaxbyUserId(users.getUser_id());
+            jsonInString = featureofInterestService.findMinMaxbyUserId(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>("false", HttpStatus.EXPECTATION_FAILED);
+        }
+
+        return new ResponseEntity<String>(jsonInString, HttpStatus.OK);
+    }
+
+
 }

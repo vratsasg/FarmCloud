@@ -1,5 +1,6 @@
 package com.webstart.controller;
 
+import com.webstart.DTO.EmbeddedData;
 import com.webstart.DTO.EmbeddedDataWrapper;
 import com.webstart.DTO.FeatureidIdentifier;
 import com.webstart.model.*;
@@ -33,7 +34,6 @@ public class EmbeddedController {
             identList = new ArrayList<String>(new LinkedHashSet<String>(embeddedDataWrapper.GetFeatureIdentifiers()));
             featureidIdentifiers = featureofInterestService.findFeatureIdByIdentifier(identList);
 
-
             for (final EmbeddedData embeddedData : embeddedDataWrapper.getEmbeddedDataList()) {
                 int featureofinterestid = 0;
                 for (int i = 0; i < featureidIdentifiers.size(); i++) {
@@ -44,11 +44,8 @@ public class EmbeddedController {
 
                 Long seriesId = featureofInterestService.findseries(embeddedData.getObsid(), featureofinterestid);
                 boolean check = featureofInterestService.saveTheMeasure(seriesId, embeddedData);
-
             }
 
-
-            System.out.println("test");
             return new ResponseEntity<Void>(HttpStatus.CREATED);
 
         } catch (Exception exc) {
@@ -60,38 +57,24 @@ public class EmbeddedController {
 
     @RequestMapping(value = "/getsetup", method = RequestMethod.GET)
     public ResponseEntity<String> getSetup(@RequestParam("identifier") String CordIdentifier) {
-
         String JsonResp = null;
-
         JsonResp = featureofInterestService.findFeatureByIdentifier(CordIdentifier);
-
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
-
     }
 
 
     @RequestMapping(value = "/getMeasIrr", method = RequestMethod.GET)
     public ResponseEntity<String> getMeasuringIrrigation(@RequestParam("identifier") String Cordinator) {
-
         String JsonResp = null;
-
         JsonResp = featureofInterestService.findIrrigationAndMeasuring(Cordinator);
-
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/takeMeasures", method = RequestMethod.GET)
     public ResponseEntity<String> startMeasuring(HttpServletRequest request) {
-
         String JsonResp = null;
-
         Users user = (Users) request.getSession().getAttribute("current_user");
-
-
         JsonResp = featureofInterestService.changeMeasuringFlag(user.getUser_id(), 3L);
-
-
         // JsonResp = featureofInterestService.findIrrigationAndMeasuring(Cordinator);
 
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);

@@ -99,36 +99,9 @@
                 });
             };
 
-
-
             model.toggleAnimation = function () {
                 model.animationsEnabled = !model.animationsEnabled;
             };
-
-
-            //$scope.$watch('model.myDevice', function () {
-            //
-            //    //var newValue = changesObj.enddev.currentValue;
-            //    var newValue = model.myDevice;
-            //    var defer = $q.defer();
-            //
-            //    ControlPanelService.getMeasuresByLastDate(newValue).then(
-            //        function (lastDateMeasures) {
-            //            console.log(lastDateMeasures);
-            //
-            //            for (var i = 0; i < lastDateMeasures.length; i++) {
-            //                lastDateMeasures[i].phenomenonTime = moment(parseInt(lastDateMeasures[i].phenomenonTime * 1000)).format("dddd, MMMM Do h:mma");
-            //            }
-            //
-            //            model.lastmeasuresData = lastDateMeasures;
-            //        },
-            //        function (errResponse) {
-            //            console.error('Error while fetching devices for firstpage');
-            //        }
-            //    );
-            //});
-
-
 
 
         }

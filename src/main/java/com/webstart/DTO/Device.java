@@ -1,4 +1,4 @@
-package com.webstart.model;
+package com.webstart.DTO;
 
 
 public class Device {

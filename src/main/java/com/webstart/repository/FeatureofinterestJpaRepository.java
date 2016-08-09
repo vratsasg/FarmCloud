@@ -10,6 +10,9 @@ import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
+import javax.persistence.SqlResultSetMapping;
 import java.util.Date;
 import java.util.List;
 
@@ -18,10 +21,22 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
 
     List<Featureofinterest> findByUserid(int id);
 
-    @Query("select fi.identifier ,fi.name,obs.Identifier,prc.identifier,prc.descriptionfile from Featureofinterest as fi inner join fi.seriesList as flist inner join flist.observableProperty as obs inner join flist.procedure as prc WHERE fi.featureofinterestid IN :inclList")
+    List<Featureofinterest> findByUseridAndFeatureofinteresttypeid(int id, long l);
+
+    @Query("select fi.identifier ,fi.name,obs.Identifier,prc.identifier,prc.descriptionfile " +
+            "from Featureofinterest as fi " +
+            "inner join fi.seriesList as flist " +
+            "inner join flist.observableProperty as obs " +
+            "inner join flist.procedure as prc " +
+            "WHERE fi.featureofinterestid IN :inclList")
     List<Object[]> find(@Param("inclList") List<Integer> featuresid);
 
-    List<Featureofinterest> findByUseridAndFeatureofinteresttypeid(int id, long l);
+    @Query("select feature.featureofinterestid, feature.identifier, feature.name, obs.Description as obspropertyDescr, obspropval.obspropid, obspropval.minval, obspropval.maxval " +
+            "from Featureofinterest as feature " +
+            "join feature.obspropminmaxList as obspropval " +
+            "join obspropval.observableProperty as obs " +
+            "where feature.userid = :user_id")
+    List<Object[]> findFeatureMiMaxValuesByUserId(@Param("user_id") Integer userid);
 
     @Query("select fi.datetimefrom,fi.datetimeto FROM Featureofinterest as fi  WHERE fi.identifier IN :identif")
     List<Object[]> findByIdentifier(@Param("identif") String identif);
@@ -38,6 +53,7 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
 
     @Query("select fi.identifier,fi.irrigation,fi.measuring FROM Featureofinterest as fi  WHERE fi.parentid IN :pid")
     List<Object[]> getIdentifierFlags(@Param("pid") Long parId);
+
 
     @Modifying
     @Query("update Featureofinterest f set f.measuring = true where f.userid IN :usid and f.featureofinteresttypeid IN :tpid")

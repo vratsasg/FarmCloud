@@ -2,7 +2,9 @@ package com.webstart.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.webstart.DTO.ObservableMeasure;
 import com.webstart.DTO.ObservationMeasure;
+import com.webstart.DTO.ValueTime;
 import com.webstart.model.*;
 import com.webstart.repository.ObservablePropertyJpaRepository;
 import com.webstart.repository.ObservationJpaRepository;
@@ -15,9 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 

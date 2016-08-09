@@ -10,7 +10,9 @@
             {path: "/observableProperty/:id/:description", component: "observableProperty", name: "ObservableProperty"},
             {path: "/getweather", component: "weatherApi", name: "WeatherApi"},
             {path: "/controlpanel", component: "controlPanel", name: "ControlPanel"},
-            {path: "/**", component: "firstPage", name: "Firstpage"}
+            {path: "/**", component: "firstPage", name: "Firstpage"},
+            {path: "/wateringprofile", component: "wateringProfile", name: "WateringProfile"},
+
         ],
         controller: function () {
         }

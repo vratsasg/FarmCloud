@@ -19,6 +19,7 @@
                 </a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <datetimepicker data-ng-model="model.datefrom"
+                                    ng-change="model.updateDateFrom(model.datefrom)"
                                     data-datetimepicker-config="{ dropdownSelector: '#dropdown2', modelType: 'moment', startView: 'hour', minView: 'minute' }"
                                     data-before-render="model.beforeRenderStartDate($view, $dates, $leftDate, $upDate, $rightDate)"/>
                 </ul>
@@ -37,6 +38,7 @@
                 </a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <datetimepicker data-ng-model="model.dateto"
+                                    ng-change="model.updateDateTo(model.dateto)"
                                     data-datetimepicker-config="{ dropdownSelector: '#dropdown3',  modelType: 'moment', startView: 'hour', minView: 'minute' }"
                                     data-before-render=" model.beforeRenderEndDate($view, $dates, $leftDate, $upDate, $rightDate)"/>
                 </ul>

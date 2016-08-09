@@ -14,13 +14,11 @@
                 model.id = next.params.id;
                 var StrDescr = next.params.description;
                 model.descr = StrDescr.replace(/%20/g, " ");
-
             };
 
-
             model.measures = "";
+            //TODO set count of measures from db
             model.total = 20;
-
 
             model.updateMyDevice = function (myD) {
 
@@ -95,13 +93,14 @@
                 //var datefrom = moment("2015-05-21 00:00:00", "YYYY-MM-DD HH:mm:ss");
                 //var dateto = moment("2015-05-21 23:59:59", "YYYY-MM-DD HH:mm:ss");
 
-                var datefrom = moment(new Date("2015-05-21 00:00:00")).format("YYYY-MM-DD HH:mm:ss");
-                var dateto = moment(new Date("2015-05-21 23:59:59")).format("YYYY-MM-DD HH:mm:ss");
+                //var datefrom = moment(new Date("2015-05-21 00:00:00")).format("YYYY-MM-DD HH:mm:ss");
+                //var dateto = moment(new Date("2015-05-21 23:59:59")).format("YYYY-MM-DD HH:mm:ss");
 
-                model.datefrom = datefrom;
-                model.dateto = dateto;
+                model.datefrom = moment("2015-05-21 00:00:00", "YYYY-MM-DD HH:mm:ss");
+                model.dateto = moment("2015-05-21 23:59:59", "YYYY-MM-DD HH:mm:ss");
 
-
+                //model.datefrom = moment().subtract(1, 'days').format("YYYY-MM-DD HH:mm:ss");
+                //model.dateto = moment().format("YYYY-MM-DD HH:mm:ss");
 
                 ObservablePropertyService.getDevices().then(
                     function (da) {
@@ -119,7 +118,7 @@
                             total: model.total,
                             getData: function (params) {
 
-                                return TableData(model.myDevice, params, datefrom, dateto);
+                                return TableData(model.myDevice, params, model.datefrom, model.dateto);
                             }
                         });
 

@@ -3,7 +3,7 @@ package com.webstart.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webstart.DTO.FeatureidIdentifier;
+import com.webstart.DTO.*;
 import com.webstart.model.*;
 import com.webstart.repository.FeatureofinterestJpaRepository;
 
@@ -13,10 +13,8 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.geo.Point;
 
-import java.awt.*;
-
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,7 +35,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
     @Autowired
     NumericValueJpaRepository numericValueJpaRepository;
 
-    @Override
     public boolean addCrop(Crop crop) {
         Featureofinterest featureofinterest = new Featureofinterest();
 
@@ -66,7 +63,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         return false;
     }
 
-    @Override
     public JSONObject findCropInfo(int id) {
         List<Featureofinterest> featureofinterestList = new ArrayList<Featureofinterest>();
 
@@ -172,7 +168,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         return obj;
     }
 
-
     public JSONObject findByUserAndType(int id) {
 
         JSONObject finobj = new JSONObject();
@@ -195,6 +190,53 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         return finobj;
     }
 
+    public String findMinMaxbyUserId(Integer userid) {
+        String jsonInString = null;
+        try {
+            List<Object[]> results = featureofinterestJpaRepository.findFeatureMiMaxValuesByUserId(userid);
+
+            List<FeatureObsProp> featureobsPropList = new ArrayList<FeatureObsProp>();
+            featureobsPropList.add(new FeatureObsProp((Integer) results.get(0)[0], results.get(0)[1].toString(), results.get(0)[2].toString()));
+
+            for (Object[] obj : results) {
+                boolean newaddition = true;
+                for (int i = 0; i < featureobsPropList.size(); i++) {
+                    FeatureObsProp feature = featureobsPropList.get(i);
+                    if ((Integer) obj[0] == feature.getFeatureofinterestid()) {
+                        newaddition = false;
+                    }
+                }
+
+                if (newaddition) {
+                    featureobsPropList.add(new FeatureObsProp((Integer) obj[0], obj[1].toString(), obj[2].toString()));
+                }
+//                for(FeatureObsProp feature: featureobsPropList) {
+//                }
+            }
+
+            //List<FeatureObsProp> uniqueFeatureObsPropList = new ArrayList<FeatureObsProp>(new LinkedHashSet<FeatureObsProp>(featureobsPropList));
+
+            for (Object[] obj : results) {
+                for (FeatureObsProp feature : featureobsPropList) {
+                    if ((Integer) obj[0] == feature.getFeatureofinterestid()) {
+                        feature.getFeatureObsproplist().add(new FeatureMinMaxValue(((Long) obj[4]).longValue(), obj[3].toString(), (BigDecimal) obj[5], (BigDecimal) obj[6]));
+                    }
+                }
+            }
+            //feature.featureofinterestid, feature.identifier, feature.name, obs.Description AS obspropertyDescr, obspropval.obspropid, obspropval.minval, obspropval.maxval
+
+            //Object to JSON in String
+            ObjectMapper mapper = new ObjectMapper();
+
+            jsonInString = mapper.writeValueAsString(featureobsPropList);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return jsonInString;
+
+    }
+
     public String findByFeatureofinterestid(int id) {
         ObjectMapper mapper = new ObjectMapper();
 
@@ -213,7 +255,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         System.out.println(jsonInString);
         return jsonInString;
     }
-
 
     public String findFeatureByIdentifier(String identi) {
         String jsonRes = null;
@@ -264,7 +305,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         return jsonRes;
     }
 
-    @Override
     public List<FeatureidIdentifier> findFeatureIdByIdentifier(List<String> idStr) {
         List<FeatureidIdentifier> returnedList = new ArrayList<FeatureidIdentifier>();
 
@@ -370,7 +410,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
         return finObj.toJSONString();
     }
-
 
     public String changeMeasuringFlag(int usid, long typeId) {
         JSONObject returned = new JSONObject();

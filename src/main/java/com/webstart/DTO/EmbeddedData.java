@@ -1,4 +1,4 @@
-package com.webstart.model;
+package com.webstart.DTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

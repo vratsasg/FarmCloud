@@ -1,7 +1,5 @@
 package com.webstart.DTO;
 
-import com.webstart.model.ValueTime;
-
 import java.math.BigDecimal;
 
 /**
