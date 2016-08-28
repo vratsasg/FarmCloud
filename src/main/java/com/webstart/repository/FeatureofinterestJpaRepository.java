@@ -41,6 +41,11 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     @Query("select fi.datetimefrom,fi.datetimeto FROM Featureofinterest as fi  WHERE fi.identifier IN :identif")
     List<Object[]> findByIdentifier(@Param("identif") String identif);
 
+    @Query("select children.identifier FROM Featureofinterest as fi " +
+            "join fi.childrenFeatures children " +
+            "WHERE fi.identifier = :identifier")
+    List<String> findEndDevicesByCoord(@Param("identifier") String identifier);
+
     @Query("select distinct fi.featureofinterestid ,fi.identifier FROM Featureofinterest as fi  WHERE fi.identifier IN :idenList")
     List<Object[]> getIdidentif(@Param("idenList") List<String> identStr);
 
@@ -48,10 +53,10 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     List<Object[]> serid(@Param("featid") Long fid, @Param("obs") Long obsg);
 
 
-    @Query("select fi.featureofinterestid FROM Featureofinterest as fi  WHERE fi.identifier IN :tid")
+    @Query("select fi.featureofinterestid FROM Featureofinterest as fi  WHERE fi.identifier = :tid")
     List<Object[]> getIdbyIdent(@Param("tid") String fidentent);
 
-    @Query("select fi.identifier,fi.irrigation,fi.measuring FROM Featureofinterest as fi  WHERE fi.parentid IN :pid")
+    @Query("select fi.identifier,fi.irrigation,fi.measuring FROM Featureofinterest as fi  WHERE fi.parentid = :pid order by fi.identifier")
     List<Object[]> getIdentifierFlags(@Param("pid") Long parId);
 
 

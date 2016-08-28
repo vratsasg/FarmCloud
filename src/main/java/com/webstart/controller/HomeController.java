@@ -36,16 +36,10 @@ public class HomeController {
     MeasureService measurement;
 
 
-    @RequestMapping(value = "/getobsproperties", method = RequestMethod.GET)
+    @RequestMapping(value = "/obsproperties", method = RequestMethod.GET)
     public ResponseEntity<String> getObsProperties() {
-
         JSONObject obj = new JSONObject();
-
         obj = observationProperyService.getAllObsPropeties();
-
-        System.out.println(obj.toJSONString());
-
-
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.CREATED);
     }
 
@@ -80,7 +74,7 @@ public class HomeController {
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/getStationCoords/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/coordinator/stationcoords/{id}", method = RequestMethod.GET)
     public ResponseEntity<String> getStationCoords(@PathVariable("id") String id, HttpServletRequest request) {
         String stationcoords = featureofInterestService.findByFeatureofinterestid(Integer.parseInt(id));
         return new ResponseEntity<String>(stationcoords, HttpStatus.OK);
@@ -181,9 +175,9 @@ public class HomeController {
         String jsonInString = null;
 
         try {
-//            Users users = (Users) request.getSession().getAttribute("current_user");
-//            jsonInString = featureofInterestService.findMinMaxbyUserId(users.getUser_id());
-            jsonInString = featureofInterestService.findMinMaxbyUserId(1);
+            Users users = (Users) request.getSession().getAttribute("current_user");
+            jsonInString = featureofInterestService.findMinMaxbyUserId(users.getUser_id());
+//            jsonInString = featureofInterestService.findMinMaxbyUserId(1);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<String>("false", HttpStatus.EXPECTATION_FAILED);

@@ -190,6 +190,20 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         return finobj;
     }
 
+    public String findByIdentifier(String coordinator) {
+        String jsonresult = null;
+
+        try {
+            List<String> results = featureofinterestJpaRepository.findEndDevicesByCoord(coordinator);
+            ObjectMapper mapper = new ObjectMapper();
+            jsonresult = mapper.writeValueAsString(results);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return jsonresult;
+    }
+
     public String findMinMaxbyUserId(Integer userid) {
         String jsonInString = null;
         try {
@@ -210,8 +224,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
                 if (newaddition) {
                     featureobsPropList.add(new FeatureObsProp((Integer) obj[0], obj[1].toString(), obj[2].toString()));
                 }
-//                for(FeatureObsProp feature: featureobsPropList) {
-//                }
             }
 
             //List<FeatureObsProp> uniqueFeatureObsPropList = new ArrayList<FeatureObsProp>(new LinkedHashSet<FeatureObsProp>(featureobsPropList));
@@ -227,7 +239,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
             //Object to JSON in String
             ObjectMapper mapper = new ObjectMapper();
-
             jsonInString = mapper.writeValueAsString(featureobsPropList);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -320,15 +331,10 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
     }
 
     public Long findseries(int obs, Integer fid) {
-
         Long obsg = new Long(obs);
-
         Long fidg = Long.valueOf(fid.longValue());
-
         Long returnedL = null;
-
         List<Object[]> temOb = featureofinterestJpaRepository.serid(fidg, obsg);
-
 
         Iterator itr = temOb.iterator();
         while (itr.hasNext()) {

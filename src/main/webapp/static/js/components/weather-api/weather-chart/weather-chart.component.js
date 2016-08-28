@@ -8,6 +8,11 @@
         controllerAs: "model",
         bindings: {latit: '<', longti: '<'},
         controller: function (WeatherForecastService, $q) {
+            $('body').on("click", ".day", function () {
+                $(this).parent().parent().find('.day').removeClass('reserved');
+                $(this).addClass('reserved');
+            });
+
             var model = this;
 
             model.forecastData = {};
@@ -31,42 +36,13 @@
 
                         for (var l = 0; l < model.forecastData.list.length; l++) {
                             if (l == 0 || ( l % 8 == 0 && l > 7)) {
-                                model.clickDates.push(moment.unix(parseInt(model.forecastData.list[l].dt)).format("dddd DD/MM/YYYY"));
+                                model.clickDates.push(moment.unix(parseInt(model.forecastData.list[l].dt)).format("dddd DD/MM"));
                                 model.unixDates.push(parseInt(model.forecastData.list[l].dt));
                             }
                         }
 
                         var ch = moment.unix(parseInt(model.unixDates[0])).format("DD/MM/YYYY");
-                        for (var g = 0; g < model.forecastData.list.length; g++) {
-                            // var Chk = moment.unix(parseInt(model.forecastData.list[g].dt)).format("DD/MM/YYYY");
-                            var chk = moment(model.forecastData.list[g].dt_txt).format("DD/MM/YYYY");
-
-                            if (ch === chk) {
-                                model.tableData.push(
-                                    {
-                                        temp: (model.forecastData.list[g].main.temp - 273.15).toFixed(2),
-                                        humidity: model.forecastData.list[g].main.humidity,
-                                        datime: model.forecastData.list[g].dt_txt,
-                                        weathermain: model.forecastData.list[g].weather[0].main,
-                                        wicon: model.forecastData.list[g].weather[0].icon
-                                    }
-                                );
-                            }
-                        }
-
-
-                        //for (var v = 0; v < model.forecastData.list.length; v++) {
-                        //    var chUnix = new Date(moment(parseInt(model.unixDates[0] * 1000)));
-                        //    var chUnixWeat = new Date(moment(parseInt(model.forecastData.list[v].dt) * 1000));
-                        //    if (chUnix.getDate() === chUnixWeat.getDate()) {
-                        //
-                        //        model.tableData.push({
-                        //            temp: model.forecastData.list[v].main.temp,
-                        //            humidity: model.forecastData.list[v].main.humidity,
-                        //            DateTime:model.forecastData.list[v].main.dt_txt
-                        //        });
-                        //    }
-                        //}
+                        setWeatherdataIntable(ch);
 
                         model.options =
                         {
@@ -104,12 +80,13 @@
                                 xAxis: {
                                     axisLabel: 'Time (MM/DD HH:MM)',
                                     tickFormat: function (d) {
-
                                         var returnvalue = new Date(moment(parseInt(d)));
                                         if (isNaN(returnvalue)) {
-                                            return d3.time.format('%a %b %e %H:%M')(new Date(d));
+                                            //return d3.time.format('%a %b %e %H:%M')(new Date(d));
+                                            return d3.time.format('%a %b %e')(new Date(d));
                                         }
-                                        return d3.time.format('%a %b %e %H:%M')(new Date(moment(parseInt(d))));
+                                        //return d3.time.format('%a %b %e %H:%M')(new Date(moment(parseInt(d))));
+                                        return d3.time.format('%a %b %e')(new Date(moment(parseInt(d))));
                                     }
                                 },
                                 yAxis: {
@@ -185,10 +162,16 @@
 
 
             model.showData = function (parm) {
-
                 model.tableData = [];
-
                 var ch = moment.unix(parseInt(parm)).format("DD/MM/YYYY");
+                setWeatherdataIntable(ch);
+            }
+
+            model.$onInit = function () {
+                //INIT
+            };
+
+            function setWeatherdataIntable(ch) {
                 for (var g = 0; g < model.forecastData.list.length; g++) {
                     var chk = moment(model.forecastData.list[g].dt_txt).format("DD/MM/YYYY");
 
@@ -202,20 +185,11 @@
                                 wicon: model.forecastData.list[g].weather[0].icon
                             }
                         );
-
                     }
-
                 }
-
-
             }
-
-            model.$onInit = function () {
-
-
-            };
-
 
         }
     });
 }());
+

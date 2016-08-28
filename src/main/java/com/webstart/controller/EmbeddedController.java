@@ -5,10 +5,12 @@ import com.webstart.DTO.EmbeddedDataWrapper;
 import com.webstart.DTO.FeatureidIdentifier;
 import com.webstart.model.*;
 import com.webstart.service.FeatureofInterestService;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sun.reflect.annotation.ExceptionProxy;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -54,7 +56,6 @@ public class EmbeddedController {
         }
     }
 
-
     @RequestMapping(value = "/getsetup", method = RequestMethod.GET)
     public ResponseEntity<String> getSetup(@RequestParam("identifier") String CordIdentifier) {
         String JsonResp = null;
@@ -62,11 +63,10 @@ public class EmbeddedController {
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/getMeasIrr", method = RequestMethod.GET)
-    public ResponseEntity<String> getMeasuringIrrigation(@RequestParam("identifier") String Cordinator) {
+    public ResponseEntity<String> getMeasuringIrrigation(@RequestParam("identifier") String coordinator) {
         String JsonResp = null;
-        JsonResp = featureofInterestService.findIrrigationAndMeasuring(Cordinator);
+        JsonResp = featureofInterestService.findIrrigationAndMeasuring(coordinator);
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
     }
 
@@ -75,9 +75,20 @@ public class EmbeddedController {
         String JsonResp = null;
         Users user = (Users) request.getSession().getAttribute("current_user");
         JsonResp = featureofInterestService.changeMeasuringFlag(user.getUser_id(), 3L);
-        // JsonResp = featureofInterestService.findIrrigationAndMeasuring(Cordinator);
 
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/embedded/endDeviceAddresses", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllDevicesAddress(@RequestParam("identifier") String coordinator) {
+        String JsonResults = null;
+
+        try {
+            JsonResults = featureofInterestService.findByIdentifier(coordinator);
+        } catch (Exception e) {
+            return new ResponseEntity<String>(JsonResults, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<String>(JsonResults, HttpStatus.OK);
     }
 
 

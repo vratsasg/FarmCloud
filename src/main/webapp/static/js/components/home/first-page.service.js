@@ -19,7 +19,7 @@
                 );
             },
             getStationCoords: function (id) {
-                return $http.get('getStationCoords/' + id).then(
+                return $http.get('coordinator/stationcoords/' + id).then(
                     function (response) {
                         return response.data;
                     },

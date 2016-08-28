@@ -17,6 +17,8 @@ public interface FeatureofInterestService {
         JSONObject findCropInfo(int id);
         JSONObject findByUserAndType(int id);
 
+        String findByIdentifier(String coordinator);
+
         String findMinMaxbyUserId(Integer userid);
 
         Long findseries(int obs, Integer fid);

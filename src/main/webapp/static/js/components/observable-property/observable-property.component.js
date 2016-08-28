@@ -18,16 +18,13 @@
 
             model.measures = "";
             //TODO set count of measures from db
-            model.total = 20;
+            //model.total = 20;
 
             model.updateMyDevice = function (myD) {
-
                 var datefrom = moment(new Date(model.datefrom)).format("YYYY-MM-DD HH:mm:ss");
                 var dateto = moment(new Date(model.dateto)).format("YYYY-MM-DD HH:mm:ss");
 
-
-                console.log("MYDEVICE")
-                console.log(myD);
+                console.log("MYDEVICE: " + myD)
                 model.tableParams = new ngTableParams({
                     counts: [],
                     page: 1,
@@ -90,17 +87,11 @@
 
             model.$onInit = function () {
                 var deferDev = $q.defer();
-                //var datefrom = moment("2015-05-21 00:00:00", "YYYY-MM-DD HH:mm:ss");
-                //var dateto = moment("2015-05-21 23:59:59", "YYYY-MM-DD HH:mm:ss");
+                model.datefrom = moment().subtract(1, 'days').format("YYYY-MM-DD HH:mm:ss");
+                model.dateto = moment().format("YYYY-MM-DD HH:mm:ss");
 
-                //var datefrom = moment(new Date("2015-05-21 00:00:00")).format("YYYY-MM-DD HH:mm:ss");
-                //var dateto = moment(new Date("2015-05-21 23:59:59")).format("YYYY-MM-DD HH:mm:ss");
-
-                model.datefrom = moment("2015-05-21 00:00:00", "YYYY-MM-DD HH:mm:ss");
-                model.dateto = moment("2015-05-21 23:59:59", "YYYY-MM-DD HH:mm:ss");
-
-                //model.datefrom = moment().subtract(1, 'days').format("YYYY-MM-DD HH:mm:ss");
-                //model.dateto = moment().format("YYYY-MM-DD HH:mm:ss");
+                //TODO set count of measures from db
+                model.total = 20;
 
                 ObservablePropertyService.getDevices().then(
                     function (da) {
@@ -117,7 +108,6 @@
                         }, {
                             total: model.total,
                             getData: function (params) {
-
                                 return TableData(model.myDevice, params, model.datefrom, model.dateto);
                             }
                         });
@@ -288,19 +278,20 @@
             model.beforeRenderEndDate = function ($view, $dates, $leftDate, $upDate, $rightDate) {
                 if (model.datefrom) {
                     var activeDate = moment(model.datefrom).subtract(1, $view).add(1, 'minute');
+                    var now = moment();
                     for (var i = 0; i < $dates.length; i++) {
                         if ($dates[i].localDateValue() <= activeDate.valueOf()) {
                             $dates[i].selectable = false;
                         }
                     }
+
+                    for (var i = 0; i < $dates.length; i++) {
+                        if ($dates[i].localDateValue() > now.valueOf()) {
+                            $dates[i].selectable = false;
+                        }
+                    }
                 }
             }
-
-
-
-
-
-
 
         }
     });

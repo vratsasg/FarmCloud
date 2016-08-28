@@ -130,15 +130,11 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
 
             while (itr.hasNext()) {
                 Object[] objec = (Object[]) itr.next();
-
                 Timestamp tTime = (java.sql.Timestamp) objec[1];
-                //select obsprop.Description, obs.phenomenontimestart, num.value, u.unit
                 ls.add(new ObservationMeasure(tTime.getTime() / 1000L, (BigDecimal) objec[2], objec[3].toString(), objec[0].toString()));
             }
 
-            ObjectMapper mapper = new ObjectMapper();
-
-            //Object to JSON in String
+            ObjectMapper mapper = new ObjectMapper();       //Object to JSON in String
             jsonInString = mapper.writeValueAsString(ls);
         } catch (JsonProcessingException e) {
             e.printStackTrace();

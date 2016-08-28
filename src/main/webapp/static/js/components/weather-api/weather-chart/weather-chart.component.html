@@ -1,6 +1,9 @@
 <div id="forecastButt" class="btn-toolbar" role="toolbar">
     <div ng-repeat="date in model.clickDates" class="btn-group" role="group">
-        <a ng-click="model.showData(model.unixDates[$index]);" class="btn btn-primary" role="button">{{date}}</a>
+        <div class="day">
+            <a ng-click="model.showData(model.unixDates[$index]);" class="dayborder">{{date}}</a>
+        </div>
+        <!--<a ng-click="model.showData(model.unixDates[$index]);" class="btn btn-primary" role="button">{{date}}</a>-->
     </div>
 </div>
 
