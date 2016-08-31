@@ -1,13 +1,12 @@
 package com.webstart.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.DTO.FeatureObsProp;
+import com.webstart.DTO.FeatureidIdentifier;
 import com.webstart.model.UserProfile;
 import com.webstart.model.Users;
-import com.webstart.service.FeatureofInterestService;
-import com.webstart.service.MeasureService;
-import com.webstart.service.ObservationProperyService;
-import com.webstart.service.UsersService;
+import com.webstart.service.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 
 @Controller
 public class HomeController {
@@ -177,7 +175,6 @@ public class HomeController {
         try {
             Users users = (Users) request.getSession().getAttribute("current_user");
             jsonInString = featureofInterestService.findMinMaxbyUserId(users.getUser_id());
-//            jsonInString = featureofInterestService.findMinMaxbyUserId(1);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<String>("false", HttpStatus.EXPECTATION_FAILED);

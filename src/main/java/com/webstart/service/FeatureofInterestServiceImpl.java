@@ -14,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
 import java.util.*;
 import java.util.List;
 
@@ -63,12 +63,10 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         return false;
     }
 
+    //TODO CHAOS A.D sepultura
     public JSONObject findCropInfo(int id) {
         List<Featureofinterest> featureofinterestList = new ArrayList<Featureofinterest>();
-
-
         featureofinterestList = featureofinterestJpaRepository.findByUserid(id);
-
         List<Integer> featureids = new ArrayList<Integer>();
 
         JSONObject obj1 = new JSONObject();
@@ -98,15 +96,11 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
                 obj2.put("identifier", featureofinterestList.get(k).getIdentifier());
                 obj2.put("description", featureofinterestList.get(k).getName());
                 list.add(obj2);
-
-
             }
-
-
         }
 
         List<Object[]> objects = new ArrayList<Object[]>();
-        objects = featureofinterestJpaRepository.find(featureids);
+        objects = featureofinterestJpaRepository.getFeatureByIds(featureids);
 
         List<String> tempList = new ArrayList<String>();
 
@@ -174,13 +168,10 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         List<Featureofinterest> objects = new ArrayList<Featureofinterest>();
         JSONArray nlist = new JSONArray();
 
-        long l = 3L;
-        objects = featureofinterestJpaRepository.findByUseridAndFeatureofinteresttypeid(id, l);
+        objects = featureofinterestJpaRepository.findByUseridAndFeatureofinteresttypeid(id, 3L);
 
         for (int c = 0; c < objects.size(); c++) {
-
             JSONObject tmpObj = new JSONObject();
-
             tmpObj.put("identifier", objects.get(c).getIdentifier());
             nlist.add(tmpObj);
         }
@@ -207,35 +198,32 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
     public String findMinMaxbyUserId(Integer userid) {
         String jsonInString = null;
         try {
-            List<Object[]> results = featureofinterestJpaRepository.findFeatureMiMaxValuesByUserId(userid);
+            List<FeatureObsPropMinMax> results = featureofinterestJpaRepository.findFeatureMiMaxValuesByUserId(userid);
 
             List<FeatureObsProp> featureobsPropList = new ArrayList<FeatureObsProp>();
-            featureobsPropList.add(new FeatureObsProp((Integer) results.get(0)[0], results.get(0)[1].toString(), results.get(0)[2].toString()));
+            featureobsPropList.add(new FeatureObsProp((Integer) results.get(0).getFeatureofinterestid(), results.get(0).getIdentifier(), results.get(0).getName()));
 
-            for (Object[] obj : results) {
+            for (FeatureObsPropMinMax obj : results) {
                 boolean newaddition = true;
                 for (int i = 0; i < featureobsPropList.size(); i++) {
                     FeatureObsProp feature = featureobsPropList.get(i);
-                    if ((Integer) obj[0] == feature.getFeatureofinterestid()) {
+                    if (obj.getFeatureofinterestid() == feature.getFeatureofinterestid()) {
                         newaddition = false;
                     }
                 }
 
                 if (newaddition) {
-                    featureobsPropList.add(new FeatureObsProp((Integer) obj[0], obj[1].toString(), obj[2].toString()));
+                    featureobsPropList.add(new FeatureObsProp(obj.getFeatureofinterestid(), obj.getIdentifier(), obj.getName()));
                 }
             }
 
-            //List<FeatureObsProp> uniqueFeatureObsPropList = new ArrayList<FeatureObsProp>(new LinkedHashSet<FeatureObsProp>(featureobsPropList));
-
-            for (Object[] obj : results) {
+            for (FeatureObsPropMinMax obj : results) {
                 for (FeatureObsProp feature : featureobsPropList) {
-                    if ((Integer) obj[0] == feature.getFeatureofinterestid()) {
-                        feature.getFeatureObsproplist().add(new FeatureMinMaxValue(((Long) obj[4]).longValue(), obj[3].toString(), (BigDecimal) obj[5], (BigDecimal) obj[6]));
+                    if (obj.getFeatureofinterestid() == feature.getFeatureofinterestid()) {
+                        feature.getFeatureObsproplist().add(new FeatureMinMaxValue((obj.getObspropertyid()).longValue(), obj.getObspropertName(), obj.getMinval(), obj.getMaxval()));
                     }
                 }
             }
-            //feature.featureofinterestid, feature.identifier, feature.name, obs.Description AS obspropertyDescr, obspropval.obspropid, obspropval.minval, obspropval.maxval
 
             //Object to JSON in String
             ObjectMapper mapper = new ObjectMapper();
@@ -270,71 +258,52 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
     public String findFeatureByIdentifier(String identi) {
         String jsonRes = null;
 
-        Timestamp timestampFrom = null;
-        Timestamp timestampTo = null;
+        try {
+            List<Object[]> objects = featureofinterestJpaRepository.findDatesByIdentifier(identi);
 
-        List<Object[]> objects = featureofinterestJpaRepository.findByIdentifier(identi);
+            if (objects.size() == 0)
+                return jsonRes;
 
-        for (Object[] obje : objects) {
-            timestampFrom = (java.sql.Timestamp) obje[0];
-            timestampTo = (java.sql.Timestamp) obje[1];
+            Timestamp timestampFrom = (java.sql.Timestamp) objects.get(0)[0];
+            Timestamp timestampTo = (java.sql.Timestamp) objects.get(0)[1];
+
+            DateTime dtFROM = new DateTime(timestampFrom.getTime());
+            DateTime dtTO = new DateTime(timestampTo.getTime());
+
+            JSONObject TimerSetup = new JSONObject();
+            TimerSetup.put("frHours", dtFROM.getHourOfDay());
+            TimerSetup.put("frMinutes", dtFROM.getMinuteOfHour());
+            TimerSetup.put("frSeconds", dtFROM.getSecondOfDay());
+            TimerSetup.put("toHours", dtTO.getHourOfDay());
+            TimerSetup.put("toMinutes", dtTO.getMinuteOfHour());
+            TimerSetup.put("toSeconds", dtTO.getSecondOfDay());
+
+            jsonRes = TimerSetup.toJSONString();
+        } catch (DateTimeException exc) {
+            exc.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return jsonRes;
         }
-
-        Date datefrom = new Date(timestampFrom.getTime());
-        Date dateto = new Date(timestampTo.getTime());
-
-        DateTime dtFROM = new DateTime(datefrom);
-        DateTime dtTO = new DateTime(dateto);
-
-
-        int frHours = dtFROM.getHourOfDay();
-        int frMinutes = dtFROM.getMinuteOfHour();
-        int frSeconds = dtFROM.getSecondOfDay();
-
-
-        int toHours = dtTO.getHourOfDay();
-        int toMinutes = dtTO.getMinuteOfHour();
-        int toSeconds = dtTO.getSecondOfDay();
-
-        JSONObject TimerSetup = new JSONObject();
-
-
-        TimerSetup.put("frHours", frHours);
-        TimerSetup.put("frMinutes", frMinutes);
-        TimerSetup.put("frSeconds", frSeconds);
-
-        TimerSetup.put("toHours", toHours);
-        TimerSetup.put("toMinutes", toMinutes);
-        TimerSetup.put("toSeconds", toSeconds);
-
-
-        jsonRes = TimerSetup.toJSONString();
-
-        System.out.println(jsonRes);
-
-
-        return jsonRes;
     }
 
     public List<FeatureidIdentifier> findFeatureIdByIdentifier(List<String> idStr) {
-        List<FeatureidIdentifier> returnedList = new ArrayList<FeatureidIdentifier>();
-
-        List<Object[]> list = featureofinterestJpaRepository.getIdidentif(idStr);
-
-        for (Object[] object : list) {
-            //returnedList
-            FeatureidIdentifier featureidIdentifier = new FeatureidIdentifier((Integer) object[0], object[1].toString());
-            returnedList.add(featureidIdentifier);
+        try {
+            List<FeatureidIdentifier> list = featureofinterestJpaRepository.getIdidentif(idStr);
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-
-        return returnedList;
     }
 
+    //TODO lol lol lol what the iterator means?
     public Long findseries(int obs, Integer fid) {
         Long obsg = new Long(obs);
         Long fidg = Long.valueOf(fid.longValue());
         Long returnedL = null;
-        List<Object[]> temOb = featureofinterestJpaRepository.serid(fidg, obsg);
+        List<Long> temOb = featureofinterestJpaRepository.getAllSeriesId(fidg, obsg);
 
         Iterator itr = temOb.iterator();
         while (itr.hasNext()) {
@@ -349,20 +318,15 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date from = dateFormat.parse(embeddedData.getDatetime());
 
-
             Observation observation = new Observation();
 
-            //observation.setObservationid(500L);
             observation.setSeriesid(seriesId);
             observation.setPhenomenontimestart(new Timestamp(from.getTime()));
             observation.setPhenomenontimeend(new Timestamp(from.getTime()));
             observation.setResulttime(new Timestamp(from.getTime()));
-            //observation.setNumericValue(numericValue);
             observation.setIdentifier(embeddedData.getDatetime().replace("-", "").replace(":", "").replace(" ", "") + "-" + java.util.UUID.randomUUID());
             observation.setUnitid(1L);
             observation.setDeleted("F");
-
-            //numericValue.setObservation(observation);
 
             observationJpaRepository.save(observation);
 
@@ -379,11 +343,11 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
+    //TODO change this mess
     public String findIrrigationAndMeasuring(String corD) {
-
         Integer idCord = null;
 
-        List<Object[]> cordinIds = featureofinterestJpaRepository.getIdbyIdent(corD);
+        List<Integer> cordinIds = featureofinterestJpaRepository.getIdbyIdent(corD);
 
         Iterator itr = cordinIds.iterator();
         while (itr.hasNext()) {

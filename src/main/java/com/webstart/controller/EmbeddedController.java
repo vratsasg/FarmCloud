@@ -20,13 +20,14 @@ import java.util.*;
  * Created by George on 22/5/2016.
  */
 @RestController
+@RequestMapping(value = "embedded")
 public class EmbeddedController {
 
     @Autowired
     FeatureofInterestService featureofInterestService;
 
 
-    @RequestMapping(value = "/embedded/", method = RequestMethod.POST)
+    @RequestMapping(value = "savemeasures", method = RequestMethod.POST)
     public ResponseEntity<Void> postSensor(@RequestBody EmbeddedDataWrapper embeddedDataWrapper) {
 
         List<String> identList = new ArrayList<String>();
@@ -56,21 +57,21 @@ public class EmbeddedController {
         }
     }
 
-    @RequestMapping(value = "/getsetup", method = RequestMethod.GET)
+    @RequestMapping(value = "setup", method = RequestMethod.GET)
     public ResponseEntity<String> getSetup(@RequestParam("identifier") String CordIdentifier) {
         String JsonResp = null;
         JsonResp = featureofInterestService.findFeatureByIdentifier(CordIdentifier);
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/getMeasIrr", method = RequestMethod.GET)
+    @RequestMapping(value = "measureIrrigation", method = RequestMethod.GET)
     public ResponseEntity<String> getMeasuringIrrigation(@RequestParam("identifier") String coordinator) {
         String JsonResp = null;
         JsonResp = featureofInterestService.findIrrigationAndMeasuring(coordinator);
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/takeMeasures", method = RequestMethod.GET)
+    @RequestMapping(value = "measures", method = RequestMethod.GET)
     public ResponseEntity<String> startMeasuring(HttpServletRequest request) {
         String JsonResp = null;
         Users user = (Users) request.getSession().getAttribute("current_user");
@@ -79,7 +80,7 @@ public class EmbeddedController {
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/embedded/endDeviceAddresses", method = RequestMethod.GET)
+    @RequestMapping(value = "endDeviceAddresses", method = RequestMethod.GET)
     public ResponseEntity<String> getAllDevicesAddress(@RequestParam("identifier") String coordinator) {
         String JsonResults = null;
 

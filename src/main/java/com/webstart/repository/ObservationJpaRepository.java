@@ -25,32 +25,6 @@ public interface ObservationJpaRepository extends JpaRepository<Observation, Lon
             "order by obs.phenomenontimestart",
             nativeQuery = true)
     List<CurrentMeasure> findCurrentMeasure(String ident, Timestamp t1, Timestamp t2);
-//            @SqlResultSetMapping(
-//                    name = "CurrentMeasureMapping",
-//                    entities = @EntityResult(
-//                            entityClass = CurrentMeasure.class,
-//                            fields = {
-//                                    @FieldResult(name = "identifier", column = "Identifier"),
-//                                    @FieldResult(name = "dateTime", column = "phenomenontimestart"),
-//                                    @FieldResult(name = "bigDecimal", column = "value")}))
-
-
-    //SELECT a.id as authorId, a.firstName, a.lastName, a.version FROM Author a
-    //    @SqlResultSetMapping(
-    //            name = "AuthorMapping",
-    //            entities = @EntityResult(
-    //                    entityClass = Author.class,
-    //                    fields = {
-    //                            @FieldResult(name = "id", column = "authorId"),
-    //                            @FieldResult(name = "firstName", column = "firstName"),
-    //                            @FieldResult(name = "lastName", column = "lastName"),
-    //                            @FieldResult(name = "version", column = "version")}))
-
-    /*public class CurrentMeasure {
-
-    private String identifier;
-    private Timestamp dateTime;
-    private BigDecimal bigDecimal;*/
 
     @Query(value = "select feat.identifier, obsprop.Description, obs.phenomenontimestart, num.value, u.unit " +
             "from Observation obs " +

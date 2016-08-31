@@ -23,6 +23,12 @@
                             <label class="control-label">Minimum value</label>
                             <input type="number" class="form-control" step="any" ng-model="obspropvalue.minval"
                                    ng-required="true" max="{{obspropvalue.maxval}}"></input>
+
+                            <p ng-show="obspropvalue.minval.$error.required" class="help-block">input value is
+                                required.</p>
+
+                            <p ng-show="obspropvalue.minval.$error.min" class="help-block">less than
+                                {{obspropvalue.minval}}.</p>
                         </div>
 
                         <div class="form-group col-md-4 col-sm-4 cols-xl-4 xol-xs-4">
