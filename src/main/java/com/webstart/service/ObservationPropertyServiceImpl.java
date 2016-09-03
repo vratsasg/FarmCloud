@@ -81,7 +81,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
 
                 Timestamp tTime = (java.sql.Timestamp) objec[2];
 
-                ls.add(new ValueTime(tTime.getTime() / 1000L, (BigDecimal) objec[3]));
+                ls.add(new ValueTime(tTime.getTime() / 1000L, (BigDecimal) objec[3], tTime));
             }
 
             obsMeasure.setMeasuredata(ls);
@@ -96,6 +96,40 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
 
         System.out.println(jsonInString);
         return jsonInString;
+    }
+
+    public ObservableMeasure getObservationData(Long obspropId, int userId, String identifier, Date from, Date to) {
+        ObservableMeasure obsMeasure = new ObservableMeasure();
+
+        try {
+            List<Object[]> listofObjs = observationJpaRepository.findMeasureByObsPropId(obspropId, userId, identifier, new java.sql.Timestamp(from.getTime()), new java.sql.Timestamp(to.getTime()));
+
+            if (listofObjs.size() == 0) {
+                return null;
+            }
+
+            Object[] obj = listofObjs.get(0);
+            obsMeasure.setIdentifier(String.valueOf(obj[0]));
+            obsMeasure.setObservableProperty(String.valueOf(obj[1]));
+            obsMeasure.setUnit(String.valueOf(obj[4]));
+
+            List<ValueTime> ls = new ArrayList<ValueTime>();
+            Iterator itr = listofObjs.iterator();
+
+            while (itr.hasNext()) {
+                Object[] objec = (Object[]) itr.next();
+                //Object[] objValueTime = new Object[2];
+                Timestamp tTime = (java.sql.Timestamp) objec[2];
+                ls.add(new ValueTime(tTime.getTime() / 1000L, (BigDecimal) objec[3], tTime));
+            }
+
+            obsMeasure.setMeasuredata(ls);
+        } catch (Exception exc) {
+            exc.printStackTrace();
+            return null;
+        }
+
+        return obsMeasure;
     }
 
     public String getLastObservationsDate(int userId) {
@@ -131,7 +165,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             while (itr.hasNext()) {
                 Object[] objec = (Object[]) itr.next();
                 Timestamp tTime = (java.sql.Timestamp) objec[1];
-                ls.add(new ObservationMeasure(tTime.getTime() / 1000L, (BigDecimal) objec[2], objec[3].toString(), objec[0].toString()));
+                ls.add(new ObservationMeasure(tTime.getTime() / 1000L, (BigDecimal) objec[2], tTime, objec[3].toString(), objec[0].toString()));
             }
 
             ObjectMapper mapper = new ObjectMapper();       //Object to JSON in String

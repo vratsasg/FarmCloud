@@ -28,6 +28,33 @@
                             return $q.reject(errResponse);
                         }
                     );
+                }, getMeasuresPdf: function (id, mydevice, datefrom, dateto) {
+                    //return $http.get('extract/pdf?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto);
+                    $http({
+                        url: 'extract/pdf?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto,
+                        method: 'POST',
+                        params: {},
+                        headers: {
+                            'Content-type': 'application/pdf',
+                        },
+                        responseType: 'arraybuffer'
+                    }).success(function (data, status, headers, config) {
+                        // TODO when WS success
+                        var file = new Blob([data], {
+                            type: 'application/pdf'
+                        });
+                        //trick to download store a file having its URL
+                        var fileURL = URL.createObjectURL(file);
+                        var a = document.createElement('a');
+                        a.href = fileURL;
+                        a.target = '_blank';
+                        a.download = 'measures.pdf';
+                        document.body.appendChild(a);
+                        a.click();
+                    }).error(function (data, status, headers, config) {
+                        //TODO when WS error
+                        log.error('Error: ' + data);
+                    });
                 }
 
             }

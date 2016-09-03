@@ -38,10 +38,7 @@
                         return TableData(model.myDevice, params, datefrom, dateto);
                     }
                 });
-
-
             };
-
 
             model.updateDateFrom = function (dfr) {
                 var datefrom = moment(new Date(dfr)).format("YYYY-MM-DD HH:mm:ss");
@@ -82,8 +79,16 @@
                         return TableData(model.myDevice, params, datefrom, dateto);
                     }
                 });
+            };
+
+            model.DownloadPdf = function () {
+                var datefrom = moment(new Date(model.datefrom)).format("YYYY-MM-DD HH:mm:ss");
+                var dateto = moment(new Date(model.dateto)).format("YYYY-MM-DD HH:mm:ss");
+
+                ObservablePropertyService.getMeasuresPdf(model.id, model.myDevice, datefrom, dateto);
 
             }
+
 
             model.$onInit = function () {
                 var deferDev = $q.defer();

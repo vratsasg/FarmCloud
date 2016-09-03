@@ -21,6 +21,7 @@
 
 
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/app.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/flaticon.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/_flaticon.scss">
     <link rel="stylesheet" type="text/css"
