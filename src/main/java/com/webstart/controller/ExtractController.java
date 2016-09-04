@@ -49,7 +49,7 @@ public class ExtractController {
 
     @RequestMapping(value = "csv", params = {"id", "mydevice", "dtstart", "dtend"}, method = RequestMethod.POST)
     public void getCsv(@RequestParam("id") Long id, @RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request, HttpServletResponse response) {
-        response.setContentType("application/vnd.ms-excel");
+        response.setContentType("text/plain");
         String reportName = "Measures.csv";
         response.setHeader("Content-disposition", "attachment; filename=" + reportName);
 
@@ -62,18 +62,18 @@ public class ExtractController {
 
             ArrayList<String> rows = new ArrayList<String>();
             rows.add("Measure date & time");
-            rows.add("\t");
+            rows.add(";");
             rows.add("Measure value");
-            rows.add("\t");
+            rows.add(";");
             rows.add("Measure unit");
             rows.add("\n");
 
             // write table row data
             for (ValueTime valueTime : observableMeasure.getMeasuredata()) {
                 rows.add(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(valueTime.getPhenomenonDateTime()));
-                rows.add("\t");
+                rows.add(";");
                 rows.add(valueTime.getValue().toString());
-                rows.add("\t");
+                rows.add(";");
                 rows.add(observableMeasure.getUnit());
                 rows.add("\n");
             }

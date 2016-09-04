@@ -7,6 +7,7 @@ import com.webstart.DTO.FeatureidIdentifier;
 import com.webstart.model.UserProfile;
 import com.webstart.model.Users;
 import com.webstart.service.*;
+import jdk.nashorn.internal.runtime.ParserException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,10 +82,29 @@ public class HomeController {
     @RequestMapping(value = "/charthome/{id}", method = RequestMethod.GET)
     public ResponseEntity<String> getChartByDevice(@PathVariable("id") String id) {
         JSONArray obj = new JSONArray();
-
         obj = measurement.findDailyMeasure(id);
-        System.out.println(obj.toJSONString());
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/totalMeasuresCounter", params = {"id", "mydevice", "dtstart", "dtend"}, method = RequestMethod.GET)
+    public ResponseEntity<Long> getTotalMeasuresCounter(@RequestParam("id") Long id, @RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
+        Users users = (Users) request.getSession().getAttribute("current_user");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Long sentData = 0L;
+
+        try {
+            Date from = dateFormat.parse(datetimestart);
+            Date to = dateFormat.parse(datetimeend);
+            sentData = observationProperyService.getObservationsCounter(id, users.getUser_id(), mydevice, from, to);
+        } catch (ParserException parseExc) {
+            parseExc.printStackTrace();
+            new ResponseEntity<Long>(sentData, HttpStatus.EXPECTATION_FAILED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            new ResponseEntity<Long>(sentData, HttpStatus.EXPECTATION_FAILED);
+        }
+
+        return new ResponseEntity<Long>(sentData, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/getObspMeasures", params = {"id", "mydevice", "dtstart", "dtend"}, method = RequestMethod.GET)
@@ -98,8 +118,6 @@ public class HomeController {
             Date from = dateFormat.parse(datetimestart);
             Date to = dateFormat.parse(datetimeend);
             sentData = observationProperyService.getObservationsData(id, users.getUser_id(), mydevice, from, to);
-
-            System.out.println(sentData);
 
             if (sentData == null) {
                 sentData = "{\"unit\":\"\",\"measuredata\":[]}";

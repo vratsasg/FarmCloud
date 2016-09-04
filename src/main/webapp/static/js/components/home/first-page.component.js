@@ -53,10 +53,8 @@
                     }
                 );
 
-                firstPageDevices.getStationCoords(2).then( //TODO get coordinator id
+                firstPageDevices.getStationCoords(2).then(
                     function (d) {
-                        //TODO set model.center now bitch
-                        console.log(d);
                         model.center = {
                             lon: d[0],
                             lat: d[1],

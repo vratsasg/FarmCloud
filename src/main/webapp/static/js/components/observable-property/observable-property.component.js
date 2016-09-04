@@ -10,21 +10,17 @@
 
 
             model.$routerOnActivate = function (next) {
-                console.log(next);
                 model.id = next.params.id;
                 var StrDescr = next.params.description;
                 model.descr = StrDescr.replace(/%20/g, " ");
             };
 
             model.measures = "";
-            //TODO set count of measures from db
-            //model.total = 20;
 
             model.updateMyDevice = function (myD) {
                 var datefrom = moment(new Date(model.datefrom)).format("YYYY-MM-DD HH:mm:ss");
                 var dateto = moment(new Date(model.dateto)).format("YYYY-MM-DD HH:mm:ss");
 
-                console.log("MYDEVICE: " + myD)
                 model.tableParams = new ngTableParams({
                     counts: [],
                     page: 1,
@@ -32,10 +28,12 @@
                     //paginationMaxBlocks: 5,
                     //paginationMinBlocks: 1
                 }, {
-                    total: model.total,
+                    //total: 15,
+                    //total: function(){
+                    //    return getTableTotalCount(model.myDevice, datefrom, dateto);
+                    //},
                     getData: function (params) {
-
-                        return TableData(model.myDevice, params, datefrom, dateto);
+                        return getTableData(model.myDevice, params, datefrom, dateto);
                     }
                 });
             };
@@ -51,10 +49,13 @@
                     //paginationMaxBlocks: 5,
                     //paginationMinBlocks: 1
                 }, {
-                    total: model.total,
+                    //total: 15,
+                    //total:  function(){
+                    //    return getTableTotalCount(model.myDevice, datefrom, dateto);
+                    //},
                     getData: function (params) {
 
-                        return TableData(model.myDevice, params, datefrom, dateto);
+                        return getTableData(model.myDevice, params, datefrom, dateto);
                     }
                 });
 
@@ -73,10 +74,12 @@
                     //paginationMaxBlocks: 5,
                     //paginationMinBlocks: 1
                 }, {
-                    total: model.total,
+                    //total: 15,
+                    //total:  function(){
+                    //    return getTableTotalCount(model.myDevice, datefrom, dateto);
+                    //},
                     getData: function (params) {
-
-                        return TableData(model.myDevice, params, datefrom, dateto);
+                        return getTableData(model.myDevice, params, datefrom, dateto);
                     }
                 });
             };
@@ -108,9 +111,6 @@
                 model.datefrom = moment().subtract(1, 'days').format("YYYY-MM-DD HH:mm:ss");
                 model.dateto = moment().format("YYYY-MM-DD HH:mm:ss");
 
-                //TODO set count of measures from db
-                model.total = 20;
-
                 ObservablePropertyService.getDevices().then(
                     function (da) {
                         model.devices = da;
@@ -124,9 +124,12 @@
                             //paginationMaxBlocks: 5,
                             //paginationMinBlocks: 1
                         }, {
-                            total: model.total,
+                            //total: 15,
+                            //total: function() {
+                            //    return getTableTotalCount(model.myDevice, model.datefrom, model.dateto);
+                            //},
                             getData: function (params) {
-                                return TableData(model.myDevice, params, model.datefrom, model.dateto);
+                                return getTableData(model.myDevice, params, model.datefrom, model.dateto);
                             }
                         });
 
@@ -139,15 +142,25 @@
 
             }
 
+            function getTableTotalCount(devIdentifier, datefrom, dateto) {
+                var defer = $q.defer();
+                var totalLineCounter = ObservablePropertyService.getTableTotalCount(model.id, devIdentifier, datefrom, dateto).then(
+                    function (totalCount) {
+                        return totalCount;
+                    }
+                )
 
-            function TableData(devIdentifier, params, datefrom, dateto) {
+                return totalLineCounter;
+            }
+
+            function getTableData(devIdentifier, params, datefrom, dateto) {
                 var defer = $q.defer();
 
                 var varApiGet = ObservablePropertyService.getMeasuresByProperty(model.id, devIdentifier, datefrom, dateto).then(
                     function (apd) {
                         var theMeasures = apd;
                         model.measures = apd;
-                        model.total = theMeasures.measuredata.length; // set total for recalc pagination
+                        //model.total = theMeasures.measuredata.length; // set total for recalc pagination
 
 
                         model.options =
@@ -188,6 +201,7 @@
                                     tickFormat: function (d) {
 
                                         var returnvalue = new Date(moment(parseInt(d)));
+                                        //TODO set diferrent fromat in addition with min and max
                                         if (isNaN(returnvalue)) {
                                             return d3.time.format('%a %b %e %H:%M')(new Date(d));
                                         }
@@ -195,6 +209,7 @@
                                     }
                                 },
                                 yAxis: {
+                                    //TODO change to dynamically
                                     axisLabel: 'Temperature',
                                     tickFormat: function (d) {
                                         return d3.format('.4')(d);
@@ -216,7 +231,7 @@
                                         return html;
                                     })
 
-                                    console.log("!!! lineChart callback !!!");
+                                    //console.log("!!! lineChart callback !!!");
                                 }
                             },
                             title: {
@@ -235,29 +250,21 @@
 
 
                         model.data = fillData(model.measures);
-
                         for (var i = 0; i < theMeasures.measuredata.length; i++) {
-
                             theMeasures.measuredata[i].phenomenonTime = moment(parseInt(theMeasures.measuredata[i].phenomenonTime) * 1000).format('DD/MM/YYYY HH:mm:ss');
                         }
 
-
+                        params.total(theMeasures.measuredata.length); // recal. page nav controls
                         theMeasures.measuredata = theMeasures.measuredata.slice((params.page() - 1) * params.count(), params.page() * params.count());
-
                         defer.resolve($filter('orderBy')(theMeasures.measuredata, params.orderBy()));
                         return $filter('orderBy')(theMeasures.measuredata, params.orderBy());
-
-
                     },
                     function (errResponse) {
                         console.error('Error while fetching MeasuresByProperty!!!');
                     }
                 );
 
-
                 return varApiGet;
-
-
             }
 
 

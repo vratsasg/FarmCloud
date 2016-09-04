@@ -89,7 +89,6 @@ public class UsersServiceImpl implements UsersService{
             e.printStackTrace();
         }
 
-        System.out.println(jsonInString);
         return jsonInString;
     }
 
@@ -102,7 +101,6 @@ public class UsersServiceImpl implements UsersService{
         }
 
         return true;
-
     }
 
 

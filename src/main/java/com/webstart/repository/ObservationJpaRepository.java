@@ -42,6 +42,21 @@ public interface ObservationJpaRepository extends JpaRepository<Observation, Lon
     List<Object[]> findMeasureByObsPropId(Long obspropid, int userId, String identifier, Timestamp t1, Timestamp t2);
 
 
+    @Query(value = "select count(*) " +
+            "from Observation obs " +
+            "inner join NumericValue num on obs.observationid = num.observationid " +
+            "inner join unit u on obs.unitid = u.unitid " +
+            "inner join Series s on obs.seriesid = s.seriesid " +
+            "inner join Featureofinterest feat on s.featureofinterestid = feat.featureofinterestid " +
+            "inner join ObservableProperty obsprop on s.observablepropertyid = obsprop.ObservablePropertyId " +
+            "where obsprop.ObservablePropertyId = ?1 " +
+            "AND feat.userid = ?2 " +
+            "AND feat.identifier = ?3 " +
+            "AND obs.phenomenontimestart >= ?4 AND obs.phenomenontimestart <= ?5 ",
+            nativeQuery = true)
+    Long findMeasuresCount(Long obspropid, int userId, String identifier, Timestamp t1, Timestamp t2);
+
+
     @Query(value = "select max(obs.phenomenontimestart) " +
                         "from Observation obs " +
                         "inner join Series s on obs.seriesid = s.seriesid " +

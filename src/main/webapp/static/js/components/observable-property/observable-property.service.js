@@ -17,6 +17,17 @@
                             return $q.reject(errResponse);
                         }
                     );
+                }, getMeasuresTotalCount: function (id, mydevice, datefrom, dateto) {
+                    return $http.get('totalMeasuresCounter?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto).then(
+                        function (response) {
+                            console.log('Total rows: ' + response);
+                            return response.data;
+                        },
+                        function (errResponse) {
+                            console.error('Error while fetchingService total number of measures!!!');
+                            return $q.reject(errResponse);
+                        }
+                    );
                 }, getMeasuresByProperty: function (id, mydevice, datefrom, dateto) {
                     return $http.get('getObspMeasures?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto).then(
                         //"/search?fname="+fname"+"&lname="+lname

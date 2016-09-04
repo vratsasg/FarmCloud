@@ -94,8 +94,11 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             return null;
         }
 
-        System.out.println(jsonInString);
         return jsonInString;
+    }
+
+    public Long getObservationsCounter(Long obspropId, int userId, String identifier, Date from, Date to) {
+        return observationJpaRepository.findMeasuresCount(obspropId, userId, identifier, new java.sql.Timestamp(from.getTime()), new java.sql.Timestamp(to.getTime()));
     }
 
     public ObservableMeasure getObservationData(Long obspropId, int userId, String identifier, Date from, Date to) {

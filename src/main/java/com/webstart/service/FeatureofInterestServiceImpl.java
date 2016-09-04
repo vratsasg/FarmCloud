@@ -63,35 +63,24 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         return false;
     }
 
-    //TODO CHAOS A.D sepultura
     public JSONObject findCropInfo(int id) {
-        List<Featureofinterest> featureofinterestList = new ArrayList<Featureofinterest>();
-        featureofinterestList = featureofinterestJpaRepository.findByUserid(id);
+        List<Featureofinterest> featureofinterestList = featureofinterestJpaRepository.findByUserid(id);
         List<Integer> featureids = new ArrayList<Integer>();
 
         JSONObject obj1 = new JSONObject();
         JSONArray list = new JSONArray();
         JSONObject obj = new JSONObject();
 
-
         for (int k = 0; k < featureofinterestList.size(); k++) {
-            int indexl = 0;
             if (featureofinterestList.get(k).getFeatureofinteresttypeid() == 3) {
-
-                featureids.add(indexl, featureofinterestList.get(k).getFeatureofinterestid());
-                indexl++;
-
+                featureids.add(featureofinterestList.get(k).getFeatureofinterestid());
             } else if (featureofinterestList.get(k).getFeatureofinteresttypeid() == 1) {
-
                 ///CROP
                 obj1.put("identifier", featureofinterestList.get(k).getIdentifier());
                 obj1.put("description", featureofinterestList.get(k).getName());
 
-
             } else if (featureofinterestList.get(k).getFeatureofinteresttypeid() == 2) {
-
                 JSONObject obj2 = new JSONObject();
-
                 //STATION
                 obj2.put("identifier", featureofinterestList.get(k).getIdentifier());
                 obj2.put("description", featureofinterestList.get(k).getName());
@@ -99,54 +88,42 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             }
         }
 
-        List<Object[]> objects = new ArrayList<Object[]>();
-        objects = featureofinterestJpaRepository.getFeatureByIds(featureids);
-
+        List<CropInfoDTO> cropInfoList = featureofinterestJpaRepository.getFeatureByIds(featureids);
         List<String> tempList = new ArrayList<String>();
 
 
         //END DEVICE
-
         JSONArray finallist = new JSONArray();
-        int i = 0;
-        for (Object[] obje : objects) {
-
-            tempList.add(i, String.valueOf((obje[0])));
-            i++;
+        for (CropInfoDTO cropInfoDTO : cropInfoList) {
+            tempList.add(String.valueOf((cropInfoDTO.getFeatureIdentifier())));
         }
 
         HashSet hs = new HashSet(tempList);
         tempList.clear();
         tempList.addAll(hs);
 
-
         for (int j = 0; j < tempList.size(); j++) {
             JSONObject finalobject = new JSONObject();
             JSONArray list2 = new JSONArray();
 
             int tmcounter = 0;
-            for (Object[] objet : objects) {
-
-                if (tempList.get(j).equals(String.valueOf((objet[0])))) {
-
+            for (CropInfoDTO cropInfoDTO : cropInfoList) {
+                if (tempList.get(j).equals(String.valueOf((cropInfoDTO.getFeatureIdentifier())))) {
                     JSONObject tempobj = new JSONObject();
-
-                    tempobj.put("kindofmeasurement", String.valueOf((objet[2])));
-                    tempobj.put("sensorname", String.valueOf((objet[3])));
-                    tempobj.put("typeofmeasurement", String.valueOf((objet[4])));
-
+                    tempobj.put("kindofmeasurement", String.valueOf((cropInfoDTO.getObservableIdentifier())));
+                    tempobj.put("sensorname", String.valueOf((cropInfoDTO.getProcedureIdentifier())));
+                    tempobj.put("typeofmeasurement", String.valueOf((cropInfoDTO.getProcedureDescription())));
                     list2.add(tempobj);
                 }
 
                 if (tmcounter == 0) {
-                    finalobject.put("description", String.valueOf((objet[1])));
+                    finalobject.put("description", String.valueOf((cropInfoDTO.getFeatureName())));
                 }
                 tmcounter++;
             }
 
             finalobject.put("sensors", list2);
             finalobject.put("identifier", tempList.get(j));
-
             finallist.add(finalobject);
         }
 
@@ -155,10 +132,7 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         obj.put("stations", list);
         obj.put("devices", finallist);
 
-
-        String temp = obj.toJSONString();
-
-
+        //String temp = obj.toJSONString();
         return obj;
     }
 
@@ -251,7 +225,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             e.printStackTrace();
         }
 
-        System.out.println(jsonInString);
         return jsonInString;
     }
 
@@ -298,19 +271,21 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
-    //TODO lol lol lol what the iterator means?
     public Long findseries(int obs, Integer fid) {
-        Long obsg = new Long(obs);
-        Long fidg = Long.valueOf(fid.longValue());
         Long returnedL = null;
-        List<Long> temOb = featureofinterestJpaRepository.getAllSeriesId(fidg, obsg);
 
-        Iterator itr = temOb.iterator();
-        while (itr.hasNext()) {
-            returnedL = (Long) itr.next();
+        try {
+            Long obsg = Long.valueOf(obs);
+            Long fidg = Long.valueOf(fid.longValue());
+
+            List<Long> temOb = featureofinterestJpaRepository.getAllSeriesId(fidg, obsg);
+            if (temOb.size() > 0)
+                returnedL = temOb.get(0);
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally {
+            return returnedL;
         }
-        return returnedL;
-
     }
 
     public boolean saveTheMeasure(Long seriesId, EmbeddedData embeddedData) {
@@ -343,7 +318,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
-    //TODO change this mess
     public String findIrrigationAndMeasuring(String corD) {
         Integer idCord = null;
 
@@ -356,27 +330,23 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
         Long fidg = Long.valueOf(idCord.longValue());
 
-        List<Object[]> identiFlagsObjects = featureofinterestJpaRepository.getIdentifierFlags(fidg);
+        List<EndDeviceStatusDTO> identiFlagsObjects = featureofinterestJpaRepository.getIdentifierFlags(fidg);
 
         JSONArray retur = new JSONArray();
 
-        for (Object[] objec : identiFlagsObjects) {
+        for (EndDeviceStatusDTO endDevStatus : identiFlagsObjects) {
 
             JSONObject element = new JSONObject();
 
-            element.put("identifier", String.valueOf(objec[0]));
-            element.put("irrigation", String.valueOf(objec[1]));
-            element.put("measurement", String.valueOf(objec[2]));
+            element.put("identifier", endDevStatus.getIdentifier());
+            element.put("irrigation", String.valueOf(endDevStatus.getIrrigationStatus()));
+            element.put("measurement", String.valueOf(endDevStatus.getMeasuringStatus()));
 
             retur.add(element);
         }
 
         JSONObject finObj = new JSONObject();
-
         finObj.put("Data", retur);
-
-
-        System.out.println(finObj.toJSONString());
 
         return finObj.toJSONString();
     }

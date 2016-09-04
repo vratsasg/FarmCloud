@@ -1,6 +1,7 @@
 package com.webstart.repository;
 
-import com.webstart.DTO.FeatureDateFromToDto;
+import com.webstart.DTO.CropInfoDTO;
+import com.webstart.DTO.EndDeviceStatusDTO;
 import com.webstart.DTO.FeatureObsPropMinMax;
 import com.webstart.DTO.FeatureidIdentifier;
 import com.webstart.model.Featureofinterest;
@@ -8,13 +9,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import javax.persistence.ColumnResult;
-import javax.persistence.ConstructorResult;
-import javax.persistence.SqlResultSetMapping;
 import java.util.Date;
 import java.util.List;
 
@@ -25,13 +22,13 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
 
     List<Featureofinterest> findByUseridAndFeatureofinteresttypeid(int id, long l);
 
-    @Query("select fi.identifier ,fi.name,obs.Identifier,prc.identifier,prc.descriptionfile " +
+    @Query("select new com.webstart.DTO.CropInfoDTO(fi.identifier, fi.name, obs.Identifier, prc.identifier, prc.descriptionfile) " +
             "from Featureofinterest as fi " +
             "inner join fi.seriesList as flist " +
             "inner join flist.observableProperty as obs " +
             "inner join flist.procedure as prc " +
             "WHERE fi.featureofinterestid IN :inclList")
-    List<Object[]> getFeatureByIds(@Param("inclList") List<Integer> featuresid);
+    List<CropInfoDTO> getFeatureByIds(@Param("inclList") List<Integer> featuresid);
 
     @Query("select NEW com.webstart.DTO.FeatureObsPropMinMax(feature.featureofinterestid, feature.identifier, feature.name, obspropval.obspropid, obs.Description, obspropval.minval, obspropval.maxval) " +
             "from Featureofinterest as feature " +
@@ -57,18 +54,17 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
 
     @Query("select si.seriesid " +
             "FROM Series as si " +
-            "WHERE si.featureofinterestid IN :featid and si.observablepropertyid = :obs")
-    List<Long> getAllSeriesId(@Param("featid") Long fid, @Param("obs") Long obsg);
+            "WHERE si.featureofinterestid = :featid and si.observablepropertyid = :obspropid")
+    List<Long> getAllSeriesId(@Param("featid") Long fid, @Param("obspropid") Long obsg);
 
     @Query("select fi.featureofinterestid FROM Featureofinterest as fi  WHERE fi.identifier = :tid")
     List<Integer> getIdbyIdent(@Param("tid") String fidentent);
 
-    //TODO change select
-    @Query("select fi.identifier,fi.irrigation,fi.measuring " +
+    @Query("select new com.webstart.DTO.EndDeviceStatusDTO(fi.identifier, fi.irrigation, fi.measuring) " +
             "FROM Featureofinterest as fi " +
             "WHERE fi.parentid = :pid " +
             "order by fi.identifier")
-    List<Object[]> getIdentifierFlags(@Param("pid") Long parId);
+    List<EndDeviceStatusDTO> getIdentifierFlags(@Param("pid") Long parId);
 
     @Modifying
     @Query("update Featureofinterest f set f.measuring = true where f.userid IN :usid and f.featureofinteresttypeid = :tpid")
