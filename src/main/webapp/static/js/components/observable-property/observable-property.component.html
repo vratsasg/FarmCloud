@@ -82,17 +82,17 @@
             </tr>
         </table>
 
-        <button class="btn btn-success" id="getcsv" ng-click="model.DownloadCsv()">
+        <button class="btn btn-success" id="getcsv" ng-click="model.downloadFile('csv')">
             Download CSV
             <i class="fa fa-file-text-o" aria-hidden="true"></i>
         </button>
 
-        <button class="btn btn-success" id="getpdf" ng-click="model.DownloadPdf()">
+        <button class="btn btn-success" id="getpdf" ng-click="model.downloadFile('pdf')">
             Download PDF
             <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
         </button>
 
-        <button class="btn btn-success" id="getxls" ng-click="model.DownloadXls()">
+        <button class="btn btn-success" id="getxls" ng-click="model.downloadFile('xls')">
             Download XLS
             <i class="fa fa-file-excel-o" aria-hidden="true"></i>
         </button>

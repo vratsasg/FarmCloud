@@ -29,11 +29,12 @@
                         }
                     );
                 }, getMeasuresPdf: function (id, mydevice, datefrom, dateto) {
-                    //return $http.get('extract/pdf?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto);
                     $http({
-                        url: 'extract/pdf?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto,
+                        //url: 'extract/pdf?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto,
+                        url: 'extract/pdf',
                         method: 'POST',
-                        params: {},
+                        params: {'id': id, 'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
+                        //params: {},
                         headers: {
                             'Content-type': 'application/pdf',
                         },
@@ -54,6 +55,58 @@
                     }).error(function (data, status, headers, config) {
                         //TODO when WS error
                         log.error('Error: ' + data);
+                    });
+                }, getMeasuresCsv: function (id, mydevice, datefrom, dateto) {
+                    $http({
+                        url: 'extract/csv',
+                        method: 'POST',
+                        params: {'id': id, 'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
+                        headers: {
+                            'Content-type': 'application/csv',
+                        },
+                        responseType: 'arraybuffer'
+                    }).success(function (data, status, headers, config) {
+                        // TODO when WS success
+                        var file = new Blob([data], {
+                            type: 'application/csv'
+                        });
+                        //trick to download store a file having its URL
+                        var fileURL = URL.createObjectURL(file);
+                        var a = document.createElement('a');
+                        a.href = fileURL;
+                        a.target = '_blank';
+                        a.download = 'measures.csv';
+                        document.body.appendChild(a);
+                        a.click();
+                    }).error(function (data, status, headers, config) {
+                        //TODO when WS error
+                        log.error('Error: ' + status);
+                    });
+                }, getMeasuresXls: function (id, mydevice, datefrom, dateto) {
+                    $http({
+                        url: 'extract/xls',
+                        method: 'POST',
+                        params: {'id': id, 'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
+                        headers: {
+                            'Content-type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        },
+                        responseType: 'arraybuffer'
+                    }).success(function (data, status, headers, config) {
+                        // TODO when WS success
+                        var file = new Blob([data], {
+                            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        });
+                        //trick to download store a file having its URL
+                        var fileURL = URL.createObjectURL(file);
+                        var a = document.createElement('a');
+                        a.href = fileURL;
+                        a.target = '_blank';
+                        a.download = 'measures.xls';
+                        document.body.appendChild(a);
+                        a.click();
+                    }).error(function (data, status, headers, config) {
+                        //TODO when WS error
+                        log.error('Error: ' + status);
                     });
                 }
 

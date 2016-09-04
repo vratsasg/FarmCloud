@@ -28,7 +28,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.Document;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,10 +47,10 @@ public class ExtractController {
     @Autowired
     ObservationProperyService observationProperyService;
 
-    @RequestMapping(value = "csv", params = {"id", "mydevice", "dtstart", "dtend"}, method = RequestMethod.GET)
+    @RequestMapping(value = "csv", params = {"id", "mydevice", "dtstart", "dtend"}, method = RequestMethod.POST)
     public void getCsv(@RequestParam("id") Long id, @RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/vnd.ms-excel");
-        String reportName = "Measures.xls";
+        String reportName = "Measures.csv";
         response.setHeader("Content-disposition", "attachment; filename=" + reportName);
 
         try {
@@ -122,7 +125,7 @@ public class ExtractController {
         return response;
     }
 
-    @RequestMapping(value = "xlsx", params = {"id", "mydevice", "dtstart", "dtend"}, method = RequestMethod.GET)
+    @RequestMapping(value = "xls", params = {"id", "mydevice", "dtstart", "dtend"}, method = RequestMethod.POST)
     public ResponseEntity<byte[]> getXlsx(@RequestParam("id") Long id, @RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         ObservableMeasure observableMeasure = null;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -185,15 +188,32 @@ public class ExtractController {
         cell.setPhrase(new Phrase("Measure unit", font));
         table.addCell(cell);
 
+        BigDecimal valuemin = new BigDecimal(200.0);
+        ;
+        BigDecimal valuemax = new BigDecimal(-100.0);
+        BigDecimal valuesum = new BigDecimal(0.0);
+
         // write table row data
         for (ValueTime valueTime : observableMeasure.getMeasuredata()) {
-            String S = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(valueTime.getPhenomenonDateTime());
+            valuesum = valuesum.add(valueTime.getValue());
+            valuemax = valueTime.getValue().max(valuemax);
+            valuemin = valueTime.getValue().min(valuemin);
+
             table.addCell(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(valueTime.getPhenomenonDateTime()));
             table.addCell(valueTime.getValue().toString());
             table.addCell(observableMeasure.getUnit());
         }
+        BigDecimal avg = valuesum.divide(BigDecimal.valueOf(observableMeasure.getMeasuredata().size()), 2, BigDecimal.ROUND_CEILING);
 
         doc.add(table);
+        doc.add(new Paragraph(
+                String.format("\n minimum %1$s: %3$s %2$s \n maximum %1$s: %4$s %2$s \n average %1$s: %5$s %2$s",
+                        observableMeasure.getObservableProperty(), observableMeasure.getUnit(),
+                        valuemin.toString(), valuemax.toString(), avg.toString()
+                )
+        ));
+        //new DecimalFormat("#0.##").format(avg)
+
 
         return doc;
     }

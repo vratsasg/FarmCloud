@@ -81,11 +81,24 @@
                 });
             };
 
-            model.DownloadPdf = function () {
+            model.downloadFile = function (filetype) {
                 var datefrom = moment(new Date(model.datefrom)).format("YYYY-MM-DD HH:mm:ss");
                 var dateto = moment(new Date(model.dateto)).format("YYYY-MM-DD HH:mm:ss");
+                switch (filetype) {
+                    case 'pdf':
+                        ObservablePropertyService.getMeasuresPdf(model.id, model.myDevice, datefrom, dateto);
+                        break;
+                    case 'xls':
+                        ObservablePropertyService.getMeasuresXls(model.id, model.myDevice, datefrom, dateto);
+                        break;
+                    case 'csv':
+                        ObservablePropertyService.getMeasuresCsv(model.id, model.myDevice, datefrom, dateto);
+                        break;
+                    default:
+                        console.error('Error trying to pass a wrong parameter inside function!!!');
+                        break;
+                }
 
-                ObservablePropertyService.getMeasuresPdf(model.id, model.myDevice, datefrom, dateto);
 
             }
 
