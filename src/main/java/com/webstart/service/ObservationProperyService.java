@@ -1,5 +1,6 @@
 package com.webstart.service;
 
+import com.webstart.DTO.FeatureMinMaxValue;
 import com.webstart.DTO.ObservableMeasure;
 import org.json.simple.JSONObject;
 
@@ -18,4 +19,6 @@ public interface ObservationProperyService {
     ObservableMeasure getObservationData(Long obspropId, int userId, String identifier, Date from, Date to);
     String getLastObservationsDate(int userId);
     String getLastObservationbyIdentifier(int userId, String identifier);
+
+    void setObservationMinmaxValues(List<FeatureMinMaxValue> observationMinmaxList);
 }

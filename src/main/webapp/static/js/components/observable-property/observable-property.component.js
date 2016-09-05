@@ -101,8 +101,6 @@
                         console.error('Error trying to pass a wrong parameter inside function!!!');
                         break;
                 }
-
-
             }
 
 
@@ -160,8 +158,6 @@
                     function (apd) {
                         var theMeasures = apd;
                         model.measures = apd;
-                        //model.total = theMeasures.measuredata.length; // set total for recalc pagination
-
 
                         model.options =
                         {

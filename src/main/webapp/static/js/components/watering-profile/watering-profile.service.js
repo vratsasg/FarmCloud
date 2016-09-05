@@ -15,17 +15,17 @@
                         }
                     );
                 }
-                //,saveWateringProfile: function (userprofiledata) {
-                //    return $http.post('userprofile', userprofiledata).then(
-                //        function (response) {
-                //            return response.data;
-                //        },
-                //        function (errResponse) {
-                //            console.error('Error while saving user profile!!!');
-                //            return $q.reject(errResponse);
-                //        }
-                //    );
-                //}
+                , saveWateringProfile: function (wateringprofiledata) {
+                    return $http.post('/wateringprofile/saveminmax?jsonval=' + angular.toJson(wateringprofiledata)).then(
+                        function (response) {
+                            console.log("Success!!!");
+                        },
+                        function (errResponse) {
+                            console.error('Error while saving minimum and maximum values for watering profile!');
+                            return $q.reject(errResponse);
+                        }
+                    );
+                }
 
             }
         }]

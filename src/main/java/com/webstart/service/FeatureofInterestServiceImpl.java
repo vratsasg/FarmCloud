@@ -175,7 +175,7 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             List<FeatureObsPropMinMax> results = featureofinterestJpaRepository.findFeatureMiMaxValuesByUserId(userid);
 
             List<FeatureObsProp> featureobsPropList = new ArrayList<FeatureObsProp>();
-            featureobsPropList.add(new FeatureObsProp((Integer) results.get(0).getFeatureofinterestid(), results.get(0).getIdentifier(), results.get(0).getName()));
+            featureobsPropList.add(new FeatureObsProp(results.get(0).getFeatureofinterestid(), results.get(0).getIdentifier(), results.get(0).getName()));
 
             for (FeatureObsPropMinMax obj : results) {
                 boolean newaddition = true;

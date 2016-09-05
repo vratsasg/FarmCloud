@@ -24,10 +24,7 @@ public class MyProfileController {
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public ResponseEntity<String> getProfile(HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
-        JSONObject obj = new JSONObject();
-
-        obj = featureofInterestService.findCropInfo(users.getUser_id());
-
+        JSONObject obj = featureofInterestService.findCropInfo(users.getUser_id());
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
     }
 }

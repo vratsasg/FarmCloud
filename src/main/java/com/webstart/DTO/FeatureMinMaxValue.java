@@ -11,6 +11,10 @@ public class FeatureMinMaxValue {
     private BigDecimal minval;
     private BigDecimal maxval;
 
+    public FeatureMinMaxValue() {
+
+    }
+
     public FeatureMinMaxValue(Long obspropertyid, String obspropertName, BigDecimal minval, BigDecimal maxval) {
         this.obspropertyid = obspropertyid;
         this.obspropertName = obspropertName;

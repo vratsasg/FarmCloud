@@ -19,6 +19,13 @@
                         console.log(model.obspropminmax)
                     });
             }
+
+            model.saveAllData = function () {
+                console.log(angular.toJson(model.obspropminmax));
+                WateringProfileService.saveWateringProfile(model.obspropminmax).then(/*Do nithing*/);
+            };
+
+
         }
     });
 

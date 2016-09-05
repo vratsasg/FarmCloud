@@ -22,19 +22,19 @@
                         <div class="form-group col-md-4 col-sm-4 cols-xl-4 xol-xs-4">
                             <label class="control-label">Minimum value</label>
                             <input type="number" class="form-control" step="any" ng-model="obspropvalue.minval"
-                                   ng-required="true" max="{{obspropvalue.maxval}}"></input>
+                                   ng-required="true" max="{{obspropvalue.maxval}}">
 
                             <p ng-show="obspropvalue.minval.$error.required" class="help-block">input value is
                                 required.</p>
 
                             <p ng-show="obspropvalue.minval.$error.min" class="help-block">less than
-                                {{obspropvalue.minval}}.</p>
+                                {{obspropvalue.minval}}</p>
                         </div>
 
                         <div class="form-group col-md-4 col-sm-4 cols-xl-4 xol-xs-4">
                             <label class="control-label">Maximum value</label>
                             <input type="number" class="form-control" step="any" min="{{obspropvalue.minval}}"
-                                   ng-model="obspropvalue.maxval" ng-required="true"></input>
+                                   ng-model="obspropvalue.maxval" ng-required="true">
                         </div>
                     </div>
 
@@ -44,7 +44,8 @@
     </div>
 </div>
 
-<button class="btn btn-success" style="margin-bottom: 20px;" id="newmeasureid" ng-click="model.SaveAllData()">
+<button class="btn btn-success" style="margin-bottom: 20px;" id="newmeasureid" ng-click="model.saveAllData()"
+        ng-disabled="model.obspropminmax.$invalid">
     Save Data
     <span class="glyphicon glyphicon-save" style="vertical-align:middle; color: whitesmoke;"></span>
 </button>

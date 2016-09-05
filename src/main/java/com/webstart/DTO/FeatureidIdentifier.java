@@ -4,15 +4,11 @@ package com.webstart.DTO;
  * Created by George on 2/8/2016.
  */
 public class FeatureidIdentifier {
-
-
     private Integer featureinterestid;
-
     private String identifier;
 
     public FeatureidIdentifier() {
     }
-
 
     public FeatureidIdentifier(Integer featureinterestid, String identifier) {
         this.featureinterestid = featureinterestid;

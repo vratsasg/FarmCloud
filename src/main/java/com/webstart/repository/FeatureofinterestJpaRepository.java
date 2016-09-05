@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -65,6 +66,11 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
             "WHERE fi.parentid = :pid " +
             "order by fi.identifier")
     List<EndDeviceStatusDTO> getIdentifierFlags(@Param("pid") Long parId);
+
+    @Modifying
+    @Query("update ObservablePropertyMinMax obsprop set obsprop.minval = :minval, obsprop.maxval = :maxval where obsprop.obspropid = :obspropid")
+    @Transactional
+    void setObservableMinmax(@Param("obspropid") Long obspropvalid, @Param("minval") BigDecimal minimum, @Param("maxval") BigDecimal maximum);
 
     @Modifying
     @Query("update Featureofinterest f set f.measuring = true where f.userid IN :usid and f.featureofinteresttypeid = :tpid")

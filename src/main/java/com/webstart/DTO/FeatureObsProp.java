@@ -7,14 +7,17 @@ public class FeatureObsProp {
     private Integer featureofinterestid;
     private String identifier;
     private String name;
-    private List<FeatureMinMaxValue> FeatureObspropMinmaxlist;
+    private List<FeatureMinMaxValue> featureObspropMinmaxlist;
 
+    public FeatureObsProp() {
+
+    }
 
     public FeatureObsProp(Integer featureofinterestid, String identifier, String name) {
         this.featureofinterestid = featureofinterestid;
         this.identifier = identifier;
         this.name = name;
-        FeatureObspropMinmaxlist = new ArrayList<FeatureMinMaxValue>();
+        featureObspropMinmaxlist = new ArrayList<FeatureMinMaxValue>();
     }
 
     public Integer getFeatureofinterestid() {
@@ -42,10 +45,10 @@ public class FeatureObsProp {
     }
 
     public List<FeatureMinMaxValue> getFeatureObsproplist() {
-        return FeatureObspropMinmaxlist;
+        return featureObspropMinmaxlist;
     }
 
     public void setFeatureObsproplist(List<FeatureMinMaxValue> featureObsproplist) {
-        FeatureObspropMinmaxlist = featureObsproplist;
+        featureObspropMinmaxlist = featureObsproplist;
     }
 }

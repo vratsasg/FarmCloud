@@ -2,10 +2,9 @@ package com.webstart.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webstart.DTO.ObservableMeasure;
-import com.webstart.DTO.ObservationMeasure;
-import com.webstart.DTO.ValueTime;
+import com.webstart.DTO.*;
 import com.webstart.model.*;
+import com.webstart.repository.FeatureofinterestJpaRepository;
 import com.webstart.repository.ObservablePropertyJpaRepository;
 import com.webstart.repository.ObservationJpaRepository;
 import org.json.simple.JSONArray;
@@ -28,26 +27,25 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
     ObservablePropertyJpaRepository observablePropertyJpaRepository;
     @Autowired
     ObservationJpaRepository observationJpaRepository;
+    @Autowired
+    FeatureofinterestJpaRepository featureofinterestJpaRepository;
 
     public JSONObject getAllObsPropeties() {
 
         JSONObject finalobj = new JSONObject();
         JSONArray list = new JSONArray();
 
-        List<ObservableProperty> obsPropertiesList = new ArrayList<ObservableProperty>();
-        obsPropertiesList = observablePropertyJpaRepository.findAll();
+        List<ObservableProperty> obsPropertiesList = observablePropertyJpaRepository.findAll();
 
-        for (int i = 0; i < obsPropertiesList.size(); i++) {
+
+        for (ObservableProperty observableProperty : obsPropertiesList) {
             JSONObject obj = new JSONObject();
-            obj.put("observablepropertyid", obsPropertiesList.get(i).getObservablePropertyId());
-            obj.put("description", obsPropertiesList.get(i).getDescription());
+            obj.put("observablepropertyid", observableProperty.getObservablePropertyId());
+            obj.put("description", observableProperty.getDescription());
             list.add(obj);
         }
 
-
         finalobj.put("obsprop", list);
-        String temp = finalobj.toJSONString();
-
 
         return finalobj;
     }
@@ -179,6 +177,17 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
         }
 
         return jsonInString;
+    }
+
+    public void setObservationMinmaxValues(List<FeatureMinMaxValue> observationMinmaxList) {
+        try {
+            for (FeatureMinMaxValue featureMinMaxValue : observationMinmaxList) {
+                featureofinterestJpaRepository.setObservableMinmax(featureMinMaxValue.getObspropertyid(), featureMinMaxValue.getMinval(), featureMinMaxValue.getMaxval());
+            }
+        } catch (Exception exc) {
+
+        }
+
     }
 
 }

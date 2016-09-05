@@ -1,9 +1,13 @@
 package com.webstart.controller;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.webstart.DTO.FeatureMinMaxValue;
 import com.webstart.DTO.FeatureObsProp;
 import com.webstart.DTO.FeatureidIdentifier;
+import com.webstart.DTO.ObservableMeasure;
 import com.webstart.model.UserProfile;
 import com.webstart.model.Users;
 import com.webstart.service.*;
@@ -17,8 +21,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -200,6 +207,31 @@ public class HomeController {
 
         return new ResponseEntity<String>(jsonInString, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/wateringprofile/saveminmax", method = RequestMethod.POST)
+    public ResponseEntity<String> saveWateringProfile(@RequestParam(("jsonval")) String jsonvalue, HttpServletRequest httpServletRequest) {
+        Users user = (Users) httpServletRequest.getSession().getAttribute("current_user");
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            List<FeatureObsProp> myObjects = mapper.readValue(jsonvalue, new TypeReference<List<FeatureObsProp>>() {
+            });
+            List<FeatureMinMaxValue> featureMinMaxValuesList = new ArrayList<FeatureMinMaxValue>();
+            for (FeatureObsProp featureObsProp : myObjects) {
+                featureMinMaxValuesList.addAll(featureObsProp.getFeatureObsproplist());
+            }
+            observationProperyService.setObservationMinmaxValues(featureMinMaxValuesList);
+        } catch (IOException exc) {
+            exc.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>("false", HttpStatus.NOT_IMPLEMENTED);
+        }
+
+        return new ResponseEntity<String>("true", HttpStatus.OK);
+    }
+
+
 
 
 }

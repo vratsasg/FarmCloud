@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
  * Created by George on 24/5/2016.
  */
 public class EmbeddedData {
-
-
     private String zbAddress;
     private String observableProperty;
     private BigDecimal measureValue;
