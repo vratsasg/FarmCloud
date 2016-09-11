@@ -1,8 +1,6 @@
 package com.webstart.service;
 
-import com.webstart.DTO.FeatureidIdentifier;
-import com.webstart.DTO.Crop;
-import com.webstart.DTO.EmbeddedData;
+import com.webstart.DTO.*;
 import org.json.simple.JSONObject;
 
 import java.util.Date;
@@ -14,6 +12,12 @@ public interface FeatureofInterestService {
         String findFeatureByIdentifier(String identi);
 
         List<FeatureidIdentifier> findFeatureIdByIdentifier(List<String> stringList);
+
+        List<FeatureObsPropMinMax> findminmaxObservationValues(String identifier);
+
+        List<EmebddedSetupDevicdeDto> findEndDevicesTimes(String coordinatorAddress);
+
+        EmebddedSetupDevicdeDto findCoordinatorTimes(String coordinatorAddress);
         JSONObject findCropInfo(int id);
         JSONObject findByUserAndType(int id);
 
@@ -26,9 +30,7 @@ public interface FeatureofInterestService {
         String changeMeasuringFlag(int usid, long typeId);
 
         //INSERT, UPDATE
-        public boolean setDeviceIrrigaDate(int usid, String device, Date from, Date to);
-
+        boolean setDeviceIrrigaDate(int usid, String device, Date from, Date to);
         boolean saveTheMeasure(Long series, EmbeddedData embeddedData);
-
         boolean addCrop(Crop crop);
 }

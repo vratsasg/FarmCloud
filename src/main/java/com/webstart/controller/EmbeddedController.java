@@ -1,16 +1,16 @@
 package com.webstart.controller;
 
-import com.webstart.DTO.EmbeddedData;
-import com.webstart.DTO.EmbeddedDataWrapper;
-import com.webstart.DTO.FeatureidIdentifier;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.webstart.DTO.*;
 import com.webstart.model.*;
 import com.webstart.service.FeatureofInterestService;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sun.reflect.annotation.ExceptionProxy;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -58,9 +58,50 @@ public class EmbeddedController {
     }
 
     @RequestMapping(value = "setup", method = RequestMethod.GET)
-    public ResponseEntity<String> getSetup(@RequestParam("identifier") String CordIdentifier) {
+    public ResponseEntity<String> getSetup(@RequestParam("identifier") String cordIdentifier) {
         String JsonResp = null;
-        JsonResp = featureofInterestService.findFeatureByIdentifier(CordIdentifier);
+        try {
+            EmebddedSetupDevicdeDto coordinatorSetuptimes = featureofInterestService.findCoordinatorTimes(cordIdentifier);
+            List<FeatureObsPropMinMax> obspropminmaxList = featureofInterestService.findminmaxObservationValues(cordIdentifier);
+
+            JSONObject jsonResult = new JSONObject();
+            jsonResult.put("fromhour", coordinatorSetuptimes.getFromhour());
+            jsonResult.put("fromminute", coordinatorSetuptimes.getFromminute());
+            jsonResult.put("tohour", coordinatorSetuptimes.getTohour());
+            jsonResult.put("tominute", coordinatorSetuptimes.getTominute());
+
+            JSONArray minmaxvalues = new JSONArray();
+
+            List<String> identifierList = new ArrayList<String>();
+
+            for (FeatureObsPropMinMax obspropValue : obspropminmaxList) {
+                identifierList.add(obspropValue.getIdentifier());
+            }
+            HashSet<String> endDevicesDistinctList = new HashSet<String>(identifierList);
+            jsonResult.put("devicesnum", endDevicesDistinctList.size());
+
+            for (String identifier : endDevicesDistinctList) {
+                JSONObject element = new JSONObject();
+                element.put("identifier", identifier);
+
+                for (FeatureObsPropMinMax obspropValue : obspropminmaxList) {
+                    if (obspropValue.getIdentifier().equalsIgnoreCase(identifier.toString()) && obspropValue.getObservablePropertyId() == 3) {
+                        element.put("mintemp", obspropValue.getMinval());
+                        element.put("maxtemp", obspropValue.getMaxval());
+                    } else if (obspropValue.getIdentifier().equalsIgnoreCase(identifier.toString()) && obspropValue.getObservablePropertyId() == 4) {
+                        element.put("minhumidity", obspropValue.getMinval());
+                        element.put("maxhumidity", obspropValue.getMaxval());
+                    }
+                }
+                minmaxvalues.add(element);
+            }
+
+            jsonResult.put("devices", minmaxvalues);
+            JsonResp = jsonResult.toJSONString();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        //JsonResp = featureofInterestService.findFeatureByIdentifier(cordIdentifier);
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
     }
 
@@ -87,6 +128,25 @@ public class EmbeddedController {
         try {
             JsonResults = featureofInterestService.findByIdentifier(coordinator);
         } catch (Exception e) {
+            return new ResponseEntity<String>(JsonResults, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<String>(JsonResults, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "endDevicesTime", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllDevicesWateringTime(@RequestParam("identifier") String coordinator) {
+        String JsonResults = null;
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            List<EmebddedSetupDevicdeDto> ls = featureofInterestService.findEndDevicesTimes(coordinator);
+            JsonResults = mapper.writeValueAsString(ls);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>(JsonResults, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<String>(JsonResults, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<String>(JsonResults, HttpStatus.OK);

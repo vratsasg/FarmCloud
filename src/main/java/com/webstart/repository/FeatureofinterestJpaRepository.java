@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +32,15 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
             "WHERE fi.featureofinterestid IN :inclList")
     List<CropInfoDTO> getFeatureByIds(@Param("inclList") List<Integer> featuresid);
 
-    @Query("select NEW com.webstart.DTO.FeatureObsPropMinMax(feature.featureofinterestid, feature.identifier, feature.name, obspropval.obspropid, obs.Description, obspropval.minval, obspropval.maxval) " +
+    @Query("select NEW com.webstart.DTO.FeatureObsPropMinMax(0, childfeature.identifier, '', obs.ObservablePropertyId, obspropval.obspropid, obs.Description, obspropval.minval, obspropval.maxval) " +
+            "from Featureofinterest as feature " +
+            "join feature.childrenFeatures childfeature " +
+            "join childfeature.obspropminmaxList as obspropval " +
+            "join obspropval.observableProperty as obs " +
+            "where feature.identifier = :identifier")
+    List<FeatureObsPropMinMax> findChildMiMaxValuesByIdentifier(@Param("identifier") String identifier);
+
+    @Query("select NEW com.webstart.DTO.FeatureObsPropMinMax(feature.featureofinterestid, feature.identifier, feature.name, obs.ObservablePropertyId, obspropval.obspropid, obs.Description, obspropval.minval, obspropval.maxval) " +
             "from Featureofinterest as feature " +
             "join feature.obspropminmaxList as obspropval " +
             "join obspropval.observableProperty as obs " +
@@ -66,6 +75,29 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
             "WHERE fi.parentid = :pid " +
             "order by fi.identifier")
     List<EndDeviceStatusDTO> getIdentifierFlags(@Param("pid") Long parId);
+
+    @Query(value = "select fi.identifier, " +
+            "to_char(fi.datetimefrom, 'HH24')  as fromhour, " +
+            "to_char(fi.datetimefrom, 'MI') as fromminute, " +
+            "to_char(fi.datetimeto, 'HH24') as tohour, " +
+            "to_char(fi.datetimeto, 'MI') as tominute " +
+            "from Featureofinterest as fi " +
+            "WHERE fi.identifier = :identifier " +
+            "order by fi.identifier",
+            nativeQuery = true)
+    List<Object[]> getCoordinatorTimes(@Param("identifier") String identifier);
+
+    @Query(value = "select fi.identifier, " +
+            "to_char(childfi.datetimefrom, 'HH24') as fromhour, " +
+            "to_char(childfi.datetimefrom, 'MI') as fromminute, " +
+            "to_char(childfi.datetimeto, 'HH24') as tohour, " +
+            "to_char(childfi.datetimeto, 'MI') as tominute " +
+            "from Featureofinterest as fi " +
+            "inner join Featureofinterest childfi on childfi.parentid = fi.featureofinterestid " +
+            "WHERE fi.identifier = :identifier AND childfi.featureofinteresttypeid = 3 " +
+            "order by fi.identifier",
+            nativeQuery = true)
+    List<Object[]> getEnddevicesTimes(@Param("identifier") String identifier);
 
     @Modifying
     @Query("update ObservablePropertyMinMax obsprop set obsprop.minval = :minval, obsprop.maxval = :maxval where obsprop.obspropid = :obspropid")

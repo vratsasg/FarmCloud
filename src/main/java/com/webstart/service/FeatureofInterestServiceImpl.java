@@ -169,6 +169,18 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         return jsonresult;
     }
 
+    public List<FeatureObsPropMinMax> findminmaxObservationValues(String identifier) {
+        List<FeatureObsPropMinMax> results = null;
+        try {
+            results = featureofinterestJpaRepository.findChildMiMaxValuesByIdentifier(identifier);
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+
+        return results;
+
+    }
+
     public String findMinMaxbyUserId(Integer userid) {
         String jsonInString = null;
         try {
@@ -194,7 +206,7 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             for (FeatureObsPropMinMax obj : results) {
                 for (FeatureObsProp feature : featureobsPropList) {
                     if (obj.getFeatureofinterestid() == feature.getFeatureofinterestid()) {
-                        feature.getFeatureObsproplist().add(new FeatureMinMaxValue((obj.getObspropertyid()).longValue(), obj.getObspropertName(), obj.getMinval(), obj.getMaxval()));
+                        feature.getFeatureObsproplist().add(new FeatureMinMaxValue((obj.getObspropvalId()).longValue(), obj.getObspropertName(), obj.getMinval(), obj.getMaxval()));
                     }
                 }
             }
@@ -228,11 +240,11 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         return jsonInString;
     }
 
-    public String findFeatureByIdentifier(String identi) {
+    public String findFeatureByIdentifier(String identifier) {
         String jsonRes = null;
 
         try {
-            List<Object[]> objects = featureofinterestJpaRepository.findDatesByIdentifier(identi);
+            List<Object[]> objects = featureofinterestJpaRepository.findDatesByIdentifier(identifier);
 
             if (objects.size() == 0)
                 return jsonRes;
@@ -270,6 +282,44 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             return null;
         }
     }
+
+    public List<EmebddedSetupDevicdeDto> findEndDevicesTimes(String coordinatorAddress) {
+        try {
+            List<Object[]> list = featureofinterestJpaRepository.getEnddevicesTimes(coordinatorAddress);
+            List<EmebddedSetupDevicdeDto> endDeviceList = new ArrayList<EmebddedSetupDevicdeDto>();
+            for (Object[] obj : list) {
+                endDeviceList.add(new EmebddedSetupDevicdeDto(obj[0].toString(), Integer.parseInt(obj[1].toString()), Integer.parseInt(obj[2].toString()), Integer.parseInt(obj[3].toString()), Integer.parseInt(obj[4].toString())));
+            }
+
+            return endDeviceList;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public EmebddedSetupDevicdeDto findCoordinatorTimes(String coordinatorAddress) {
+        try {
+            List<Object[]> list = featureofinterestJpaRepository.getCoordinatorTimes(coordinatorAddress);
+            if (list.size() == 0)
+                return null;
+
+            EmebddedSetupDevicdeDto coordinatorTimes = new EmebddedSetupDevicdeDto(
+                    coordinatorAddress,
+                    Integer.parseInt(list.get(0)[1].toString()),
+                    Integer.parseInt(list.get(0)[2].toString()),
+                    Integer.parseInt(list.get(0)[3].toString()),
+                    Integer.parseInt(list.get(0)[4].toString()));
+
+            return coordinatorTimes;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
     public Long findseries(int obs, Integer fid) {
         Long returnedL = null;
