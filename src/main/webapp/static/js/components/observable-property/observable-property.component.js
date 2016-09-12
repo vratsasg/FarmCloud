@@ -195,13 +195,33 @@
                                 xAxis: {
                                     axisLabel: 'Time (MM/DD HH:MM)',
                                     tickFormat: function (d) {
+                                        var afrom = moment(model.datefrom);
+                                        var bto = moment(model.dateto);
 
-                                        var returnvalue = new Date(moment(parseInt(d)));
-                                        //TODO set diferrent fromat in addition with min and max
-                                        if (isNaN(returnvalue)) {
-                                            return d3.time.format('%a %b %e %H:%M')(new Date(d));
+
+                                        if (bto.diff(afrom, 'days') < 1) {
+                                            var returnvalue = new Date(moment(parseInt(d)));
+                                            //TODO set diferrent fromat in addition with min and max
+                                            if (isNaN(returnvalue)) {
+                                                return d3.time.format('%H:%M')(new Date(d));
+                                            }
+                                            return d3.time.format(' %H:%M')(new Date(moment(parseInt(d))));
+                                        } else if (bto.diff(afrom, 'days') < 30) {
+                                            var returnvalue = new Date(moment(parseInt(d)));
+                                            //TODO set diferrent fromat in addition with min and max
+                                            if (isNaN(returnvalue)) {
+                                                return d3.time.format('%a %b %e ')(new Date(d));
+                                            }
+                                            return d3.time.format('%a %b %e ')(new Date(moment(parseInt(d))));
+                                        } else {
+                                            if (isNaN(returnvalue)) {
+                                                return d3.time.format('%b %e')(new Date(d));
+                                            }
+                                            return d3.time.format('%b %e')(new Date(moment(parseInt(d))));
+
                                         }
-                                        return d3.time.format('%a %b %e %H:%M')(new Date(moment(parseInt(d))));
+
+
                                     }
                                 },
                                 yAxis: {
