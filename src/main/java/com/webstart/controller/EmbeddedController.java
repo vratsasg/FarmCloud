@@ -85,10 +85,10 @@ public class EmbeddedController {
                 element.put("identifier", identifier);
 
                 for (FeatureObsPropMinMax obspropValue : obspropminmaxList) {
-                    if (obspropValue.getIdentifier().equalsIgnoreCase(identifier.toString()) && obspropValue.getObservablePropertyId() == 3) {
+                    if (obspropValue.getIdentifier().equalsIgnoreCase(identifier) && obspropValue.getObservablePropertyId() == 3) {
                         element.put("mintemp", obspropValue.getMinval());
                         element.put("maxtemp", obspropValue.getMaxval());
-                    } else if (obspropValue.getIdentifier().equalsIgnoreCase(identifier.toString()) && obspropValue.getObservablePropertyId() == 4) {
+                    } else if (obspropValue.getIdentifier().equalsIgnoreCase(identifier) && obspropValue.getObservablePropertyId() == 4) {
                         element.put("minhumidity", obspropValue.getMinval());
                         element.put("maxhumidity", obspropValue.getMaxval());
                     }

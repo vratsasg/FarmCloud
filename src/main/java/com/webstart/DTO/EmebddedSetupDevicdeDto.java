@@ -1,13 +1,5 @@
 package com.webstart.DTO;
 
-/**
- * identifier, " +
- * "to_char(childfi.datetimefrom, 'HH24') as fromhour, " +
- * "to_char(childfi.datetimefrom, 'MI') as fromminute, " +
- * "to_char(childfi.datetimeto, 'HH24') as tohour, " +
- * "to_char(childfi.datetimeto, 'MI') as tominute " +
- */
-
 public class EmebddedSetupDevicdeDto {
 
     private String identifier;
