@@ -37,6 +37,10 @@ public class Users {
     @JsonIgnore
     private List<Featureofinterest> featureofinterestList = new ArrayList<Featureofinterest>();
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "usersnotif", cascade = {CascadeType.ALL})
+    @JsonIgnore
+    private List<Notifications> notificationsArrayList = new ArrayList<Notifications>();
+
     public Users(String username, String password, String email, UsersRole usersRole, List<Featureofinterest> featureofinterestList) {
         this.username = username;
         this.password = password;

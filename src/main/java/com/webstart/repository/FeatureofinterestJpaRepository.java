@@ -115,4 +115,6 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
             "where f.userid = :usid and f.identifier = :identifier")
     @Transactional
     void setDeviceIrrigDates(@Param("usid") int userid, @Param("identifier") String device, @Param("dtfrom") Date datetimefrom, @Param("dtto") Date datetimeto);
+
+
 }

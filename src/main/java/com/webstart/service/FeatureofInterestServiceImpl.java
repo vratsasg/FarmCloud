@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -246,6 +247,7 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         try {
             List<Object[]> objects = featureofinterestJpaRepository.findDatesByIdentifier(identifier);
 
+
             if (objects.size() == 0)
                 return jsonRes;
 
@@ -255,15 +257,15 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             DateTime dtFROM = new DateTime(timestampFrom.getTime());
             DateTime dtTO = new DateTime(timestampTo.getTime());
 
-            JSONObject TimerSetup = new JSONObject();
-            TimerSetup.put("frHours", dtFROM.getHourOfDay());
-            TimerSetup.put("frMinutes", dtFROM.getMinuteOfHour());
-            TimerSetup.put("frSeconds", dtFROM.getSecondOfDay());
-            TimerSetup.put("toHours", dtTO.getHourOfDay());
-            TimerSetup.put("toMinutes", dtTO.getMinuteOfHour());
-            TimerSetup.put("toSeconds", dtTO.getSecondOfDay());
+            JSONObject Setup = new JSONObject();
+            Setup.put("frHours", dtFROM.getHourOfDay());
+            Setup.put("frMinutes", dtFROM.getMinuteOfHour());
+            Setup.put("frSeconds", dtFROM.getSecondOfDay());
+            Setup.put("toHours", dtTO.getHourOfDay());
+            Setup.put("toMinutes", dtTO.getMinuteOfHour());
+            Setup.put("toSeconds", dtTO.getSecondOfDay());
 
-            jsonRes = TimerSetup.toJSONString();
+            jsonRes = Setup.toJSONString();
         } catch (DateTimeException exc) {
             exc.printStackTrace();
         } catch (Exception e) {
@@ -406,10 +408,12 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
         try {
             featureofinterestJpaRepository.setMeasuringFlag(usid, typeId);
-            return returned.put("Flag", "true").toString();
+            returned.put("Flag", "true");
+            return returned.toString();
         } catch (Exception e) {
             e.printStackTrace();
-            return returned.put("Flag", "false").toString();
+            returned.put("Flag", "false");
+            return returned.toString();
         }
     }
 

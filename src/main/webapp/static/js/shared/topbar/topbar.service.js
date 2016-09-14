@@ -15,7 +15,18 @@
                             return $q.reject(errResponse);
                         }
                     );
+                },
+                getnotifcounter: function () {
+                    return $http.get('counternotifications').then(
+                        function (response) {
+                            return response.data;
+                        }, function (errResponse) {
+                            console.error('Error while userService notifications');
+                            return $q.reject(errResponse);
+                        }
+                    );
                 }
+
             }
         }
     ]);

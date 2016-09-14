@@ -2,6 +2,7 @@ package com.webstart.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.webstart.model.Notifications;
 import com.webstart.model.UserProfile;
 import com.webstart.model.Users;
 import com.webstart.repository.UserProfileJpaRepository;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -103,6 +105,19 @@ public class UsersServiceImpl implements UsersService{
         return true;
     }
 
+    @Override
+    public String getUserCounterNotifications(Integer userId) {
+        String returnedString = null;
+        ObjectMapper mapper = new ObjectMapper();
+        //Object to JSON in String
+        try {
+            List<Notifications> notifByUser = usersJpaRepository.getNotifByUser(userId);
+            returnedString = mapper.writeValueAsString(notifByUser);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } finally {
 
-
+            return returnedString;
+        }
+    }
 }

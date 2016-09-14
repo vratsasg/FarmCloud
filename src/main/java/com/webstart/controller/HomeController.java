@@ -68,7 +68,7 @@ public class HomeController {
 
         return new ResponseEntity<Boolean>(isDone, HttpStatus.CREATED);
     }
-    
+
 
     @RequestMapping(value = "/firstPDev", method = RequestMethod.GET)
     public ResponseEntity<String> getFeatureEndDevices(HttpServletRequest request) {
@@ -172,6 +172,7 @@ public class HomeController {
         return new ResponseEntity<String>(sentData, HttpStatus.OK);
     }
 
+
     @RequestMapping(value = "/setIrrigationDates", method = RequestMethod.POST)
     public ResponseEntity<String> setIrrigationDates(@RequestParam("identifier") String device, @RequestParam("dtfrom") String datefrom, @RequestParam("dtto") String dateto, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
@@ -231,7 +232,21 @@ public class HomeController {
         return new ResponseEntity<String>("true", HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/counternotifications", method = RequestMethod.GET)
+    public ResponseEntity<String> getCounterNotifications(HttpServletRequest request) {
+        String jsonInString = null;
+        Users users = (Users) request.getSession().getAttribute("current_user");
 
+        try {
+            jsonInString = usersService.getUserCounterNotifications(users.getUser_id());
+            System.out.println(jsonInString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return new ResponseEntity<String>(jsonInString, HttpStatus.OK);
+    }
 
 
 }

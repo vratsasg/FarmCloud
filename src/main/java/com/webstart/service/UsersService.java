@@ -19,4 +19,6 @@ public interface UsersService {
 
     boolean saveUserProfiledata(UserProfile usprof);
 
+    String getUserCounterNotifications(Integer userId);
+
 }

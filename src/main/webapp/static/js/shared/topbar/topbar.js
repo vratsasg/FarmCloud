@@ -8,6 +8,22 @@
         controller: function ($uibModal, $document, userService, $q) {
             var model = this;
             model.user = {};
+            model.notifications = [];
+
+            var defer = $q.defer();
+            userService.getnotifcounter().then(
+                function (countdata) {
+                    model.notifications = countdata;
+                    defer.resolve(model.notifications);
+                },
+                function (errResponse) {
+                    console.log("error fetching notifcounter");
+                }
+            );
+
+
+
+
 
             //components have lifecycles this is before the component is rendered
             model.$onInit = function () {
