@@ -5,7 +5,7 @@
     module.factory('UserProfileService', ['$http', '$q', '$log', function ($http, $q, $log) {
             return {
                 getUserProfile: function () {
-                    return $http.get('userprofile').then(
+                    return $http.get('user/profile').then(
                         function (response) {
                             return response.data;
                         },
@@ -16,7 +16,7 @@
                     );
                 },
                 saveUserProfile: function (userprofiledata) {
-                    return $http.post('userprofile', userprofiledata).then(
+                    return $http.post('user/profile/save', userprofiledata).then(
                         function (response) {
                             return response.data;
                         },

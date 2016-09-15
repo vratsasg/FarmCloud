@@ -6,8 +6,15 @@
         templateUrl: 'static/js/components/observable-property/observable-property.component.html',
         controllerAs: "model",
         controller: function (ObservablePropertyService, $log, $q, ngTableParams, $filter, $scope) {
-            var model = this;
 
+            if (!$httpProvider.defaults.headers.get) {
+                $httpProvider.defaults.headers.common = {};
+            }
+            $httpProvider.defaults.headers.common["Cache-Control"] = "no-cache";
+            $httpProvider.defaults.headers.common.Pragma = "no-cache";
+            $httpProvider.defaults.headers.common["If-Modified-Since"] = "0";
+
+            var model = this;
 
             model.$routerOnActivate = function (next) {
                 model.id = next.params.id;
@@ -195,18 +202,19 @@
                                 xAxis: {
                                     axisLabel: 'Time (MM/DD HH:MM)',
                                     tickFormat: function (d) {
-                                        var afrom = moment(model.datefrom);
-                                        var bto = moment(model.dateto);
+                                        var diff = moment(model.dateto).diff(moment(model.datefrom), 'days')
+                                        //var afrom = moment(model.datefrom);
+                                        //var bto = moment(model.dateto);
 
 
-                                        if (bto.diff(afrom, 'days') < 1) {
+                                        if (diff < 1) {
                                             var returnvalue = new Date(moment(parseInt(d)));
                                             //TODO set diferrent fromat in addition with min and max
                                             if (isNaN(returnvalue)) {
                                                 return d3.time.format('%H:%M')(new Date(d));
                                             }
                                             return d3.time.format(' %H:%M')(new Date(moment(parseInt(d))));
-                                        } else if (bto.diff(afrom, 'days') < 30) {
+                                        } else if (diff < 30) {
                                             var returnvalue = new Date(moment(parseInt(d)));
                                             //TODO set diferrent fromat in addition with min and max
                                             if (isNaN(returnvalue)) {
@@ -218,7 +226,6 @@
                                                 return d3.time.format('%b %e')(new Date(d));
                                             }
                                             return d3.time.format('%b %e')(new Date(moment(parseInt(d))));
-
                                         }
 
 

@@ -1,6 +1,7 @@
 package com.webstart.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.sql.Date;
 
 @Entity
 @Table(name="userprofile")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserProfile {
     @Id
     @Column(name = "user_id", unique=true, nullable=false)

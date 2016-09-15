@@ -7,7 +7,7 @@
     module.factory('ObservablePropertyService', ['$http', '$q', '$log', function ($http, $q, $log) {
             return {
                 getDevices: function () {
-                    return $http.get('firstPDev').then(
+                    return $http.get('firstPDev', {headers: {'Cache-Control': 'no-cache'}}).then(
                         function (response) {
                             return response.data;
                         },
@@ -18,7 +18,7 @@
                         }
                     );
                 }, getMeasuresTotalCount: function (id, mydevice, datefrom, dateto) {
-                    return $http.get('totalMeasuresCounter?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto).then(
+                    return $http.get('totalMeasuresCounter?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto, {headers: {'Cache-Control': 'no-cache'}}).then(
                         function (response) {
                             console.log('Total rows: ' + response);
                             return response.data;
@@ -29,7 +29,7 @@
                         }
                     );
                 }, getMeasuresByProperty: function (id, mydevice, datefrom, dateto) {
-                    return $http.get('getObspMeasures?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto).then(
+                    return $http.get('getObspMeasures?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto, {headers: {'Cache-Control': 'no-cache'}}).then(
                         //"/search?fname="+fname"+"&lname="+lname
                         function (response) {
                             return response.data;

@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Table(name = "notifications")
 public class Notifications {
 
-
     @Id
     @GeneratedValue
     private Integer notifid;

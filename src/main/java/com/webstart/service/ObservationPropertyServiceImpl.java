@@ -149,8 +149,10 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
         return jsonInString;
     }
 
-    public String getLastObservationbyIdentifier(int userId, String identifier) {
-        String jsonInString = null;
+
+    public List<ObservationMeasure> getLastObservationbyIdentifier(int userId, String identifier) {
+//        String jsonInString = null;
+        List<ObservationMeasure> ls = new ArrayList<ObservationMeasure>();
 
         try {
             Timestamp lastdate = observationJpaRepository.findlastdatetime(userId);
@@ -160,7 +162,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 return null;
             }
 
-            List<ObservationMeasure> ls = new ArrayList<ObservationMeasure>();
+            ls = new ArrayList<ObservationMeasure>();
             Iterator itr = listMeasures.iterator();
 
             while (itr.hasNext()) {
@@ -169,14 +171,14 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 ls.add(new ObservationMeasure(tTime.getTime() / 1000L, (BigDecimal) objec[2], tTime, objec[3].toString(), objec[0].toString()));
             }
 
-            ObjectMapper mapper = new ObjectMapper();       //Object to JSON in String
-            jsonInString = mapper.writeValueAsString(ls);
-        } catch (JsonProcessingException e) {
+            //ObjectMapper mapper = new ObjectMapper();       //Object to JSON in String
+            //jsonInString = mapper.writeValueAsString(ls);
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
 
-        return jsonInString;
+        return ls;
     }
 
     public void setObservationMinmaxValues(List<FeatureMinMaxValue> observationMinmaxList) {

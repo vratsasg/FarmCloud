@@ -2,6 +2,7 @@ package com.webstart.service;
 
 import com.webstart.DTO.FeatureMinMaxValue;
 import com.webstart.DTO.ObservableMeasure;
+import com.webstart.DTO.ObservationMeasure;
 import org.json.simple.JSONObject;
 
 import java.security.Timestamp;
@@ -18,7 +19,8 @@ public interface ObservationProperyService {
     Long getObservationsCounter(Long obspropId, int userId, String identifier, Date from, Date to);
     ObservableMeasure getObservationData(Long obspropId, int userId, String identifier, Date from, Date to);
     String getLastObservationsDate(int userId);
-    String getLastObservationbyIdentifier(int userId, String identifier);
+
+    List<ObservationMeasure> getLastObservationbyIdentifier(int userId, String identifier);
 
     void setObservationMinmaxValues(List<FeatureMinMaxValue> observationMinmaxList);
 }

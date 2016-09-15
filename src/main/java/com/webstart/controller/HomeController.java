@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webstart.DTO.FeatureMinMaxValue;
-import com.webstart.DTO.FeatureObsProp;
-import com.webstart.DTO.FeatureidIdentifier;
-import com.webstart.DTO.ObservableMeasure;
+import com.webstart.DTO.*;
 import com.webstart.model.UserProfile;
 import com.webstart.model.Users;
 import com.webstart.service.*;
@@ -49,26 +46,12 @@ public class HomeController {
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/userprofile", method = RequestMethod.GET)
-    public ResponseEntity<String> getUserProfile(HttpServletRequest httpServletRequest) {
-        Users user = new Users();
-        user = (Users) httpServletRequest.getSession().getAttribute("current_user");
-
-        UserProfile userprofile = new UserProfile();
-        String obj = usersService.getUserprofileuserByJson(user.getUser_id());
-
-        return new ResponseEntity<String>(obj, HttpStatus.OK);
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public ResponseEntity<String> getProfile(HttpServletRequest request) {
+        Users users = (Users) request.getSession().getAttribute("current_user");
+        JSONObject obj = featureofInterestService.findCropInfo(users.getUser_id());
+        return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
     }
-
-    @RequestMapping(value = "/userprofile", method = RequestMethod.POST)
-    public ResponseEntity<Boolean> saveUserProfile(HttpServletRequest httpServletRequest, @RequestBody UserProfile userprofile) {
-        Users user = new Users();
-        user = (Users) httpServletRequest.getSession().getAttribute("current_user");
-        boolean isDone = usersService.saveUserProfiledata(userprofile);
-
-        return new ResponseEntity<Boolean>(isDone, HttpStatus.CREATED);
-    }
-
 
     @RequestMapping(value = "/firstPDev", method = RequestMethod.GET)
     public ResponseEntity<String> getFeatureEndDevices(HttpServletRequest request) {
@@ -156,12 +139,13 @@ public class HomeController {
 
     }
 
-    //identifier
-    @RequestMapping(value = "/getLastMeasuresByDate", method = RequestMethod.GET)
-    public ResponseEntity<String> getMeasuresByObsProperty(@RequestParam("identifier") String mydevice, HttpServletRequest request) {
-        Users users = (Users) request.getSession().getAttribute("current_user");
 
-        String sentData = null;
+    @RequestMapping(value = "/getLastMeasuresByDate", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<ObservationMeasure> getMeasuresByObsProperty(@RequestParam("identifier") String mydevice, HttpServletRequest request) {
+        Users users = (Users) request.getSession().getAttribute("current_user");
+        List<ObservationMeasure> sentData = new ArrayList<ObservationMeasure>();
         try {
             sentData = observationProperyService.getLastObservationbyIdentifier(users.getUser_id(), mydevice);
         } catch (Exception e) {
@@ -169,7 +153,7 @@ public class HomeController {
             return null;
         }
 
-        return new ResponseEntity<String>(sentData, HttpStatus.OK);
+        return sentData;
     }
 
 
@@ -232,21 +216,7 @@ public class HomeController {
         return new ResponseEntity<String>("true", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/counternotifications", method = RequestMethod.GET)
-    public ResponseEntity<String> getCounterNotifications(HttpServletRequest request) {
-        String jsonInString = null;
-        Users users = (Users) request.getSession().getAttribute("current_user");
 
-        try {
-            jsonInString = usersService.getUserCounterNotifications(users.getUser_id());
-            System.out.println(jsonInString);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return new ResponseEntity<String>(jsonInString, HttpStatus.OK);
-    }
 
 
 }

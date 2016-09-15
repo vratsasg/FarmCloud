@@ -15,17 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
-
-/**
- * Created by George on 22/5/2016.
- */
 @RestController
 @RequestMapping(value = "embedded")
 public class EmbeddedController {
 
     @Autowired
     FeatureofInterestService featureofInterestService;
-
 
     @RequestMapping(value = "savemeasures", method = RequestMethod.POST)
     public ResponseEntity<Void> postSensor(@RequestBody EmbeddedDataWrapper embeddedDataWrapper) {

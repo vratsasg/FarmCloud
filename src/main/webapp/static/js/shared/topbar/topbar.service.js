@@ -17,7 +17,7 @@
                     );
                 },
                 getnotifcounter: function () {
-                    return $http.get('counternotifications').then(
+                    return $http.get('user/notifications').then(
                         function (response) {
                             return response.data;
                         }, function (errResponse) {

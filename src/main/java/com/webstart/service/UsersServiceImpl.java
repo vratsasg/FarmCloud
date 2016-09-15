@@ -94,6 +94,11 @@ public class UsersServiceImpl implements UsersService{
         return jsonInString;
     }
 
+    public UserProfile getUserProfile(Integer userid) {
+        UserProfile userprofile = userProfileJpaRepository.findOne(userid);
+        return userprofile;
+    }
+
     public boolean saveUserProfiledata(UserProfile usprof) {
         try {
             userProfileJpaRepository.save(usprof);
@@ -105,19 +110,17 @@ public class UsersServiceImpl implements UsersService{
         return true;
     }
 
-    @Override
-    public String getUserCounterNotifications(Integer userId) {
-        String returnedString = null;
-        ObjectMapper mapper = new ObjectMapper();
-        //Object to JSON in String
+    public List<Notifications> getUserCounterNotifications(Integer userId) {
+        List<Notifications> notifByUser = null;
+
         try {
-            List<Notifications> notifByUser = usersJpaRepository.getNotifByUser(userId);
-            returnedString = mapper.writeValueAsString(notifByUser);
-        } catch (JsonProcessingException e) {
+            notifByUser = usersJpaRepository.getNotifByUser(userId);
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
-
-            return returnedString;
+            return notifByUser;
         }
     }
+
+
 }

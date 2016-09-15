@@ -1,11 +1,11 @@
 package com.webstart.DTO;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-/**
- * Created by DimDesktop on 11/7/2016.
- */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ObservationMeasure extends ValueTime {
     public String unit;
     public String ObservableProperty;

@@ -57,7 +57,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         //featureofinterest.setGeom(null);
 
         if ((featureofinterestJpaRepository.save(featureofinterest)) != null) {
-
             return true;
         }
 
