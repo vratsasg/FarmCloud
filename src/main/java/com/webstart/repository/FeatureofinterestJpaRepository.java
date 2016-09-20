@@ -70,7 +70,7 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     @Query("select fi.featureofinterestid FROM Featureofinterest as fi  WHERE fi.identifier = :tid")
     List<Integer> getIdbyIdent(@Param("tid") String fidentent);
 
-    @Query("select new com.webstart.DTO.EndDeviceStatusDTO(fi.identifier, fi.irrigation, fi.measuring) " +
+    @Query("select new com.webstart.DTO.EndDeviceStatusDTO(fi.identifier, fi.irrigation, fi.measuring, fi.datetimefrom, fi.datetimeto) " +
             "FROM Featureofinterest as fi " +
             "WHERE fi.parentid = :pid " +
             "order by fi.identifier")

@@ -1,6 +1,10 @@
 package com.webstart.service;
 
 import com.webstart.DTO.CurrentMeasure;
+import com.webstart.DTO.EmbeddedData;
+import com.webstart.model.NumericValue;
+import com.webstart.model.Observation;
+import com.webstart.repository.NumericValueJpaRepository;
 import com.webstart.repository.ObservablePropertyJpaRepository;
 import com.webstart.repository.ObservationJpaRepository;
 import org.json.simple.JSONArray;
@@ -11,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -23,6 +26,8 @@ public class MeasuresServiceImpl implements MeasureService {
     ObservationJpaRepository observationJpaRepository;
     @Autowired
     ObservablePropertyJpaRepository observablePropertyJpaRepository;
+    @Autowired
+    NumericValueJpaRepository numericValueJpaRepository;
 
     public JSONArray findDailyMeasure(String id) {
         JSONArray finalDataList = new JSONArray();
@@ -105,5 +110,31 @@ public class MeasuresServiceImpl implements MeasureService {
         return finalDataList;
 
 
+    }
+
+    public void saveTheMeasure(Long seriesId, EmbeddedData embeddedData) {
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date from = dateFormat.parse(embeddedData.getDatetimeMeasure());
+
+            Observation observation = new Observation();
+
+            observation.setSeriesid(seriesId);
+            observation.setPhenomenontimestart(new Timestamp(from.getTime()));
+            observation.setPhenomenontimeend(new Timestamp(from.getTime()));
+            observation.setResulttime(new Timestamp(from.getTime()));
+            observation.setIdentifier(embeddedData.getDatetimeMeasure().replace("-", "").replace(":", "").replace(" ", "") + "-" + java.util.UUID.randomUUID());
+            observation.setUnitid((long) embeddedData.getUnitId());
+            observation.setDeleted("F");
+
+            observationJpaRepository.save(observation);
+
+            NumericValue numericValue = new NumericValue();
+            numericValue.setObservationid(observation.getObservationid());
+            numericValue.setValue(embeddedData.getMeasureValue());
+            numericValueJpaRepository.save(numericValue);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

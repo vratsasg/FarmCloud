@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.DTO.*;
 import com.webstart.model.*;
 import com.webstart.service.FeatureofInterestService;
+import com.webstart.service.MeasureService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,34 +22,34 @@ public class EmbeddedController {
 
     @Autowired
     FeatureofInterestService featureofInterestService;
+    @Autowired
+    MeasureService measureService;
 
     @RequestMapping(value = "savemeasures", method = RequestMethod.POST)
-    public ResponseEntity<Void> postSensor(@RequestBody EmbeddedDataWrapper embeddedDataWrapper) {
-
-        List<String> identList = new ArrayList<String>();
-        List<FeatureidIdentifier> featureidIdentifiers = new ArrayList<FeatureidIdentifier>();
-
+    public
+    @ResponseBody
+    void postSensor(@RequestBody EmbeddedDataWrapper embeddedDataWrapper) {
         try {
-            identList = new ArrayList<String>(new LinkedHashSet<String>(embeddedDataWrapper.GetFeatureIdentifiers()));
-            featureidIdentifiers = featureofInterestService.findFeatureIdByIdentifier(identList);
+            List<String> identList = new ArrayList<String>(new LinkedHashSet<String>(embeddedDataWrapper.GetFeatureIdentifiers()));
+            List<FeatureidIdentifier> featureidIdentifiers = featureofInterestService.findFeatureIdByIdentifier(identList);
 
-            for (final EmbeddedData embeddedData : embeddedDataWrapper.getEmbeddedDataList()) {
+            for (final EmbeddedData embeddedData : embeddedDataWrapper.getEmList()) {
                 int featureofinterestid = 0;
                 for (int i = 0; i < featureidIdentifiers.size(); i++) {
-                    if ((embeddedData.getZbAddress()).equals(featureidIdentifiers.get(i).getIdentifier())) {
+                    if ((embeddedData.getZigbeeAddress()).equals(featureidIdentifiers.get(i).getIdentifier())) {
                         featureofinterestid = featureidIdentifiers.get(i).getFeatureinterestid();
                     }
                 }
 
-                Long seriesId = featureofInterestService.findseries(embeddedData.getObsid(), featureofinterestid);
-                boolean check = featureofInterestService.saveTheMeasure(seriesId, embeddedData);
+                Long seriesId = featureofInterestService.findseries(embeddedData.getObservationPropId(), featureofinterestid);
+                measureService.saveTheMeasure(seriesId, embeddedData);
             }
 
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
+            //return new ResponseEntity<Void>(HttpStatus.CREATED);
 
         } catch (Exception exc) {
             exc.printStackTrace();
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+            //return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -60,10 +61,10 @@ public class EmbeddedController {
             List<FeatureObsPropMinMax> obspropminmaxList = featureofInterestService.findminmaxObservationValues(cordIdentifier);
 
             JSONObject jsonResult = new JSONObject();
-            jsonResult.put("fromhour", coordinatorSetuptimes.getFromhour());
-            jsonResult.put("fromminute", coordinatorSetuptimes.getFromminute());
-            jsonResult.put("tohour", coordinatorSetuptimes.getTohour());
-            jsonResult.put("tominute", coordinatorSetuptimes.getTominute());
+            jsonResult.put("fh", coordinatorSetuptimes.getFromhour());
+            jsonResult.put("fm", coordinatorSetuptimes.getFromminute());
+            jsonResult.put("th", coordinatorSetuptimes.getTohour());
+            jsonResult.put("tm", coordinatorSetuptimes.getTominute());
 
             JSONArray minmaxvalues = new JSONArray();
 
@@ -73,19 +74,19 @@ public class EmbeddedController {
                 identifierList.add(obspropValue.getIdentifier());
             }
             HashSet<String> endDevicesDistinctList = new HashSet<String>(identifierList);
-            jsonResult.put("devicesnum", endDevicesDistinctList.size());
+            jsonResult.put("num", endDevicesDistinctList.size());
 
             for (String identifier : endDevicesDistinctList) {
                 JSONObject element = new JSONObject();
-                element.put("identifier", identifier);
+                element.put("id", identifier);
 
                 for (FeatureObsPropMinMax obspropValue : obspropminmaxList) {
                     if (obspropValue.getIdentifier().equalsIgnoreCase(identifier) && obspropValue.getObservablePropertyId() == 3) {
-                        element.put("mintemp", obspropValue.getMinval());
-                        element.put("maxtemp", obspropValue.getMaxval());
+                        element.put("mint", obspropValue.getMinval());
+                        element.put("maxt", obspropValue.getMaxval());
                     } else if (obspropValue.getIdentifier().equalsIgnoreCase(identifier) && obspropValue.getObservablePropertyId() == 4) {
-                        element.put("minhumidity", obspropValue.getMinval());
-                        element.put("maxhumidity", obspropValue.getMaxval());
+                        element.put("minh", obspropValue.getMinval());
+                        element.put("maxh", obspropValue.getMaxval());
                     }
                 }
                 minmaxvalues.add(element);
@@ -111,6 +112,7 @@ public class EmbeddedController {
     public ResponseEntity<String> startMeasuring(HttpServletRequest request) {
         String JsonResp = null;
         Users user = (Users) request.getSession().getAttribute("current_user");
+        //TODO change without userid
         JsonResp = featureofInterestService.changeMeasuringFlag(user.getUser_id(), 3L);
 
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);

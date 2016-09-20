@@ -5,31 +5,31 @@ import java.util.List;
 
 public class EmbeddedDataWrapper {
 
-    private List<EmbeddedData> embeddedDataList;
+    private List<EmbeddedData> emList;
 
     public EmbeddedDataWrapper() {
     }
 
-    public EmbeddedDataWrapper(List<EmbeddedData> embeddedDataList) {
-        this.embeddedDataList = embeddedDataList;
+    public EmbeddedDataWrapper(List<EmbeddedData> emList) {
+        this.emList = emList;
     }
 
     public List<String> GetFeatureIdentifiers() {
         List<String> list = new ArrayList<String>();
 
-        for (final EmbeddedData embeddedData : getEmbeddedDataList()) {
-            list.add(embeddedData.getZbAddress());
+        for (final EmbeddedData embeddedData : getEmList()) {
+            list.add(embeddedData.getZigbeeAddress());
         }
 
         return list;
     }
 
-    public List<EmbeddedData> getEmbeddedDataList() {
-        return embeddedDataList;
+    public List<EmbeddedData> getEmList() {
+        return emList;
     }
 
-    public void setEmbeddedDataList(List<EmbeddedData> embeddedDataList) {
-        this.embeddedDataList = embeddedDataList;
+    public void setEmList(List<EmbeddedData> emList) {
+        this.emList = emList;
     }
 
 

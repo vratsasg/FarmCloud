@@ -1,49 +1,45 @@
 package com.webstart.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 /**
  * Created by George on 24/5/2016.
  */
 public class EmbeddedData {
-    private String zbAddress;
-    private String observableProperty;
+    @JsonProperty("zb")
+    private String zigbeeAddress;
+
+    @JsonProperty("mv")
     private BigDecimal measureValue;
-    private String datetime;
-    private int obsid;
 
-//    private float humidity;
-//    private float itemp;
-//    private float wtemp;
-//    private int soil;
+    @JsonProperty("dt")
+    private String datetimeMeasure;
 
+    @JsonProperty("oid")
+    private int ObservationPropId;
+
+    @JsonProperty("uid")
+    private int UnitId;
 
     public EmbeddedData() {
     }
 
-    public EmbeddedData(String zbAddress, String observableProperty, BigDecimal measureValue, String datetime, int obsid) {
-        this.zbAddress = zbAddress;
-        this.observableProperty = observableProperty;
+    public EmbeddedData(String zigbeeAddress, BigDecimal measureValue, String datetimeMeasure, int ObservationPropId, int UnitId) {
+        this.zigbeeAddress = zigbeeAddress;
         this.measureValue = measureValue;
-        this.datetime = datetime;
-        this.obsid = obsid;
+        this.datetimeMeasure = datetimeMeasure;
+        this.ObservationPropId = ObservationPropId;
+        this.UnitId = UnitId;
     }
 
-    public String getZbAddress() {
-        return zbAddress;
+    public String getZigbeeAddress() {
+        return zigbeeAddress;
     }
 
-    public void setZbAddress(String zbAddress) {
-        this.zbAddress = zbAddress;
-    }
-
-    public String getObservableProperty() {
-        return observableProperty;
-    }
-
-    public void setObservableProperty(String observableProperty) {
-        this.observableProperty = observableProperty;
+    public void setZigbeeAddress(String zigbeeAddress) {
+        this.zigbeeAddress = zigbeeAddress;
     }
 
     public BigDecimal getMeasureValue() {
@@ -54,20 +50,28 @@ public class EmbeddedData {
         this.measureValue = measureValue;
     }
 
-    public String getDatetime() {
-        return datetime;
+    public int getObservationPropId() {
+        return ObservationPropId;
     }
 
-    public void setDatetime(String datetime) {
-        this.datetime = datetime;
+    public void setObservationPropId(int observationPropId) {
+        this.ObservationPropId = observationPropId;
     }
 
-    public int getObsid() {
-        return obsid;
+    public int getUnitId() {
+        return UnitId;
     }
 
-    public void setObsid(int obsid) {
-        this.obsid = obsid;
+    public void setUnitId(int unitId) {
+        this.UnitId = unitId;
+    }
+
+    public String getDatetimeMeasure() {
+        return datetimeMeasure;
+    }
+
+    public void setDatetimeMeasure(String datetimeMeasure) {
+        this.datetimeMeasure = datetimeMeasure;
     }
 }
 

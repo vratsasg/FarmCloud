@@ -31,6 +31,5 @@ public interface FeatureofInterestService {
 
         //INSERT, UPDATE
         boolean setDeviceIrrigaDate(int usid, String device, Date from, Date to);
-        boolean saveTheMeasure(Long series, EmbeddedData embeddedData);
         boolean addCrop(Crop crop);
 }

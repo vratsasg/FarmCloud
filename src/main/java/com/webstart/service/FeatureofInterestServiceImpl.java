@@ -339,67 +339,56 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
-    public boolean saveTheMeasure(Long seriesId, EmbeddedData embeddedData) {
-        try {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date from = dateFormat.parse(embeddedData.getDatetime());
-
-            Observation observation = new Observation();
-
-            observation.setSeriesid(seriesId);
-            observation.setPhenomenontimestart(new Timestamp(from.getTime()));
-            observation.setPhenomenontimeend(new Timestamp(from.getTime()));
-            observation.setResulttime(new Timestamp(from.getTime()));
-            observation.setIdentifier(embeddedData.getDatetime().replace("-", "").replace(":", "").replace(" ", "") + "-" + java.util.UUID.randomUUID());
-            observation.setUnitid(1L);
-            observation.setDeleted("F");
-
-            observationJpaRepository.save(observation);
-
-            NumericValue numericValue = new NumericValue();
-            numericValue.setObservationid(observation.getObservationid());
-            numericValue.setValue(embeddedData.getMeasureValue());
-            numericValueJpaRepository.save(numericValue);
-
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     public String findIrrigationAndMeasuring(String corD) {
-        Integer idCord = null;
+        String jsonresult = null;
 
-        List<Integer> cordinIds = featureofinterestJpaRepository.getIdbyIdent(corD);
+        try {
+            Integer idCord = null;
 
-        Iterator itr = cordinIds.iterator();
-        while (itr.hasNext()) {
-            idCord = (Integer) itr.next();
+            List<Integer> cordinIds = featureofinterestJpaRepository.getIdbyIdent(corD);
+
+            Iterator itr = cordinIds.iterator();
+            while (itr.hasNext()) {
+                idCord = (Integer) itr.next();
+            }
+
+            Long fidg = Long.valueOf(idCord.longValue());
+
+            List<EndDeviceStatusDTO> identiFlagsObjects = featureofinterestJpaRepository.getIdentifierFlags(fidg);
+
+//        JSONArray retur = new JSONArray();
+//
+//        for (EndDeviceStatusDTO endDevStatus : identiFlagsObjects) {
+//
+//            JSONObject element = new JSONObject();
+//
+//            element.put("id", endDevStatus.getIdentifier());
+//            element.put("ir", endDevStatus.isIrrigationStatus());
+//            element.put("measur", endDevStatus.isMeasuringStatus());
+//
+//            Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+//            calendar.setTime(endDevStatus.getFromtime());   // assigns calendar to given date
+//            element.put("frh",  calendar.get(Calendar.HOUR_OF_DAY));
+//            element.put("frm", calendar.get(Calendar.MINUTE));
+//            calendar.setTime(endDevStatus.getUntiltime());   // assigns calendar to given date
+//            element.put("toh", calendar.get(Calendar.HOUR_OF_DAY));
+//            element.put("tom", calendar.get(Calendar.MINUTE));
+//
+//            retur.add(element);
+//        }
+//
+//        JSONObject finObj = new JSONObject();
+//        finObj.put("Data", retur);
+//        return finObj.toJSONString();
+
+            ObjectMapper mapper = new ObjectMapper();
+            jsonresult = mapper.writeValueAsString(identiFlagsObjects);
+        } catch (JsonProcessingException exc) {
+            exc.printStackTrace();
+        } finally {
+            return jsonresult;
         }
-
-        Long fidg = Long.valueOf(idCord.longValue());
-
-        List<EndDeviceStatusDTO> identiFlagsObjects = featureofinterestJpaRepository.getIdentifierFlags(fidg);
-
-        JSONArray retur = new JSONArray();
-
-        for (EndDeviceStatusDTO endDevStatus : identiFlagsObjects) {
-
-            JSONObject element = new JSONObject();
-
-            element.put("identifier", endDevStatus.getIdentifier());
-            element.put("irrigation", String.valueOf(endDevStatus.getIrrigationStatus()));
-            element.put("measurement", String.valueOf(endDevStatus.getMeasuringStatus()));
-
-            retur.add(element);
-        }
-
-        JSONObject finObj = new JSONObject();
-        finObj.put("Data", retur);
-
-        return finObj.toJSONString();
     }
 
     public String changeMeasuringFlag(int usid, long typeId) {
