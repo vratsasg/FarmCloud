@@ -6,14 +6,6 @@
         templateUrl: 'static/js/components/observable-property/observable-property.component.html',
         controllerAs: "model",
         controller: function (ObservablePropertyService, $log, $q, ngTableParams, $filter, $scope) {
-
-            if (!$httpProvider.defaults.headers.get) {
-                $httpProvider.defaults.headers.common = {};
-            }
-            $httpProvider.defaults.headers.common["Cache-Control"] = "no-cache";
-            $httpProvider.defaults.headers.common.Pragma = "no-cache";
-            $httpProvider.defaults.headers.common["If-Modified-Since"] = "0";
-
             var model = this;
 
             model.$routerOnActivate = function (next) {
@@ -27,6 +19,7 @@
             model.updateMyDevice = function (myD) {
                 var datefrom = moment(new Date(model.datefrom)).format("YYYY-MM-DD HH:mm:ss");
                 var dateto = moment(new Date(model.dateto)).format("YYYY-MM-DD HH:mm:ss");
+                var diff = moment(model.dateto).diff(moment(model.datefrom), 'days');
 
                 model.tableParams = new ngTableParams({
                     counts: [],
@@ -35,10 +28,6 @@
                     //paginationMaxBlocks: 5,
                     //paginationMinBlocks: 1
                 }, {
-                    //total: 15,
-                    //total: function(){
-                    //    return getTableTotalCount(model.myDevice, datefrom, dateto);
-                    //},
                     getData: function (params) {
                         return getTableData(model.myDevice, params, datefrom, dateto);
                     }
@@ -48,6 +37,7 @@
             model.updateDateFrom = function (dfr) {
                 var datefrom = moment(new Date(dfr)).format("YYYY-MM-DD HH:mm:ss");
                 var dateto = moment(new Date(model.dateto)).format("YYYY-MM-DD HH:mm:ss");
+                var diff = moment(model.dateto).diff(moment(model.datefrom), 'days');
 
                 model.tableParams = new ngTableParams({
                     counts: [],
@@ -56,12 +46,7 @@
                     //paginationMaxBlocks: 5,
                     //paginationMinBlocks: 1
                 }, {
-                    //total: 15,
-                    //total:  function(){
-                    //    return getTableTotalCount(model.myDevice, datefrom, dateto);
-                    //},
                     getData: function (params) {
-
                         return getTableData(model.myDevice, params, datefrom, dateto);
                     }
                 });
@@ -81,10 +66,6 @@
                     //paginationMaxBlocks: 5,
                     //paginationMinBlocks: 1
                 }, {
-                    //total: 15,
-                    //total:  function(){
-                    //    return getTableTotalCount(model.myDevice, datefrom, dateto);
-                    //},
                     getData: function (params) {
                         return getTableData(model.myDevice, params, datefrom, dateto);
                     }
@@ -129,10 +110,6 @@
                             //paginationMaxBlocks: 5,
                             //paginationMinBlocks: 1
                         }, {
-                            //total: 15,
-                            //total: function() {
-                            //    return getTableTotalCount(model.myDevice, model.datefrom, model.dateto);
-                            //},
                             getData: function (params) {
                                 return getTableData(model.myDevice, params, model.datefrom, model.dateto);
                             }
@@ -160,6 +137,7 @@
 
             function getTableData(devIdentifier, params, datefrom, dateto) {
                 var defer = $q.defer();
+                var diff = moment(model.dateto).diff(moment(model.datefrom), 'days');
 
                 var varApiGet = ObservablePropertyService.getMeasuresByProperty(model.id, devIdentifier, datefrom, dateto).then(
                     function (apd) {
@@ -202,14 +180,10 @@
                                 xAxis: {
                                     axisLabel: 'Time (MM/DD HH:MM)',
                                     tickFormat: function (d) {
-                                        var diff = moment(model.dateto).diff(moment(model.datefrom), 'days')
-                                        //var afrom = moment(model.datefrom);
-                                        //var bto = moment(model.dateto);
-
 
                                         if (diff < 1) {
                                             var returnvalue = new Date(moment(parseInt(d)));
-                                            //TODO set diferrent fromat in addition with min and max
+                                            //TODO set diferrent format in addition with min and max
                                             if (isNaN(returnvalue)) {
                                                 return d3.time.format('%H:%M')(new Date(d));
                                             }

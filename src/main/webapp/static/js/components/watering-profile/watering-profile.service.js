@@ -16,15 +16,18 @@
                     );
                 }
                 , saveWateringProfile: function (wateringprofiledata) {
-                    return $http.post('/wateringprofile/saveminmax?jsonval=' + angular.toJson(wateringprofiledata)).then(
-                        function (response) {
+                    return $http({
+                        method: 'POST',
+                        url: '/wateringprofile/saveminmax',
+                        data: angular.toJson(wateringprofiledata),
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function (response) {
                             console.log("Success!!!");
                         },
                         function (errResponse) {
                             console.error('Error while saving minimum and maximum values for watering profile!');
                             return $q.reject(errResponse);
-                        }
-                    );
+                        });
                 }
 
             }

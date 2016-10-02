@@ -179,7 +179,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/wateringprofile/minmax", method = RequestMethod.GET)
-    public ResponseEntity<String> getStationCoords(HttpServletRequest request) {
+    public ResponseEntity<String> getStationMinMaxValues(HttpServletRequest request) {
         String jsonInString = null;
 
         try {
@@ -194,27 +194,52 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/wateringprofile/saveminmax", method = RequestMethod.POST)
-    public ResponseEntity<String> saveWateringProfile(@RequestParam(("jsonval")) String jsonvalue, HttpServletRequest httpServletRequest) {
-        Users user = (Users) httpServletRequest.getSession().getAttribute("current_user");
-
+    public
+    @ResponseBody
+    void saveWateringProfile(@RequestBody List<FeatureObsProp> featureObsPropList) {
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            List<FeatureObsProp> myObjects = mapper.readValue(jsonvalue, new TypeReference<List<FeatureObsProp>>() {
-            });
             List<FeatureMinMaxValue> featureMinMaxValuesList = new ArrayList<FeatureMinMaxValue>();
-            for (FeatureObsProp featureObsProp : myObjects) {
+            for (FeatureObsProp featureObsProp : featureObsPropList) {
                 featureMinMaxValuesList.addAll(featureObsProp.getFeatureObsproplist());
             }
             observationProperyService.setObservationMinmaxValues(featureMinMaxValuesList);
-        } catch (IOException exc) {
-            exc.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<String>("false", HttpStatus.NOT_IMPLEMENTED);
+        }
+    }
+
+    @RequestMapping(value = "/automaticwater/getdates", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    AutomaticWater getAutomaticWaterTimes(HttpServletRequest request, @RequestParam("identifier") String device) {
+//        String jsonInString = null;
+        AutomaticWater automaticWater = null;
+
+        try {
+            Users users = (Users) request.getSession().getAttribute("current_user");
+            automaticWater = featureofInterestService.getAutomaticWater(users.getUser_id(), device);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
 
-        return new ResponseEntity<String>("true", HttpStatus.OK);
+        return automaticWater;
     }
+
+    @RequestMapping(value = "/automaticwater/save", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    void saveAutomacticWatering(@RequestBody AutomaticWater automaticWatering) {
+        try {
+            featureofInterestService.setAutomaticWateringTime(automaticWatering);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
 
 
 

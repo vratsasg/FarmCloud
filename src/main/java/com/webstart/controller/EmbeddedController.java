@@ -32,6 +32,7 @@ public class EmbeddedController {
         try {
             List<String> identList = new ArrayList<String>(new LinkedHashSet<String>(embeddedDataWrapper.GetFeatureIdentifiers()));
             List<FeatureidIdentifier> featureidIdentifiers = featureofInterestService.findFeatureIdByIdentifier(identList);
+            featureofInterestService.setFeatureMeasuringFalse(identList);
 
             for (final EmbeddedData embeddedData : embeddedDataWrapper.getEmList()) {
                 int featureofinterestid = 0;

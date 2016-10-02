@@ -1,5 +1,6 @@
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="model.cancel()"><span
+            aria-hidden="true">&times;</span>
     </button>
     <h4 class="modal-title" id="myModalLabel">Start irrigation for the: <span style="color: #71843f"><strong>{{model.parent.myDevice}}</strong></span>
     </h4>
@@ -20,7 +21,7 @@
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <datetimepicker data-ng-model="model.datefrom"
                                     ng-change="model.updateDateFrom(model.datefrom)"
-                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2', modelType: 'moment', startView: 'hour', minView: 'minute' }"
+                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2', modelType: 'moment', startView: 'hour', minView: 'minute', minuteStep: 1 }"
                                     data-before-render="model.beforeRenderStartDate($view, $dates, $leftDate, $upDate, $rightDate)"/>
                 </ul>
             </div>
@@ -39,7 +40,7 @@
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <datetimepicker data-ng-model="model.dateto"
                                     ng-change="model.updateDateTo(model.dateto)"
-                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown3',  modelType: 'moment', startView: 'hour', minView: 'minute' }"
+                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown3',  modelType: 'moment', startView: 'hour', minView: 'minute', minuteStep: 1 }"
                                     data-before-render=" model.beforeRenderEndDate($view, $dates, $leftDate, $upDate, $rightDate)"/>
                 </ul>
             </div>

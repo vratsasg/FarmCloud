@@ -357,31 +357,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
             List<EndDeviceStatusDTO> identiFlagsObjects = featureofinterestJpaRepository.getIdentifierFlags(fidg);
 
-//        JSONArray retur = new JSONArray();
-//
-//        for (EndDeviceStatusDTO endDevStatus : identiFlagsObjects) {
-//
-//            JSONObject element = new JSONObject();
-//
-//            element.put("id", endDevStatus.getIdentifier());
-//            element.put("ir", endDevStatus.isIrrigationStatus());
-//            element.put("measur", endDevStatus.isMeasuringStatus());
-//
-//            Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
-//            calendar.setTime(endDevStatus.getFromtime());   // assigns calendar to given date
-//            element.put("frh",  calendar.get(Calendar.HOUR_OF_DAY));
-//            element.put("frm", calendar.get(Calendar.MINUTE));
-//            calendar.setTime(endDevStatus.getUntiltime());   // assigns calendar to given date
-//            element.put("toh", calendar.get(Calendar.HOUR_OF_DAY));
-//            element.put("tom", calendar.get(Calendar.MINUTE));
-//
-//            retur.add(element);
-//        }
-//
-//        JSONObject finObj = new JSONObject();
-//        finObj.put("Data", retur);
-//        return finObj.toJSONString();
-
             ObjectMapper mapper = new ObjectMapper();
             jsonresult = mapper.writeValueAsString(identiFlagsObjects);
         } catch (JsonProcessingException exc) {
@@ -405,6 +380,19 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
+    public AutomaticWater getAutomaticWater(int userid, String identifier) {
+        AutomaticWater automaticWater = null;
+
+        try {
+            automaticWater = featureofinterestJpaRepository.getAutomaticWater(userid, identifier);
+            return automaticWater;
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally {
+            return automaticWater;
+        }
+    }
+
     public boolean setDeviceIrrigaDate(int usid, String device, Date from, Date to) {
         try {
             featureofinterestJpaRepository.setDeviceIrrigDates(usid, device, from, to);
@@ -415,5 +403,20 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
+    public void setFeatureMeasuringFalse(List<String> idertifierList) {
+        try {
+            featureofinterestJpaRepository.setMeasuringFlagFalse(idertifierList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setAutomaticWateringTime(AutomaticWater automaticWater) {
+        try {
+            featureofinterestJpaRepository.setCoordinatorAlgorithmParams(automaticWater.getIdentifier(), automaticWater.getFromtime(), automaticWater.getUntiltime(), automaticWater.getWateringConsumption());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

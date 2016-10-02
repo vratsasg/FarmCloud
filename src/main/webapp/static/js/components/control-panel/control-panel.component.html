@@ -46,6 +46,8 @@
     <span class="flaticon-temperature" style="vertical-align:middle; color: whitesmoke;"></span>
 </button>
 
+<hr>
+
 <div class="row col-xl-12 col-md-12 col-sm-12 col-xs-12">
     Last crop's Irrigation at <span style="color: #71843f"><strong>{{model.lastDate}}</strong></span>
 </div>
@@ -61,7 +63,7 @@
             End Irrigation Time: <span style="color: #71843f"><strong>{{model.irrigationDtEnd}}</strong></span>
         </li>
         <li>
-            Water consume (lt): <span style="color: #71843f"><strong>{{model.irrigationCosnume}}</strong></span>
+            Water Consumption (lt): <span style="color: #71843f"><strong>{{model.irrigationCosnume}}</strong></span>
         </li>
     </ul>
 </div>
@@ -71,3 +73,61 @@
     Start Irrigation
     <span class="flaticon-bathroom-faucet-tool" style="vertical-align:middle; color: whitesmoke;"></span>
 </button>
+
+<hr>
+
+<div class="row col-md-12 col-sm-12 cols-xl-12 xol-xs-12" style="margin-top: 10px;">
+    <div class="form-group col-md-2 col-sm-2 cols-xl-2 xol-xs-2">
+        <label class="control-label">Time From</label>
+
+        <div class="dropdown">
+            <a class="dropdown-toggle" id="dropdownstart" role="button" data-toggle="dropdown" data-target="" href="">
+                <div class="input-group"><input type="text" class="form-control"
+                                                data-ng-model="model.coordinator.automaticIrrigationFromTime">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                </div>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <datetimepicker data-ng-model="model.coordinator.automaticIrrigationFromTime"
+                                ng-change="model.updateCoordDateFrom(model.coordinator.automaticIrrigationFromTime)"
+                                ng-required="true"
+                                data-datetimepicker-config="{ dropdownSelector: '#dropdownstart', modelType: 'moment', startView: 'hour', minView: 'minute', minuteStep: 1 }"
+                                data-before-render="model.beforeRenderStartDate($view, $dates, $leftDate, $upDate, $rightDate)"/>
+            </ul>
+        </div>
+    </div>
+
+    <div class="form-group col-md-2 col-sm-2 cols-xl-2 xol-xs-2">
+        <label class="control-label">Time To</label>
+
+        <div class="dropdown">
+            <a class="dropdown-toggle" id="dropdownend" role="button" data-toggle="dropdown" data-target="" href="">
+                <div class="input-group"><input type="text" class="form-control"
+                                                data-ng-model="model.coordinator.automaticIrrigationUntilTime">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                </div>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <datetimepicker data-ng-model="model.coordinator.automaticIrrigationUntilTime"
+                                ng-change="model.updateCoordDateTo(model.coordinator.automaticIrrigationUntilTime)"
+                                ng-required="true"
+                                data-datetimepicker-config="{ dropdownSelector: '#dropdownend', modelType: 'moment', startView: 'hour', minView: 'minute', minuteStep: 1 }"
+                                data-before-render="model.beforeRenderStartDate($view, $dates, $leftDate, $upDate, $rightDate)"/>
+            </ul>
+        </div>
+    </div>
+
+    <div class="form-group col-md-2 col-sm-2 cols-xl-2 xol-xs-2">
+        <label class="control-label">Water Consumption (lt/h)</label>
+        <input type="number" class="form-control" step="10" data-ng-model="model.coordinator.wateringConsumption"
+               ng-required="true" min="0" ng-required="true">
+    </div>
+
+    <div class="form-group col-md-2 col-sm-2 cols-xl-2 xol-xs-2">
+        <button class="btn btn-success" id="savealgorithm" ng-click="" style="margin-top: 25px;">
+            Save Data
+            <span class="glyphicon glyphicon-save" style="vertical-align:middle; color: whitesmoke;"></span>
+        </button>
+    </div>
+
+</div>

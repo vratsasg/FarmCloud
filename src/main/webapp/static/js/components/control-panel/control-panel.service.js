@@ -39,6 +39,17 @@
                     }
                 );
             },
+            getCoordinatorData: function (identifier) {
+                return $http.get('automaticwater/getdates?identifier=' + identifier).then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (errResponse) {
+                        console.error('Error while getting coordinator data');
+                        return $q.reject(errResponse);
+                    }
+                );
+            },
             setMeasuringFlags: function () {
                 return $http.get('embedded/measures').then(
                     function (response) {

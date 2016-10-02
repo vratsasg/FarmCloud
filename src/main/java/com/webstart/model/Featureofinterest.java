@@ -8,6 +8,7 @@ import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +72,8 @@ public class Featureofinterest {
     @Column(name = "userid")
     private int userid;
 
+    @Column(name = "waterconsumption")
+    private BigDecimal waterConsumption;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "userid", insertable = false, updatable = false)
@@ -101,21 +104,23 @@ public class Featureofinterest {
 
     }
 
-    public Featureofinterest(int userid, Point geom, Boolean measuring, Boolean irrigation, Timestamp datetimeto, Timestamp datetimefrom, Long parentid, String url, String descriptionxml, String name, Long codespaceid, String identifier, long featureofinteresttypeid, String hibernatediscriminator) {
-        this.userid = userid;
-        this.geom = geom;
-        this.measuring = measuring;
-        this.irrigation = irrigation;
-        this.datetimeto = datetimeto;
-        this.datetimefrom = datetimefrom;
-        this.parentid = parentid;
-        this.url = url;
-        this.descriptionxml = descriptionxml;
-        this.name = name;
-        this.codespaceid = codespaceid;
-        this.identifier = identifier;
-        this.featureofinteresttypeid = featureofinteresttypeid;
+    public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, Long parentid, Timestamp datetimefrom, Timestamp datetimeto, Boolean irrigation, Boolean measuring, Featureofinteresttype featureofinteresttype, Point geom, int userid, BigDecimal waterConsumption) {
         this.hibernatediscriminator = hibernatediscriminator;
+        this.featureofinteresttypeid = featureofinteresttypeid;
+        this.identifier = identifier;
+        this.codespaceid = codespaceid;
+        this.name = name;
+        this.descriptionxml = descriptionxml;
+        this.url = url;
+        this.parentid = parentid;
+        this.datetimefrom = datetimefrom;
+        this.datetimeto = datetimeto;
+        this.irrigation = irrigation;
+        this.measuring = measuring;
+        this.featureofinteresttype = featureofinteresttype;
+        this.geom = geom;
+        this.userid = userid;
+        this.waterConsumption = waterConsumption;
     }
 
     public List<ObservablePropertyMinMax> getObspropminmaxList() {
@@ -286,5 +291,11 @@ public class Featureofinterest {
         this.childrenFeatures = childrenFeatures;
     }
 
+    public BigDecimal getWaterConsumption() {
+        return waterConsumption;
+    }
 
+    public void setWaterConsumption(BigDecimal waterConsumption) {
+        this.waterConsumption = waterConsumption;
+    }
 }

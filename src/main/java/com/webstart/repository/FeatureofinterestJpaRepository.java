@@ -1,9 +1,6 @@
 package com.webstart.repository;
 
-import com.webstart.DTO.CropInfoDTO;
-import com.webstart.DTO.EndDeviceStatusDTO;
-import com.webstart.DTO.FeatureObsPropMinMax;
-import com.webstart.DTO.FeatureidIdentifier;
+import com.webstart.DTO.*;
 import com.webstart.model.Featureofinterest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -99,6 +96,12 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
             nativeQuery = true)
     List<Object[]> getEnddevicesTimes(@Param("identifier") String identifier);
 
+    @Query("select new com.webstart.DTO.AutomaticWater(parent.datetimefrom, parent.datetimeto, parent.waterConsumption, parent.identifier) " +
+            "FROM Featureofinterest as fi " +
+            "JOIN fi.parentFeature as parent " +
+            "WHERE fi.userid = :user_id and fi.identifier = :identifier and fi.featureofinteresttypeid = 3 ")
+    AutomaticWater getAutomaticWater(@Param("user_id") Integer userid, @Param("identifier") String identifier);
+
     @Modifying
     @Query("update ObservablePropertyMinMax obsprop set obsprop.minval = :minval, obsprop.maxval = :maxval where obsprop.obspropid = :obspropid")
     @Transactional
@@ -109,12 +112,24 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     @Transactional
     void setMeasuringFlag(@Param("usid") int useid, @Param("tpid") long ftypeid);
 
+    @Modifying
+    @Query("update Featureofinterest f set f.measuring = false where f.identifier IN :identifierlist")
+    @Transactional
+    void setMeasuringFlagFalse(@Param("identifierlist") List<String> identifierlist);
 
     @Modifying
     @Query("update Featureofinterest f set f.irrigation = true, f.datetimefrom = :dtfrom, f.datetimeto = :dtto " +
             "where f.userid = :usid and f.identifier = :identifier")
     @Transactional
     void setDeviceIrrigDates(@Param("usid") int userid, @Param("identifier") String device, @Param("dtfrom") Date datetimefrom, @Param("dtto") Date datetimeto);
+
+    @Modifying
+    @Query("update Featureofinterest f set f.datetimefrom = :dtfrom, f.datetimeto = :dtto, f.waterConsumption = :wc " +
+            "where  f.identifier = :identifier and f.featureofinteresttypeid = 2")
+    @Transactional
+    void setCoordinatorAlgorithmParams(@Param("identifier") String device, @Param("dtfrom") Date datetimefrom, @Param("dtto") Date datetimeto, @Param("wc") BigDecimal waterconsumption);
+
+
 
 
 }

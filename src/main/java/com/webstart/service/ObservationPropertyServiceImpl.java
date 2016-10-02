@@ -189,8 +189,8 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
         } catch (Exception exc) {
 
         }
-
     }
+
 
 }
 

@@ -22,5 +22,6 @@ public interface ObservationProperyService {
 
     List<ObservationMeasure> getLastObservationbyIdentifier(int userId, String identifier);
 
+
     void setObservationMinmaxValues(List<FeatureMinMaxValue> observationMinmaxList);
 }
