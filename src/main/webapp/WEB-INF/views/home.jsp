@@ -92,6 +92,7 @@
     <script src="<c:url value='/static/js/components/control-panel/control-panel.service.js'/>"></script>
     <script src="<c:url value='/static/js/components/control-panel/irrigation.modal.component.js'/>"></script>
     <script src="<c:url value='/static/js/components/control-panel/measuring.modal.component.js'/>"></script>
+    <script src="<c:url value='/static/js/components/control-panel/algorithm.modal.component.js'/>"></script>
 
     <script src="<c:url value='/static/js/components/watering-profile/watering-profile.component.js'/>"></script>
     <script src="<c:url value='/static/js/components/watering-profile/watering-profile.service.js'/>"></script>

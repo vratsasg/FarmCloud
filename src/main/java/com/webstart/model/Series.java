@@ -4,6 +4,8 @@ package com.webstart.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "series")
@@ -40,6 +42,10 @@ public class Series {
     @JoinColumn(name = "featureofinterestid", insertable = false, updatable = false)
     private Featureofinterest featureofinterest;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "series", cascade = {CascadeType.ALL})
+    private List<Observation> observationList = new ArrayList<Observation>();
+
+
     public Series(Long featureofinterestid, Long observablepropertyid, Long procedureid, String deleted, Procedure procedure, ObservableProperty observableProperty) {
         this.featureofinterestid = featureofinterestid;
         this.observablepropertyid = observablepropertyid;
@@ -51,6 +57,7 @@ public class Series {
 
     public Series() {
     }
+
 
     public Long getSeriesid() {
         return seriesid;
@@ -117,5 +124,12 @@ public class Series {
         this.featureofinterest = featureofinterest;
     }
 
+    public List<Observation> getObservationList() {
+        return observationList;
+    }
+
+    public void setObservationList(List<Observation> observationList) {
+        this.observationList = observationList;
+    }
 
 }

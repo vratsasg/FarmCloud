@@ -35,8 +35,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
         JSONObject finalobj = new JSONObject();
         JSONArray list = new JSONArray();
 
-        List<ObservableProperty> obsPropertiesList = observablePropertyJpaRepository.findAll();
-
+        List<ObservableProperty> obsPropertiesList = observablePropertyJpaRepository.findAllExceptWatering();
 
         for (ObservableProperty observableProperty : obsPropertiesList) {
             JSONObject obj = new JSONObject();
@@ -179,6 +178,31 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
         }
 
         return ls;
+    }
+
+    public AutomaticWater getLastWateringObsbyIdentifier(int userId, String identifier) {
+        AutomaticWater automaticWater = null;
+
+        try {
+            Timestamp lastdate = observationJpaRepository.findWateringlastdatetime(userId, identifier);
+            List<Object[]> listMeasures = observationJpaRepository.findLastWateringMeasures(userId, identifier, lastdate);
+
+            if (listMeasures.size() == 0) {
+                return null;
+            }
+
+            Iterator itr = listMeasures.iterator();
+
+            while (itr.hasNext()) {
+                Object[] object = (Object[]) itr.next();
+                automaticWater = new AutomaticWater((java.util.Date) object[1], (java.util.Date) object[2], (BigDecimal) object[3], identifier);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return automaticWater;
     }
 
     public void setObservationMinmaxValues(List<FeatureMinMaxValue> observationMinmaxList) {

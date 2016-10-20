@@ -49,7 +49,7 @@
 <hr>
 
 <div class="row col-xl-12 col-md-12 col-sm-12 col-xs-12">
-    Last crop's Irrigation at <span style="color: #71843f"><strong>{{model.lastDate}}</strong></span>
+    Last crop's Irrigation at <span style="color: #71843f"><strong>{{model.lastIrrigDate}}</strong></span>
 </div>
 
 </br>
@@ -57,13 +57,14 @@
 <div class="row col-xl-12 col-md-12 col-sm-12 col-xs-12">
     <ul>
         <li>
-            Start Irrigation Time: <span style="color: #71843f"><strong>{{model.irrigationDtStart}}</strong></span>
+            Start Irrigation Time: <span
+                style="color: #71843f"><strong>{{model.wateringIrrigationDateFrom}}</strong></span>
         </li>
         <li>
-            End Irrigation Time: <span style="color: #71843f"><strong>{{model.irrigationDtEnd}}</strong></span>
+            End Irrigation Time: <span style="color: #71843f"><strong>{{model.wateringIrrigationDateTo}}</strong></span>
         </li>
         <li>
-            Water Consumption (lt): <span style="color: #71843f"><strong>{{model.irrigationCosnume}}</strong></span>
+            Water Consumption (lt): <span style="color: #71843f"><strong>{{model.wateringConsumption}}</strong></span>
         </li>
     </ul>
 </div>
@@ -83,13 +84,13 @@
         <div class="dropdown">
             <a class="dropdown-toggle" id="dropdownstart" role="button" data-toggle="dropdown" data-target="" href="">
                 <div class="input-group"><input type="text" class="form-control"
-                                                data-ng-model="model.coordinator.automaticIrrigationFromTime">
+                                                data-ng-model="model.coordinator.autoIrrigFromTime">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                 </div>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <datetimepicker data-ng-model="model.coordinator.automaticIrrigationFromTime"
-                                ng-change="model.updateCoordDateFrom(model.coordinator.automaticIrrigationFromTime)"
+                <datetimepicker data-ng-model="model.coordinator.autoIrrigFromTime"
+                                ng-change="model.updateCoordDateFrom(model.coordinator.autoIrrigFromTime)"
                                 ng-required="true"
                                 data-datetimepicker-config="{ dropdownSelector: '#dropdownstart', modelType: 'moment', startView: 'hour', minView: 'minute', minuteStep: 1 }"
                                 data-before-render="model.beforeRenderStartDate($view, $dates, $leftDate, $upDate, $rightDate)"/>
@@ -103,13 +104,13 @@
         <div class="dropdown">
             <a class="dropdown-toggle" id="dropdownend" role="button" data-toggle="dropdown" data-target="" href="">
                 <div class="input-group"><input type="text" class="form-control"
-                                                data-ng-model="model.coordinator.automaticIrrigationUntilTime">
+                                                data-ng-model="model.coordinator.autoIrrigUntilTime">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                 </div>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <datetimepicker data-ng-model="model.coordinator.automaticIrrigationUntilTime"
-                                ng-change="model.updateCoordDateTo(model.coordinator.automaticIrrigationUntilTime)"
+                <datetimepicker data-ng-model="model.coordinator.autoIrrigUntilTime"
+                                ng-change="model.updateCoordDateTo(model.coordinator.autoIrrigUntilTime)"
                                 ng-required="true"
                                 data-datetimepicker-config="{ dropdownSelector: '#dropdownend', modelType: 'moment', startView: 'hour', minView: 'minute', minuteStep: 1 }"
                                 data-before-render="model.beforeRenderStartDate($view, $dates, $leftDate, $upDate, $rightDate)"/>
@@ -119,12 +120,13 @@
 
     <div class="form-group col-md-2 col-sm-2 cols-xl-2 xol-xs-2">
         <label class="control-label">Water Consumption (lt/h)</label>
-        <input type="number" class="form-control" step="10" data-ng-model="model.coordinator.wateringConsumption"
+        <input type="number" class="form-control" step="10" data-ng-model="model.coordinator.waterConsumption"
                ng-required="true" min="0" ng-required="true">
     </div>
 
     <div class="form-group col-md-2 col-sm-2 cols-xl-2 xol-xs-2">
-        <button class="btn btn-success" id="savealgorithm" ng-click="" style="margin-top: 25px;">
+        <button class="btn btn-success" id="savealgorithm" ng-click="model.showModalSaveCoordData()"
+                style="margin-top: 25px;">
             Save Data
             <span class="glyphicon glyphicon-save" style="vertical-align:middle; color: whitesmoke;"></span>
         </button>

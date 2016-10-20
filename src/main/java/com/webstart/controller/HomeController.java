@@ -1,11 +1,6 @@
 package com.webstart.controller;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.DTO.*;
-import com.webstart.model.UserProfile;
 import com.webstart.model.Users;
 import com.webstart.service.*;
 import jdk.nashorn.internal.runtime.ParserException;
@@ -18,11 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +30,7 @@ public class HomeController {
     @Autowired
     ObservationProperyService observationProperyService;
     @Autowired
-    MeasureService measurement;
+    MeasureService measureservice;
 
 
     @RequestMapping(value = "/obsproperties", method = RequestMethod.GET)
@@ -72,7 +66,7 @@ public class HomeController {
     @RequestMapping(value = "/charthome/{id}", method = RequestMethod.GET)
     public ResponseEntity<String> getChartByDevice(@PathVariable("id") String id) {
         JSONArray obj = new JSONArray();
-        obj = measurement.findDailyMeasure(id);
+        obj = measureservice.findDailyMeasure(id);
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
     }
 
@@ -156,6 +150,22 @@ public class HomeController {
         return sentData;
     }
 
+    @RequestMapping(value = "/lastWateringMeasures", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    AutomaticWater getLastWateringMeasures(@RequestParam("identifier") String mydevice, HttpServletRequest request) {
+        Users users = (Users) request.getSession().getAttribute("current_user");
+        AutomaticWater sentData = null;
+
+        try {
+            sentData = observationProperyService.getLastWateringObsbyIdentifier(users.getUser_id(), mydevice);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return sentData;
+    }
 
     @RequestMapping(value = "/setIrrigationDates", method = RequestMethod.POST)
     public ResponseEntity<String> setIrrigationDates(@RequestParam("identifier") String device, @RequestParam("dtfrom") String datefrom, @RequestParam("dtto") String dateto, HttpServletRequest request) {
@@ -167,6 +177,8 @@ public class HomeController {
             Date from = dateFormat.parse(datefrom);
             Date to = dateFormat.parse(dateto);
 
+            AutomaticWater automaticWater = new AutomaticWater(from, to, new BigDecimal(0), device);
+            measureservice.saveTheMeasure(automaticWater);
             sentData = featureofInterestService.setDeviceIrrigaDate(users.getUser_id(), device, from, to);
             if (!sentData)
                 return new ResponseEntity<String>("false", HttpStatus.OK);

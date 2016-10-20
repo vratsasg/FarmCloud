@@ -61,9 +61,17 @@ public interface ObservationJpaRepository extends JpaRepository<Observation, Lon
                         "from Observation obs " +
                         "inner join Series s on obs.seriesid = s.seriesid " +
                         "inner join Featureofinterest feat on s.featureofinterestid = feat.featureofinterestid " +
-            "where feat.userid = ?1 ",
+            "where feat.userid = ?1 and s.observablepropertyid != 5",
                 nativeQuery = true)
     Timestamp findlastdatetime(int userId);
+
+    @Query(value = "select max(obs.phenomenontimestart) " +
+            "from Observation obs " +
+            "inner join Series s on obs.seriesid = s.seriesid " +
+            "inner join Featureofinterest feat on s.featureofinterestid = feat.featureofinterestid " +
+            "where feat.identifier = ?1 and s.observablepropertyid != 5",
+            nativeQuery = true)
+    Timestamp findlastdatetime(String identifier);
 
     @Query(value =
             "select obsprop.Description, obs.phenomenontimestart, num.value, u.unit " +
@@ -73,12 +81,44 @@ public interface ObservationJpaRepository extends JpaRepository<Observation, Lon
                     "inner join Series s on obs.seriesid = s.seriesid " +
                     "inner join Featureofinterest feat on s.featureofinterestid = feat.featureofinterestid " +
                     "inner join ObservableProperty obsprop on s.observablepropertyid = obsprop.ObservablePropertyId " +
-                    "where feat.userid = ?1 " +
-                    "AND feat.identifier = ?2 " +
-                    "AND obs.phenomenontimestart = ?3 " +
+                    "where feat.userid = ?1 AND feat.identifier = ?2 AND obs.phenomenontimestart = ?3 AND s.observablepropertyid != 5 " +
                     "order by obsprop.Description ",
             nativeQuery = true)
     List<Object[]> findLastMeasures(int userId, String identifier, Timestamp t1);
+
+    @Query(value = "select max(obs.phenomenontimestart) " +
+            "from Observation obs " +
+            "inner join Series s on obs.seriesid = s.seriesid " +
+            "inner join Featureofinterest feat on s.featureofinterestid = feat.featureofinterestid " +
+            "where feat.userid = ?1 and feat.identifier = ?2 and s.observablepropertyid = 5",
+            nativeQuery = true)
+    Timestamp findWateringlastdatetime(int userId, String identifier);
+
+    @Query(value =
+            "select obsprop.Description, obs.phenomenontimestart, obs.phenomenontimeend, num.value, u.unit " +
+                    "from Observation obs " +
+                    "inner join NumericValue num on obs.observationid = num.observationid " +
+                    "inner join unit u on obs.unitid = u.unitid " +
+                    "inner join Series s on obs.seriesid = s.seriesid " +
+                    "inner join Featureofinterest feat on s.featureofinterestid = feat.featureofinterestid " +
+                    "inner join ObservableProperty obsprop on s.observablepropertyid = obsprop.ObservablePropertyId " +
+                    "where feat.userid = ?1 AND feat.identifier = ?2 AND obs.phenomenontimestart >= ?3 AND obs.phenomenontimeend <= ?4 AND s.observablepropertyid = 5 " +
+                    "order by obsprop.Description ",
+            nativeQuery = true)
+    List<Object[]> findWateringMeasures(int userId, String identifier, Timestamp t1, Timestamp t2);
+
+    @Query(value =
+            "select obsprop.Description, obs.phenomenontimestart, obs.phenomenontimeend, num.value, u.unit " +
+                    "from Observation obs " +
+                    "inner join NumericValue num on obs.observationid = num.observationid " +
+                    "inner join unit u on obs.unitid = u.unitid " +
+                    "inner join Series s on obs.seriesid = s.seriesid " +
+                    "inner join Featureofinterest feat on s.featureofinterestid = feat.featureofinterestid " +
+                    "inner join ObservableProperty obsprop on s.observablepropertyid = obsprop.ObservablePropertyId " +
+                    "where feat.userid = ?1 AND feat.identifier = ?2 AND obs.phenomenontimestart = ?3 AND s.observablepropertyid = 5 " +
+                    "order by obsprop.Description ",
+            nativeQuery = true)
+    List<Object[]> findLastWateringMeasures(int userId, String identifier, Timestamp t1);
 
 
 }

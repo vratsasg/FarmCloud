@@ -39,6 +39,17 @@
                     }
                 );
             },
+            getWateringMeasuresByLastDate: function (identifier) {
+                return $http.get('lastWateringMeasures?identifier=' + identifier).then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (errResponse) {
+                        console.error('Error while firstpageService devices');
+                        return $q.reject(errResponse);
+                    }
+                );
+            },
             getCoordinatorData: function (identifier) {
                 return $http.get('automaticwater/getdates?identifier=' + identifier).then(
                     function (response) {
@@ -50,10 +61,10 @@
                     }
                 );
             },
-            setMeasuringFlags: function () {
-                return $http.get('embedded/measures').then(
+            setAutomaticIrrigationTimes: function (coordData) {
+                return $http.post('setIrrigationDates?&dtfrom=' + coordData.autoIrrigFromTime + '&dtto=' + coordData.autoIrrigUntilTime + '&waterConsumption=' + coordData.waterConsumption).then(
                     function (response) {
-                        return response.data;
+                        return response.success;
                     },
                     function (errResponse) {
                         console.error('Error while send request for start measuring Service');

@@ -12,6 +12,7 @@ public class ValueTime {
     private BigDecimal value;
     private Timestamp phenomenonDateTime;
 
+
     public ValueTime(Long phenomenonTime, BigDecimal value, Timestamp phenomenonDateTime) {
         this.phenomenonTime = phenomenonTime;
         this.value = value;

@@ -2,7 +2,7 @@
     'use strict';
     var module = angular.module("myApp");
 
-    module.component('measuringModal', {
+    module.component('algorithmModal', {
             templateUrl: 'static/js/components/control-panel/algorithm.modal.component.html',
             replace: true,
             require: {
@@ -14,7 +14,7 @@
                 var defer = $q.defer();
 
                 model.$onInit = function () {
-                    model.coordinator = "";
+                    var coord = model.parent.coordinator;
 
                     var instance = model.parent.modalInstance;
                     model.cancel = function () {
@@ -22,7 +22,7 @@
                     };
 
                     model.submit = function () {
-                        ControlPanelService.setAutomaticIrrigationTimes().then(
+                        ControlPanelService.setAutomaticIrrigationTimes(coord).then(
                             function (returnedData) {
                                 defer.resolve(returnedData);
                                 instance.close(returnedData);

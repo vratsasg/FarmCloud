@@ -17,13 +17,11 @@
 
                     var instance = model.parent.modalInstance;
                     model.cancel = function () {
-
                         instance.dismiss('cancel');
                     };
 
-                    model.send = function () {
-
-                        ControlPanelService.setMeasuringFlags().then(
+                    model.submit = function () {
+                        ControlPanelService.setMeasuringFlags(model.coordinator).then(
                             function (returnedData) {
                                 defer.resolve(returnedData);
                                 instance.close(returnedData);

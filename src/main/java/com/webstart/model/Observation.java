@@ -50,6 +50,14 @@ public class Observation {
     @Column(name = "unitid")
     private Long unitid;
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "seriesid", insertable = false, updatable = false)
+    private Series series;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "unitid", insertable = false, updatable = false)
+    private Unit unit;
+
 
 //    @OneToOne(fetch = FetchType.EAGER, mappedBy="observation", cascade=CascadeType.ALL)
 //    public NumericValue numericValue;
@@ -160,5 +168,21 @@ public class Observation {
 
     public void setUnitid(Long unitid) {
         this.unitid = unitid;
+    }
+
+    public Series getSeries() {
+        return series;
+    }
+
+    public void setSeries(Series series) {
+        this.series = series;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 }

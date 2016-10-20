@@ -12,7 +12,6 @@ import java.util.List;
 
 public interface UsersJpaRepository extends JpaRepository<Users, Integer> {
     Users findByUsernameAndPassword(String username, String password);
-
     Users findByUsername(String username);
 
     @Query("select new com.webstart.model.Notifications(pin.notifid ,pin.userid,pin.description,pin.readable ) from Users as us " +

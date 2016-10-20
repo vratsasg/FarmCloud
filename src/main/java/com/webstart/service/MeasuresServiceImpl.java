@@ -1,18 +1,19 @@
 package com.webstart.service;
 
+import com.webstart.DTO.AutomaticWater;
 import com.webstart.DTO.CurrentMeasure;
 import com.webstart.DTO.EmbeddedData;
 import com.webstart.model.NumericValue;
 import com.webstart.model.Observation;
-import com.webstart.repository.NumericValueJpaRepository;
-import com.webstart.repository.ObservablePropertyJpaRepository;
-import com.webstart.repository.ObservationJpaRepository;
+import com.webstart.model.Series;
+import com.webstart.repository.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -28,19 +29,27 @@ public class MeasuresServiceImpl implements MeasureService {
     ObservablePropertyJpaRepository observablePropertyJpaRepository;
     @Autowired
     NumericValueJpaRepository numericValueJpaRepository;
+    @Autowired
+    SeriesJpaRepository seriesJpaRepository;
+    @Autowired
+    FeatureofinterestJpaRepository featureofinterestJpaRepository;
 
     public JSONArray findDailyMeasure(String id) {
         JSONArray finalDataList = new JSONArray();
         List<CurrentMeasure> observationList = new ArrayList<CurrentMeasure>();
 
         try {
-            Calendar calendar = Calendar.getInstance();
-            Date dateto = calendar.getTime(); //NOW
-            Timestamp timestampTo = new Timestamp(dateto.getTime());
 
-            calendar.add(Calendar.DATE, -1);
-            Date datefrom = calendar.getTime();
-            Timestamp timestampFrom = new Timestamp(datefrom.getTime());
+            ////TODO change this with lasttime of measure
+            //Calendar calendar = Calendar.getInstance();
+            //Date dateto = calendar.getTime(); //NOW
+            //Timestamp timestampTo = new Timestamp(dateto.getTime());
+            Timestamp timestampTo = observationJpaRepository.findlastdatetime(id);
+
+            //calendar.add(Calendar.DATE, -1);
+            //Date datefrom = calendar.getTime();
+            //Timestamp timestampFrom = new Timestamp(datefrom.getTime());
+            Timestamp timestampFrom = new Timestamp(timestampTo.getTime() - 24 * 60 * 60 * 1000);
 
             observationList = observationJpaRepository.findCurrentMeasure(id, timestampFrom, timestampTo);
             List<String> observableProperyList = observablePropertyJpaRepository.findallObsProperty();
@@ -132,6 +141,34 @@ public class MeasuresServiceImpl implements MeasureService {
             NumericValue numericValue = new NumericValue();
             numericValue.setObservationid(observation.getObservationid());
             numericValue.setValue(embeddedData.getMeasureValue());
+            numericValueJpaRepository.save(numericValue);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveTheMeasure(AutomaticWater automaticWater) {
+        try {
+            Long seriesid = seriesJpaRepository.findSeriesIdByEndDevice(automaticWater.getIdentifier()).get(0);
+            BigDecimal waterCons = featureofinterestJpaRepository.getWaterConsumption(automaticWater.getIdentifier()).get(0);
+
+            DateFormat df = new SimpleDateFormat("yyyy/MM/dd/ HH:mm:ss");
+
+            Observation observation = new Observation();
+            observation.setSeriesid(seriesid);
+            observation.setPhenomenontimestart(new Timestamp(automaticWater.getFromtime().getTime()));
+            observation.setPhenomenontimeend(new Timestamp(automaticWater.getUntiltime().getTime()));
+            observation.setResulttime(new Timestamp(automaticWater.getUntiltime().getTime()));
+            observation.setIdentifier(df.format(automaticWater.getUntiltime()).replace("/", "").replace(":", "").replace(" ", "") + "-" + java.util.UUID.randomUUID());
+            observation.setUnitid((long) 22);
+            observation.setDeleted("F");
+
+            observationJpaRepository.save(observation);
+
+            NumericValue numericValue = new NumericValue();
+            numericValue.setObservationid(observation.getObservationid());
+            float diffmilliSec = automaticWater.getUntiltime().getTime() - automaticWater.getFromtime().getTime();
+            numericValue.setValue(new BigDecimal((diffmilliSec / 1000.0 / 3600.0) * waterCons.doubleValue()));
             numericValueJpaRepository.save(numericValue);
         } catch (Exception e) {
             e.printStackTrace();

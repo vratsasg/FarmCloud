@@ -75,33 +75,23 @@
 /*login */
 
 #rightlog {
-
     border-top-color: green;
     border-top-style: solid;
     border-top-width: 3px;
-
     border-left-color: green;
     border-left-style: solid;
     border-left-width: 1px;
-
     box-shadow: 10px 10px 5px #888888;
-
     padding-left: 40px;
-
     margin-top: 10px;
-
 }
 
 #rightlog img {
-
     margin-left: 90px;
-
 }
 
 #rightlog h4 {
-
     margin-left: 50px;
-
 }
 
 /*carousel */
@@ -114,12 +104,10 @@
 /*footer info quotes*/
 
 .animated1 {
-
     animation: fadein 4s;
     -moz-animation: fadein 4s; /* Firefox */
     -webkit-animation: fadein 4s; /* Safari and Chrome */
     -o-animation: fadein 4s; /* Opera */
-
 }
 
 @keyframes fadein {

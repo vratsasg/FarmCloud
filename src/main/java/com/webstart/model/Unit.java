@@ -1,9 +1,8 @@
 package com.webstart.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table
 @Entity(name = "unit")
@@ -15,6 +14,9 @@ public class Unit {
 
     @Column(name = "unit", length = 255)
     private String unit;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "unit", cascade = {CascadeType.ALL})
+    private List<Observation> observationList = new ArrayList<Observation>();
 
     public Unit() {
     }
@@ -38,5 +40,13 @@ public class Unit {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public List<Observation> getObservationList() {
+        return observationList;
+    }
+
+    public void setObservationList(List<Observation> observationList) {
+        this.observationList = observationList;
     }
 }

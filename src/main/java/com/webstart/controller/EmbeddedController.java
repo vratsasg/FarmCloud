@@ -6,6 +6,7 @@ import com.webstart.DTO.*;
 import com.webstart.model.*;
 import com.webstart.service.FeatureofInterestService;
 import com.webstart.service.MeasureService;
+import com.webstart.service.MeasuresServiceImpl;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,17 @@ public class EmbeddedController {
         } catch (Exception exc) {
             exc.printStackTrace();
             //return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "saveirrigation", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    void postIrrigation(@RequestBody AutomaticWater automaticWater) {
+        try {
+            measureService.saveTheMeasure(automaticWater);
+        } catch (Exception exc) {
+            exc.printStackTrace();
         }
     }
 

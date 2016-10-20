@@ -4,13 +4,13 @@
     </button>
     <h4 class="modal-title" id="myModalLabel">Change Automatic Watering Time</h4>
 </div>
-<form class="form-horizontal" id="logout_form">
+<form class="form-horizontal" id="algorithm_form">
     <div class="modal-body">
-        This option will send a remote request to crop to change the automatic irrigation start, end time and water
-        consumption.
+        This option will change the automatic irrigation watering time.
+        And the water consumption in litres per hour (lt/h) too.
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" ng-click="model.cancel()">Close</button>
-        <button type="button" class="btn btn-primary" ng-click="model.submit()" form="logout_form">Send</button>
+        <button type="button" class="btn btn-primary" ng-click="model.submit()" form="algorithm_form">Send</button>
     </div>
 </form>

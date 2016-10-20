@@ -1,5 +1,6 @@
 package com.webstart.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -9,21 +10,23 @@ import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@JsonRootName("coordinator")
 public class AutomaticWater {
-    @JsonProperty("automaticIrrigationFromTime")
+    @JsonProperty("autoIrrigFromTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+3")
     @Temporal(TemporalType.TIME)
     private java.util.Date fromtime;
 
-    @JsonProperty("automaticIrrigationUntilTime")
+    @JsonProperty("autoIrrigUntilTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+3")
     @Temporal(TemporalType.TIME)
     private java.util.Date untiltime;
 
-    @JsonProperty("wateringConsumption")
+    @JsonProperty("waterConsumption")
     BigDecimal wateringConsumption;
 
     @JsonProperty("identifier")
     private String identifier;
+
 
     public AutomaticWater() {
     }
@@ -70,6 +73,6 @@ public class AutomaticWater {
         } else {
             this.wateringConsumption = wateringConsumption;
         }
-
     }
+
 }

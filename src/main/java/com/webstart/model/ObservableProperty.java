@@ -43,6 +43,13 @@ public class ObservableProperty {
         this.seriesList = seriesList;
     }
 
+    public ObservableProperty(Long observablePropertyId, String hibernateDiscriminator, String identifier, String description) {
+        ObservablePropertyId = observablePropertyId;
+        HibernateDiscriminator = hibernateDiscriminator;
+        Identifier = identifier;
+        Description = description;
+    }
+
     public Long getObservablePropertyId() {
         return ObservablePropertyId;
     }

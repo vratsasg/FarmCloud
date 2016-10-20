@@ -1,5 +1,6 @@
 package com.webstart.service;
 
+import com.webstart.DTO.AutomaticWater;
 import com.webstart.DTO.FeatureMinMaxValue;
 import com.webstart.DTO.ObservableMeasure;
 import com.webstart.DTO.ObservationMeasure;
@@ -22,6 +23,7 @@ public interface ObservationProperyService {
 
     List<ObservationMeasure> getLastObservationbyIdentifier(int userId, String identifier);
 
+    AutomaticWater getLastWateringObsbyIdentifier(int userId, String identifier);
 
     void setObservationMinmaxValues(List<FeatureMinMaxValue> observationMinmaxList);
 }

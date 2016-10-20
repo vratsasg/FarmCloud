@@ -49,10 +49,22 @@
                             function (coordData) {
                                 console.log(coordData);
                                 model.coordinator = new Object();
-                                model.coordinator.automaticIrrigationFromTime = moment(parseInt(coordData.automaticIrrigationFromTime)).format("YYYY-MM-DD HH:mm:ss");
-                                model.coordinator.automaticIrrigationUntilTime = moment(parseInt(coordData.automaticIrrigationUntilTime)).format("YYYY-MM-DD HH:mm:ss");
-                                model.coordinator.wateringConsumption = coordData.wateringConsumption;
+                                model.coordinator.autoIrrigFromTime = moment(coordData.autoIrrigFromTime).format("HH:mm:ss");
+                                model.coordinator.autoIrrigUntilTime = moment(coordData.autoIrrigUntilTime).format("HH:mm:ss");
+                                model.coordinator.waterConsumption = coordData.waterConsumption;
                                 model.coordinator.identifier = coordData.identifier;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching devices for firstpage');
+                            }
+                        );
+
+                        ControlPanelService.getWateringMeasuresByLastDate(devicesdata.enddevices[0].identifier).then(
+                            function (waterMeasureData) {
+                                console.log(waterMeasureData);
+                                model.wateringIrrigationDateFrom = waterMeasureData.autoIrrigFromTime;
+                                model.wateringIrrigationDateTo = waterMeasureData.autoIrrigUntilTime;
+                                model.wateringConsumption = waterMeasureData.waterConsumption;
                             },
                             function (errResponse) {
                                 console.error('Error while fetching devices for firstpage');
@@ -94,6 +106,18 @@
                         console.error('Error while fetching devices for firstpage');
                     }
                 );
+
+                ControlPanelService.getWateringMeasuresByLastDate(myD).then(
+                    function (waterMeasureData) {
+                        console.log(waterMeasureData);
+                        model.wateringIrrigationDateFrom = moment(waterMeasureData.autoIrrigFromTime).format('dddd, MMMM Do, YYYY h:mma');
+                        model.wateringIrrigationDateTo = moment(waterMeasureData.autoIrrigUntilTime).format('dddd, MMMM Do, YYYY h:mma');
+                        model.wateringConsumption = waterMeasureData.waterConsumption;
+                    },
+                    function (errResponse) {
+                        console.error('Error while fetching devices for firstpage');
+                    }
+                );
             };
 
             model.showModal = function () {
@@ -118,6 +142,14 @@
                 });
             };
 
+            model.showModalSaveCoordData = function () {
+                model.modalInstance = $uibModal.open({
+                    animation: model.animationsEnabled,
+                    template: '<algorithm-modal></algorithm-modal>',
+                    appendTo: $document.find('control-panel')
+                });
+            }
+
             model.updateCoordDateFrom = function ($view, $dates, $leftDate, $upDate, $rightDate) {
                 var now = moment();
                 for (var i = 0; i < $dates.length; i++) {
@@ -137,8 +169,8 @@
             }
 
             model.updateCoordDateTo = function ($view, $dates, $leftDate, $upDate, $rightDate) {
-                if (model.coordinator.automaticIrrigationFromTime) {
-                    var activeDate = moment(model.coordinator.automaticIrrigationFromTime).subtract(1, $view).add(1, 'minute');
+                if (model.coordinator.autoIrrigFromTime) {
+                    var activeDate = moment(model.coordinator.autoIrrigFromTime).subtract(1, $view).add(1, 'minute');
                     for (var i = 0; i < $dates.length; i++) {
                         if ($dates[i].localDateValue() <= activeDate.valueOf()) {
                             $dates[i].selectable = false;
