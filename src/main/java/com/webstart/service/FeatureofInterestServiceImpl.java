@@ -411,7 +411,7 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
-    public void setAutomaticWateringTime(AutomaticWater automaticWater) {
+    public void setAutomaticWateringTime(AutomaticWater automaticWater, int userid) {
         try {
             featureofinterestJpaRepository.setCoordinatorAlgorithmParams(automaticWater.getIdentifier(), automaticWater.getFromtime(), automaticWater.getUntiltime(), automaticWater.getWateringConsumption());
         } catch (Exception e) {

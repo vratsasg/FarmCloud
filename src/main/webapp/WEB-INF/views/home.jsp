@@ -30,8 +30,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-
-
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <script src="https://npmcdn.com/@angular/router@0.2.0/angular1/angular_1_router.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.5.5/angular-sanitize.min.js"></script>
@@ -39,11 +37,9 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.min.css">
 
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-nvd3/1.0.7/angular-nvd3.js"></script>
-
 
     <script src="http://openlayers.org/en/v3.16.0/build/ol.js" type="text/javascript"></script>
     <script src="http://tombatossals.github.io/angular-openlayers-directive/dist/angular-openlayers-directive.min.js"></script>
@@ -82,6 +78,8 @@
     <script src="<c:url value='/static/js/components/user-profile/user-profile.service.js' />"></script>
     <script src="<c:url value='/static/js/components/observable-property/observable-property.component.js'/>"></script>
     <script src="<c:url value='/static/js/components/observable-property/observable-property.service.js'/>"></script>
+    <script src="<c:url value='/static/js/components/watering-property/watering-property.component.js'/>"></script>
+    <script src="<c:url value='/static/js/components/watering-property/watering-property.service.js'/>"></script>
 
     <script src="<c:url value='/static/js/components/weather-api/weather-api.component.js'/>"></script>
     <script src="<c:url value='/static/js/components/weather-api/weather-api.service.js'/>"></script>

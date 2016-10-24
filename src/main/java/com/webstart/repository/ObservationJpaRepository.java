@@ -95,7 +95,7 @@ public interface ObservationJpaRepository extends JpaRepository<Observation, Lon
     Timestamp findWateringlastdatetime(int userId, String identifier);
 
     @Query(value =
-            "select obsprop.Description, obs.phenomenontimestart, obs.phenomenontimeend, num.value, u.unit " +
+            "select feat.identifier, obsprop.Description, obs.phenomenontimestart, obs.phenomenontimeend, num.value, u.unit " +
                     "from Observation obs " +
                     "inner join NumericValue num on obs.observationid = num.observationid " +
                     "inner join unit u on obs.unitid = u.unitid " +

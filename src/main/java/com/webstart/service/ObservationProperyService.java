@@ -17,6 +17,8 @@ public interface ObservationProperyService {
     JSONObject getAllObsPropeties();
     String getObservationsData(Long obspropId, int userId, String identifier, Date from, Date to);
 
+    String getWateringData(int userId, String identifier, Date from, Date to);
+
     Long getObservationsCounter(Long obspropId, int userId, String identifier, Date from, Date to);
     ObservableMeasure getObservationData(Long obspropId, int userId, String identifier, Date from, Date to);
     String getLastObservationsDate(int userId);

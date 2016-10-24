@@ -1,0 +1,98 @@
+<h4><span class="glyphicon glyphicon-scale" aria-hidden="true"></span>Watering Measure</h4>
+<hr id="headline">
+<div class="row">
+    <div class="control-group col-md-2 col-sm-2 col-xs-4">
+        <label class="control-label">View By End Device</label>
+
+        <div class="controls">
+            <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice"
+                    ng-options="dev.identifier as dev.identifier for dev in model.devices.enddevices"
+                    ng-change="model.updateMyDevice(model.myDevice)">
+
+            </select>
+        </div>
+    </div>
+    <div class='col-md-2 col-sm-2 col-xs-4'>
+        <div class="form-group">
+            <label class="control-label">Date from</label>
+
+            <div class="dropdown">
+                <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="" href="">
+                    <div class="input-group"><input type="text" class="form-control"
+                                                    data-ng-model="model.datefrom"><span class="input-group-addon"><i
+                            class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="model.datefrom" ng-change="model.updateDateFrom(model.datefrom)"
+                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"
+                                    data-before-render="model.beforeRenderStartDate($view, $dates, $leftDate, $upDate, $rightDate)"/>
+                </ul>
+            </div>
+
+
+        </div>
+    </div>
+    <div class='col-md-2 col-sm-2 col-xs-4'>
+        <div class="form-group">
+            <label class="control-label">Date To</label>
+
+            <div class="dropdown">
+                <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="" href="">
+                    <div class="input-group"><input type="text" class="form-control" data-ng-model="model.dateto"><span
+                            class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="model.dateto" ng-change="model.updateDateTo(model.dateto)"
+                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }"
+                                    data-before-render=" model.beforeRenderEndDate($view, $dates, $leftDate, $upDate, $rightDate)"/>
+                </ul>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5 col-sm-5 col-xs-6">
+        <span>Units of measurement:<strong>{{model.measures.unit}}</strong></span>
+        <table ng-table="model.tableParams" class="table table table-condensed table-bordered table-striped">
+            <tr ng-repeat="row in $data">
+                <td title="'Start DateTime'" filter="{phenomenonTimeStart: 'date'}" sortable="'phenomenonTimeStart'">
+                    {{row.phenomenonTimeStart}}
+                </td>
+                <td title="'End DateTime'" filter="{phenomenonTimeEnd: 'date'}" sortable="'phenomenonTimeEnd'">
+                    {{row.phenomenonTimeEnd}}
+                </td>
+                <td title="'Total Time'" filter="{TotalDuration: 'string'}" sortable="'TotalDuration'">
+                    {{row.TotalDuration}}
+                </td>
+                <td title="'Consumption'" filter="{value: 'number'}" sortable="'value'">
+                    {{row.value}}
+                </td>
+            </tr>
+        </table>
+
+        <button class="btn btn-success" id="getcsv" ng-click="model.downloadFile('csv')">
+            Download CSV
+            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+        </button>
+
+        <button class="btn btn-success" id="getpdf" ng-click="model.downloadFile('pdf')">
+            Download PDF
+            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+        </button>
+
+        <button class="btn btn-success" id="getxls" ng-click="model.downloadFile('xls')">
+            Download XLS
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+        </button>
+
+    </div>
+
+    <div class="col-md-5 col-sm-5 col-xs-6">
+        <nvd3 options="model.options" data="model.data"></nvd3>
+    </div>
+</div>
+

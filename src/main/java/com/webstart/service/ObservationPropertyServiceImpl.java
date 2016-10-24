@@ -94,6 +94,46 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
         return jsonInString;
     }
 
+    public String getWateringData(int userId, String identifier, Date from, Date to) {
+        String jsonInString = null;
+
+        try {
+            java.sql.Timestamp timeFrom = new java.sql.Timestamp(from.getTime());
+            java.sql.Timestamp timeTo = new java.sql.Timestamp(to.getTime());
+
+            List<Object[]> listofObjs = observationJpaRepository.findWateringMeasures(userId, identifier, timeFrom, timeTo);
+
+            if (listofObjs.size() == 0) {
+                return null;
+            }
+
+            WateringMeasure wateringMeasure = new WateringMeasure();
+            Object[] obj = listofObjs.get(0);
+            //feat.identifier, obsprop.Description, obs.phenomenontimestart, obs.phenomenontimeend, num.value, u.unit " +
+            wateringMeasure.setIdentifier(String.valueOf(listofObjs.get(0)[0]));
+            wateringMeasure.setObservableProperty(String.valueOf(listofObjs.get(0)[1]));
+            wateringMeasure.setUnit(String.valueOf(listofObjs.get(0)[5]));
+            List<WateringValueTime> ls = new ArrayList<WateringValueTime>();
+
+            Iterator itr = listofObjs.iterator();
+            while (itr.hasNext()) {
+                Object[] objec = (Object[]) itr.next();
+                ls.add(new WateringValueTime((BigDecimal) objec[4], (java.sql.Timestamp) objec[2], (java.sql.Timestamp) objec[3]));
+            }
+
+            wateringMeasure.setMeasuredata(ls);
+            ObjectMapper mapper = new ObjectMapper();
+
+            //Object to JSON in String
+            jsonInString = mapper.writeValueAsString(wateringMeasure);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return jsonInString;
+    }
+
     public Long getObservationsCounter(Long obspropId, int userId, String identifier, Date from, Date to) {
         return observationJpaRepository.findMeasuresCount(obspropId, userId, identifier, new java.sql.Timestamp(from.getTime()), new java.sql.Timestamp(to.getTime()));
     }

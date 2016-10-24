@@ -48,9 +48,16 @@
                         ControlPanelService.getCoordinatorData(devicesdata.enddevices[0].identifier).then(
                             function (coordData) {
                                 console.log(coordData);
+                                var datefrom = moment(coordData.autoIrrigFromTime);
+                                var dateto = moment(coordData.autoIrrigUntilTime);
+
+                                if (datefrom.isValid() && dateto.isValid()) {
+                                    model.AutomaticTimeDiff = getTimeDiff(datefrom, dateto);
+                                }
+
                                 model.coordinator = new Object();
-                                model.coordinator.autoIrrigFromTime = moment(coordData.autoIrrigFromTime).format("HH:mm:ss");
-                                model.coordinator.autoIrrigUntilTime = moment(coordData.autoIrrigUntilTime).format("HH:mm:ss");
+                                model.coordinator.autoIrrigFromTime = new Date(1970, 0, 1, datefrom.hours(), datefrom.minutes(), 0);//moment(coordData.autoIrrigFromTime).format("HH:mm:ss");
+                                model.coordinator.autoIrrigUntilTime = new Date(1970, 0, 1, dateto.hours(), dateto.minutes(), 0);
                                 model.coordinator.waterConsumption = coordData.waterConsumption;
                                 model.coordinator.identifier = coordData.identifier;
                             },
@@ -61,7 +68,6 @@
 
                         ControlPanelService.getWateringMeasuresByLastDate(devicesdata.enddevices[0].identifier).then(
                             function (waterMeasureData) {
-                                console.log(waterMeasureData);
                                 model.wateringIrrigationDateFrom = waterMeasureData.autoIrrigFromTime;
                                 model.wateringIrrigationDateTo = waterMeasureData.autoIrrigUntilTime;
                                 model.wateringConsumption = waterMeasureData.waterConsumption;
@@ -86,6 +92,17 @@
                 //        console.error('Error while fetching devices for firstpage');
                 //    }
                 //);
+            }
+
+            model.updateTotalAlgorithmTime = function () {
+                var timefrom = moment(model.coordinator.autoIrrigFromTime);
+                var timeto = moment(model.coordinator.autoIrrigUntilTime);
+
+                if (timefrom.isValid() && timeto.isValid()) {
+                    model.AutomaticTimeDiff = getTimeDiff(timefrom, timeto)
+                }
+
+
             }
 
             model.updateMyDevice = function (myD) {
@@ -150,35 +167,6 @@
                 });
             }
 
-            model.updateCoordDateFrom = function ($view, $dates, $leftDate, $upDate, $rightDate) {
-                var now = moment();
-                for (var i = 0; i < $dates.length; i++) {
-                    if ($dates[i].localDateValue() < now.valueOf()) {
-                        $dates[i].selectable = false;
-                    }
-                }
-
-                if (model.dateto) {
-                    var activeDate = moment(model.dateto);
-                    for (var i = 0; i < $dates.length; i++) {
-                        if ($dates[i].localDateValue() >= activeDate.valueOf()) {
-                            $dates[i].selectable = false;
-                        }
-                    }
-                }
-            }
-
-            model.updateCoordDateTo = function ($view, $dates, $leftDate, $upDate, $rightDate) {
-                if (model.coordinator.autoIrrigFromTime) {
-                    var activeDate = moment(model.coordinator.autoIrrigFromTime).subtract(1, $view).add(1, 'minute');
-                    for (var i = 0; i < $dates.length; i++) {
-                        if ($dates[i].localDateValue() <= activeDate.valueOf()) {
-                            $dates[i].selectable = false;
-                        }
-                    }
-                }
-            }
-
             model.toggleAnimation = function () {
                 model.animationsEnabled = !model.animationsEnabled;
             };
@@ -188,4 +176,34 @@
     });
 }());
 
+function getTimeDiff(timefrom, timeto) {
+    //var hoursdiff = parseInt(timeto.hours() - timefrom.hours());
+    //var minutesdiff = parseInt(timeto.minutes() - timefrom.hours());
+    //
+    //if(hoursdiff > 0){
+    //
+    //}else if(hoursdiff === 0){
+    //
+    //} else{
+    //
+    //}
 
+    var totalHours = parseInt(timeto.diff(timefrom, 'hours'));
+    var totalMinutes = parseInt(timeto.diff(timefrom, 'minutes')) % 60;
+
+    if (totalHours === 0) {
+        if (totalMinutes < 0) {
+            totalHours = 23;
+            totalMinutes = 60 + totalMinutes;
+        }
+    } else if (totalHours < 0) {
+        if (totalMinutes < 0) {
+            totalHours = 24 + totalHours - 1;
+            totalMinutes = 60 + totalMinutes;
+        } else if (totalMinutes == 0) {
+            totalHours = 24 + totalHours;
+        }
+    }
+
+    return (totalHours + " hours and " + totalMinutes + " minutes");
+}

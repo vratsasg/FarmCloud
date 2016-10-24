@@ -8,6 +8,7 @@
             {path: "/myprofile", component: "myProfile", name: "Profile"},
             {path: "/userprofile", component: "userProfile", name: "UserProfile"},
             {path: "/observableProperty/:id/:description", component: "observableProperty", name: "ObservableProperty"},
+            {path: "/wateringProperty", component: "wateringProperty", name: "WateringProperty"},
             {path: "/getweather", component: "weatherApi", name: "WeatherApi"},
             {path: "/controlpanel", component: "controlPanel", name: "ControlPanel"},
             {path: "/wateringprofile", component: "wateringProfile", name: "WateringProfile"},

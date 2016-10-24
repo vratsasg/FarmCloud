@@ -115,6 +115,31 @@ public class HomeController {
         return new ResponseEntity<String>(sentData, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/watering/measures", params = {"mydevice", "dtstart", "dtend"}, method = RequestMethod.GET)
+    public ResponseEntity<String> getMeasuresByObsProperty(@RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
+        JSONArray obj = new JSONArray();
+        Users user = (Users) request.getSession().getAttribute("current_user");
+        //int userid = user.getUser_id();
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String sentData = null;
+        try {
+            Date from = dateFormat.parse(datetimestart);
+            Date to = dateFormat.parse(datetimeend);
+            sentData = observationProperyService.getWateringData(1, mydevice, from, to);
+
+            if (sentData == null) {
+                sentData = "{\"unit\":\"\",\"measuredata\":[]}";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return new ResponseEntity<String>(sentData, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/getLastMeasureDate", method = RequestMethod.GET)
     public ResponseEntity<String> getMeasuresByObsProperty(HttpServletRequest request) {
         JSONArray obj = new JSONArray();
@@ -241,9 +266,11 @@ public class HomeController {
     @RequestMapping(value = "/automaticwater/save", method = RequestMethod.POST)
     public
     @ResponseBody
-    void saveAutomacticWatering(@RequestBody AutomaticWater automaticWatering) {
+    void saveAutomacticWatering(HttpServletRequest request, @RequestBody AutomaticWater automaticWatering) {
         try {
-            featureofInterestService.setAutomaticWateringTime(automaticWatering);
+            Users user = (Users) request.getSession().getAttribute("current_user");
+            int userid = user.getUser_id();
+            featureofInterestService.setAutomaticWateringTime(automaticWatering, userid);
         } catch (Exception e) {
             e.printStackTrace();
         }

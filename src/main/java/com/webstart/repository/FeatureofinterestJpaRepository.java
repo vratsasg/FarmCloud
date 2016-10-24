@@ -54,6 +54,11 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
             "WHERE fi.identifier = :identifier")
     List<String> findEndDevicesByCoord(@Param("identifier") String identifier);
 
+    @Query("select parent.featureofinterestid FROM Featureofinterest as fi " +
+            "join fi.parentFeature parent " +
+            "WHERE fi.identifier = :identifier and fi.featureofinteresttypeid = 3 and fi.userid = :userid")
+    List<Integer> findCoordinatorIdByEndDevice(@Param("identifier") String identifier, @Param("userid") int userid);
+
     @Query("select distinct NEW com.webstart.DTO.FeatureidIdentifier(fi.featureofinterestid, fi.identifier) " +
             "FROM Featureofinterest as fi " +
             "WHERE fi.identifier IN :idenList")
@@ -133,7 +138,7 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     @Query("update Featureofinterest f set f.datetimefrom = :dtfrom, f.datetimeto = :dtto, f.waterConsumption = :wc " +
             "where  f.identifier = :identifier and f.featureofinteresttypeid = 2")
     @Transactional
-    void setCoordinatorAlgorithmParams(@Param("identifier") String device, @Param("dtfrom") Date datetimefrom, @Param("dtto") Date datetimeto, @Param("wc") BigDecimal waterconsumption);
+    void setCoordinatorAlgorithmParams(@Param("identifier") String identifier, @Param("dtfrom") Date datetimefrom, @Param("dtto") Date datetimeto, @Param("wc") BigDecimal waterconsumption);
 
 
 

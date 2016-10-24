@@ -62,15 +62,19 @@
                 );
             },
             setAutomaticIrrigationTimes: function (coordData) {
-                return $http.post('setIrrigationDates?&dtfrom=' + coordData.autoIrrigFromTime + '&dtto=' + coordData.autoIrrigUntilTime + '&waterConsumption=' + coordData.waterConsumption).then(
-                    function (response) {
-                        return response.success;
+                console.log(angular.toJson(coordData));
+                return $http({
+                    method: 'POST',
+                    url: '/automaticwater/save',
+                    data: angular.toJson(coordData),
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function (response) {
+                        console.log("Success!!!");
                     },
                     function (errResponse) {
-                        console.error('Error while send request for start measuring Service');
+                        console.error('Error while saving dates and cosnumption values for automatic water!');
                         return $q.reject(errResponse);
-                    }
-                );
+                    });
             },
             setFeatureDates: function (identifier, dtfrom, dtto) {
                 return $http.post('setIrrigationDates?identifier=' + identifier + "&dtfrom=" + dtfrom + "&dtto=" + dtto).then(

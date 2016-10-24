@@ -15,6 +15,8 @@
 
                 model.$onInit = function () {
                     var coord = model.parent.coordinator;
+                    coord.autoIrrigFromTime = moment(coord.autoIrrigFromTime).format("YYYY-MM-DD HH:mm:ss");
+                    coord.autoIrrigUntilTime = moment(coord.autoIrrigUntilTime).format("YYYY-MM-DD HH:mm:ss");
 
                     var instance = model.parent.modalInstance;
                     model.cancel = function () {
