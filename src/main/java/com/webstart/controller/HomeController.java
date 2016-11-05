@@ -1,5 +1,7 @@
 package com.webstart.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.DTO.*;
 import com.webstart.model.Users;
 import com.webstart.service.*;
@@ -119,19 +121,28 @@ public class HomeController {
     public ResponseEntity<String> getMeasuresByObsProperty(@RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         JSONArray obj = new JSONArray();
         Users user = (Users) request.getSession().getAttribute("current_user");
-        //int userid = user.getUser_id();
+        int userid = user.getUser_id();
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String sentData = null;
         try {
             Date from = dateFormat.parse(datetimestart);
             Date to = dateFormat.parse(datetimeend);
-            sentData = observationProperyService.getWateringData(1, mydevice, from, to);
+            WateringMeasure wateringMeasure = observationProperyService.getWateringData(userid, mydevice, from, to);
 
-            if (sentData == null) {
+            if (wateringMeasure == null) {
                 sentData = "{\"unit\":\"\",\"measuredata\":[]}";
+            } else {
+
+                ObjectMapper mapper = new ObjectMapper();
+                //Object to JSON in String
+                sentData = mapper.writeValueAsString(wateringMeasure);
             }
 
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

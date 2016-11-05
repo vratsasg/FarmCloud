@@ -1,9 +1,6 @@
 package com.webstart.service;
 
-import com.webstart.DTO.AutomaticWater;
-import com.webstart.DTO.FeatureMinMaxValue;
-import com.webstart.DTO.ObservableMeasure;
-import com.webstart.DTO.ObservationMeasure;
+import com.webstart.DTO.*;
 import org.json.simple.JSONObject;
 
 import java.security.Timestamp;
@@ -17,7 +14,7 @@ public interface ObservationProperyService {
     JSONObject getAllObsPropeties();
     String getObservationsData(Long obspropId, int userId, String identifier, Date from, Date to);
 
-    String getWateringData(int userId, String identifier, Date from, Date to);
+    WateringMeasure getWateringData(int userId, String identifier, Date from, Date to);
 
     Long getObservationsCounter(Long obspropId, int userId, String identifier, Date from, Date to);
     ObservableMeasure getObservationData(Long obspropId, int userId, String identifier, Date from, Date to);

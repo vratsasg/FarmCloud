@@ -1,18 +1,26 @@
 package com.webstart.DTO;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class WateringValueTime {
 
-
+    @JsonProperty("value")
     private BigDecimal value;
+    @JsonIgnore
     private Timestamp phenomenonDateTimeFrom;
+    @JsonIgnore
     private Timestamp phenomenonDateTimeTo;
+    @JsonProperty("phenomenonTimeStart")
     private Long phenomenonNumTimeFrom;
+    @JsonProperty("phenomenonTimeEnd")
     private Long phenomenonNumTimeTo;
-    private String DateTimeDiff;
+    @JsonProperty("totalDuration")
+    private String dateTimeDiff;
 
     public WateringValueTime() {
     }
@@ -21,6 +29,12 @@ public class WateringValueTime {
         this.value = value;
         this.phenomenonDateTimeFrom = phenomenonDateTimeFrom;
         this.phenomenonDateTimeTo = phenomenonDateTimeTo;
+        this.phenomenonNumTimeFrom = phenomenonDateTimeFrom.getTime();
+        this.phenomenonNumTimeTo = phenomenonDateTimeTo.getTime();
+
+        long diffSeconds = this.phenomenonNumTimeTo - this.phenomenonNumTimeFrom;
+        this.dateTimeDiff = String.format("%1$d hours, %2$d minutes", diffSeconds / (60 * 60 * 1000), diffSeconds / (60 * 1000) % 60);
+
     }
 
     public BigDecimal getValue() {
@@ -48,11 +62,23 @@ public class WateringValueTime {
     }
 
     public Long getPhenomenonNumTimeFrom() {
-        return this.getPhenomenonDateTimeFrom().getTime() / 1000L;
+        return this.getPhenomenonDateTimeFrom().getTime();
+    }
+
+    public void setPhenomenonNumTimeFrom(Long phenomenonNumTimeFrom) {
+        this.phenomenonNumTimeFrom = phenomenonNumTimeFrom;
     }
 
     public Long getPhenomenonNumTimeTo() {
-        return this.getPhenomenonDateTimeTo().getTime() / 1000L;
+        return this.getPhenomenonDateTimeTo().getTime();
+    }
+
+    public void setPhenomenonNumTimeTo(Long phenomenonNumTimeTo) {
+        this.phenomenonNumTimeTo = phenomenonNumTimeTo;
+    }
+
+    public void setDateTimeDiff(String dateTimeDiff) {
+        this.dateTimeDiff = dateTimeDiff;
     }
 
     public String getDateTimeDiff() {
@@ -60,6 +86,8 @@ public class WateringValueTime {
         long diffMinutes = diffSeconds / (60 * 1000) % 60;
         long diffHours = diffSeconds / (60 * 60 * 1000);
 
-        return String.format("Total Watering Consumption: %1%d hours and %2%d minutes", diffHours, diffMinutes);
+        return String.format("%1$d hours, %2$d minutes", diffSeconds / (60 * 60 * 1000), diffSeconds / (60 * 1000) % 60);
     }
+
+
 }

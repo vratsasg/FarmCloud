@@ -29,8 +29,7 @@
                         }
                     );
                 }, getMeasuresByProperty: function (mydevice, datefrom, dateto) {
-                    return $http.get('getObspMeasures?id=5&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto, {headers: {'Cache-Control': 'no-cache'}}).then(
-                        //"/search?fname="+fname"+"&lname="+lname
+                    return $http.get('watering/measures?mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto, {headers: {'Cache-Control': 'no-cache'}}).then(
                         function (response) {
                             return response.data;
                         },
@@ -41,9 +40,9 @@
                     );
                 }, getMeasuresPdf: function (mydevice, datefrom, dateto) {
                     $http({
-                        url: 'extract/pdf',
+                        url: 'extract/wateringPdf',
                         method: 'POST',
-                        params: {'id': 5, 'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
+                        params: {'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
                         //params: {},
                         headers: {
                             'Content-type': 'application/pdf',
@@ -68,9 +67,9 @@
                     });
                 }, getMeasuresCsv: function (mydevice, datefrom, dateto) {
                     $http({
-                        url: 'extract/csv',
+                        url: 'extract/wateringCsv',
                         method: 'POST',
-                        params: {'id': 5, 'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
+                        params: {'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
                         headers: {
                             'Content-type': 'application/csv',
                         },
@@ -94,9 +93,9 @@
                     });
                 }, getMeasuresXls: function (mydevice, datefrom, dateto) {
                     $http({
-                        url: 'extract/xls',
+                        url: 'extract/wateringXls',
                         method: 'POST',
-                        params: {'id': 5, 'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
+                        params: {'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
                         headers: {
                             'Content-type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                         },

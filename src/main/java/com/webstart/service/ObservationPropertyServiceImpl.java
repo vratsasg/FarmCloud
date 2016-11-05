@@ -94,8 +94,8 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
         return jsonInString;
     }
 
-    public String getWateringData(int userId, String identifier, Date from, Date to) {
-        String jsonInString = null;
+    public WateringMeasure getWateringData(int userId, String identifier, Date from, Date to) {
+        WateringMeasure wateringMeasure = new WateringMeasure();
 
         try {
             java.sql.Timestamp timeFrom = new java.sql.Timestamp(from.getTime());
@@ -107,9 +107,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 return null;
             }
 
-            WateringMeasure wateringMeasure = new WateringMeasure();
             Object[] obj = listofObjs.get(0);
-            //feat.identifier, obsprop.Description, obs.phenomenontimestart, obs.phenomenontimeend, num.value, u.unit " +
             wateringMeasure.setIdentifier(String.valueOf(listofObjs.get(0)[0]));
             wateringMeasure.setObservableProperty(String.valueOf(listofObjs.get(0)[1]));
             wateringMeasure.setUnit(String.valueOf(listofObjs.get(0)[5]));
@@ -122,16 +120,12 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             }
 
             wateringMeasure.setMeasuredata(ls);
-            ObjectMapper mapper = new ObjectMapper();
-
-            //Object to JSON in String
-            jsonInString = mapper.writeValueAsString(wateringMeasure);
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
 
-        return jsonInString;
+        return wateringMeasure;
     }
 
     public Long getObservationsCounter(Long obspropId, int userId, String identifier, Date from, Date to) {
