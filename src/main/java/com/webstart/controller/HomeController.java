@@ -302,4 +302,19 @@ public class HomeController {
         }
     }
 
+    @RequestMapping(value = "/myprofile/save", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    void postSensor(@RequestBody List<FeatureSensor> featureSensorList) {
+        try {
+            for (final FeatureSensor featureSensor : featureSensorList) {
+                featureofInterestService.setFeatureOfInterestData(featureSensor);
+            }
+
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
+
 }

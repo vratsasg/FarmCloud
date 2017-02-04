@@ -60,7 +60,7 @@ public class IndexController {
     public String signout(Model model,HttpServletRequest request){
         request.getSession().removeAttribute("current_user");
         model.addAttribute("alert_message", "You have successfully log out!");
-        model.addAttribute("alert_class", "alert alert-success alert_messa");
+        model.addAttribute("alert_class", "alert alert-success alert_successSave");
 
         return "index";
     }

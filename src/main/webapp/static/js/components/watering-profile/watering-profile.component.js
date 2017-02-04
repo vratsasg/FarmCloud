@@ -2,6 +2,13 @@
     'use strict';
     var module = angular.module("myApp");
 
+    $("#body").on(
+        "transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd",
+        function () {
+            $("#alertAreaid").html("");
+        }
+    );
+
     module.component('wateringProfile', {
         templateUrl: 'static/js/components/watering-profile/watering-profile.component.html',
         controllerAs: "model",
@@ -22,7 +29,17 @@
 
             model.saveAllData = function () {
                 console.log(angular.toJson(model.obspropminmax));
-                WateringProfileService.saveWateringProfile(model.obspropminmax).then(/*Do nithing*/);
+                WateringProfileService.saveWateringProfile(model.obspropminmax).then(
+                    function (response) {
+                        if (response === true || response == "true") {
+                            var myEl = angular.element(document.querySelector('#alertAreaid'));
+                            var appenddiv = '<div class="alert alert-success alert_successSave">' +
+                                '   <strong>Success!</strong>You have succesfully saved your profile!' +
+                                '</div>';
+                            myEl.html(appenddiv);
+                        }
+                    }
+                );
             };
 
 

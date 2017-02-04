@@ -38,5 +38,6 @@ public interface FeatureofInterestService {
         void setFeatureMeasuringFalse(List<String> idertifierList);
         void setAutomaticWateringTime(AutomaticWater automaticWater, int userid);
 
+        void setFeatureOfInterestData(FeatureSensor featureSensor);
         void setFeatureWateringFalse(String id);
 }

@@ -20,14 +20,14 @@
                 },
 
                 saveProfile: function (profiledata) {
-                    console.log(angular.toJson(profiledata));
+                    console.log(profiledata);
                     return $http({
                         method: 'POST',
-                        url: 'saveprofile',
-                        data: angular.toJson(profiledata),
+                        url: 'myprofile/save',
+                        data: profiledata,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function (response) {
-                            console.log("Success!!!");
+                            return (true);
                         },
                         function (errResponse) {
                             console.error('Error while saving minimum and maximum values for watering profile!');

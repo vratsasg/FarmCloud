@@ -125,6 +125,13 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     List<BigDecimal> getWaterConsumption(@Param("identifier") String identifier);
 
     @Modifying
+    @Query("update Featureofinterest f " +
+            "set f.identifier = :identifier, f.name = :description " +
+            "where f.id = :id ")
+    @Transactional
+    void setFeatureOfInterestData(@Param("identifier") String identifier, @Param("description") String description, @Param("id") Integer id);
+
+    @Modifying
     @Query("update ObservablePropertyMinMax obsprop set obsprop.minval = :minval, obsprop.maxval = :maxval where obsprop.obspropid = :obspropid")
     @Transactional
     void setObservableMinmax(@Param("obspropid") Long obspropvalid, @Param("minval") BigDecimal minimum, @Param("maxval") BigDecimal maximum);

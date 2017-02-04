@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.ExceptionConverter;
 import com.webstart.DTO.*;
+import com.webstart.Enums.FeatureTypeEnum;
 import com.webstart.model.*;
 import com.webstart.repository.FeatureofinterestJpaRepository;
 
@@ -74,20 +75,21 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         JSONObject obj = new JSONObject();
 
         for (int k = 0; k < featureofinterestList.size(); k++) {
-            if (featureofinterestList.get(k).getFeatureofinteresttypeid() == 3) {
+            if (featureofinterestList.get(k).getFeatureofinteresttypeid() == FeatureTypeEnum.END_DEVICE.getValue()) {
                 featureids.add(featureofinterestList.get(k).getFeatureofinterestid());
-            } else if (featureofinterestList.get(k).getFeatureofinteresttypeid() == 1) {
+            } else if (featureofinterestList.get(k).getFeatureofinteresttypeid() == FeatureTypeEnum.CROP.getValue()) {
                 ///CROP
                 obj1.put("id", String.valueOf(featureofinterestList.get(k).getFeatureofinterestid()));
                 obj1.put("identifier", featureofinterestList.get(k).getIdentifier());
                 obj1.put("description", featureofinterestList.get(k).getName());
-
-            } else if (featureofinterestList.get(k).getFeatureofinteresttypeid() == 2) {
+                obj1.put("featureType", FeatureTypeEnum.CROP.getValue());
+            } else if (featureofinterestList.get(k).getFeatureofinteresttypeid() == FeatureTypeEnum.STATION.getValue()) {
                 JSONObject obj2 = new JSONObject();
                 //STATION
                 obj2.put("id", String.valueOf(featureofinterestList.get(k).getFeatureofinterestid()));
                 obj2.put("identifier", featureofinterestList.get(k).getIdentifier());
                 obj2.put("description", featureofinterestList.get(k).getName());
+                obj1.put("featureType", FeatureTypeEnum.STATION.getValue());
                 list.add(obj2);
             }
         }
@@ -122,6 +124,7 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
                     if (tmcounter == 0) {
                         finalobject.put("description", String.valueOf((cropInfoDTO.getFeatureName())));
                         finalobject.put("id", String.valueOf(cropInfoDTO.getId()));
+                        finalobject.put("featureType", FeatureTypeEnum.END_DEVICE.getValue());
                     }
                     tmcounter++;
                 }
@@ -426,6 +429,15 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void setFeatureOfInterestData(FeatureSensor featureSensor) {
+        try {
+            featureofinterestJpaRepository.setFeatureOfInterestData(featureSensor.getIdentifier(), featureSensor.getDescription(), featureSensor.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

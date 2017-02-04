@@ -11,8 +11,7 @@ public class FeatureSensor {
     private int id;
     private String identifier;
     private String description;
-    @JsonIgnore
-    private FeatureTypeEnum deviceType;
+    private FeatureTypeEnum featureType;
     @JsonProperty(value = "sensors")
     private List<Sensor> sensorList;
 
@@ -26,10 +25,11 @@ public class FeatureSensor {
         this.sensorList = sensorList;
     }
 
-    public FeatureSensor(int id, String identifier, String description) {
+    public FeatureSensor(int id, String identifier, String description, FeatureTypeEnum featureType) {
         this.id = id;
         this.identifier = identifier;
         this.description = description;
+        this.featureType = featureType;
     }
 
     public int getId() {
@@ -57,11 +57,11 @@ public class FeatureSensor {
     }
 
     public FeatureTypeEnum getDeviceType() {
-        return deviceType;
+        return featureType;
     }
 
     public void setDeviceType(FeatureTypeEnum deviceType) {
-        this.deviceType = deviceType;
+        this.featureType = deviceType;
     }
 
     public List<Sensor> getSensorList() {

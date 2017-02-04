@@ -23,14 +23,13 @@
                         data: angular.toJson(wateringprofiledata),
                         headers: {'Content-Type': 'application/json'}
                     }).then(function (response) {
-                            console.log("Success!!!");
+                            return true;
                         },
                         function (errResponse) {
                             console.error('Error while saving minimum and maximum values for watering profile!');
                             return $q.reject(errResponse);
                         });
                 }
-
             }
         }]
     );

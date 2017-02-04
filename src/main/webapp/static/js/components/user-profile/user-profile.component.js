@@ -5,7 +5,7 @@
     $("#body").on(
         "transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd",
         function () {
-            $('#alertAreaid').empty();
+            $("#alertAreaid").html("");
         }
     );
 
@@ -54,7 +54,7 @@
                                 function (response) {
                                     if (response === true || response == "true") {
                                         var myEl = angular.element(document.querySelector('#alertAreaid'));
-                                        var appenddiv = '<div class="alert alert-success alert_messa">' +
+                                        var appenddiv = '<div class="alert alert-success alert_successSave">' +
                                             '   <strong>Success!</strong>You have succesfully saved your profile!' +
                                             '</div>';
                                         myEl.html(appenddiv);
