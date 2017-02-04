@@ -12,12 +12,15 @@ public interface FeatureofInterestService {
         String findFeatureByIdentifier(String identi);
 
         List<FeatureidIdentifier> findFeatureIdByIdentifier(List<String> stringList);
+
+        List<Long> findIdsByIdentifier(List<String> idStr);
         List<FeatureObsPropMinMax> findminmaxObservationValues(String identifier);
         List<EmebddedSetupDevicdeDto> findEndDevicesTimes(String coordinatorAddress);
 
         EmebddedSetupDevicdeDto findCoordinatorTimes(String coordinatorAddress);
         JSONObject findCropInfo(int id);
-        JSONObject findByUserAndType(int id);
+
+        List<FeatureidIdentifier> findByUserAndType(int id, long typeId);
 
         String findByIdentifier(String coordinator);
         String findMinMaxbyUserId(Integer userid);
@@ -33,6 +36,7 @@ public interface FeatureofInterestService {
         boolean addCrop(Crop crop);
 
         void setFeatureMeasuringFalse(List<String> idertifierList);
-
         void setAutomaticWateringTime(AutomaticWater automaticWater, int userid);
+
+        void setFeatureWateringFalse(String id);
 }

@@ -16,9 +16,10 @@
                     );
                 }
                 , saveWateringProfile: function (wateringprofiledata) {
+                    console.log(angular.toJson(wateringprofiledata));
                     return $http({
                         method: 'POST',
-                        url: '/wateringprofile/saveminmax',
+                        url: 'wateringprofile/saveminmax',
                         data: angular.toJson(wateringprofiledata),
                         headers: {'Content-Type': 'application/json'}
                     }).then(function (response) {

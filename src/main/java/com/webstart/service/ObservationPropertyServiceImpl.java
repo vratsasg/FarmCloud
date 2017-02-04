@@ -78,7 +78,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
 
                 Timestamp tTime = (java.sql.Timestamp) objec[2];
 
-                ls.add(new ValueTime(tTime.getTime() / 1000L, (BigDecimal) objec[3], tTime));
+                ls.add(new ValueTime((tTime.getTime() - 60L * 60L * 1000L) / 1000L, (BigDecimal) objec[3], tTime));
             }
 
             obsMeasure.setMeasuredata(ls);
@@ -154,7 +154,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 Object[] objec = (Object[]) itr.next();
                 //Object[] objValueTime = new Object[2];
                 Timestamp tTime = (java.sql.Timestamp) objec[2];
-                ls.add(new ValueTime(tTime.getTime() / 1000L, (BigDecimal) objec[3], tTime));
+                ls.add(new ValueTime((tTime.getTime() - 60L * 60L * 1000L) / 1000L, (BigDecimal) objec[3], tTime));
             }
 
             obsMeasure.setMeasuredata(ls);
@@ -184,11 +184,11 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
 
 
     public List<ObservationMeasure> getLastObservationbyIdentifier(int userId, String identifier) {
-//        String jsonInString = null;
+        //String jsonInString = null;
         List<ObservationMeasure> ls = new ArrayList<ObservationMeasure>();
 
         try {
-            Timestamp lastdate = observationJpaRepository.findlastdatetime(userId);
+            Timestamp lastdate = observationJpaRepository.findlastdatetime(userId, identifier);
             List<Object[]> listMeasures = observationJpaRepository.findLastMeasures(userId, identifier, lastdate);
 
             if (listMeasures.size() == 0) {
@@ -201,7 +201,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             while (itr.hasNext()) {
                 Object[] objec = (Object[]) itr.next();
                 Timestamp tTime = (java.sql.Timestamp) objec[1];
-                ls.add(new ObservationMeasure(tTime.getTime() / 1000L, (BigDecimal) objec[2], tTime, objec[3].toString(), objec[0].toString()));
+                ls.add(new ObservationMeasure((tTime.getTime() - 60L * 60L * 1000L) / 1000L, (BigDecimal) objec[2], tTime, objec[3].toString(), objec[0].toString()));
             }
 
             //ObjectMapper mapper = new ObjectMapper();       //Object to JSON in String

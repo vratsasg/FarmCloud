@@ -44,7 +44,7 @@ public class MeasuresServiceImpl implements MeasureService {
             //Calendar calendar = Calendar.getInstance();
             //Date dateto = calendar.getTime(); //NOW
             //Timestamp timestampTo = new Timestamp(dateto.getTime());
-            Timestamp timestampTo = observationJpaRepository.findlastdatetime(id);
+            Timestamp timestampTo = observationJpaRepository.fiindlastdatetime(id);
 
             //calendar.add(Calendar.DATE, -1);
             //Date datefrom = calendar.getTime();
@@ -121,18 +121,18 @@ public class MeasuresServiceImpl implements MeasureService {
 
     }
 
-    public void saveTheMeasure(Long seriesId, EmbeddedData embeddedData) {
+    public void saveMeasure(Long seriesId, EmbeddedData embeddedData) {
         try {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date from = dateFormat.parse(embeddedData.getDatetimeMeasure());
+//            Date from = dateFormat.parse(embeddedData.getDatetimeMeasure());
 
             Observation observation = new Observation();
 
             observation.setSeriesid(seriesId);
-            observation.setPhenomenontimestart(new Timestamp(from.getTime()));
-            observation.setPhenomenontimeend(new Timestamp(from.getTime()));
-            observation.setResulttime(new Timestamp(from.getTime()));
-            observation.setIdentifier(embeddedData.getDatetimeMeasure().replace("-", "").replace(":", "").replace(" ", "") + "-" + java.util.UUID.randomUUID());
+            observation.setPhenomenontimestart(new Timestamp(embeddedData.getDatetimeMeasure().getTime()));
+            observation.setPhenomenontimeend(new Timestamp(embeddedData.getDatetimeMeasure().getTime()));
+            observation.setResulttime(new Timestamp(embeddedData.getDatetimeMeasure().getTime()));
+            observation.setIdentifier(dateFormat.format(embeddedData.getDatetimeMeasure()).replace("/", "").replace(":", "").replace(" ", "") + "-" + java.util.UUID.randomUUID());
             observation.setUnitid((long) embeddedData.getUnitId());
             observation.setDeleted("F");
 
@@ -147,19 +147,19 @@ public class MeasuresServiceImpl implements MeasureService {
         }
     }
 
-    public void saveTheMeasure(AutomaticWater automaticWater) {
+    public void saveMeasure(AutomaticWater automaticWater) {
         try {
             Long seriesid = seriesJpaRepository.findSeriesIdByEndDevice(automaticWater.getIdentifier()).get(0);
             BigDecimal waterCons = featureofinterestJpaRepository.getWaterConsumption(automaticWater.getIdentifier()).get(0);
 
-            DateFormat df = new SimpleDateFormat("yyyy/MM/dd/ HH:mm:ss");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/ HH:mm:ss");
 
             Observation observation = new Observation();
             observation.setSeriesid(seriesid);
             observation.setPhenomenontimestart(new Timestamp(automaticWater.getFromtime().getTime()));
             observation.setPhenomenontimeend(new Timestamp(automaticWater.getUntiltime().getTime()));
             observation.setResulttime(new Timestamp(automaticWater.getUntiltime().getTime()));
-            observation.setIdentifier(df.format(automaticWater.getUntiltime()).replace("/", "").replace(":", "").replace(" ", "") + "-" + java.util.UUID.randomUUID());
+            observation.setIdentifier(dateFormat.format(automaticWater.getUntiltime()).replace("/", "").replace(":", "").replace(" ", "") + "-" + java.util.UUID.randomUUID());
             observation.setUnitid((long) 22);
             observation.setDeleted("F");
 

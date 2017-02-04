@@ -6,7 +6,6 @@ import com.webstart.DTO.*;
 import com.webstart.model.*;
 import com.webstart.service.FeatureofInterestService;
 import com.webstart.service.MeasureService;
-import com.webstart.service.MeasuresServiceImpl;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +43,7 @@ public class EmbeddedController {
                 }
 
                 Long seriesId = featureofInterestService.findseries(embeddedData.getObservationPropId(), featureofinterestid);
-                measureService.saveTheMeasure(seriesId, embeddedData);
+                measureService.saveMeasure(seriesId, embeddedData);
             }
 
             //return new ResponseEntity<Void>(HttpStatus.CREATED);
@@ -60,7 +59,7 @@ public class EmbeddedController {
     @ResponseBody
     void postIrrigation(@RequestBody AutomaticWater automaticWater) {
         try {
-            measureService.saveTheMeasure(automaticWater);
+            measureService.saveMeasure(automaticWater);
         } catch (Exception exc) {
             exc.printStackTrace();
         }
@@ -125,7 +124,7 @@ public class EmbeddedController {
     public ResponseEntity<String> startMeasuring(HttpServletRequest request) {
         String JsonResp = null;
         Users user = (Users) request.getSession().getAttribute("current_user");
-        //TODO change without userid
+        //TODO change without userid from ControlPanel Service on angular
         JsonResp = featureofInterestService.changeMeasuringFlag(user.getUser_id(), 3L);
 
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
@@ -160,6 +159,34 @@ public class EmbeddedController {
             return new ResponseEntity<String>(JsonResults, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<String>(JsonResults, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "automaticwatering/save", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    void saveAutomacticWateringObservation(HttpServletRequest request, @RequestBody AutomaticWater automaticWatering) {
+        try {
+            List<String> identifiers = Arrays.asList(automaticWatering.getIdentifier());
+            Long featureId = featureofInterestService.findIdsByIdentifier(identifiers).get(0);
+
+            measureService.saveMeasure(automaticWatering);
+            featureofInterestService.setFeatureMeasuringFalse(identifiers);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "manualwatering/save", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    void saveAutomacticWatering(HttpServletRequest request, @RequestBody AutomaticWater automaticWatering) {
+        try {
+            String identifier = automaticWatering.getIdentifier();
+            measureService.saveMeasure(automaticWatering);
+            featureofInterestService.setFeatureWateringFalse(identifier);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

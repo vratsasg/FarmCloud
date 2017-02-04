@@ -5,22 +5,44 @@
     <div class="col-sm-4">
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title">Crop</h3>
+                <h3 class="panel-title">Crop <span class="glyphicon glyphicon-grain"
+                                                   style="vertical-align:middle; color: black;"></span></h3>
             </div>
             <div class="panel-body">
-                <div>Crop Name: {{model.myprofile.crop.identifier}}</div>
-                <div>Crop Description: {{model.myprofile.crop.description}}</div>
+                <div class="form-group col-md-5 col-sm-5 cols-xl-5 xol-xs-5">
+                    <label class="control-label">Crop Name</label>
+                    <input type="text" class="form-control" ng-model="model.myprofile.crop.identifier"
+                           ng-required="true">
+                </div>
+                <div class="form-group col-md-5 col-sm-5 cols-xl-5 xol-xs-5">
+                    <label class="control-label">Description</label>
+                    <input type="text" class="form-control" ng-model="model.myprofile.crop.description"
+                           ng-required="true">
+                </div>
             </div>
         </div>
     </div>
     <div class="col-sm-4" ng-repeat="st in model.myprofile.stations">
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h3 class="panel-title">Station {{$index+1}} </h3>
+                <h3 class="panel-title">Station </h3>
             </div>
             <div class="panel-body">
-                <div>Station Name: {{st.identifier}}</div>
-                <div>Station Description: {{st.description}}</div>
+                <div class="form-group col-md-4 col-sm-5 cols-xl-5 xol-xs-5">
+                    <label class="control-label">Name</label>
+                    <input type="text" class="form-control" ng-model="st.identifier" ng-disabled="true">
+                </div>
+                <div class="form-group col-md-6 col-sm-5 cols-xl-5 xol-xs-5">
+                    <label class="control-label">Description</label>
+                    <input type="text" class="form-control" ng-model="st.description" ng-required="true">
+                </div>
+                <div class="form-group col-md-2 col-sm-2 cols-xl-2 xol-xs-2">
+                    <button class="btn btn-info" id="saveCoordbtn" ng-click="model.saveCoordLocation(st.id)"
+                            style="margin-top: 25px;">
+                        <span class="glyphicon glyphicon-pushpin"
+                              style="vertical-align:middle; color: whitesmoke;"></span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -30,20 +52,44 @@
     <div class="col-sm-4" ng-repeat="dv in model.myprofile.devices">
         <div class="panel panel-warning">
             <div class="panel-heading">
-                <h3 class="panel-title">EndDevice {{$index+1}}</h3>
+                <h3 class="panel-title">EndDevice {{$index+1}}
+                    <span class="glyphicon glyphicon-scale" style="vertical-align:middle; color: black;"></span>
+                </h3>
             </div>
             <div class="panel-body">
-                <div>EndDevice Name: {{dv.identifier}}</div>
-                <div>EndDevice Description: {{dv.description}}</div>
-                <ul class="nav nav-stacked">
-                    <li>Sensors :</li>
-                    <ul class="nav nav-stacked" ng-repeat="sens in model.myprofile.devices[$index].sensors">
-                        <li> Sensor name:{{sens.sensorname}}</li>
-                        <li> Kind of measurement:{{sens.kindofmeasurement}}</li>
-                        <li> Type of measurement:{{sens.typeofmeasurement}}</li>
-                    </ul>
-                </ul>
+                <div class="form-group col-md-4 col-sm-5 cols-xl-5 xol-xs-5">
+                    <label class="control-label">Identifier</label>
+                    <input type="text" class="form-control" ng-model="dv.identifier" ng-disabled="true">
+                </div>
+                <div class="form-group col-md-8 col-sm-5 cols-xl-5 xol-xs-5">
+                    <label class="control-label">Description</label>
+                    <input type="text" class="form-control" ng-model="dv.description" ng-required="true">
+                </div>
+
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-xl-12 col-md-12 col-sm-12 col-xs-12">
+                        <table id="last" class="table table-condensed table-striped table-condensed">
+                            <caption>Sensors</caption>
+                            <tbody>
+                            <tr>
+                                <td><strong>Name</strong></td>
+                                <td><strong>Measurement Type</strong></td>
+                            </tr>
+                            <tr ng-repeat="sens in model.myprofile.devices[$index].sensors">
+                                <td>{{sens.sensorname}}</td>
+                                <td>{{sens.typeofmeasurement}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<button class="btn btn-success" style="margin-bottom: 20px;" id="newmeasureid" ng-click="model.saveAllData()"
+        ng-disabled="model.obspropminmax.$invalid">
+    Save Data
+    <span class="glyphicon glyphicon-save" style="vertical-align:middle; color: whitesmoke;"></span>
+</button>

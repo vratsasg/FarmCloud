@@ -7,12 +7,6 @@
         controllerAs: "model",
         controller: function (WateringPropertyService, $log, $q, ngTableParams, $filter, $scope) {
             var model = this;
-
-            //model.$routerOnActivate = function (next) {
-            //    var StrDescr = next.params.description;
-            //    model.descr = StrDescr.replace(/%20/g, " ");
-            //};
-
             model.measures = "";
 
             model.updateMyDevice = function (myD) {
@@ -28,7 +22,7 @@
                     //paginationMinBlocks: 1
                 }, {
                     getData: function (params) {
-                        return getTableData(model.myDevice, params, datefrom, dateto);
+                        return getTableData(model.myDevice.identifier, params, datefrom, dateto);
                     }
                 });
             };
@@ -46,7 +40,7 @@
                     //paginationMinBlocks: 1
                 }, {
                     getData: function (params) {
-                        return getTableData(model.myDevice, params, datefrom, dateto);
+                        return getTableData(model.myDevice.identifier, params, datefrom, dateto);
                     }
                 });
 
@@ -66,7 +60,7 @@
                     //paginationMinBlocks: 1
                 }, {
                     getData: function (params) {
-                        return getTableData(model.myDevice, params, datefrom, dateto);
+                        return getTableData(model.myDevice.identifier, params, datefrom, dateto);
                     }
                 });
             };
@@ -76,13 +70,13 @@
                 var dateto = moment(new Date(model.dateto)).format("YYYY-MM-DD HH:mm:ss");
                 switch (filetype) {
                     case 'pdf':
-                        WateringPropertyService.getMeasuresPdf(model.myDevice, datefrom, dateto);
+                        WateringPropertyService.getMeasuresPdf(model.myDevice.identifier, datefrom, dateto);
                         break;
                     case 'xls':
-                        WateringPropertyService.getMeasuresXls(model.myDevice, datefrom, dateto);
+                        WateringPropertyService.getMeasuresXls(model.myDevice.identifier, datefrom, dateto);
                         break;
                     case 'csv':
-                        WateringPropertyService.getMeasuresCsv(model.myDevice, datefrom, dateto);
+                        WateringPropertyService.getMeasuresCsv(model.myDevice.identifier, datefrom, dateto);
                         break;
                     default:
                         console.error('Error trying to pass a wrong parameter inside function!!!');
@@ -100,7 +94,7 @@
                     function (da) {
                         model.devices = da;
                         deferDev.resolve(model.devices);
-                        model.myDevice = model.devices.enddevices[0].identifier;
+                        model.myDevice = model.devices[0];
 
                         model.tableParams = new ngTableParams({
                             counts: [],
@@ -110,7 +104,7 @@
                             //paginationMinBlocks: 1
                         }, {
                             getData: function (params) {
-                                return getTableData(model.myDevice, params, model.datefrom, model.dateto);
+                                return getTableData(model.myDevice.identifier, params, model.datefrom, model.dateto);
                             }
                         });
 
@@ -156,7 +150,7 @@
                                     left: 55
                                 },
                                 x: function (d) {
-                                    var oo = new Date(moment(parseInt(d.x) * 1000));
+                                    var oo = new Date(moment(parseInt(d.x)));
                                     return oo;
                                 },
                                 y: function (d) {
@@ -181,16 +175,14 @@
                                     axisLabel: 'Time (MM/DD HH:MM)',
                                     tickFormat: function (d) {
 
-                                        if (diff < 1) {
+                                        if (diff <= 3) {
                                             var returnvalue = new Date(moment(parseInt(d)));
-                                            //TODO set diferrent format in addition with min and max
                                             if (isNaN(returnvalue)) {
                                                 return d3.time.format('%H:%M')(new Date(d));
                                             }
                                             return d3.time.format(' %H:%M')(new Date(moment(parseInt(d))));
-                                        } else if (diff < 30) {
+                                        } else if (diff > 3 && diff <= 30) {
                                             var returnvalue = new Date(moment(parseInt(d)));
-                                            //TODO set diferrent fromat in addition with min and max
                                             if (isNaN(returnvalue)) {
                                                 return d3.time.format('%a %b %e ')(new Date(d));
                                             }
@@ -260,7 +252,8 @@
 
                         model.data = fillData(model.measures);
                         for (var i = 0; i < theMeasures.measuredata.length; i++) {
-                            theMeasures.measuredata[i].phenomenonTime = moment(parseInt(theMeasures.measuredata[i].phenomenonTime) * 1000).format('DD/MM/YYYY HH:mm:ss');
+                            theMeasures.measuredata[i].phenomenonTimeStart = moment(parseInt(theMeasures.measuredata[i].phenomenonTimeStart)).format('DD/MM/YY HH:mm:ss');
+                            theMeasures.measuredata[i].phenomenonTimeEnd = moment(parseInt(theMeasures.measuredata[i].phenomenonTimeEnd)).format('DD/MM/YY HH:mm:ss');
                         }
 
                         params.total(theMeasures.measuredata.length); // recal. page nav controls
@@ -281,7 +274,7 @@
                 var sin = [];
                 for (var i = 0; i < dataChart.measuredata.length; i++) {
                     sin.push({
-                        x: (dataChart.measuredata[i].phenomenonTime).toString(),
+                        x: (dataChart.measuredata[i].phenomenonTimeStart).toString(),
                         y: parseFloat(dataChart.measuredata[i].value)
                     });
                 }

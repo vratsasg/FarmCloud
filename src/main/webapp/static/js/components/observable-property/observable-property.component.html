@@ -5,13 +5,13 @@
 <hr id="headline">
 <div class="row">
     <div class="control-group col-md-2 col-sm-2 col-xs-4">
-        <label class="control-label">View By End Device</label>
+        <label class="control-label">End Device</label>
 
         <div class="controls">
             <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice"
-                    ng-options="dev.identifier as dev.identifier for dev in model.devices.enddevices"
+                    ng-options="dev.description for dev in model.devices track by dev.featureinterestid"
                     ng-change="model.updateMyDevice(model.myDevice)">
-
+                <!--ng-options="dev.identifier as dev.identifier for dev in model.devices"-->
             </select>
         </div>
     </div>
@@ -83,17 +83,17 @@
         </table>
 
         <button class="btn btn-success" id="getcsv" ng-click="model.downloadFile('csv')">
-            Download CSV
+            CSV
             <i class="fa fa-file-text-o" aria-hidden="true"></i>
         </button>
 
         <button class="btn btn-success" id="getpdf" ng-click="model.downloadFile('pdf')">
-            Download PDF
+            PDF
             <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
         </button>
 
         <button class="btn btn-success" id="getxls" ng-click="model.downloadFile('xls')">
-            Download XLS
+            XLS
             <i class="fa fa-file-excel-o" aria-hidden="true"></i>
         </button>
 

@@ -29,7 +29,7 @@
                     //paginationMinBlocks: 1
                 }, {
                     getData: function (params) {
-                        return getTableData(model.myDevice, params, datefrom, dateto);
+                        return getTableData(model.myDevice.identifier, params, datefrom, dateto);
                     }
                 });
             };
@@ -47,7 +47,7 @@
                     //paginationMinBlocks: 1
                 }, {
                     getData: function (params) {
-                        return getTableData(model.myDevice, params, datefrom, dateto);
+                        return getTableData(model.myDevice.identifier, params, datefrom, dateto);
                     }
                 });
 
@@ -67,7 +67,7 @@
                     //paginationMinBlocks: 1
                 }, {
                     getData: function (params) {
-                        return getTableData(model.myDevice, params, datefrom, dateto);
+                        return getTableData(model.myDevice.identifier, params, datefrom, dateto);
                     }
                 });
             };
@@ -77,13 +77,13 @@
                 var dateto = moment(new Date(model.dateto)).format("YYYY-MM-DD HH:mm:ss");
                 switch (filetype) {
                     case 'pdf':
-                        ObservablePropertyService.getMeasuresPdf(model.id, model.myDevice, datefrom, dateto);
+                        ObservablePropertyService.getMeasuresPdf(model.id, model.myDevice.identifier, datefrom, dateto);
                         break;
                     case 'xls':
-                        ObservablePropertyService.getMeasuresXls(model.id, model.myDevice, datefrom, dateto);
+                        ObservablePropertyService.getMeasuresXls(model.id, model.myDevice.identifier, datefrom, dateto);
                         break;
                     case 'csv':
-                        ObservablePropertyService.getMeasuresCsv(model.id, model.myDevice, datefrom, dateto);
+                        ObservablePropertyService.getMeasuresCsv(model.id, model.myDevice.identifier, datefrom, dateto);
                         break;
                     default:
                         console.error('Error trying to pass a wrong parameter inside function!!!');
@@ -101,7 +101,7 @@
                     function (da) {
                         model.devices = da;
                         deferDev.resolve(model.devices);
-                        model.myDevice = model.devices.enddevices[0].identifier;
+                        model.myDevice = model.devices[0];
 
                         model.tableParams = new ngTableParams({
                             counts: [],
@@ -111,7 +111,7 @@
                             //paginationMinBlocks: 1
                         }, {
                             getData: function (params) {
-                                return getTableData(model.myDevice, params, model.datefrom, model.dateto);
+                                return getTableData(model.myDevice.identifier, params, model.datefrom, model.dateto);
                             }
                         });
 
@@ -148,6 +148,7 @@
                         {
                             chart: {
                                 type: 'lineChart',
+                                isArea: false,
                                 height: 370,
                                 margin: {
                                     top: 20,
@@ -235,14 +236,6 @@
                                 enable: true,
                                 text: model.measures.observableProperty
                             }
-                            //subtitle: {
-                            //    enable: true,
-                            //    text: '5 day / 3 hour forecast',
-                            //    css: {
-                            //        'text-align': 'center',
-                            //        'margin': '10px 13px 0px 7px'
-                            //    }
-                            //}
                         };
 
 
@@ -280,7 +273,10 @@
                         values: sin,      //values - represents the array of {x,y} data points
                         key: dataChart.observableProperty, //key  - the name of the series.
                         color: '#ff7f0e',  //color - optional: choose your own line color.
-                        strokeWidth: 2,
+                        fill: 'none',
+                        area: false,
+                        opeacity: 0.0,
+                        strokeWidth: 3,
                         classed: 'dashed'
                     }
                 ];

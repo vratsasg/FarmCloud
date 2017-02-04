@@ -51,18 +51,33 @@ public class HomeController {
 
     @RequestMapping(value = "/firstPDev", method = RequestMethod.GET)
     public ResponseEntity<String> getFeatureEndDevices(HttpServletRequest request) {
-        Users users = new Users();
-        JSONObject obj = new JSONObject();
-        users = (Users) request.getSession().getAttribute("current_user");
+        String jsonresult = null;
 
-        obj = featureofInterestService.findByUserAndType(users.getUser_id());
-        return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
+        try {
+            Users users = (Users) request.getSession().getAttribute("current_user");
+            List<FeatureidIdentifier> results = featureofInterestService.findByUserAndType(users.getUser_id(), 3L);
+            ObjectMapper mapper = new ObjectMapper();
+            jsonresult = mapper.writeValueAsString(results);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<String>(jsonresult, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/coordinator/stationcoords/{id}", method = RequestMethod.GET)
-    public ResponseEntity<String> getStationCoords(@PathVariable("id") String id, HttpServletRequest request) {
-        String stationcoords = featureofInterestService.findByFeatureofinterestid(Integer.parseInt(id));
-        return new ResponseEntity<String>(stationcoords, HttpStatus.OK);
+    @RequestMapping(value = "/coordinator/stationcoords", method = RequestMethod.GET)
+    public ResponseEntity<String> getStationCoords(HttpServletRequest request) {
+        String jsonresult = null;
+
+        try {
+            Users users = (Users) request.getSession().getAttribute("current_user");
+            List<FeatureidIdentifier> results = featureofInterestService.findByUserAndType(users.getUser_id(), 2L);
+            jsonresult = featureofInterestService.findByFeatureofinterestid(results.get(0).getFeatureinterestid());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<String>(jsonresult, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/charthome/{id}", method = RequestMethod.GET)
@@ -214,7 +229,7 @@ public class HomeController {
             Date to = dateFormat.parse(dateto);
 
             AutomaticWater automaticWater = new AutomaticWater(from, to, new BigDecimal(0), device);
-            measureservice.saveTheMeasure(automaticWater);
+            measureservice.saveMeasure(automaticWater);
             sentData = featureofInterestService.setDeviceIrrigaDate(users.getUser_id(), device, from, to);
             if (!sentData)
                 return new ResponseEntity<String>("false", HttpStatus.OK);
@@ -285,13 +300,6 @@ public class HomeController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
-
-
-
-
-
 
 }

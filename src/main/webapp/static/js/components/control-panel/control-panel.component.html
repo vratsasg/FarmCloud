@@ -3,7 +3,7 @@
 
 <div class="row col-xl-12 col-md-12 col-sm-12 col-xs-12">
     Last measure for end device at <span style="color: #71843f"><strong>{{model.lastDate}}</strong></span> from <span
-        style="color: #71843f"><strong>{{model.myDevice}}</strong></span>
+        style="color: #71843f"><strong>{{model.myDevice.description}}</strong></span>
 </div>
 </br>
 
@@ -12,8 +12,7 @@
         <select class="form-control" id="editevent_repeat_time"
                 ng-model="model.myDevice"
                 ng-change="model.updateMyDevice(model.myDevice)"
-                ng-options="dev.identifier as dev.identifier for dev in model.devices.enddevices">
-
+                ng-options="dev.description for dev in model.devices track by dev.featureinterestid">
         </select>
     </div>
 </div>
@@ -42,7 +41,7 @@
 
 <button class="btn btn-success" style="margin-bottom: 20px;" id="newmeasureid" ng-click="model.showModalMeasuring()"
         ng-disabled="{{model.disableMeasurebtn}}">
-    New measure
+    New Measurement
     <span class="flaticon-temperature" style="vertical-align:middle; color: whitesmoke;"></span>
 </button>
 
@@ -83,21 +82,6 @@
         <input type="time" class="form-control" id="autoFromTime" name="input"
                data-ng-model="model.coordinator.autoIrrigFromTime"
                ng-change="model.updateTotalAlgorithmTime()" placeholder="HH:mm:ss" required/>
-        <!--<div class="dropdown">-->
-        <!--<a class="dropdown-toggle" id="dropdownstart" role="button" data-toggle="dropdown" data-target="" href="">-->
-        <!--<div class="input-group"><input type="text" class="form-control"-->
-        <!--data-ng-model="model.coordinator.autoIrrigFromTime">-->
-        <!--<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>-->
-        <!--</div>-->
-        <!--</a>-->
-        <!--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">-->
-        <!--<datetimepicker data-ng-model="model.coordinator.autoIrrigFromTime"-->
-        <!--ng-change="model.updateCoordDateFrom(model.coordinator.autoIrrigFromTime)"-->
-        <!--ng-required="true"-->
-        <!--data-datetimepicker-config="{ dropdownSelector: '#dropdownstart', modelType: 'moment', startView: 'hour', minView: 'minute', minuteStep: 1 }"-->
-        <!--data-before-render="model.beforeRenderStartDate($view, $dates, $leftDate, $upDate, $rightDate)"/>-->
-        <!--</ul>-->
-        <!--</div>-->
     </div>
 
     <div class="form-group col-md-2 col-sm-2 cols-xl-2 xol-xs-2">
@@ -105,24 +89,10 @@
         <input type="time" class="form-control" id="autoUntilTime" name="input"
                data-ng-model="model.coordinator.autoIrrigUntilTime"
                ng-change="model.updateTotalAlgorithmTime()" placeholder="HH:mm:ss" required/>
-        <!--<div class="dropdown">-->
-        <!--<a class="dropdown-toggle" id="dropdownend" role="button" data-toggle="dropdown" data-target="" href="">-->
-        <!--<div class="input-group"><input type="text" class="form-control" data-ng-model="model.coordinator.autoIrrigUntilTime">-->
-        <!--<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>-->
-        <!--</div>-->
-        <!--</a>-->
-        <!--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">-->
-        <!--<datetimepicker data-ng-model="model.coordinator.autoIrrigUntilTime"-->
-        <!--ng-change="model.updateCoordDateTo(model.coordinator.autoIrrigUntilTime)"-->
-        <!--ng-required="true"-->
-        <!--data-datetimepicker-config="{ dropdownSelector: '#dropdownend', modelType: 'moment', startView: 'hour', minView: 'minute', minuteStep: 1 }"-->
-        <!--data-before-render="model.beforeRenderStartDate($view, $dates, $leftDate, $upDate, $rightDate)"/>-->
-        <!--</ul>-->
-        <!--</div>-->
     </div>
 
-    <div class="form-group col-md-2 col-sm-2 cols-xl-2 xol-xs-2">
-        <label class="control-label">Water Consumption (lt/h)</label>
+    <div class="form-group col-md-3 col-sm-2 cols-xl-2 xol-xs-3">
+        <label class="control-label">Waterflow Rate (lt/h)</label>
         <input type="number" class="form-control" step="10" data-ng-model="model.coordinator.waterConsumption"
                ng-change="model.updateTotalAlgorithmTime()" ng-required="true" min="0" ng-required="true">
     </div>

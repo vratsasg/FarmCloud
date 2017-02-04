@@ -12,12 +12,12 @@ import java.util.Date;
 
 public class AutomaticWater {
     @JsonProperty("autoIrrigFromTime")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+3")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+1")
     @Temporal(TemporalType.TIME)
     private java.util.Date fromtime;
 
     @JsonProperty("autoIrrigUntilTime")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+3")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+1")
     @Temporal(TemporalType.TIME)
     private java.util.Date untiltime;
 
@@ -26,7 +26,6 @@ public class AutomaticWater {
 
     @JsonProperty("identifier")
     private String identifier;
-
 
     public AutomaticWater() {
     }
@@ -37,7 +36,6 @@ public class AutomaticWater {
         this.wateringConsumption = wateringConsumption;
         this.identifier = identifier;
     }
-
 
     public String getIdentifier() {
         return identifier;

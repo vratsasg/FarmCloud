@@ -61,11 +61,22 @@
                     }
                 );
             },
+            setMeasuringFlags: function () {
+                return $http.get('embedded/measures').then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (errResponse) {
+                        console.error('Error while send request for start measuring Service');
+                        return $q.reject(errResponse);
+                    }
+                );
+            },
             setAutomaticIrrigationTimes: function (coordData) {
                 console.log(angular.toJson(coordData));
                 return $http({
                     method: 'POST',
-                    url: '/automaticwater/save',
+                    url: 'automaticwater/save',
                     data: angular.toJson(coordData),
                     headers: {'Content-Type': 'application/json'}
                 }).then(function (response) {

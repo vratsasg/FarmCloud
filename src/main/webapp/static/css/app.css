@@ -387,17 +387,53 @@
     border: 2px solid #71843f;
     /*height: 100%;*/
     background-color: #F5F5F5;
-
     box-shadow: 5px 5px 15px #888888;
-
 }
 
-.active {
-    background-color: #71843f;
+/*.active {*/
+/*/!*background-color: #71843f !important;*!/*/
+/*background-color: #E5E500 !important;*/
+/*color: black;*/
+/*border-radius: 0px 23px 20px 0px;*/
+/*-moz-border-radius: 0px 23px 20px 0px;*/
+/*-webkit-border-radius: 0px 23px 20px 0px;*/
+/*}*/
+
+#sidebarleft li > a {
+    color: black;
+    font-family: exo-reg;
+    font-size: 16px;
 }
 
-/* MEGETHOS GLYPHICON ICON*/
+#sidebarleft li:first-child:hover a {
+    border-top-right-radius: 17px;
+}
 
+#sidebarleft li:first-child:active a {
+    border-top-right-radius: 17px;
+}
+
+#sidebarleft li:last-child:hover a {
+    border-bottom-right-radius: 17px;
+}
+
+#sidebarleft li:last-child:active a {
+    border-bottom-right-radius: 17px;
+}
+
+#sidebarleft li > a:hover {
+    background-color: #71843f !important;
+    color: whitesmoke;
+    border-radius: 0px;
+}
+
+#sidebarleft li > a:active {
+    background-color: #71843f !important;
+    color: black;
+    border-radius: 0px;
+}
+
+/* SIZE OF GLYPHICON ICON*/
 span.glyphicon-scale,
 span.glyphicon-grain,
 span.glyphicon-apple,
@@ -408,36 +444,7 @@ span.glyphicon-globe {
     font-size: 1.1em;
 }
 
-#sidebarleft li > a {
-    color: black;
-    font-family: exo-reg;
-    font-size: 16px;
-}
-
-#sidebarleft li:first-child:hover a {
-
-    border-top-right-radius: 17px;
-
-}
-
-#sidebarleft li:last-child:hover a {
-
-    border-bottom-right-radius: 16px;
-
-}
-
-#sidebarleft li > a:hover {
-    /*border-radius: 0px 23px 20px 0px;*/
-    /*-moz-border-radius: 0px 23px 20px 0px;*/
-    /*-webkit-border-radius: 0px 23px 20px 0px;*/
-    background-color: #71843f !important;
-    color: whitesmoke;
-    border-radius: 0px;
-
-}
-
 /*-----------------------------------------------*/
-
 
 .killmargin {
     margin: 0 !important;
@@ -585,7 +592,8 @@ input:valid, textarea:valid {
 
 .wtool {
     background-color: #C5E1A5;
-    border-radius: 24px;
+    border-radius: 15px;
+    margin-right: 20px;
 }
 
 #forecastButt .btn {
@@ -672,4 +680,18 @@ tr.weatherTable td {
     color: #fff;
 }
 
+/*------- CHART LINES ------*/
+.area {
+    fill-opacity: 0.0;
+    /*fill: lightsteelblue;*/
+    /*stroke-width: 0;*/
+}
 
+.nvd3 .nv-group.nv-series-0 {
+    /*fill: lightgray!important; /!* color for area *!/*/
+    stroke-opacity: 1;
+    stroke-width: 3;
+    fill-opacity: 0;
+    fill: white !important;
+    stroke: rgb(255, 127, 14);
+}

@@ -9,6 +9,7 @@
                 getDevices: function () {
                     return $http.get('firstPDev', {headers: {'Cache-Control': 'no-cache'}}).then(
                         function (response) {
+                            console.log(response.data);
                             return response.data;
                         },
                         function (errResponse) {

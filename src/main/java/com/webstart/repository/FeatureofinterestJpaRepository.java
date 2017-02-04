@@ -21,7 +21,7 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
 
     List<Featureofinterest> findByUseridAndFeatureofinteresttypeid(int id, long l);
 
-    @Query("select new com.webstart.DTO.CropInfoDTO(fi.identifier, fi.name, obs.Identifier, prc.identifier, prc.descriptionfile) " +
+    @Query("select new com.webstart.DTO.CropInfoDTO(fi.featureofinterestid, fi.identifier, fi.name, obs.Identifier, prc.identifier, prc.descriptionfile) " +
             "from Featureofinterest as fi " +
             "inner join fi.seriesList as flist " +
             "inner join flist.observableProperty as obs " +
@@ -49,9 +49,10 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
             "WHERE fi.identifier = :identif")
     List<Object[]> findDatesByIdentifier(@Param("identif") String identif);
 
-    @Query("select children.identifier FROM Featureofinterest as fi " +
-            "join fi.childrenFeatures children " +
-            "WHERE fi.identifier = :identifier")
+    @Query("select children.id, children.identifier, children.name " +
+            " FROM Featureofinterest as fi " +
+            " join fi.childrenFeatures children " +
+            " WHERE fi.identifier = :identifier")
     List<String> findEndDevicesByCoord(@Param("identifier") String identifier);
 
     @Query("select parent.featureofinterestid FROM Featureofinterest as fi " +
@@ -59,10 +60,20 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
             "WHERE fi.identifier = :identifier and fi.featureofinteresttypeid = 3 and fi.userid = :userid")
     List<Integer> findCoordinatorIdByEndDevice(@Param("identifier") String identifier, @Param("userid") int userid);
 
+    @Query("select distinct NEW com.webstart.DTO.FeatureidIdentifier(fi.featureofinterestid, fi.identifier, fi.name) " +
+            "FROM Featureofinterest as fi " +
+            "WHERE fi.userid = :userid and fi.featureofinteresttypeid = :typeid")
+    List<FeatureidIdentifier> getIdentifiers(@Param("userid") int userId, @Param("typeid") long typeId);
+
     @Query("select distinct NEW com.webstart.DTO.FeatureidIdentifier(fi.featureofinterestid, fi.identifier) " +
             "FROM Featureofinterest as fi " +
             "WHERE fi.identifier IN :idenList")
     List<FeatureidIdentifier> getIdidentif(@Param("idenList") List<String> identStr);
+
+    @Query("select fi.featureofinterestid " +
+            "FROM Featureofinterest as fi " +
+            "WHERE fi.identifier IN :identifiers")
+    List<Long> getFeatureOfInterestId(@Param("identifiers") List<String> identifierList);
 
     @Query("select si.seriesid " +
             "FROM Series as si " +
@@ -140,6 +151,10 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     @Transactional
     void setCoordinatorAlgorithmParams(@Param("identifier") String identifier, @Param("dtfrom") Date datetimefrom, @Param("dtto") Date datetimeto, @Param("wc") BigDecimal waterconsumption);
 
+    @Modifying
+    @Query("update Featureofinterest f set f.irrigation = :boolvalue where f.identifier = :id")
+    @Transactional
+    void setWateringFlag(@Param("id") String identifier, @Param("boolvalue") boolean boolvalue);
 
 
 

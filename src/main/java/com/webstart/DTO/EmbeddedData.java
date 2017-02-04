@@ -1,8 +1,12 @@
 package com.webstart.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Created by George on 24/5/2016.
@@ -15,7 +19,9 @@ public class EmbeddedData {
     private BigDecimal measureValue;
 
     @JsonProperty("dt")
-    private String datetimeMeasure;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+1")
+    @Temporal(TemporalType.TIME)
+    private Date datetimeMeasure;
 
     @JsonProperty("oid")
     private int ObservationPropId;
@@ -26,7 +32,7 @@ public class EmbeddedData {
     public EmbeddedData() {
     }
 
-    public EmbeddedData(String zigbeeAddress, BigDecimal measureValue, String datetimeMeasure, int ObservationPropId, int UnitId) {
+    public EmbeddedData(String zigbeeAddress, BigDecimal measureValue, Date datetimeMeasure, int ObservationPropId, int UnitId) {
         this.zigbeeAddress = zigbeeAddress;
         this.measureValue = measureValue;
         this.datetimeMeasure = datetimeMeasure;
@@ -66,11 +72,11 @@ public class EmbeddedData {
         this.UnitId = unitId;
     }
 
-    public String getDatetimeMeasure() {
+    public Date getDatetimeMeasure() {
         return datetimeMeasure;
     }
 
-    public void setDatetimeMeasure(String datetimeMeasure) {
+    public void setDatetimeMeasure(Date datetimeMeasure) {
         this.datetimeMeasure = datetimeMeasure;
     }
 }

@@ -24,79 +24,12 @@
                     }
                 );
             }
+
+            model.saveAllData = function () {
+                console.log(angular.toJson(model.myprofile));
+                //WateringProfileService.saveWateringProfile(model.obspropminmax).then(/*Do nithing*/);
+            };
+
         }
     });
 }());
-
-/*{
- "devices": [{
- "identifier": "40D6A2CF",
- "sensors": [{
- "kindofmeasurement": "Internal Humidity",
- "sensorname": "DHT22",
- "typeofmeasurement": "Digital Measurement"
- }, {
- "kindofmeasurement": "Internal Temperature ",
- "sensorname": "DHT22",
- "typeofmeasurement": "Digital Measurement"
- }, {
- "kindofmeasurement": "Temperature",
- "sensorname": "LM35",
- "typeofmeasurement": "Analog Temperature"
- }, {
- "kindofmeasurement": "Soil Moisture",
- "sensorname": "LM393",
- "typeofmeasurement": "Soil Moisture"
- }],
- "description": "its an end device"
- }, {
- "identifier": "40E7CC39",
- "sensors": [{
- "kindofmeasurement": "Internal Humidity",
- "sensorname": "DHT22",
- "typeofmeasurement": "Digital Measurement"
- }, {
- "kindofmeasurement": "Internal Temperature ",
- "sensorname": "DHT22",
- "typeofmeasurement": "Digital Measurement"
- }, {
- "kindofmeasurement": "Temperature",
- "sensorname": "LM35",
- "typeofmeasurement": "Analog Temperature"
- }, {
- "kindofmeasurement": "Soil Moisture",
- "sensorname": "LM393",
- "typeofmeasurement": "Soil Moisture"
- }],
- "description": "its an end device"
- }, {
- "identifier": "40D6A2C9",
- "sensors": [{
- "kindofmeasurement": "Internal Humidity",
- "sensorname": "DHT22",
- "typeofmeasurement": "Digital Measurement"
- }, {
- "kindofmeasurement": "Internal Temperature ",
- "sensorname": "DHT22",
- "typeofmeasurement": "Digital Measurement"
- }, {
- "kindofmeasurement": "Temperature",
- "sensorname": "LM35",
- "typeofmeasurement": "Analog Temperature"
- }, {
- "kindofmeasurement": "Soil Moisture",
- "sensorname": "LM393",
- "typeofmeasurement": "Soil Moisture"
- }],
- "description": "its an end device"
- }],
- "stations": [{
- "identifier": "40E7CC41",
- "description": "Its a base station"
- }],
- "crop": {
- "identifier": "Crop Name",
- "description": "Its the main crop"
- }
- }
- */

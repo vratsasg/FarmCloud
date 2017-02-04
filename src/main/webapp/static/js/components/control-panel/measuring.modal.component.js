@@ -21,6 +21,7 @@
                     };
 
                     model.submit = function () {
+                        console.log('you hit me!');
                         ControlPanelService.setMeasuringFlags(model.coordinator).then(
                             function (returnedData) {
                                 defer.resolve(returnedData);

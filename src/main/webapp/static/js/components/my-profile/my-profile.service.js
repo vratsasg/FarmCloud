@@ -17,6 +17,22 @@
                             return $q.reject(errResponse);
                         }
                     );
+                },
+
+                saveProfile: function (profiledata) {
+                    console.log(angular.toJson(profiledata));
+                    return $http({
+                        method: 'POST',
+                        url: 'saveprofile',
+                        data: angular.toJson(profiledata),
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function (response) {
+                            console.log("Success!!!");
+                        },
+                        function (errResponse) {
+                            console.error('Error while saving minimum and maximum values for watering profile!');
+                            return $q.reject(errResponse);
+                        });
                 }
             }
         }]

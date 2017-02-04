@@ -18,8 +18,8 @@
                     }
                 );
             },
-            getStationCoords: function (id) {
-                return $http.get('coordinator/stationcoords/' + id).then(
+            getStationCoords: function () {
+                return $http.get('coordinator/stationcoords').then(
                     function (response) {
                         return response.data;
                     },

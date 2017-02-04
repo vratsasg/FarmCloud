@@ -8,7 +8,7 @@
         controllerAs: "model",
         controller: function (firstPageDevices, $log, $q) {
             var model = this;
-            model.devices = {enddevices: [{identifier: ""}]};
+            //model.devices = {enddevices: [{identifier: ""}]};
 
             //openlayers controls            
             // model.mapcontrols = [
@@ -46,38 +46,39 @@
                     function (d) {
                         model.devices = d;
                         defer.resolve(model.devices);
-                        model.myDevice = model.devices.enddevices[0].identifier;
+                        model.myDevice = model.devices[0];
                     },
                     function (errResponse) {
                         console.error('Error while fetching devices for firstpage');
                     }
                 );
 
-                firstPageDevices.getStationCoords(2).then(
+                //TODO must change 2 to station feature id
+                firstPageDevices.getStationCoords().then(
                     function (d) {
                         model.center = {
                             lon: d[0],
                             lat: d[1],
                             zoom: 12
                         }
+
+                        model.markers = [
+                            {
+                                name: 'Station',
+                                lon: d[0],
+                                lat: d[1],
+                                label: {
+                                    message: 'Santiago de Compostela',
+                                    show: true,
+                                    showOnMouseOver: true
+                                }
+                            }
+                        ];
                     },
                     function (errResponse) {
                         console.error('Error while fetching devices for firstpage');
                     }
                 );
-
-                //window.onmousemove = function (e) {
-                //    var x = e.clientX,
-                //        y = e.clientY;
-                //    var tooltipSpan = $('.nvtooltip');
-                //    if(tooltipSpan != 'undefined' && tooltipSpan != null && tooltipSpan != '') {
-                //        $('.nvtooltip')[0].style.top = (y + 10) + 'px';
-                //        $('.nvtooltip')[0].style.left = (x + 10) + 'px';
-                //        $('.nvtooltip')[1].style.top = (y + 10) + 'px';
-                //        $('.nvtooltip')[1].style.left = (x + 10) + 'px';
-                //    }
-                //};
-
 
             }
 

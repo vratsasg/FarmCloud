@@ -13,7 +13,7 @@
             var model = this;
 
             model.$onChanges = function (changesObj) {
-                var newValue = changesObj.enddev.currentValue;
+                var newValue = changesObj.enddev.currentValue.identifier;
 
                 var defer = $q.defer();
                 chartService.getDeviceChart(newValue).then(
@@ -21,7 +21,6 @@
                         model.datac = serverdata;
                         defer.resolve(model.datac);
                         console.log(serverdata);
-
 
                         model.Alloptions = [
                             {
@@ -243,13 +242,18 @@
                                     values: sin,      //values - represents the array of {x,y} data points
                                     key: model.datac[0].Temperatures[0].key, //key  - the name of the series.
                                     color: '#558B2F',  //color - optional: choose your own line color.
-                                    strokeWidth: 2,
+                                    fill: 'none',
+                                    opeacity: 0.0,
+                                    strokeWidth: 4,
                                     classed: 'dashed'
                                 },
                                 {
                                     values: cos,
                                     key: model.datac[0].Temperatures[1].key,
-                                    color: '#ff7f0e'
+                                    color: '#ff7f0e',
+                                    fill: 'none',
+                                    strokeWidth: 4,
+                                    opeacity: 0
                                 }
                             ];
                         };
@@ -270,20 +274,23 @@
                                 });
                             }
 
-
                             //Line chart data should be sent as an array of series objects.
                             return [
                                 {
                                     values: sin,      //values - represents the array of {x,y} data points
                                     key: model.datac[1].Humidities[0].key, //key  - the name of the series.
                                     color: '#71843f',  //color - optional: choose your own line color.
+                                    fill: 'none',
+                                    opeacity: 0,
                                     strokeWidth: 2,
                                     classed: 'dashed'
                                 },
                                 {
                                     values: cos,
                                     key: model.datac[1].Humidities[1].key,
-                                    color: '#ff7f0e'
+                                    color: '#ff7f0e',
+                                    fill: 'none',
+                                    opeacity: 0
                                 }
                             ];
                         };

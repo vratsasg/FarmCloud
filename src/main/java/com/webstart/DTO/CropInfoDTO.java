@@ -1,7 +1,7 @@
 package com.webstart.DTO;
 
 public class CropInfoDTO {
-
+    private Integer id;
     private String featureIdentifier;
     private String featureName;
     private String observableIdentifier;
@@ -12,12 +12,21 @@ public class CropInfoDTO {
 
     }
 
-    public CropInfoDTO(String featureIdentifier, String featureName, String observableIdentifier, String procedureIdentifier, String procedureDescription) {
+    public CropInfoDTO(Integer id, String featureIdentifier, String featureName, String observableIdentifier, String procedureIdentifier, String procedureDescription) {
+        this.id = id;
         this.featureIdentifier = featureIdentifier;
         this.featureName = featureName;
         this.observableIdentifier = observableIdentifier;
         this.procedureIdentifier = procedureIdentifier;
         this.procedureDescription = procedureDescription;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFeatureIdentifier() {

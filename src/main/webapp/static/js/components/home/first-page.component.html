@@ -6,11 +6,8 @@
 
         <div class="controls">
             <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice"
-                    ng-options="dev.identifier as dev.identifier for dev in model.devices.enddevices">
+                    ng-options="dev.description for dev in model.devices track by dev.featureinterestid">
             </select>
-            <!--  Second way without ng-options <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice">
-                   <option ng-repeat="dev in model.devices.enddevices" value="{{dev.identifier}}">{{dev.identifier}}</option>
-               </select>    <-->
         </div>
 
     </div>
@@ -20,10 +17,13 @@
 
 <div class="row">
     <div class="col-md-4 col-sm-4 col-xs-4">
-        <openlayers ol-center="model.center" ol-controls="model.controls" ol-defaults="model.defaults" width="100%"
-                    height="400px"></openlayers>
+        <openlayers ol-center="model.center"
+                    ol-controls="model.controls"
+                    ol-defaults="model.defaults"
+                    width="100%" height="400px">
+            <ol-marker ng-repeat="marker in model.markers" lat="marker.lat" lon="marker.lon"></ol-marker>
+        </openlayers>
     </div>
+
     <chart-graph ng-if="model.myDevice" enddev="model.myDevice"></chart-graph>
 </div>
-
-

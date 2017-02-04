@@ -106,7 +106,7 @@ public class ExtractController {
             rows.add(";");
             rows.add("Watering consumption");
             rows.add(";");
-            rows.add("Measure unit");
+            rows.add("Unit");
             rows.add("\n");
 
             // write table row data
@@ -362,7 +362,7 @@ public class ExtractController {
         table.addCell(cell);
         cell.setPhrase(new Phrase("Total Consumption", font));
         table.addCell(cell);
-        cell.setPhrase(new Phrase("Measure unit", font));
+        cell.setPhrase(new Phrase("Unit", font));
         table.addCell(cell);
 
         BigDecimal valuemin = new BigDecimal(200.0);
@@ -381,19 +381,16 @@ public class ExtractController {
             table.addCell(valueTime.getValue().toString());
             table.addCell(wateringMeasure.getUnit());
         }
-        BigDecimal avg = valuesum.divide(BigDecimal.valueOf(wateringMeasure.getMeasuredata().size()), 2, BigDecimal.ROUND_CEILING);
 
         doc.add(table);
-        doc.add(new Paragraph(
-                String.format("\n minimum %1$s: %3$s %2$s \n maximum %1$s: %4$s %2$s \n average %1$s: %5$s %2$s",
+
+        doc.add(new Paragraph(String.format("\n minimum %1$s: %3$s %2$s \n maximum %1$s: %4$s %2$s \n Total %1$s: %5$s %2$s",
                         wateringMeasure.getObservableProperty(), wateringMeasure.getUnit(),
-                        valuemin.toString(), valuemax.toString(), avg.toString()
-                )
+                valuemin.toString(), valuemax.toString(), valuesum.toString())
         ));
 
         return doc;
     }
-
 
 
     private HSSFWorkbook createXlsx(ObservableMeasure observableMeasure) throws Exception {
@@ -474,7 +471,7 @@ public class ExtractController {
         cell.setCellValue("Total Consumption");
         cell = row.createCell(c++);
         cell.setCellStyle(style);
-        cell.setCellValue("Measure unit");
+        cell.setCellValue("Unit");
 
         //Create data cell
         for (WateringValueTime valueTime : wateringMeasure.getMeasuredata()) {

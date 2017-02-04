@@ -7,10 +7,9 @@ import org.json.simple.JSONObject;
 
 
 public interface MeasureService {
-
     JSONArray findDailyMeasure(String id);
 
-    void saveTheMeasure(Long series, EmbeddedData embeddedData);
+    void saveMeasure(Long series, EmbeddedData embeddedData);
 
-    void saveTheMeasure(AutomaticWater automaticWater);
+    void saveMeasure(AutomaticWater automaticWater);
 }

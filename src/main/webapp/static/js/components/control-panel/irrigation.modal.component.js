@@ -52,6 +52,7 @@
                         var totalMinutes = newendtime.diff(newstarttime, 'minutes');
                         var clearMinutes = totalMinutes % 60;
                         model.irrigationDuration = totalHours + " hours and " + clearMinutes + " minutes";
+                        model.modWaterConsume = (totalHours + clearMinutes / 60) * model.parent.coordinator.waterConsumption;
                         console.log(totalHours + " hours and " + clearMinutes + " minutes");
                     }
                 }
@@ -69,6 +70,7 @@
                         var totalMinutes = newendtime.diff(newstarttime, 'minutes');
                         var clearMinutes = totalMinutes % 60;
                         model.irrigationDuration = totalHours + " hours and " + clearMinutes + " minutes";
+                        model.modWaterConsume = (totalHours + clearMinutes / 60) * model.parent.coordinator.waterConsumption;
                         console.log(totalHours + " hours and " + clearMinutes + " minutes");
                     }
                 }

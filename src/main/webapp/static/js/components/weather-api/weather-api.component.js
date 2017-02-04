@@ -18,7 +18,7 @@
                 var deferDev = $q.defer();
                 var def = $q.defer();
 
-                WeatherApiService.getStationCoords(2).then( //TODO get coordinator id - featureofintrestid
+                WeatherApiService.getStationCoords().then(
                     function (d) {
                         //TODO set model.center now bitch
                         console.log(d);

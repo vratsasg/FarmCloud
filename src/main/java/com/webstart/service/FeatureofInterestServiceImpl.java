@@ -3,6 +3,7 @@ package com.webstart.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.text.ExceptionConverter;
 import com.webstart.DTO.*;
 import com.webstart.model.*;
 import com.webstart.repository.FeatureofinterestJpaRepository;
@@ -10,6 +11,7 @@ import com.webstart.repository.FeatureofinterestJpaRepository;
 import com.webstart.repository.NumericValueJpaRepository;
 import com.webstart.repository.ObservationJpaRepository;
 import org.joda.time.DateTime;
+import org.omg.CORBA.ExceptionList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,12 +78,14 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
                 featureids.add(featureofinterestList.get(k).getFeatureofinterestid());
             } else if (featureofinterestList.get(k).getFeatureofinteresttypeid() == 1) {
                 ///CROP
+                obj1.put("id", String.valueOf(featureofinterestList.get(k).getFeatureofinterestid()));
                 obj1.put("identifier", featureofinterestList.get(k).getIdentifier());
                 obj1.put("description", featureofinterestList.get(k).getName());
 
             } else if (featureofinterestList.get(k).getFeatureofinteresttypeid() == 2) {
                 JSONObject obj2 = new JSONObject();
                 //STATION
+                obj2.put("id", String.valueOf(featureofinterestList.get(k).getFeatureofinterestid()));
                 obj2.put("identifier", featureofinterestList.get(k).getIdentifier());
                 obj2.put("description", featureofinterestList.get(k).getName());
                 list.add(obj2);
@@ -114,12 +118,15 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
                     tempobj.put("sensorname", String.valueOf((cropInfoDTO.getProcedureIdentifier())));
                     tempobj.put("typeofmeasurement", String.valueOf((cropInfoDTO.getProcedureDescription())));
                     list2.add(tempobj);
+
+                    if (tmcounter == 0) {
+                        finalobject.put("description", String.valueOf((cropInfoDTO.getFeatureName())));
+                        finalobject.put("id", String.valueOf(cropInfoDTO.getId()));
+                    }
+                    tmcounter++;
                 }
 
-                if (tmcounter == 0) {
-                    finalobject.put("description", String.valueOf((cropInfoDTO.getFeatureName())));
-                }
-                tmcounter++;
+
             }
 
             finalobject.put("sensors", list2);
@@ -136,23 +143,9 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         return obj;
     }
 
-    public JSONObject findByUserAndType(int id) {
-
-        JSONObject finobj = new JSONObject();
-        List<Featureofinterest> objects = new ArrayList<Featureofinterest>();
-        JSONArray nlist = new JSONArray();
-
-        objects = featureofinterestJpaRepository.findByUseridAndFeatureofinteresttypeid(id, 3L);
-
-        for (int c = 0; c < objects.size(); c++) {
-            JSONObject tmpObj = new JSONObject();
-            tmpObj.put("identifier", objects.get(c).getIdentifier());
-            nlist.add(tmpObj);
-        }
-
-        finobj.put("enddevices", nlist);
-
-        return finobj;
+    public List<FeatureidIdentifier> findByUserAndType(int id, long typeId) {
+        List<FeatureidIdentifier> results = featureofinterestJpaRepository.getIdentifiers(id, typeId);
+        return results;
     }
 
     public String findByIdentifier(String coordinator) {
@@ -284,6 +277,16 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
+    public List<Long> findIdsByIdentifier(List<String> idStr) {
+        try {
+            List<Long> list = featureofinterestJpaRepository.getFeatureOfInterestId(idStr);
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public List<EmebddedSetupDevicdeDto> findEndDevicesTimes(String coordinatorAddress) {
         try {
             List<Object[]> list = featureofinterestJpaRepository.getEnddevicesTimes(coordinatorAddress);
@@ -345,7 +348,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
         try {
             Integer idCord = null;
-
             List<Integer> cordinIds = featureofinterestJpaRepository.getIdbyIdent(corD);
 
             Iterator itr = cordinIds.iterator();
@@ -354,7 +356,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             }
 
             Long fidg = Long.valueOf(idCord.longValue());
-
             List<EndDeviceStatusDTO> identiFlagsObjects = featureofinterestJpaRepository.getIdentifierFlags(fidg);
 
             ObjectMapper mapper = new ObjectMapper();
@@ -406,6 +407,14 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
     public void setFeatureMeasuringFalse(List<String> idertifierList) {
         try {
             featureofinterestJpaRepository.setMeasuringFlagFalse(idertifierList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setFeatureWateringFalse(String identifier) {
+        try {
+            featureofinterestJpaRepository.setWateringFlag(identifier, false);
         } catch (Exception e) {
             e.printStackTrace();
         }

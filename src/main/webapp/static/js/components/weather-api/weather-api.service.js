@@ -17,17 +17,18 @@
                         }
                     );
                 },
-                getStationCoords: function (id) {
-                    return $http.get('coordinator/stationcoords/' + id).then(
+                getStationCoords: function () {
+                    return $http.get('coordinator/stationcoords').then(
                         function (response) {
                             return response.data;
                         },
                         function (errResponse) {
-                            console.error('Error while first page Service devices');
+                            console.error('Error while firstpageService devices');
                             return $q.reject(errResponse);
                         }
                     );
                 }
+
             }
         }]
     );
