@@ -1,0 +1,13 @@
+node_modules
+jspm_packages
+bower_components
+META-INF
+.idea
+*.iml
+target
+aot/*
+dist/*
+yarn.lock
+*.log
+*.editorconfig
+.vscode

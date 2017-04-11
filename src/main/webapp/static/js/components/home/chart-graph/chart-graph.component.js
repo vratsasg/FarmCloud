@@ -244,7 +244,7 @@
                                     color: '#558B2F',  //color - optional: choose your own line color.
                                     fill: 'none',
                                     opeacity: 0.0,
-                                    strokeWidth: 4,
+                                    strokeWidth: 2,
                                     classed: 'dashed'
                                 },
                                 {
@@ -252,7 +252,7 @@
                                     key: model.datac[0].Temperatures[1].key,
                                     color: '#ff7f0e',
                                     fill: 'none',
-                                    strokeWidth: 4,
+                                    strokeWidth: 2,
                                     opeacity: 0
                                 }
                             ];

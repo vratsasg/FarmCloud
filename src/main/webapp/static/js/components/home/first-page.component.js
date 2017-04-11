@@ -53,7 +53,6 @@
                     }
                 );
 
-                //TODO must change 2 to station feature id
                 firstPageDevices.getStationCoords().then(
                     function (d) {
                         model.center = {
@@ -64,11 +63,11 @@
 
                         model.markers = [
                             {
-                                name: 'Station',
+                                name: "Station",
                                 lon: d[0],
                                 lat: d[1],
                                 label: {
-                                    message: 'Santiago de Compostela',
+                                    message: "Station",
                                     show: true,
                                     showOnMouseOver: true
                                 }

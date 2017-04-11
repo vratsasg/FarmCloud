@@ -132,8 +132,8 @@ public class HomeController {
         return new ResponseEntity<String>(sentData, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/watering/measures", params = {"mydevice", "dtstart", "dtend"}, method = RequestMethod.GET)
-    public ResponseEntity<String> getMeasuresByObsProperty(@RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
+    @RequestMapping(value = "/{mydevice}/watering/measures", params = {"dtstart", "dtend"}, method = RequestMethod.GET)
+    public ResponseEntity<String> getMeasuresByObsProperty(@RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request, @PathVariable("mydevice") String mydevice) {
         JSONArray obj = new JSONArray();
         Users user = (Users) request.getSession().getAttribute("current_user");
         int userid = user.getUser_id();

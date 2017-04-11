@@ -1,14 +1,5 @@
 package com.webstart.configuration;
 
-/**
- * Created by George on 23/12/2015.
- */
-
-/**
- * Created by George on 10/12/2015.
- */
-
-
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -22,7 +13,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@Import( {DataSourceConfig.class, JpaConfig.class, RepositoryConfig.class} )
+@Import( {DataSourceConfig.class, JpaConfig.class, RepositoryConfig.class,JmsConfig.class} )
 @ComponentScan(basePackages = "com.webstart")
 public class ApplicationConf extends WebMvcConfigurerAdapter {
 
@@ -39,6 +30,8 @@ public class ApplicationConf extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
     }
+
+
 
 
 

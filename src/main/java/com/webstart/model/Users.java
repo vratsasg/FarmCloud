@@ -37,7 +37,7 @@ public class Users {
     @JsonIgnore
     private List<Featureofinterest> featureofinterestList = new ArrayList<Featureofinterest>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "usersnotif", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "userNotification", cascade = {CascadeType.ALL})
     @JsonIgnore
     private List<Notifications> notificationsArrayList = new ArrayList<Notifications>();
 

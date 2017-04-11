@@ -39,23 +39,11 @@ public class MeasuresServiceImpl implements MeasureService {
         List<CurrentMeasure> observationList = new ArrayList<CurrentMeasure>();
 
         try {
-
-            ////TODO change this with lasttime of measure
-            //Calendar calendar = Calendar.getInstance();
-            //Date dateto = calendar.getTime(); //NOW
-            //Timestamp timestampTo = new Timestamp(dateto.getTime());
             Timestamp timestampTo = observationJpaRepository.fiindlastdatetime(id);
-
-            //calendar.add(Calendar.DATE, -1);
-            //Date datefrom = calendar.getTime();
-            //Timestamp timestampFrom = new Timestamp(datefrom.getTime());
             Timestamp timestampFrom = new Timestamp(timestampTo.getTime() - 24 * 60 * 60 * 1000);
 
             observationList = observationJpaRepository.findCurrentMeasure(id, timestampFrom, timestampTo);
             List<String> observableProperyList = observablePropertyJpaRepository.findallObsProperty();
-
-//            if(observationList.size() == 0)
-//                return null;
 
             //Create a hash table with all observable properties
             Hashtable<String, JSONArray> obspropValues = new Hashtable<String, JSONArray>();
