@@ -29,20 +29,20 @@
                         }
                     );
                 }, getMeasuresByProperty: function (mydevice, datefrom, dateto) {
-                    return $http.get('watering/measures?mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto, {headers: {'Cache-Control': 'no-cache'}}).then(
+                    return $http.get(mydevice + '/watering/measures?dtstart=' + datefrom + '&dtend=' + dateto, {headers: {'Cache-Control': 'no-cache'}}).then(
                         function (response) {
                             return response.data;
                         },
                         function (errResponse) {
-                            console.error('Error while fetchingService ObsProp Measures!!!');
+                            console.error('Error while fetchingService Observable Property Measures!!!');
                             return $q.reject(errResponse);
                         }
                     );
                 }, getMeasuresPdf: function (mydevice, datefrom, dateto) {
                     $http({
-                        url: 'extract/wateringPdf',
+                        url: 'extract/' + mydevice + '/wateringPdf',
                         method: 'POST',
-                        params: {'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
+                        params: {'dtstart': datefrom, 'dtend': dateto},
                         //params: {},
                         headers: {
                             'Content-type': 'application/pdf',

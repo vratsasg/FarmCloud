@@ -33,7 +33,8 @@
                     function (response) {
                         if (response === true || response == "true") {
                             var myElement = angular.element(document.querySelector('#alertAreaid'));
-                            var appenddiv = '<div class="alert alert-success alert_successSave">' +
+                            var appenddiv =
+                                '<div class="alert alert-success alert_successSave">' +
                                 '   <strong>Success!</strong>You have succesfully saved your profile!' +
                                 '</div>';
                             myElement.html(appenddiv);

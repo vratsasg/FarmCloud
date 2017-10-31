@@ -28,9 +28,6 @@ public class DataSourceConfig {
         dataSource.setUsername(env.getProperty("jdbc.username"));
         dataSource.setPassword(env.getProperty("jdbc.password"));
 
-
-
-
         return dataSource;
     }
 

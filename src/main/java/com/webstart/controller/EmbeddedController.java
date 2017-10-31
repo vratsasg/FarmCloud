@@ -3,6 +3,8 @@ package com.webstart.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.DTO.*;
+import com.webstart.Enums.FeatureTypeEnum;
+import com.webstart.Enums.MeasurementTypeEnum;
 import com.webstart.model.*;
 import com.webstart.service.FeatureofInterestService;
 import com.webstart.service.MeasureService;
@@ -45,12 +47,8 @@ public class EmbeddedController {
                 Long seriesId = featureofInterestService.findseries(embeddedData.getObservationPropId(), featureofinterestid);
                 measureService.saveMeasure(seriesId, embeddedData);
             }
-
-            //return new ResponseEntity<Void>(HttpStatus.CREATED);
-
         } catch (Exception exc) {
             exc.printStackTrace();
-            //return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -93,10 +91,10 @@ public class EmbeddedController {
                 element.put("id", identifier);
 
                 for (FeatureObsPropMinMax obspropValue : obspropminmaxList) {
-                    if (obspropValue.getIdentifier().equalsIgnoreCase(identifier) && obspropValue.getObservablePropertyId() == 3) {
+                    if (obspropValue.getIdentifier().equalsIgnoreCase(identifier) && obspropValue.getObservablePropertyId() == MeasurementTypeEnum.TEMPERATURE.getValue()) {
                         element.put("mint", obspropValue.getMinval());
                         element.put("maxt", obspropValue.getMaxval());
-                    } else if (obspropValue.getIdentifier().equalsIgnoreCase(identifier) && obspropValue.getObservablePropertyId() == 4) {
+                    } else if (obspropValue.getIdentifier().equalsIgnoreCase(identifier) && obspropValue.getObservablePropertyId() == MeasurementTypeEnum.SOIL_MOSTURE.getValue()) {
                         element.put("minh", obspropValue.getMinval());
                         element.put("maxh", obspropValue.getMaxval());
                     }
@@ -125,8 +123,7 @@ public class EmbeddedController {
         String JsonResp = null;
         Users user = (Users) request.getSession().getAttribute("current_user");
         //TODO change without userid from ControlPanel Service on angular
-        JsonResp = featureofInterestService.changeMeasuringFlag(user.getUser_id(), 3L);
-
+        JsonResp = featureofInterestService.changeMeasuringFlag(user.getUser_id(), FeatureTypeEnum.END_DEVICE.getValue());
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
     }
 

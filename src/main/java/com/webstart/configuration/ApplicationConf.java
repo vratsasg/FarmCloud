@@ -1,14 +1,5 @@
 package com.webstart.configuration;
 
-/**
- * Created by George on 23/12/2015.
- */
-
-/**
- * Created by George on 10/12/2015.
- */
-
-
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -39,6 +30,8 @@ public class ApplicationConf extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
     }
+
+
 
 
 

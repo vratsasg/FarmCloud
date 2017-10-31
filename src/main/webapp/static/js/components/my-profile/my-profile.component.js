@@ -12,7 +12,7 @@
     module.component('myProfile', {
         templateUrl: 'static/js/components/my-profile/my-profile.component.html',
         controllerAs: "model",
-        controller: function (ProfileService, $log, $q) {
+        controller: function ($uibModal, $document, ProfileService, $log, $q) {
             var model = this;
 
             model.myprofile = {};
@@ -30,7 +30,33 @@
                         console.error('Error while fetching Profile');
                     }
                 );
-            }
+
+                ProfileService.getStationCoords().then(
+                    function (d) {
+                        model.center = {
+                            lon: d[0],
+                            lat: d[1],
+                            zoom: 12
+                        }
+
+                        model.markers = [
+                            {
+                                name: "Station",
+                                lon: d[0],
+                                lat: d[1],
+                                label: {
+                                    message: "Station",
+                                    show: true,
+                                    showOnMouseOver: true
+                                }
+                            }
+                        ];
+                    },
+                    function (errResponse) {
+                        console.error('Error while fetching devices for firstpage');
+                    }
+                );
+            };
 
             model.saveAllData = function () {
                 var arr = [];
@@ -49,13 +75,21 @@
                         if (response === true || response == "true") {
                             var myEl = angular.element(document.querySelector('#alertAreaid'));
                             var appenddiv = '<div class="alert alert-success alert_successSave">' +
-                                '   <strong>Success!</strong>You have succesfully saved your profile!' +
+                                '   <strong>Success!</strong> You have succesfully saved your crop\'s information!' +
                                 '</div>';
                             myEl.html(appenddiv);
                         }
                     }
                 );
 
+            };
+
+            model.showModalStationLocation = function (stationId) {
+                model.modalInstance = $uibModal.open({
+                    animation: model.animationsEnabled,
+                    template: '<stationcoords-modal></stationcoords-modal>',
+                    appendTo: $document.find('my-Profile')
+                });
             };
 
         }

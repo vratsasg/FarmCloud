@@ -83,7 +83,7 @@
     border-left-width: 1px;
     box-shadow: 10px 10px 5px #888888;
     padding-left: 40px;
-    margin-top: 10px;
+    margin-top: 30px;
 }
 
 #rightlog img {
@@ -405,31 +405,32 @@
     font-size: 16px;
 }
 
+#sidebarleft li .active {
+    /*background-color: #FF7F0E !important;*/
+    background-color: #ff7f00 !important;
+    color: whitesmoke !important;
+    border-radius: 0px;
+}
+
+#sidebarleft li:last-child .active {
+    border-bottom-right-radius: 17px !important;
+}
+
+#sidebarleft li:first-child .active {
+    border-top-right-radius: 17px !important;;
+}
+
 #sidebarleft li:first-child:hover a {
     border-top-right-radius: 17px;
 }
 
-#sidebarleft li:first-child:active a {
-    border-top-right-radius: 17px;
-}
-
 #sidebarleft li:last-child:hover a {
-    border-bottom-right-radius: 17px;
-}
-
-#sidebarleft li:last-child:active a {
-    border-bottom-right-radius: 17px;
+    border-bottom-right-radius: 17px !important;
 }
 
 #sidebarleft li > a:hover {
     background-color: #71843f !important;
     color: whitesmoke;
-    border-radius: 0px;
-}
-
-#sidebarleft li > a:active {
-    background-color: #71843f !important;
-    color: black;
     border-radius: 0px;
 }
 
@@ -487,7 +488,6 @@ span.glyphicon-globe {
 /* --------------------------------------VALIDATION FORM INPUTS CSS --------------------------*/
 
 input:focus:invalid, textarea:focus:invalid, input[type=radio]:required, textarea:invalid {
-
     border-color: #FF0000;
     box-shadow: 0 0 5px #FF0000;
     background: #fff url(../images/invalid.png) 98% center no-repeat;
@@ -682,16 +682,23 @@ tr.weatherTable td {
 
 /*------- CHART LINES ------*/
 .area {
-    fill-opacity: 0.0;
+    fill-opacity: 0;
     /*fill: lightsteelblue;*/
     /*stroke-width: 0;*/
 }
 
-.nvd3 .nv-group.nv-series-0 {
-    /*fill: lightgray!important; /!* color for area *!/*/
-    stroke-opacity: 1;
-    stroke-width: 3;
-    fill-opacity: 0;
-    fill: white !important;
-    stroke: rgb(255, 127, 14);
+/*g.das.nvd3.nv-group.nv-series-0 {*/
+g.dashed.nv-group.nv-series-0 {
+    stroke-opacity: 1 !important;
+    stroke-width: 2 !important;
+    fill-opacity: 0 !important;
+    background-color: transparent !important;
 }
+
+g.dashed.nv-group.nv-series-1 {
+    stroke-opacity: 1 !important;
+    stroke-width: 2 !important;
+    fill-opacity: 0 !important;
+    background-color: transparent !important;;
+}
+

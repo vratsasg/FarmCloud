@@ -171,8 +171,8 @@ public class ExtractController {
     }
 
 
-    @RequestMapping(value = "wateringPdf", params = {"mydevice", "dtstart", "dtend"}, method = RequestMethod.POST)
-    public ResponseEntity<byte[]> getPDF(@RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
+    @RequestMapping(value = "{mydevice}/wateringPdf", params = { "dtstart", "dtend"}, method = RequestMethod.POST)
+    public ResponseEntity<byte[]> getPDF(@RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request, @PathVariable("mydevice") String mydevice) {
         WateringMeasure wateringMeasure = null;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         byte[] contents;

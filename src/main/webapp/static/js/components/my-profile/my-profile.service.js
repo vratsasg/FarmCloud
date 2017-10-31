@@ -18,7 +18,17 @@
                         }
                     );
                 },
-
+                getStationCoords: function () {
+                    return $http.get('coordinator/stationcoords').then(
+                        function (response) {
+                            return response.data;
+                        },
+                        function (errResponse) {
+                            console.error('Error while firstpageService devices');
+                            return $q.reject(errResponse);
+                        }
+                    );
+                },
                 saveProfile: function (profiledata) {
                     console.log(profiledata);
                     return $http({

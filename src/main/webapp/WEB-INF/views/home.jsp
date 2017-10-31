@@ -24,8 +24,8 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/flaticon.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/_flaticon.scss">
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/static/css/datetimepicker.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angular-bootstrap-datetimepicker/1.1.4/css/datetimepicker.min.css">
+
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -54,9 +54,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.0-beta.6/angular-moment.min.js"></script>
-    <script src="<c:url value='/static/js/js-libraries/datetimepicker/datetimepicker.js' />"></script>
-    <script src="<c:url value='/static/js/js-libraries/datetimepicker/datetimepicker.templates.js' />"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-bootstrap-datetimepicker/1.1.4/js/datetimepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-bootstrap-datetimepicker/1.1.4/js/datetimepicker.templates.min.js"></script>
 
 
     <script src="<c:url value='/static/js/app.js' />"></script>
@@ -71,6 +70,7 @@
     <script src="<c:url value='/static/js/components/crop-app/crop-app.component.js' />"></script>
     <script src="<c:url value='/static/js/components/my-profile/my-profile.component.js' />"></script>
     <script src="<c:url value='/static/js/components/my-profile/my-profile.service.js' />"></script>
+    <script src="<c:url value='/static/js/components/my-profile/stationCoords.modal.component.js' />"></script>
     <script src="<c:url value='/static/js/shared/topbar/logout.modal.component.js' />"></script>
     <script src="<c:url value='/static/js/components/home/chart-graph/chart-graph.component.js' />"></script>
     <script src="<c:url value='/static/js/components/home/chart-graph/chart-graph.service.js' />"></script>

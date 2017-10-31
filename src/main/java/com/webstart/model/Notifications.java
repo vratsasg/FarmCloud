@@ -3,49 +3,51 @@ package com.webstart.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Date;
 
-/**
- * Created by George on 13/9/2016.
- */
 @Entity
 @Table(name = "notifications")
 public class Notifications {
 
     @Id
     @GeneratedValue
-    private Integer notifid;
+    private int notificationid;
 
     @Column(name = "userid")
-    private Integer userid;
+    private int userid;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "readable")
-    private boolean readable;
+    @Column(name = "isreaded")
+    private boolean isreaded;
+
+    @Column(name = "datecreated")
+    private Date datecreated;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "userid", insertable = false, updatable = false)
+    private Users userNotification;
 
     public Notifications() {
     }
 
-    public Notifications(Integer notifid, Integer userid, String description, boolean readable) {
+    public Notifications(Integer notificationid, Integer userid, String description, boolean isreaded, Timestamp datecreated) {
         this.userid = userid;
         this.description = description;
-        this.readable = readable;
-        this.notifid = notifid;
+        this.isreaded = isreaded;
+        this.notificationid = notificationid;
+        this.datecreated = datecreated;
     }
-
-
-    @ManyToOne(fetch = FetchType.EAGER, optional = true)
-    @JoinColumn(name = "userid", insertable = false, updatable = false)
-    private Users usersnotif;
 
 
     public Integer getNotifid() {
-        return notifid;
+        return notificationid;
     }
 
-    public void setNotifid(Integer notifid) {
-        this.notifid = notifid;
+    public void setNotifid(Integer notificationid) {
+        this.notificationid = notificationid;
     }
 
     public Integer getUserid() {
@@ -65,10 +67,19 @@ public class Notifications {
     }
 
     public boolean isReadable() {
-        return readable;
+        return isreaded;
     }
 
-    public void setReadable(boolean readable) {
-        this.readable = readable;
+    public void setReadable(boolean isreaded) {
+        this.isreaded = isreaded;
     }
+
+    public Date getDatecreated() {
+        return datecreated;
+    }
+
+    public void setDatecreated(Date datecreated) {
+        this.datecreated = datecreated;
+    }
+
 }
