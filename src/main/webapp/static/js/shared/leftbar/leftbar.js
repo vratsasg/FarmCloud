@@ -19,10 +19,8 @@
                 var defer = $q.defer();
                 leftbarService.getObsproperties().then(
                     function (data) {
-
                         model.observations = data;
                         defer.resolve(model.observations);
-
                     }, function (errResponse) {
                         console.log("Error fetching obs");
                     }
