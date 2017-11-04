@@ -70,7 +70,7 @@
     <script src="<c:url value='/static/js/components/crop-app/crop-app.component.js' />"></script>
     <script src="<c:url value='/static/js/components/my-profile/my-profile.component.js' />"></script>
     <script src="<c:url value='/static/js/components/my-profile/my-profile.service.js' />"></script>
-    <script src="<c:url value='/static/js/components/my-profile/stationCoords.modal.component.js' />"></script>
+    <script src="<c:url value='/static/js/components/my-profile/stationcoords.modal.component.js' />"></script>
     <script src="<c:url value='/static/js/shared/topbar/logout.modal.component.js' />"></script>
     <script src="<c:url value='/static/js/components/home/chart-graph/chart-graph.component.js' />"></script>
     <script src="<c:url value='/static/js/components/home/chart-graph/chart-graph.service.js' />"></script>

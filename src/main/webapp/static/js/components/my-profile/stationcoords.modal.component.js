@@ -15,6 +15,26 @@
 
                 model.$onInit = function () {
                     var instance = model.parent.modalInstance;
+
+                    model.defaults = {
+                        // layers: {
+                        //     main: {
+                        //         source: {
+                        //             type: 'OSM',
+                        //             url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
+                        //         }
+                        //     }
+                        // },
+                        interactions: {
+                            mouseWheelZoom: true
+                        },
+                        controls: {
+                            zoom: true,
+                            rotate: false,
+                            attribution: false
+                        }
+                    };
+
                     model.cancel = function () {
                         instance.dismiss('cancel');
                     };
