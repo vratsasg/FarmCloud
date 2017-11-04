@@ -3,7 +3,7 @@
     var module = angular.module("myApp");
 
     module.component('stationcoordsModal', {
-            templateUrl: 'static/js/components/my-profile/stationcoords.modal.component.html',
+            templateUrl: 'static/js/components/my-profile/station-coords.modal.component.html',
             replace: true,
             require: {
                 parent: '^myProfile'
