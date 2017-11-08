@@ -3,7 +3,7 @@
     var module = angular.module("myApp");
 
     module.component('stationcoordsModal', {
-            templateUrl: 'static/js/components/my-profile/stationcoords.modal.component.html',
+            templateUrl: 'static/js/components/my-profile/station-coords.modal.component.html',
             replace: true,
             require: {
                 parent: '^myProfile'
@@ -15,6 +15,26 @@
 
                 model.$onInit = function () {
                     var instance = model.parent.modalInstance;
+
+                    model.defaults = {
+                        // layers: {
+                        //     main: {
+                        //         source: {
+                        //             type: 'OSM',
+                        //             url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
+                        //         }
+                        //     }
+                        // },
+                        interactions: {
+                            mouseWheelZoom: true
+                        },
+                        controls: {
+                            zoom: true,
+                            rotate: false,
+                            attribution: false
+                        }
+                    };
+
                     model.cancel = function () {
                         instance.dismiss('cancel');
                     };
