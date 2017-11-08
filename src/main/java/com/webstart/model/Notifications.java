@@ -26,7 +26,7 @@ public class Notifications {
     @Column(name = "datecreated")
     private Timestamp datecreated;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "userid", insertable = false, updatable = false)
     private Users userNotification;
 

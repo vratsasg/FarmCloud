@@ -24,20 +24,20 @@ public class Users {
     @Column(length = 30)
     private String email;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
 
     @JoinColumn(name="user_role_id")
     private UsersRole usersRole;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.EAGER, mappedBy="user", cascade=CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy="user", cascade=CascadeType.ALL)
     private UserProfile userProfile;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "userfeature", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userfeature", cascade = {CascadeType.ALL})
     @JsonIgnore
     private List<Featureofinterest> featureofinterestList = new ArrayList<Featureofinterest>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "userNotification", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userNotification", cascade = {CascadeType.ALL})
     @JsonIgnore
     private List<Notifications> notificationsArrayList = new ArrayList<Notifications>();
 

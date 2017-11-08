@@ -26,10 +26,10 @@ public class ObservableProperty {
     private String Description;
 
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "observableProperty", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "observableProperty", cascade = {CascadeType.ALL})
     private List<Series> seriesList = new ArrayList<Series>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "observableProperty", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "observableProperty", cascade = {CascadeType.ALL})
     private List<ObservablePropertyMinMax> observablepropertyMinMaxList = new ArrayList<ObservablePropertyMinMax>();
 
     public ObservableProperty() {

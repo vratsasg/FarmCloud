@@ -27,11 +27,11 @@ public class ObservablePropertyMinMax {
     @Column(name = "maxval")
     private BigDecimal maxval;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "featureofinterestid", insertable = false, updatable = false)
     private Featureofinterest featureofinterest;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "observablepropertyid", insertable = false, updatable = false)
     private ObservableProperty observableProperty;
 

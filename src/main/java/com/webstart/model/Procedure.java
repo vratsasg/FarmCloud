@@ -22,12 +22,12 @@ public class Procedure {
     @Column(name = "proceduredescriptionformatid")
     private long proceduredescriptionformatid;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proceduredescriptionformatid", insertable = false, updatable = false)
     private ProcedureDescriptionFormat procedureDescriptionFormat;
 
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "procedure", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "procedure", cascade = {CascadeType.ALL})
     private List<Series> seriesList = new ArrayList<Series>();
 
 

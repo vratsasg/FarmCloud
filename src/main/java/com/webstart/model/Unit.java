@@ -15,7 +15,7 @@ public class Unit {
     @Column(name = "unit", length = 255)
     private String unit;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "unit", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "unit", cascade = {CascadeType.ALL})
     private List<Observation> observationList = new ArrayList<Observation>();
 
     public Unit() {

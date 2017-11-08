@@ -65,12 +65,12 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
             "WHERE fi.identifier = :identifier and fi.featureofinteresttypeid = 3 and fi.userid = :userid")
     List<Integer> findCoordinatorIdByEndDevice(@Param("identifier") String identifier, @Param("userid") int userid);
 
-    @Query("select distinct NEW com.webstart.DTO.FeatureidIdentifier(fi.featureofinterestid, fi.identifier, fi.name) " +
+    @Query("select distinct NEW com.webstart.DTO.FeatureidIdentifier(fi.featureofinterestid, fi.identifier, fi.name, fi.userid) " +
             "FROM Featureofinterest as fi " +
             "WHERE fi.userid = :userid and fi.featureofinteresttypeid = :typeid")
     List<FeatureidIdentifier> getIdentifiers(@Param("userid") int userId, @Param("typeid") long typeId);
 
-    @Query("select distinct NEW com.webstart.DTO.FeatureidIdentifier(fi.featureofinterestid, fi.identifier, fi.userid) " +
+    @Query("select distinct NEW com.webstart.DTO.FeatureidIdentifier(fi.featureofinterestid, fi.identifier, fi.name, fi.userid) " +
             "FROM Featureofinterest as fi " +
             "WHERE fi.identifier IN :idenList")
     List<FeatureidIdentifier> getIdidentif(@Param("idenList") List<String> identStr);

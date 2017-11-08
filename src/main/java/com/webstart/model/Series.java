@@ -30,19 +30,19 @@ public class Series {
     private String deleted = "F";
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "procedureid", insertable = false, updatable = false)
     private Procedure procedure;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "observablepropertyid", insertable = false, updatable = false)
     private ObservableProperty observableProperty;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional=true)
+    @ManyToOne(fetch = FetchType.LAZY, optional=true)
     @JoinColumn(name = "featureofinterestid", insertable = false, updatable = false)
     private Featureofinterest featureofinterest;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "series", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "series", cascade = {CascadeType.ALL})
     private List<Observation> observationList = new ArrayList<Observation>();
 
 
