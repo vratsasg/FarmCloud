@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.util.StopWatch;
 
 @Service("featureofInterestService")
 @Transactional
@@ -67,7 +68,12 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
     }
 
     public JSONObject findCropInfo(int id) {
+        StopWatch stopwatch = new StopWatch();
+        stopwatch.start();
         List<Featureofinterest> featureofinterestList = featureofinterestJpaRepository.findByUserid(id);
+        stopwatch.stop();
+        double timeTaken = stopwatch.getTotalTimeSeconds();
+
         List<Integer> featureids = new ArrayList<Integer>();
 
         JSONObject obj1 = new JSONObject();
