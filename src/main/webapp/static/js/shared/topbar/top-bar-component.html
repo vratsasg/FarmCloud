@@ -22,9 +22,10 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a class="dropdown-toggle" id="notifanime" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false"><span class="glyphicon glyphicon-bell" aria-hidden="true"></span><span
-                            ng-bind="model.notifications.length" id="badge_counter"></span></a>
+                    <a class="dropdown-toggle" id="notifanime" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+                        <span ng-bind="model.notifications.length" id="badge_counter"></span>
+                    </a>
                     <ul class="dropdown-menu scroll" role="menu" id="dropdown_notifications">
                         <li ng-repeat="notif in model.notifications" ng-bind="notif.description"></li>
 
@@ -42,7 +43,7 @@
                         </li>
                         <li>
                             <a ng-link="['Profile']">
-                                <span class="	glyphicon glyphicon-info-sign" aria-hidden="true"></span> Informations
+                                <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Informations
                             </a>
                         </li>
                         <li data-toggle="modal" style="cursor: pointer"> <!--data-target="#logoutmodal"-->

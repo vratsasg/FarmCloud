@@ -8,6 +8,7 @@ import com.webstart.Enums.MeasurementTypeEnum;
 import com.webstart.model.*;
 import com.webstart.service.FeatureofInterestService;
 import com.webstart.service.MeasureService;
+import com.webstart.service.UsersService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +23,12 @@ import java.util.*;
 @RequestMapping(value = "embedded")
 public class EmbeddedController {
 
-    @Autowired
-    FeatureofInterestService featureofInterestService;
-    @Autowired
-    MeasureService measureService;
+    @Autowired FeatureofInterestService featureofInterestService;
+    @Autowired MeasureService measureService;
+    @Autowired UsersService usersService ;
 
     @RequestMapping(value = "savemeasures", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    void postSensor(@RequestBody EmbeddedDataWrapper embeddedDataWrapper) {
+    public @ResponseBody void postSensor(@RequestBody EmbeddedDataWrapper embeddedDataWrapper) {
         try {
             List<String> identList = new ArrayList<String>(new LinkedHashSet<String>(embeddedDataWrapper.GetFeatureIdentifiers()));
             List<FeatureidIdentifier> featureidIdentifiers = featureofInterestService.findFeatureIdByIdentifier(identList);
@@ -46,6 +44,7 @@ public class EmbeddedController {
 
                 Long seriesId = featureofInterestService.findseries(embeddedData.getObservationPropId(), featureofinterestid);
                 measureService.saveMeasure(seriesId, embeddedData);
+                usersService.createNewNotification(featureidIdentifiers.get(0).getUserId(), String.format("save new measures been taken for end devices: %s ", identList.toString()));
             }
         } catch (Exception exc) {
             exc.printStackTrace();
@@ -53,9 +52,7 @@ public class EmbeddedController {
     }
 
     @RequestMapping(value = "saveirrigation", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    void postIrrigation(@RequestBody AutomaticWater automaticWater) {
+    public @ResponseBody void postIrrigation(@RequestBody AutomaticWater automaticWater) {
         try {
             measureService.saveMeasure(automaticWater);
         } catch (Exception exc) {

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.model.Notifications;
 import com.webstart.model.UserProfile;
 import com.webstart.model.Users;
+import com.webstart.repository.NotificationsJpaRepository;
 import com.webstart.repository.UserProfileJpaRepository;
 import com.webstart.repository.UsersJpaRepository;
 import org.json.simple.JSONObject;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -28,6 +29,9 @@ public class UsersServiceImpl implements UsersService{
 
     @Autowired
     private UserProfileJpaRepository userProfileJpaRepository;
+
+    @Autowired
+    private NotificationsJpaRepository notificationsJpaRepository;
 
     public List<Users> findAll(){
         return usersJpaRepository.findAll();
@@ -108,6 +112,19 @@ public class UsersServiceImpl implements UsersService{
         }
 
         return true;
+    }
+
+    public void createNewNotification(int userid, String message) {
+        try {
+            Notifications notification = new Notifications();
+            notification.setUserid(userid);
+            notification.setDescription(message);
+            notification.setReadable(false);
+            notification.setDatecreated(new Timestamp(System.currentTimeMillis()));
+            notificationsJpaRepository.save(notification);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Notifications> getUserCounterNotifications(Integer userId) {

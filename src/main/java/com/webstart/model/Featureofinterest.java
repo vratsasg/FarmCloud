@@ -100,8 +100,13 @@ public class Featureofinterest {
     //private List<Featureofinterest> childrenFeatures;
 
 
-    public Featureofinterest() {
+    public Featureofinterest() { }
 
+    public Featureofinterest(Integer featureofinterestid, String identifier, String name,  long featureofinteresttypeid) {
+        this.featureofinterestid = featureofinterestid;
+        this.identifier = identifier;
+        this.name = name;
+        this.featureofinteresttypeid = featureofinteresttypeid;
     }
 
     public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, Long parentid, Timestamp datetimefrom, Timestamp datetimeto, Boolean irrigation, Boolean measuring, Featureofinteresttype featureofinteresttype, Point geom, int userid, BigDecimal waterConsumption) {

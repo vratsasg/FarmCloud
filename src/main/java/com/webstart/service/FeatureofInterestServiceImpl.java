@@ -67,7 +67,7 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
     }
 
     public JSONObject findCropInfo(int id) {
-        List<Featureofinterest> featureofinterestList = featureofinterestJpaRepository.findByUserid(id);
+        List<Featureofinterest> featureofinterestList = featureofinterestJpaRepository.getFeaturesByUsrerId(id);
         List<Integer> featureids = new ArrayList<Integer>();
 
         JSONObject obj1 = new JSONObject();
