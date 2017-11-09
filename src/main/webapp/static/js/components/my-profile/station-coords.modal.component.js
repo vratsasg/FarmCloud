@@ -9,22 +9,15 @@
                 parent: '^myProfile'
             },
             controllerAs: "model",
-            controller: function (ProfileService, $q) {
+            controller: function (ProfileService,olData, $timeout, $q) {
                 var model = this;
                 var defer = $q.defer();
 
                 model.$onInit = function () {
                     var instance = model.parent.modalInstance;
+                    model.loaded = false;
 
                     model.defaults = {
-                        // layers: {
-                        //     main: {
-                        //         source: {
-                        //             type: 'OSM',
-                        //             url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
-                        //         }
-                        //     }
-                        // },
                         interactions: {
                             mouseWheelZoom: true
                         },
@@ -55,6 +48,14 @@
                     }, function () {
                         console.log('Modal dismissed at: ' + new Date());
                     });
+
+                    $timeout(function(){
+                        model.loaded = true;
+                    },100);
+
+                    olData.getMap().then(function(map){
+                        map.updateSize();
+                    })
                 };
             }
         }
