@@ -5,6 +5,7 @@ import com.webstart.model.UserProfile;
 import com.webstart.model.Users;
 import org.json.simple.JSONObject;
 
+import java.security.Timestamp;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ public interface UsersService {
 
     UserProfile getUserProfile(Integer userid);
     boolean saveUserProfiledata(UserProfile usprof);
+    void createNewNotification(int userid, String message);
 
     List<Notifications> getUserCounterNotifications(Integer userId);
 

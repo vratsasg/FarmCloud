@@ -21,23 +21,24 @@
                 }
             );
 
-
-
-
-
             //components have lifecycles this is before the component is rendered
             model.$onInit = function () {
                 var defer = $q.defer();
                 userService.getuser().then(
                     function (data) {
-
                         model.user = data;
                         defer.resolve(model.user);
-
                     }, function (errResponse) {
-                        console.log("error fetching user");
+                        console.error("error fetching user");
                     });
 
+                userService.getnotifcounter().then(
+                    function (data) {
+                        model.notifications = data;
+                        defer.resolve(model.notifications);
+                    }, function (errResponse) {
+                        console.error("error fetching user");
+                    });
 
                 model.showModal = function () {
                     model.modalInstance = $uibModal.open({

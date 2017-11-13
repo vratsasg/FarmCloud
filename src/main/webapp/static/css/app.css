@@ -687,6 +687,20 @@ tr.weatherTable td {
     /*stroke-width: 0;*/
 }
 
+g.nv-group.nv-series-0 {
+    stroke-opacity: 1 !important;
+    stroke-width: 2 !important;
+    fill-opacity: 0 !important;
+    background-color: transparent !important;
+}
+
+g.nv-group.nv-series-1 {
+    stroke-opacity: 1 !important;
+    stroke-width: 2 !important;
+    fill-opacity: 0 !important;
+    background-color: transparent !important;;
+}
+
 /*g.das.nvd3.nv-group.nv-series-0 {*/
 g.dashed.nv-group.nv-series-0 {
     stroke-opacity: 1 !important;

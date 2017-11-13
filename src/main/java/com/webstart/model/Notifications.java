@@ -24,9 +24,9 @@ public class Notifications {
     private boolean isreaded;
 
     @Column(name = "datecreated")
-    private Date datecreated;
+    private Timestamp datecreated;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "userid", insertable = false, updatable = false)
     private Users userNotification;
 
@@ -78,7 +78,7 @@ public class Notifications {
         return datecreated;
     }
 
-    public void setDatecreated(Date datecreated) {
+    public void setDatecreated(Timestamp datecreated) {
         this.datecreated = datecreated;
     }
 

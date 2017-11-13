@@ -7,7 +7,7 @@ public class FeatureidIdentifier {
     private Integer featureinterestid;
     private String identifier;
     private String description;
-
+    private int userId;
 
     public FeatureidIdentifier() {
     }
@@ -17,10 +17,11 @@ public class FeatureidIdentifier {
         this.identifier = identifier;
     }
 
-    public FeatureidIdentifier(Integer featureinterestid, String identifier, String description) {
+    public FeatureidIdentifier(Integer featureinterestid, String identifier, String description, int userid) {
         this.featureinterestid = featureinterestid;
         this.identifier = identifier;
         this.description = description;
+        this.userId = userid;
     }
 
     public Integer getFeatureinterestid() {
@@ -45,5 +46,13 @@ public class FeatureidIdentifier {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

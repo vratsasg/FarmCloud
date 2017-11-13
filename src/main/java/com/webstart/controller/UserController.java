@@ -26,9 +26,7 @@ public class UserController {
     UsersService usersService;
 
     @RequestMapping(value = "profile", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    UserProfile getUserProfile(HttpServletRequest httpServletRequest) {
+    public @ResponseBody UserProfile getUserProfile(HttpServletRequest httpServletRequest) {
         Users user = new Users();
         user = (Users) httpServletRequest.getSession().getAttribute("current_user");
 
@@ -47,9 +45,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "notifications", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    List<Notifications> getCounterNotifications(HttpServletRequest request) {
+    public @ResponseBody List<Notifications> getCounterNotifications(HttpServletRequest request) {
         List<Notifications> notificationList = null;
         Users users = (Users) request.getSession().getAttribute("current_user");
 

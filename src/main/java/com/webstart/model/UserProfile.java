@@ -45,7 +45,6 @@ public class UserProfile {
     @Column(length = 15)
     private String mobile;
 
-
     private Date dateofbirth;
 
     //@JoinColumn(name="user_id")
@@ -57,7 +56,8 @@ public class UserProfile {
     public UserProfile() {
     }
 
-    public UserProfile(String firstname, String address, String fathersname, String lastname, String addressnum, String zipcode, String telephone, String mobile, Date dateofbirth, Users employeeDetail, Users user) {
+    public UserProfile(Integer userId, String firstname, String address, String fathersname, String lastname, String addressnum, String zipcode, String telephone, String mobile, Date dateofbirth, Users user) {
+        this.userId = userId;
         this.firstname = firstname;
         this.address = address;
         this.fathersname = fathersname;

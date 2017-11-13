@@ -21,6 +21,11 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
 
     List<Featureofinterest> findByUseridAndFeatureofinteresttypeid(int id, long l);
 
+    @Query("select new com.webstart.model.Featureofinterest(fi.featureofinterestid, fi.identifier, fi.name, fi.featureofinteresttypeid) " +
+            "from Featureofinterest as fi " +
+            "WHERE fi.userid = :userid")
+    List<Featureofinterest> getFeaturesByUsrerId(@Param("userid") int userid);
+
     @Query("select new com.webstart.DTO.CropInfoDTO(fi.featureofinterestid, fi.identifier, fi.name, obs.Identifier, prc.identifier, prc.descriptionfile) " +
             "from Featureofinterest as fi " +
             "inner join fi.seriesList as flist " +
@@ -60,12 +65,12 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
             "WHERE fi.identifier = :identifier and fi.featureofinteresttypeid = 3 and fi.userid = :userid")
     List<Integer> findCoordinatorIdByEndDevice(@Param("identifier") String identifier, @Param("userid") int userid);
 
-    @Query("select distinct NEW com.webstart.DTO.FeatureidIdentifier(fi.featureofinterestid, fi.identifier, fi.name) " +
+    @Query("select distinct NEW com.webstart.DTO.FeatureidIdentifier(fi.featureofinterestid, fi.identifier, fi.name, fi.userid) " +
             "FROM Featureofinterest as fi " +
             "WHERE fi.userid = :userid and fi.featureofinteresttypeid = :typeid")
     List<FeatureidIdentifier> getIdentifiers(@Param("userid") int userId, @Param("typeid") long typeId);
 
-    @Query("select distinct NEW com.webstart.DTO.FeatureidIdentifier(fi.featureofinterestid, fi.identifier) " +
+    @Query("select distinct NEW com.webstart.DTO.FeatureidIdentifier(fi.featureofinterestid, fi.identifier, fi.name, fi.userid) " +
             "FROM Featureofinterest as fi " +
             "WHERE fi.identifier IN :idenList")
     List<FeatureidIdentifier> getIdidentif(@Param("idenList") List<String> identStr);

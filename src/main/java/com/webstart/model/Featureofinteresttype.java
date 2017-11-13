@@ -57,7 +57,7 @@ public class Featureofinteresttype {
     private String featureofinteresttype;
 
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "featureofinteresttype", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "featureofinteresttype", cascade = {CascadeType.ALL})
     private List<Featureofinterest> featureofinterestList = new ArrayList<Featureofinterest>();
 
 

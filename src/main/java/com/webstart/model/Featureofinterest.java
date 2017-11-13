@@ -60,7 +60,7 @@ public class Featureofinterest {
     @Column(name = "measuring")
     private Boolean measuring;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "featureofinteresttypeid", insertable = false, updatable = false)
     private Featureofinteresttype featureofinteresttype;
 
@@ -75,18 +75,18 @@ public class Featureofinterest {
     @Column(name = "waterconsumption")
     private BigDecimal waterConsumption;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "userid", insertable = false, updatable = false)
     private Users userfeature;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "featureofinterest", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "featureofinterest", cascade = {CascadeType.ALL})
     private List<Series> seriesList = new ArrayList<Series>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "featureofinterest", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "featureofinterest", cascade = {CascadeType.ALL})
     private List<ObservablePropertyMinMax> obspropminmaxList = new ArrayList<ObservablePropertyMinMax>();
 
     ////Autorelation
-    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "parentid", insertable = false, updatable = false)
     private Featureofinterest parentFeature;
 
@@ -96,12 +96,17 @@ public class Featureofinterest {
     //@ManyToOne(fetch = FetchType.LAZY, optional = true)
     //private Featureofinterest parentFeature;
     //
-    //@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "parentFeature")
+    //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parentFeature")
     //private List<Featureofinterest> childrenFeatures;
 
 
-    public Featureofinterest() {
+    public Featureofinterest() { }
 
+    public Featureofinterest(Integer featureofinterestid, String identifier, String name,  long featureofinteresttypeid) {
+        this.featureofinterestid = featureofinterestid;
+        this.identifier = identifier;
+        this.name = name;
+        this.featureofinteresttypeid = featureofinteresttypeid;
     }
 
     public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, Long parentid, Timestamp datetimefrom, Timestamp datetimeto, Boolean irrigation, Boolean measuring, Featureofinteresttype featureofinteresttype, Point geom, int userid, BigDecimal waterConsumption) {

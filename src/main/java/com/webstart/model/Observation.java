@@ -50,16 +50,16 @@ public class Observation {
     @Column(name = "unitid")
     private Long unitid;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "seriesid", insertable = false, updatable = false)
     private Series series;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "unitid", insertable = false, updatable = false)
     private Unit unit;
 
 
-//    @OneToOne(fetch = FetchType.EAGER, mappedBy="observation", cascade=CascadeType.ALL)
+//    @OneToOne(fetch = FetchType.LAZY, mappedBy="observation", cascade=CascadeType.ALL)
 //    public NumericValue numericValue;
 
 //    public NumericValue getNumericValue() {
