@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +47,7 @@ public class HomeController {
     public ResponseEntity<String> getProfile(HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
         JSONObject obj = featureofInterestService.findCropInfo(users.getUser_id());
+
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
     }
 

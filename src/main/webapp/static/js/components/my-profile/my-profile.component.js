@@ -17,7 +17,6 @@
 
             model.myprofile = {};
 
-
             model.$onInit = function () {
                 var defer = $q.defer();
                 ProfileService.getProfile().then(
@@ -51,6 +50,7 @@
                                 }
                             }
                         ];
+
                     },
                     function (errResponse) {
                         console.error('Error while fetching devices for firstpage');
