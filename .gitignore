@@ -5,6 +5,7 @@ META-INF
 .idea
 *.iml
 target
+out
 aot/*
 dist/*
 yarn.lock

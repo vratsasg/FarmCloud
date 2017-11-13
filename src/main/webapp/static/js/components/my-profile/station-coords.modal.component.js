@@ -25,6 +25,9 @@
                             zoom: true,
                             rotate: false,
                             attribution: false
+                        },
+                        events: {
+                            map: [ 'click','singleclick' ]
                         }
                     };
 
@@ -34,13 +37,6 @@
 
                     model.submit = function () {
                         console.log('You hit me!');
-                        //ControlPanelService.setMeasuringFlags(model.coordinator).then(
-                        //    function (returnedData) {
-                        //        defer.resolve(returnedData);
-                        //        instance.close(returnedData);
-                        //    }, function (errResponse) {
-                        //        console.error('Error while sending request for starting measuring');
-                        //    });
                     };
 
                     instance.result.then(function (returnedData) {
@@ -54,8 +50,16 @@
                     },100);
 
                     olData.getMap().then(function(map){
-                        map.updateSize();
-                    })
+                        map.on("openlayers.map.click", function(e) {
+                            console.log('You clicked me!');
+                        });
+                        map.on("openlayers.map.singleclick", function(e) {
+                            console.log('You clicked me!');
+                        });
+                        map.on("mouseclick", function(e) {
+                            console.log('You clicked me!');
+                        });
+                    });
                 };
             }
         }
