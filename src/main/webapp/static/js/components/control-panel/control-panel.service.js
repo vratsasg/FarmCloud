@@ -88,7 +88,7 @@
                     });
             },
             setFeatureDates: function (identifier, dtfrom, dtto) {
-                return $http.post('setIrrigationDates?identifier=' + identifier + "&dtfrom=" + dtfrom + "&dtto=" + dtto).then(
+                return $http.get('setIrrigationDates?identifier=' + identifier + '&dtfrom=' + dtfrom + '&dtto=' + dtto).then(
                     function (response) {
                         return response;
                     },

@@ -27,7 +27,7 @@
                         //console.log(model.dateto);
                         if (model.datefrom && model.dateto) {
                             //setIrrigationDates
-                            ControlPanelService.setFeatureDates(model.parent.myDevice, model.datefrom.format("YYYY-MM-DD HH:mm:ss"), model.dateto.format("YYYY-MM-DD HH:mm:ss")).then(
+                            ControlPanelService.setFeatureDates(model.parent.myDevice.identifier, model.datefrom.format("YYYY-MM-DD HH:mm:ss"), model.dateto.format("YYYY-MM-DD HH:mm:ss")).then(
                                 function (returnedData) {
                                     defer.resolve(returnedData);
                                     instance.close(returnedData);

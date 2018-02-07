@@ -220,7 +220,7 @@ public class HomeController {
         return sentData;
     }
 
-    @RequestMapping(value = "/setIrrigationDates", method = RequestMethod.POST)
+    @RequestMapping(value = "/setIrrigationDates", method = RequestMethod.GET)
     public ResponseEntity<String> setIrrigationDates(@RequestParam("identifier") String device, @RequestParam("dtfrom") String datefrom, @RequestParam("dtto") String dateto, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
         boolean sentData;
