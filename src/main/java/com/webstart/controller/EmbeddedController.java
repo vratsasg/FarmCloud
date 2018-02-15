@@ -9,6 +9,8 @@ import com.webstart.model.*;
 import com.webstart.service.FeatureofInterestService;
 import com.webstart.service.MeasureService;
 import com.webstart.service.UsersService;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ public class EmbeddedController {
 
             for (final EmbeddedData embeddedData : embeddedDataWrapper.getEmList()) {
                 int featureofinterestid = 0;
+                embeddedData.setDatetimeMeasure(new DateTime(DateTimeZone.UTC).toDate());
                 for (int i = 0; i < featureidIdentifiers.size(); i++) {
                     if ((embeddedData.getZigbeeAddress()).equals(featureidIdentifiers.get(i).getIdentifier())) {
                         featureofinterestid = featureidIdentifiers.get(i).getFeatureinterestid();
@@ -156,9 +159,7 @@ public class EmbeddedController {
     }
 
     @RequestMapping(value = "automaticwatering/save", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    void saveAutomacticWateringObservation(HttpServletRequest request, @RequestBody AutomaticWater automaticWatering) {
+    public @ResponseBody void saveAutomacticWateringObservation(HttpServletRequest request, @RequestBody AutomaticWater automaticWatering) {
         try {
             List<String> identifiers = Arrays.asList(automaticWatering.getIdentifier());
             Long featureId = featureofInterestService.findIdsByIdentifier(identifiers).get(0);
@@ -171,9 +172,7 @@ public class EmbeddedController {
     }
 
     @RequestMapping(value = "manualwatering/save", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    void saveAutomacticWatering(HttpServletRequest request, @RequestBody AutomaticWater automaticWatering) {
+    public @ResponseBody void saveAutomacticWatering(HttpServletRequest request, @RequestBody AutomaticWater automaticWatering) {
         try {
             String identifier = automaticWatering.getIdentifier();
             measureService.saveMeasure(automaticWatering);
@@ -182,6 +181,4 @@ public class EmbeddedController {
             e.printStackTrace();
         }
     }
-
-
 }
