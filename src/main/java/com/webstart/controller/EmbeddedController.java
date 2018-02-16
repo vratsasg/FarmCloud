@@ -38,7 +38,6 @@ public class EmbeddedController {
 
             for (final EmbeddedData embeddedData : embeddedDataWrapper.getEmList()) {
                 int featureofinterestid = 0;
-                embeddedData.setDatetimeMeasure(new DateTime(DateTimeZone.UTC).toDate());
                 for (int i = 0; i < featureidIdentifiers.size(); i++) {
                     if ((embeddedData.getZigbeeAddress()).equals(featureidIdentifiers.get(i).getIdentifier())) {
                         featureofinterestid = featureidIdentifiers.get(i).getFeatureinterestid();
@@ -47,8 +46,8 @@ public class EmbeddedController {
 
                 Long seriesId = featureofInterestService.findseries(embeddedData.getObservationPropId(), featureofinterestid);
                 measureService.saveMeasure(seriesId, embeddedData);
-                usersService.createNewNotification(featureidIdentifiers.get(0).getUserId(), String.format("save new measures been taken for end devices: %s ", identList.toString()));
             }
+            usersService.createNewNotification(featureidIdentifiers.get(0).getUserId(), String.format("save new measures been taken for end devices: %s ", identList.toString()));
         } catch (Exception exc) {
             exc.printStackTrace();
         }

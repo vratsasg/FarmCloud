@@ -2,15 +2,13 @@ package com.webstart.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.joda.time.DateTime;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * Created by George on 24/5/2016.
- */
 public class EmbeddedData {
     @JsonProperty("zb")
     private String zigbeeAddress;
@@ -19,7 +17,8 @@ public class EmbeddedData {
     private BigDecimal measureValue;
 
     @JsonProperty("dt")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+1")
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+2")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIME)
     private Date datetimeMeasure;
 

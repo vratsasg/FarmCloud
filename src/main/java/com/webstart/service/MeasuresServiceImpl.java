@@ -7,6 +7,11 @@ import com.webstart.model.NumericValue;
 import com.webstart.model.Observation;
 import com.webstart.model.Series;
 import com.webstart.repository.*;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +22,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service("measurement")
@@ -111,16 +117,20 @@ public class MeasuresServiceImpl implements MeasureService {
 
     public void saveMeasure(Long seriesId, EmbeddedData embeddedData) {
         try {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMddHHmmss");
+//            DateTimeZone.setDefault(DateTimeZone.UTC);
 //            Date from = dateFormat.parse(embeddedData.getDatetimeMeasure());
 
             Observation observation = new Observation();
 
             observation.setSeriesid(seriesId);
-            observation.setPhenomenontimestart(new Timestamp(embeddedData.getDatetimeMeasure().getTime()));
-            observation.setPhenomenontimeend(new Timestamp(embeddedData.getDatetimeMeasure().getTime()));
-            observation.setResulttime(new Timestamp(embeddedData.getDatetimeMeasure().getTime()));
-            observation.setIdentifier(dateFormat.format(embeddedData.getDatetimeMeasure()).replace("/", "").replace(":", "").replace(" ", "") + "-" + java.util.UUID.randomUUID());
+            // Set date time to utc
+            DateTime nowUTC = new DateTime(DateTimeZone.UTC);
+//            observation.setPhenomenontimestart(new Timestamp(nowUTC.getMillis()));
+//            observation.setPhenomenontimeend(new Timestamp(nowUTC.getMillis()));
+//            observation.setResulttime(new Timestamp(nowUTC.getMillis()));
+//            observation.setIdentifier(dateFormat.format(embeddedData.getDatetimeMeasure()).replace("/", "").replace(":", "").replace(" ", "") + "-" + java.util.UUID.randomUUID());
+            observation.setIdentifier(dtf.print(nowUTC) + "-" + java.util.UUID.randomUUID());
             observation.setUnitid((long) embeddedData.getUnitId());
             observation.setDeleted("F");
 
@@ -140,14 +150,18 @@ public class MeasuresServiceImpl implements MeasureService {
             Long seriesid = seriesJpaRepository.findSeriesIdByEndDevice(automaticWater.getIdentifier()).get(0);
             BigDecimal waterCons = featureofinterestJpaRepository.getWaterConsumption(automaticWater.getIdentifier()).get(0);
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd/ HH:mm:ss");
+            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMddHHmmss");
+            //TimeZone
+            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
+            DateTimeZone.setDefault(DateTimeZone.UTC);
 
             Observation observation = new Observation();
             observation.setSeriesid(seriesid);
-            observation.setPhenomenontimestart(new Timestamp(automaticWater.getFromtime().getTime()));
-            observation.setPhenomenontimeend(new Timestamp(automaticWater.getUntiltime().getTime()));
-            observation.setResulttime(new Timestamp(automaticWater.getUntiltime().getTime()));
-            observation.setIdentifier(dateFormat.format(automaticWater.getUntiltime()).replace("/", "").replace(":", "").replace(" ", "") + "-" + java.util.UUID.randomUUID());
+            observation.setPhenomenontimestart(new Timestamp(new DateTime(automaticWater.getFromtime(), DateTimeZone.forTimeZone(tz)).getMillis()));
+            observation.setPhenomenontimeend(new Timestamp(new DateTime(automaticWater.getUntiltime(), DateTimeZone.forTimeZone(tz)).getMillis()));
+            observation.setResulttime(new Timestamp(new DateTime(automaticWater.getUntiltime(), DateTimeZone.forTimeZone(tz)).getMillis()));
+//            observation.setIdentifier(dateFormat.format(automaticWater.getUntiltime()).replace("/", "").replace(":", "").replace(" ", "") + "-" + java.util.UUID.randomUUID());
+            observation.setIdentifier(dtf.print(new DateTime(automaticWater.getUntiltime(), DateTimeZone.forTimeZone(tz))) + "-" + java.util.UUID.randomUUID());
             observation.setUnitid((long) 22);
             observation.setDeleted("F");
 

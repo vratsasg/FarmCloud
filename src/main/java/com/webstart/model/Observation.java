@@ -1,6 +1,7 @@
 package com.webstart.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -18,13 +19,16 @@ public class Observation {
     @Column(name = "seriesid")
     private long seriesid;
 
-    @Column(name = "phenomenontimestart")
+//    @Column(name = "phenomenontimestart", nullable = false, insertable = false)
+    @Column(name = "phenomenontimestart", nullable = false)
     private Timestamp phenomenontimestart;
 
-    @Column(name = "phenomenontimeend")
+//    @Column(name = "phenomenontimeend", nullable = false, insertable = false)
+    @Column(name = "phenomenontimeend", nullable = false)
     private Timestamp phenomenontimeend;
 
-    @Column(name = "resulttime")
+//    @Column(name = "resulttime", nullable = false, insertable = false)
+    @Column(name = "resulttime", nullable = false)
     private Timestamp resulttime;
 
     @Column(name = "validtimestart")
@@ -37,7 +41,7 @@ public class Observation {
     private String deleted;
 
 
-    @Column(length = 255, name = "identifier")
+    @Column(length = 255, name = "identifier", nullable = false)
     private String identifier;
 
     @Column(name = "codespaceid")
