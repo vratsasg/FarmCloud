@@ -29,6 +29,7 @@ public class EmbeddedData {
     private int UnitId;
 
     public EmbeddedData() {
+
     }
 
     public EmbeddedData(String zigbeeAddress, BigDecimal measureValue, Date datetimeMeasure, int ObservationPropId, int UnitId) {

@@ -19,16 +19,13 @@ public class Observation {
     @Column(name = "seriesid")
     private long seriesid;
 
-//    @Column(name = "phenomenontimestart", nullable = false, insertable = false)
     @Column(name = "phenomenontimestart", nullable = false)
     private Timestamp phenomenontimestart;
 
-//    @Column(name = "phenomenontimeend", nullable = false, insertable = false)
     @Column(name = "phenomenontimeend", nullable = false)
     private Timestamp phenomenontimeend;
 
-//    @Column(name = "resulttime", nullable = false, insertable = false)
-    @Column(name = "resulttime", nullable = false)
+    @Column(name = "resulttime", nullable = false, insertable = false)
     private Timestamp resulttime;
 
     @Column(name = "validtimestart")
@@ -37,7 +34,7 @@ public class Observation {
     @Column(name = "validtimeend")
     private Timestamp validtimeend;
 
-    @Column(length = 1, name = "deleted")
+    @Column(length = 1, name = "deleted", insertable = false)
     private String deleted;
 
 
@@ -62,21 +59,9 @@ public class Observation {
     @JoinColumn(name = "unitid", insertable = false, updatable = false)
     private Unit unit;
 
-
-//    @OneToOne(fetch = FetchType.LAZY, mappedBy="observation", cascade=CascadeType.ALL)
-//    public NumericValue numericValue;
-
-//    public NumericValue getNumericValue() {
-//        return numericValue;
-//    }
-//
-//    public void setNumericValue(NumericValue numericValue) {
-//        this.numericValue = numericValue;
-//    }
-
     public Observation() {
-    }
 
+    }
 
     public Long getObservationid() {
         return observationid;

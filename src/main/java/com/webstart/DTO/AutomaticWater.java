@@ -2,7 +2,6 @@ package com.webstart.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.math.BigDecimal;
@@ -10,14 +9,12 @@ import java.util.Date;
 
 public class AutomaticWater {
     @JsonProperty("autoIrrigFromTime")
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+1")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+1")
     @Temporal(TemporalType.TIME)
     private java.util.Date fromtime;
 
     @JsonProperty("autoIrrigUntilTime")
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+1")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+1")
     @Temporal(TemporalType.TIME)
     private java.util.Date untiltime;
 
