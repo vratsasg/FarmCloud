@@ -5,18 +5,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AutomaticWater {
     @JsonProperty("autoIrrigFromTime")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+1")
-    @Temporal(TemporalType.TIME)
-    private java.util.Date fromtime;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+1")
+//    @Temporal(TemporalType.TIME)
+    private String fromtime;
 
     @JsonProperty("autoIrrigUntilTime")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+1")
-    @Temporal(TemporalType.TIME)
-    private java.util.Date untiltime;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+1")
+//    @Temporal(TemporalType.TIME)
+    private String untiltime;
 
     @JsonProperty("waterConsumption")
     BigDecimal wateringConsumption;
@@ -27,9 +29,23 @@ public class AutomaticWater {
     public AutomaticWater() {
     }
 
-    public AutomaticWater(Date fromtime, Date untiltime, BigDecimal wateringConsumption, String identifier) {
+    public AutomaticWater(String fromtime, String untiltime, BigDecimal wateringConsumption, String identifier) {
         this.fromtime = fromtime;
         this.untiltime = untiltime;
+        this.wateringConsumption = wateringConsumption;
+        this.identifier = identifier;
+    }
+
+    public AutomaticWater(Timestamp fromtime, Timestamp untiltime, BigDecimal wateringConsumption, String identifier) {
+        this.fromtime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(fromtime);
+        this.untiltime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(untiltime);
+        this.wateringConsumption = wateringConsumption;
+        this.identifier = identifier;
+    }
+
+    public AutomaticWater(Date fromtime, Date untiltime, BigDecimal wateringConsumption, String identifier) {
+        this.fromtime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(fromtime);
+        this.untiltime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(untiltime);
         this.wateringConsumption = wateringConsumption;
         this.identifier = identifier;
     }
@@ -42,19 +58,19 @@ public class AutomaticWater {
         this.identifier = identifier;
     }
 
-    public Date getFromtime() {
+    public String getFromtime() {
         return fromtime;
     }
 
-    public void setFromtime(Date fromtime) {
+    public void setFromtime(String fromtime) {
         this.fromtime = fromtime;
     }
 
-    public Date getUntiltime() {
+    public String getUntiltime() {
         return untiltime;
     }
 
-    public void setUntiltime(Date untiltime) {
+    public void setUntiltime(String untiltime) {
         this.untiltime = untiltime;
     }
 

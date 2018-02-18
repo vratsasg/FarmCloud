@@ -226,10 +226,10 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             }
 
             Iterator itr = listMeasures.iterator();
-
+            //TODO add offset time for irrigation datetimes
             while (itr.hasNext()) {
                 Object[] object = (Object[]) itr.next();
-                automaticWater = new AutomaticWater((java.util.Date) object[1], (java.util.Date) object[2], (BigDecimal) object[3], identifier);
+                automaticWater = new AutomaticWater(object[1].toString(), object[2].toString(), (BigDecimal) object[3], identifier);
             }
         } catch (Exception e) {
             e.printStackTrace();

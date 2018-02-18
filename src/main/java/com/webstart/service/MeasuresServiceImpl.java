@@ -21,6 +21,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.*;
 
+import static org.hibernate.type.descriptor.java.JdbcDateTypeDescriptor.DATE_FORMAT;
+
 @Service("measurement")
 @Transactional
 public class MeasuresServiceImpl implements MeasureService {
@@ -114,13 +116,6 @@ public class MeasuresServiceImpl implements MeasureService {
     public void saveMeasure(Long seriesId, EmbeddedData embeddedData) {
         try {
             DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMddHHmmss");
-//            DateTimeZone.setDefault(DateTimeZone.UTC);
-
-//            TimeZone tz = TimeZone.getDefault();
-//            LocalDateTime ldt = new LocalDateTime();
-//            DateTime localdt = new DateTime(DateTimeZone.forID(tz.getID()));
-//            // Set date time to utc
-//            DateTime nowUTC = ldt.toDateTime(DateTimeZone.UTC);
 
             //Convert time to UTC
             TimeZone tz = TimeZone.getDefault();
@@ -154,6 +149,7 @@ public class MeasuresServiceImpl implements MeasureService {
             BigDecimal waterCons = featureofinterestJpaRepository.getWaterConsumption(automaticWater.getIdentifier()).get(0);
 
             DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMddHHmmss");
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
             // TODO get timezone from database
             //TimeZone
@@ -161,20 +157,14 @@ public class MeasuresServiceImpl implements MeasureService {
 
             // TODO create a function to reuturn the new datetime
             //Convert time to UTC
-            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime(automaticWater.getFromtime()));
-            LocalDateTime ldt = LocalDateTime.fromDateFields(automaticWater.getFromtime());
-            DateTime irrigdtFrom = ldt.toDateTime(DateTimeZone.UTC);
+            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+            DateTime irrigdtFrom = LocalDateTime.parse(automaticWater.getFromtime(), dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
             irrigdtFrom = irrigdtFrom.minusMillis(offset);
-            DateTime irrigdtUntil = new DateTime(automaticWater.getUntiltime());
+            DateTime irrigdtUntil = LocalDateTime.parse(automaticWater.getUntiltime(), dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
             irrigdtUntil = irrigdtUntil.minusMillis(offset);
-//            localdt = localdt.minusMillis(offset);
-//            Timestamp ts = new Timestamp(localdt.getMillis());
-
 
             Observation observation = new Observation();
             observation.setSeriesid(seriesid);
-//            observation.setPhenomenontimestart(new Timestamp(new DateTime(automaticWater.getFromtime(), DateTimeZone.forTimeZone(tz)).minusMillis(offset).getMillis()));
-//            observation.setPhenomenontimeend(new Timestamp(new DateTime(automaticWater.getUntiltime(), DateTimeZone.forTimeZone(tz)).minusMillis(offset).getMillis()));
             observation.setPhenomenontimestart(new Timestamp(irrigdtFrom.getMillis()));
             observation.setPhenomenontimeend(new Timestamp(irrigdtUntil.getMillis()));
 
@@ -185,7 +175,7 @@ public class MeasuresServiceImpl implements MeasureService {
 
             NumericValue numericValue = new NumericValue();
             numericValue.setObservationid(observation.getObservationid());
-            float diffmilliSec = automaticWater.getUntiltime().getTime() - automaticWater.getFromtime().getTime();
+            float diffmilliSec = irrigdtUntil.getMillis() - irrigdtFrom.getMillis();
             numericValue.setValue(new BigDecimal((diffmilliSec / 1000.0 / 3600.0) * waterCons.doubleValue()));
             numericValueJpaRepository.save(numericValue);
         } catch (Exception e) {

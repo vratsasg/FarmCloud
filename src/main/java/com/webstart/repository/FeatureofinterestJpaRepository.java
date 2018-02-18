@@ -161,7 +161,7 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     @Query("update Featureofinterest f set f.datetimefrom = :dtfrom, f.datetimeto = :dtto, f.waterConsumption = :wc " +
             "where  f.identifier = :identifier and f.featureofinteresttypeid = 2")
     @Transactional
-    void setCoordinatorAlgorithmParams(@Param("identifier") String identifier, @Param("dtfrom") Date datetimefrom, @Param("dtto") Date datetimeto, @Param("wc") BigDecimal waterconsumption);
+    void setCoordinatorAlgorithmParams(@Param("identifier") String identifier, @Param("dtfrom") Timestamp datetimefrom, @Param("dtto") Timestamp datetimeto, @Param("wc") BigDecimal waterconsumption);
 
     @Modifying
     @Query("update Featureofinterest f set f.irrigation = :boolvalue where f.identifier = :id")

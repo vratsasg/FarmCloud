@@ -220,27 +220,27 @@ public class HomeController {
         return sentData;
     }
 
-    @RequestMapping(value = "/setIrrigationDates", method = RequestMethod.POST)
-    public ResponseEntity<String> setIrrigationDates(@RequestParam("identifier") String device, @RequestParam("dtfrom") String datefrom, @RequestParam("dtto") String dateto, HttpServletRequest request) {
-        Users users = (Users) request.getSession().getAttribute("current_user");
-        boolean sentData;
+//    @RequestMapping(value = "/{mydevice}/watering/measures", params = {"dtstart", "dtend"}, method = RequestMethod.GET)
+//    public ResponseEntity<String> getMeasuresByObsProperty(@RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request, @PathVariable("mydevice") String mydevice) {
+
+    @RequestMapping(value = "/{mydevice}/irrigation/times",params = {"dtfrom", "dtto"}, method = RequestMethod.POST)
+    public ResponseEntity setIrrigationDates(@PathVariable("mydevice") String mydevice, @RequestParam("dtfrom") String datefrom, @RequestParam("dtto") String dateto, HttpServletRequest request) {
+        //Users users = (Users) request.getSession().getAttribute("current_user");
 
         try {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date from = dateFormat.parse(datefrom);
-            Date to = dateFormat.parse(dateto);
-
-            AutomaticWater automaticWater = new AutomaticWater(from, to, new BigDecimal(0), device);
+            AutomaticWater automaticWater = new AutomaticWater(datefrom, dateto, new BigDecimal(0), mydevice);
             measureservice.saveMeasure(automaticWater);
-            sentData = featureofInterestService.setDeviceIrrigaDate(users.getUser_id(), device, from, to);
+//            sentData = featureofInterestService.setDeviceIrrigaDate(users.getUser_id(), mydevice, from, to);
+
+            boolean sentData = featureofInterestService.setDeviceIrrigaDate(1, mydevice, datefrom, dateto);
             if (!sentData)
-                return new ResponseEntity<String>("false", HttpStatus.OK);
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<String>("false", HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<String>("true", HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/wateringprofile/minmax", method = RequestMethod.GET)

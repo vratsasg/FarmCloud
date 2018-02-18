@@ -12,12 +12,18 @@ import com.webstart.repository.FeatureofinterestJpaRepository;
 import com.webstart.repository.NumericValueJpaRepository;
 import com.webstart.repository.ObservationJpaRepository;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.omg.CORBA.ExceptionList;
+import org.postgresql.util.PGTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -397,9 +403,18 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
-    public boolean setDeviceIrrigaDate(int usid, String device, Date from, Date to) {
+    public boolean setDeviceIrrigaDate(int usid, String device, String from, String to) {
         try {
-            featureofinterestJpaRepository.setDeviceIrrigDates(usid, device, from, to);
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            //TimeZone
+            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
+            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+            DateTime irrigdtFrom = LocalDateTime.parse(from, dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
+            irrigdtFrom = irrigdtFrom.minusMillis(offset);
+            DateTime irrigdtUntil = LocalDateTime.parse(to, dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
+            irrigdtUntil = irrigdtUntil.minusMillis(offset);
+
+            featureofinterestJpaRepository.setDeviceIrrigDates(usid, device, new Timestamp(irrigdtFrom.getMillis()), new Timestamp(irrigdtUntil.getMillis()));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -425,7 +440,20 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
     public void setAutomaticWateringTime(AutomaticWater automaticWater, int userid) {
         try {
-            featureofinterestJpaRepository.setCoordinatorAlgorithmParams(automaticWater.getIdentifier(), automaticWater.getFromtime(), automaticWater.getUntiltime(), automaticWater.getWateringConsumption());
+
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            //TimeZone
+            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
+
+            // TODO create a function to reuturn the new datetime
+            //Convert time to UTC
+            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+            DateTime irrigdtFrom = LocalDateTime.parse(automaticWater.getFromtime(), dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
+            irrigdtFrom = irrigdtFrom.minusMillis(offset);
+            DateTime irrigdtUntil = LocalDateTime.parse(automaticWater.getUntiltime(), dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
+            irrigdtUntil = irrigdtUntil.minusMillis(offset);
+
+            featureofinterestJpaRepository.setCoordinatorAlgorithmParams(automaticWater.getIdentifier(), new Timestamp(irrigdtFrom.getMillis()), new Timestamp(irrigdtUntil.getMillis()), automaticWater.getWateringConsumption());
         } catch (Exception e) {
             e.printStackTrace();
         }

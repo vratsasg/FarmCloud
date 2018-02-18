@@ -32,7 +32,7 @@ public interface FeatureofInterestService {
         AutomaticWater getAutomaticWater(int userid, String identifier);
 
         //INSERT, UPDATE
-        boolean setDeviceIrrigaDate(int usid, String device, Date from, Date to);
+        boolean setDeviceIrrigaDate(int usid, String device, String from, String to);
         boolean addCrop(Crop crop);
 
         void setFeatureMeasuringFalse(List<String> idertifierList);
