@@ -117,12 +117,12 @@ public class EmbeddedController {
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "measures", method = RequestMethod.GET)
-    public ResponseEntity<String> startMeasuring(HttpServletRequest request) {
+    @RequestMapping(value = "{identifier}/measures", method = RequestMethod.GET)
+    public ResponseEntity<String> startMeasuring(@PathVariable("identifier") String identifier, HttpServletRequest request) {
         String JsonResp = null;
-        Users user = (Users) request.getSession().getAttribute("current_user");
         //TODO change without userid from ControlPanel Service on angular
-        JsonResp = featureofInterestService.changeMeasuringFlag(user.getUser_id(), FeatureTypeEnum.END_DEVICE.getValue());
+        Users user = (Users) request.getSession().getAttribute("current_user");
+        JsonResp = featureofInterestService.changeMeasuringFlag(identifier, FeatureTypeEnum.END_DEVICE.getValue());
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
     }
 

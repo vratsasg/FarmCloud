@@ -15,16 +15,16 @@ public class Notifications {
     @SequenceGenerator(name = "notifications_notifid_seq", sequenceName = "notifications_notifid_seq", allocationSize = 1)
     private int notificationid;
 
-    @Column(name = "userid")
+    @Column(name = "userid", nullable = false)
     private int userid;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "isreaded")
-    private boolean isreaded;
+    @Column(name = "isreaded", nullable = false)
+    private boolean isreaded = false;
 
-    @Column(name = "datecreated")
+    @Column(name = "datecreated", nullable = false, insertable = false)
     private Timestamp datecreated;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)

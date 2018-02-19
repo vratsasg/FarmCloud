@@ -27,7 +27,7 @@ public interface FeatureofInterestService {
 
         Long findseries(int obs, Integer fid);
         String findIrrigationAndMeasuring(String corD);
-        String changeMeasuringFlag(int usid, long typeId);
+        String changeMeasuringFlag(String identifier, long typeId);
 
         AutomaticWater getAutomaticWater(int userid, String identifier);
 

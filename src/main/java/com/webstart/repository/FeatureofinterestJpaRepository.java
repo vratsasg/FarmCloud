@@ -88,7 +88,7 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     @Query("select fi.featureofinterestid FROM Featureofinterest as fi  WHERE fi.identifier = :tid")
     List<Integer> getIdbyIdent(@Param("tid") String fidentent);
 
-    @Query("select new com.webstart.DTO.EndDeviceStatusDTO(fi.identifier, fi.irrigation, fi.measuring, fi.datetimefrom, fi.datetimeto) " +
+    @Query("select new com.webstart.DTO.EndDeviceStatusDTO(fi.identifier, fi.irrigation, fi.measuring, fi.datetimefrom , fi.datetimeto) " +
             "FROM Featureofinterest as fi " +
             "WHERE fi.parentid = :pid " +
             "order by fi.identifier")
@@ -105,6 +105,7 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
             nativeQuery = true)
     List<Object[]> getCoordinatorTimes(@Param("identifier") String identifier);
 
+    // TODO change from hout ro hour because time is on utc
     @Query(value = "select fi.identifier, " +
             "to_char(childfi.datetimefrom, 'HH24') as fromhour, " +
             "to_char(childfi.datetimefrom, 'MI') as fromminute, " +
@@ -142,9 +143,9 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     void setObservableMinmax(@Param("obspropid") Long obspropvalid, @Param("minval") BigDecimal minimum, @Param("maxval") BigDecimal maximum);
 
     @Modifying
-    @Query("update Featureofinterest f set f.measuring = true where f.userid IN :usid and f.featureofinteresttypeid = :tpid")
+    @Query("update Featureofinterest f set f.measuring = true where f.identifier = :identifier and f.featureofinteresttypeid = :tpid")
     @Transactional
-    void setMeasuringFlag(@Param("usid") int useid, @Param("tpid") long ftypeid);
+    void setMeasuringFlag(@Param("identifier") String identifier, @Param("tpid") long ftypeid);
 
     @Modifying
     @Query("update Featureofinterest f set f.measuring = false where f.identifier IN :identifierlist")

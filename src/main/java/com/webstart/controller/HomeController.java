@@ -225,14 +225,13 @@ public class HomeController {
 
     @RequestMapping(value = "/{mydevice}/irrigation/times",params = {"dtfrom", "dtto"}, method = RequestMethod.POST)
     public ResponseEntity setIrrigationDates(@PathVariable("mydevice") String mydevice, @RequestParam("dtfrom") String datefrom, @RequestParam("dtto") String dateto, HttpServletRequest request) {
-        //Users users = (Users) request.getSession().getAttribute("current_user");
+        Users users = (Users) request.getSession().getAttribute("current_user");
 
         try {
             AutomaticWater automaticWater = new AutomaticWater(datefrom, dateto, new BigDecimal(0), mydevice);
             measureservice.saveMeasure(automaticWater);
-//            sentData = featureofInterestService.setDeviceIrrigaDate(users.getUser_id(), mydevice, from, to);
-
-            boolean sentData = featureofInterestService.setDeviceIrrigaDate(1, mydevice, datefrom, dateto);
+            boolean sentData = featureofInterestService.setDeviceIrrigaDate(users.getUser_id(), mydevice, datefrom, dateto);
+//            boolean sentData = featureofInterestService.setDeviceIrrigaDate(1, mydevice, datefrom, dateto);
             if (!sentData)
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {

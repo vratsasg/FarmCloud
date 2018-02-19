@@ -77,7 +77,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 //Object[] objValueTime = new Object[2];
 
                 Timestamp tTime = (java.sql.Timestamp) objec[2];
-
+                // TODO change all dates add offset
                 ls.add(new ValueTime((tTime.getTime() - 60L * 60L * 1000L) / 1000L, (BigDecimal) objec[3], tTime));
             }
 

@@ -1,9 +1,7 @@
 package com.webstart.service;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itextpdf.text.ExceptionConverter;
 import com.webstart.DTO.*;
 import com.webstart.Enums.FeatureTypeEnum;
 import com.webstart.model.*;
@@ -16,17 +14,11 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.omg.CORBA.ExceptionList;
-import org.postgresql.util.PGTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.util.*;
 import java.util.List;
@@ -300,8 +292,27 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         try {
             List<Object[]> list = featureofinterestJpaRepository.getEnddevicesTimes(coordinatorAddress);
             List<EmebddedSetupDevicdeDto> endDeviceList = new ArrayList<EmebddedSetupDevicdeDto>();
+            //TimeZone
+            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
+
+            //Convert time to UTC
+            int offsetHours = DateTimeZone.forID(tz.getID()).getOffset(new DateTime()) / (60 * 60 * 1000);
             for (Object[] obj : list) {
-                endDeviceList.add(new EmebddedSetupDevicdeDto(obj[0].toString(), Integer.parseInt(obj[1].toString()), Integer.parseInt(obj[2].toString()), Integer.parseInt(obj[3].toString()), Integer.parseInt(obj[4].toString())));
+
+                Integer fromhour = Integer.parseInt(obj[1].toString()) + offsetHours;
+                if (fromhour >= 24) {
+                    fromhour = fromhour % 24;
+                } else if(fromhour < 0) {
+                    fromhour = 24 + fromhour;
+                }
+
+                Integer untilhour = Integer.parseInt(obj[3].toString()) + offsetHours;
+                if (untilhour >= 24) {
+                    untilhour = untilhour % 24;
+                } else if(untilhour < 0) {
+                    untilhour  = 24 + untilhour ;
+                }
+                endDeviceList.add(new EmebddedSetupDevicdeDto(obj[0].toString(), fromhour, Integer.parseInt(obj[2].toString()), untilhour, Integer.parseInt(obj[4].toString())));
             }
 
             return endDeviceList;
@@ -318,12 +329,27 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             if (list.size() == 0)
                 return null;
 
+            //TimeZone
+            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
+
+            //Convert time to UTC
+            int offsetHours = DateTimeZone.forID(tz.getID()).getOffset(new DateTime()) / (60 * 60 * 1000);
+            Integer fromhour = Integer.parseInt(list.get(0)[1].toString()) + offsetHours;
+            if (fromhour >= 24) {
+                fromhour = fromhour % 24;
+            } else if(fromhour < 0) {
+                fromhour = 24 + fromhour;
+            }
+
+            Integer untilhour = Integer.parseInt(list.get(0)[3].toString()) + offsetHours;
+            if (untilhour >= 24) {
+                untilhour = untilhour % 24;
+            } else if(untilhour < 0) {
+                untilhour  = 24 + untilhour ;
+            }
+
             EmebddedSetupDevicdeDto coordinatorTimes = new EmebddedSetupDevicdeDto(
-                    coordinatorAddress,
-                    Integer.parseInt(list.get(0)[1].toString()),
-                    Integer.parseInt(list.get(0)[2].toString()),
-                    Integer.parseInt(list.get(0)[3].toString()),
-                    Integer.parseInt(list.get(0)[4].toString()));
+                    coordinatorAddress, fromhour, Integer.parseInt(list.get(0)[2].toString()), untilhour, Integer.parseInt(list.get(0)[4].toString()));
 
             return coordinatorTimes;
         } catch (Exception e) {
@@ -352,12 +378,12 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
     }
 
 
-    public String findIrrigationAndMeasuring(String corD) {
+    public String findIrrigationAndMeasuring(String coordinator) {
         String jsonresult = null;
 
         try {
             Integer idCord = null;
-            List<Integer> cordinIds = featureofinterestJpaRepository.getIdbyIdent(corD);
+            List<Integer> cordinIds = featureofinterestJpaRepository.getIdbyIdent(coordinator);
 
             Iterator itr = cordinIds.iterator();
             while (itr.hasNext()) {
@@ -376,11 +402,11 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
-    public String changeMeasuringFlag(int usid, long typeId) {
+    public String changeMeasuringFlag(String identifier, long typeId) {
         JSONObject returned = new JSONObject();
 
         try {
-            featureofinterestJpaRepository.setMeasuringFlag(usid, typeId);
+            featureofinterestJpaRepository.setMeasuringFlag(identifier, typeId);
             returned.put("Flag", "true");
             return returned.toString();
         } catch (Exception e) {
@@ -395,6 +421,23 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
         try {
             automaticWater = featureofinterestJpaRepository.getAutomaticWater(userid, identifier);
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+
+            // TODO get timezone from database
+            //TimeZone
+            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
+
+            // TODO create a function to reuturn the new datetime
+            //Convert time to UTC
+            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+            DateTime irrigdtFrom = LocalDateTime.parse(automaticWater.getFromtime(), dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
+            irrigdtFrom = irrigdtFrom.plusMillis(offset);
+            automaticWater.setFromtime(dtfInput.print(irrigdtFrom));
+            //
+            DateTime irrigdtUntil = LocalDateTime.parse(automaticWater.getUntiltime(), dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
+            irrigdtUntil = irrigdtUntil.plusMillis(offset);
+            automaticWater.setFromtime(dtfInput.print(irrigdtUntil));
+
             return automaticWater;
         } catch (Exception exc) {
             exc.printStackTrace();
