@@ -29,7 +29,7 @@ public class Featureofinterest {
     @Column(name = "featureofinteresttypeid")
     private long featureofinteresttypeid;
 
-    @Column(length = 255, name = "identifier")
+    @Column(length = 255, name = "identifier", nullable = false, unique = true)
     private String identifier;
 
     @Column(name = "codespaceid")
@@ -44,9 +44,8 @@ public class Featureofinterest {
     @Column(length = 255, name = "url")
     private String url;
 
-    @Column(name="parentId")
+    @Column(name = "parentId")
     private Long parentid;
-
 
     @Column(name = "datetimefrom")
     private Timestamp datetimefrom;
@@ -59,6 +58,9 @@ public class Featureofinterest {
 
     @Column(name = "measuring")
     private Boolean measuring;
+
+    @Column(name = "timezone", length = 50, nullable = false)
+    private String timezone;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "featureofinteresttypeid", insertable = false, updatable = false)
@@ -90,7 +92,7 @@ public class Featureofinterest {
     @JoinColumn(name = "parentid", insertable = false, updatable = false)
     private Featureofinterest parentFeature;
 
-    @OneToMany(mappedBy = "parentFeature",fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "parentFeature", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<Featureofinterest> childrenFeatures;
 
     //@ManyToOne(fetch = FetchType.LAZY, optional = true)
@@ -100,16 +102,17 @@ public class Featureofinterest {
     //private List<Featureofinterest> childrenFeatures;
 
 
-    public Featureofinterest() { }
+    public Featureofinterest() {
+    }
 
-    public Featureofinterest(Integer featureofinterestid, String identifier, String name,  long featureofinteresttypeid) {
+    public Featureofinterest(Integer featureofinterestid, String identifier, String name, long featureofinteresttypeid) {
         this.featureofinterestid = featureofinterestid;
         this.identifier = identifier;
         this.name = name;
         this.featureofinteresttypeid = featureofinteresttypeid;
     }
 
-    public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, Long parentid, Timestamp datetimefrom, Timestamp datetimeto, Boolean irrigation, Boolean measuring, Featureofinteresttype featureofinteresttype, Point geom, int userid, BigDecimal waterConsumption) {
+    public Featureofinterest(String hibernatediscriminator, long featureofinteresttypeid, String identifier, Long codespaceid, String name, String descriptionxml, String url, Long parentid, Timestamp datetimefrom, Timestamp datetimeto, Boolean irrigation, Boolean measuring, Featureofinteresttype featureofinteresttype, Point geom, int userid, BigDecimal waterConsumption, String timezone) {
         this.hibernatediscriminator = hibernatediscriminator;
         this.featureofinteresttypeid = featureofinteresttypeid;
         this.identifier = identifier;
@@ -126,6 +129,7 @@ public class Featureofinterest {
         this.geom = geom;
         this.userid = userid;
         this.waterConsumption = waterConsumption;
+        this.timezone = timezone;
     }
 
     public List<ObservablePropertyMinMax> getObspropminmaxList() {
@@ -302,5 +306,13 @@ public class Featureofinterest {
 
     public void setWaterConsumption(BigDecimal waterConsumption) {
         this.waterConsumption = waterConsumption;
+    }
+
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
     }
 }

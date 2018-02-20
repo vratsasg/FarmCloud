@@ -36,13 +36,6 @@ public class AutomaticWater {
         this.identifier = identifier;
     }
 
-    public AutomaticWater(Timestamp fromtime, Timestamp untiltime, BigDecimal wateringConsumption, String identifier) {
-        this.fromtime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(fromtime);
-        this.untiltime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(untiltime);
-        this.wateringConsumption = wateringConsumption;
-        this.identifier = identifier;
-    }
-
     public AutomaticWater(Date fromtime, Date untiltime, BigDecimal wateringConsumption, String identifier) {
         this.fromtime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(fromtime);
         this.untiltime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(untiltime);

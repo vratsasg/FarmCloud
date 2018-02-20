@@ -1,13 +1,12 @@
 package com.webstart.Enums;
 
-public enum FeatureTypeEnum {
-    CROP(1),
-    STATION(2),
-    END_DEVICE(3);
+public enum StatusTimeConverterEnum {
+    TO_UTC(1),
+    TO_TIMEZONE(2);
 
     private final int value;
 
-    FeatureTypeEnum(final int newValue) {
+    StatusTimeConverterEnum(final int newValue) {
         value = newValue;
     }
 
@@ -15,4 +14,3 @@ public enum FeatureTypeEnum {
         return value;
     }
 }
-

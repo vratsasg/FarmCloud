@@ -9,10 +9,17 @@ import com.webstart.DTO.ObservableMeasure;
 import com.webstart.DTO.ValueTime;
 import com.webstart.DTO.WateringMeasure;
 import com.webstart.DTO.WateringValueTime;
+import com.webstart.Enums.StatusTimeConverterEnum;
+import com.webstart.Helpers.HelperCls;
 import com.webstart.model.Users;
 import com.webstart.service.ObservationProperyService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,11 +33,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.TimeZone;
 
 
 @Controller
@@ -40,18 +47,21 @@ public class ExtractController {
     @Autowired
     ObservationProperyService observationProperyService;
 
-    @RequestMapping(value = "csv", params = {"id", "mydevice", "dtstart", "dtend"}, method = RequestMethod.POST)
-    public void getCsv(@RequestParam("id") Long id, @RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "{observablepropertyid}/{mydevice}/csv", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
+    public void getCsv(@PathVariable("observablepropertyid") Long observablepropertyid, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/plain");
         String reportName = "Measures.csv";
         response.setHeader("Content-disposition", "attachment; filename=" + reportName);
 
         try {
             Users user = (Users) request.getSession().getAttribute("current_user");
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date from = dateFormat.parse(datetimestart);
-            Date to = dateFormat.parse(datetimeend);
-            ObservableMeasure observableMeasure = observationProperyService.getObservationData(id, user.getUser_id(), mydevice, from, to);
+            // DateTime Convertable
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            //
+            ObservableMeasure observableMeasure = observationProperyService.getObservationData(observablepropertyid, user.getUser_id(), mydevice, from, to);
 
             ArrayList<String> rows = new ArrayList<String>();
             rows.add("Measure date & time");
@@ -84,19 +94,22 @@ public class ExtractController {
         }
     }
 
-    @RequestMapping(value = "wateringCsv", params = {"mydevice", "dtstart", "dtend"}, method = RequestMethod.POST)
-    public void getCsv(@RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "{mydevice}/watering/csv", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
+    public void getCsv(@PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/plain");
         String reportName = "Watering_Measures.csv";
         response.setHeader("Content-disposition", "attachment; filename=" + reportName);
 
         try {
             Users user = (Users) request.getSession().getAttribute("current_user");
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date from = dateFormat.parse(datetimestart);
-            Date to = dateFormat.parse(datetimeend);
+            // DateTime Convertable
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            //
             WateringMeasure wateringMeasure = observationProperyService.getWateringData(user.getUser_id(), mydevice, from, to);
-
+            //
             ArrayList<String> rows = new ArrayList<String>();
             rows.add("Watering Time from");
             rows.add(";");
@@ -136,18 +149,23 @@ public class ExtractController {
     }
 
 
-    @RequestMapping(value = "pdf", params = {"id", "mydevice", "dtstart", "dtend"}, method = RequestMethod.POST)
-    public ResponseEntity<byte[]> getPDF(@RequestParam("id") Long id, @RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
+    @RequestMapping(value = "{observablepropertyid}/{mydevice}/pdf", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
+    public ResponseEntity<byte[]> getPDF(@RequestParam("observablepropertyid") Long observablePropertyId, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         ObservableMeasure observableMeasure = null;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         byte[] contents;
 
         try {
             Users user = (Users) request.getSession().getAttribute("current_user");
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date from = dateFormat.parse(datetimestart);
-            Date to = dateFormat.parse(datetimeend);
-            observableMeasure = observationProperyService.getObservationData(id, user.getUser_id(), mydevice, from, to);
+
+            // DateTime Convertable
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            //
+            observableMeasure = observationProperyService.getObservationData(observablePropertyId, user.getUser_id(), mydevice, from, to);
+            //
             com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
             PdfWriter.getInstance(doc, byteArrayOutputStream);  // Do this BEFORE document.open()
             doc.open();
@@ -171,19 +189,22 @@ public class ExtractController {
     }
 
 
-    @RequestMapping(value = "{mydevice}/wateringPdf", params = { "dtstart", "dtend"}, method = RequestMethod.POST)
-    public ResponseEntity<byte[]> getPDF(@RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request, @PathVariable("mydevice") String mydevice) {
+    @RequestMapping(value = "{mydevice}/watering/pdf", params = { "dtstart", "dtend"}, method = RequestMethod.POST)
+    public ResponseEntity<byte[]> getPDF(@PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         WateringMeasure wateringMeasure = null;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         byte[] contents;
 
         try {
             Users user = (Users) request.getSession().getAttribute("current_user");
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date from = dateFormat.parse(datetimestart);
-            Date to = dateFormat.parse(datetimeend);
-
+            // DateTime Convertable
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            //
             wateringMeasure = observationProperyService.getWateringData(user.getUser_id(), mydevice, from, to);
+            //
             com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
             PdfWriter.getInstance(doc, byteArrayOutputStream);  // Do this BEFORE document.open()
             doc.open();
@@ -207,19 +228,22 @@ public class ExtractController {
     }
 
 
-    @RequestMapping(value = "xls", params = {"id", "mydevice", "dtstart", "dtend"}, method = RequestMethod.POST)
-    public ResponseEntity<byte[]> getXlsx(@RequestParam("id") Long id, @RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
+    @RequestMapping(value = "{observablepropertyid}/{mydevice}/xls", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
+    public ResponseEntity<byte[]> getXlsx(@PathVariable("observablepropertyid") Long observablepropertyid, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         ObservableMeasure observableMeasure = null;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         byte[] contents;
 
         try {
             Users user = (Users) request.getSession().getAttribute("current_user");
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date from = dateFormat.parse(datetimestart);
-            Date to = dateFormat.parse(datetimeend);
-            observableMeasure = observationProperyService.getObservationData(id, user.getUser_id(), mydevice, from, to);
 
+            // DateTime Convertable
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            //
+            observableMeasure = observationProperyService.getObservationData(observablepropertyid, user.getUser_id(), mydevice, from, to);
             //Create excel document
             HSSFWorkbook wbook = createXlsx(observableMeasure);
             wbook.write(byteArrayOutputStream);
@@ -240,19 +264,21 @@ public class ExtractController {
         return response;
     }
 
-    @RequestMapping(value = "wateringXls", params = {"mydevice", "dtstart", "dtend"}, method = RequestMethod.POST)
-    public ResponseEntity<byte[]> getXlsx(@RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
+    @RequestMapping(value = "{mydevice}/watering/xls", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
+    public ResponseEntity<byte[]> getXlsx(@PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         WateringMeasure wateringMeasure = null;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         byte[] contents;
 
         try {
             Users user = (Users) request.getSession().getAttribute("current_user");
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date from = dateFormat.parse(datetimestart);
-            Date to = dateFormat.parse(datetimeend);
+            // DateTime Convertable
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            //
             wateringMeasure = observationProperyService.getWateringData(user.getUser_id(), mydevice, from, to);
-
             //Create excel document
             HSSFWorkbook wbook = createXlsx(wateringMeasure);
             wbook.write(byteArrayOutputStream);

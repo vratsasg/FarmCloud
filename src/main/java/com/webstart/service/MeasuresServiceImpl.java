@@ -3,6 +3,8 @@ package com.webstart.service;
 import com.webstart.DTO.AutomaticWater;
 import com.webstart.DTO.CurrentMeasure;
 import com.webstart.DTO.EmbeddedData;
+import com.webstart.Enums.StatusTimeConverterEnum;
+import com.webstart.Helpers.HelperCls;
 import com.webstart.model.NumericValue;
 import com.webstart.model.Observation;
 import com.webstart.repository.*;
@@ -149,24 +151,17 @@ public class MeasuresServiceImpl implements MeasureService {
             BigDecimal waterCons = featureofinterestJpaRepository.getWaterConsumption(automaticWater.getIdentifier()).get(0);
 
             DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMddHHmmss");
+
+            // DateTime Convertable
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-
-            // TODO get timezone from database
-            //TimeZone
-            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
-
-            // TODO create a function to reuturn the new datetime
-            //Convert time to UTC
-            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
-            DateTime irrigdtFrom = LocalDateTime.parse(automaticWater.getFromtime(), dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
-            irrigdtFrom = irrigdtFrom.minusMillis(offset);
-            DateTime irrigdtUntil = LocalDateTime.parse(automaticWater.getUntiltime(), dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
-            irrigdtUntil = irrigdtUntil.minusMillis(offset);
-
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            DateTime from = convertable.GetUTCDateTime(automaticWater.getFromtime(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC);
+            DateTime to = convertable.GetUTCDateTime(automaticWater.getUntiltime(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC);
+            //
             Observation observation = new Observation();
             observation.setSeriesid(seriesid);
-            observation.setPhenomenontimestart(new Timestamp(irrigdtFrom.getMillis()));
-            observation.setPhenomenontimeend(new Timestamp(irrigdtUntil.getMillis()));
+            observation.setPhenomenontimestart(new Timestamp(from.getMillis()));
+            observation.setPhenomenontimeend(new Timestamp(to.getMillis()));
 
             observation.setIdentifier(dtf.print(new DateTime(DateTimeZone.UTC)) + "-" + java.util.UUID.randomUUID());
             observation.setUnitid((long) 22);
@@ -175,7 +170,7 @@ public class MeasuresServiceImpl implements MeasureService {
 
             NumericValue numericValue = new NumericValue();
             numericValue.setObservationid(observation.getObservationid());
-            float diffmilliSec = irrigdtUntil.getMillis() - irrigdtFrom.getMillis();
+            float diffmilliSec = from.getMillis() - to.getMillis();
             numericValue.setValue(new BigDecimal((diffmilliSec / 1000.0 / 3600.0) * waterCons.doubleValue()));
             numericValueJpaRepository.save(numericValue);
         } catch (Exception e) {
