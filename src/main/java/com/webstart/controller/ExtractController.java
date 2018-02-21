@@ -61,7 +61,8 @@ public class ExtractController {
             Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
             Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
             //
-            ObservableMeasure observableMeasure = observationProperyService.getObservationData(observablepropertyid, user.getUser_id(), mydevice, from, to);
+//            ObservableMeasure observableMeasure = observationProperyService.getObservationData(observablepropertyid, user.getUser_id(), mydevice, from, to);
+            ObservableMeasure observableMeasure = observationProperyService.getObservationData(observablepropertyid, 1, mydevice, from, to);
 
             ArrayList<String> rows = new ArrayList<String>();
             rows.add("Measure date & time");

@@ -3,9 +3,14 @@ package com.webstart.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.DTO.*;
+import com.webstart.Enums.FeatureTypeEnum;
+import com.webstart.Enums.StatusTimeConverterEnum;
+import com.webstart.Helpers.HelperCls;
 import com.webstart.model.Users;
 import com.webstart.service.*;
 import jdk.nashorn.internal.runtime.ParserException;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,13 +56,13 @@ public class HomeController {
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/firstPDev", method = RequestMethod.GET)
+    @RequestMapping(value = "/enddevice", method = RequestMethod.GET)
     public ResponseEntity<String> getFeatureEndDevices(HttpServletRequest request) {
         String jsonresult = null;
 
         try {
             Users users = (Users) request.getSession().getAttribute("current_user");
-            List<FeatureidIdentifier> results = featureofInterestService.findByUserAndType(users.getUser_id(), 3L);
+            List<FeatureidIdentifier> results = featureofInterestService.findByUserAndType(users.getUser_id(), FeatureTypeEnum.END_DEVICE.getValue());
             ObjectMapper mapper = new ObjectMapper();
             jsonresult = mapper.writeValueAsString(results);
         } catch (Exception e) {
@@ -73,7 +78,7 @@ public class HomeController {
 
         try {
             Users users = (Users) request.getSession().getAttribute("current_user");
-            List<FeatureidIdentifier> results = featureofInterestService.findByUserAndType(users.getUser_id(), 2L);
+            List<FeatureidIdentifier> results = featureofInterestService.findByUserAndType(users.getUser_id(), FeatureTypeEnum.STATION.getValue());
             jsonresult = featureofInterestService.findByFeatureofinterestid(results.get(0).getFeatureinterestid());
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,38 +94,42 @@ public class HomeController {
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/totalMeasuresCounter", params = {"id", "mydevice", "dtstart", "dtend"}, method = RequestMethod.GET)
-    public ResponseEntity<Long> getTotalMeasuresCounter(@RequestParam("id") Long id, @RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
+    @RequestMapping(value = "/{observablePropertyId}/{mydevice}/measures/counter", params = {"dtstart", "dtend"}, method = RequestMethod.GET)
+    public ResponseEntity<Long> getTotalMeasuresCounter(@PathVariable("observablePropertyId") Long observablePropertyId, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Long sentData = 0L;
 
         try {
-            Date from = dateFormat.parse(datetimestart);
-            Date to = dateFormat.parse(datetimeend);
-            sentData = observationProperyService.getObservationsCounter(id, users.getUser_id(), mydevice, from, to);
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            sentData = observationProperyService.getObservationsCounter(observablePropertyId, users.getUser_id(), mydevice, from, to);
         } catch (ParserException parseExc) {
             parseExc.printStackTrace();
-            new ResponseEntity<Long>(sentData, HttpStatus.EXPECTATION_FAILED);
+            new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             e.printStackTrace();
-            new ResponseEntity<Long>(sentData, HttpStatus.EXPECTATION_FAILED);
+            new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<Long>(sentData, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/getObspMeasures", params = {"id", "mydevice", "dtstart", "dtend"}, method = RequestMethod.GET)
-    public ResponseEntity<String> getMeasuresByObsProperty(@RequestParam("id") Long id, @RequestParam("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
-        JSONArray obj = new JSONArray();
+    @RequestMapping(value = "/{observablePropertyId}/{mydevice}/measures", params = {"dtstart", "dtend"}, method = RequestMethod.GET)
+    public ResponseEntity<String> getMeasuresByObsProperty(@PathVariable("observablePropertyId") Long observablePropertyId, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
+        if(users == null) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String sentData = null;
         try {
-            Date from = dateFormat.parse(datetimestart);
-            Date to = dateFormat.parse(datetimeend);
-            sentData = observationProperyService.getObservationsData(id, users.getUser_id(), mydevice, from, to);
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            sentData = observationProperyService.getObservationsData(observablePropertyId, users.getUser_id(), mydevice, from, to);
 
             if (sentData == null) {
                 sentData = "{\"unit\":\"\",\"measuredata\":[]}";
@@ -140,11 +149,13 @@ public class HomeController {
         Users user = (Users) request.getSession().getAttribute("current_user");
         int userid = user.getUser_id();
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String sentData = null;
         try {
-            Date from = dateFormat.parse(datetimestart);
-            Date to = dateFormat.parse(datetimeend);
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            //
             WateringMeasure wateringMeasure = observationProperyService.getWateringData(userid, mydevice, from, to);
 
             if (wateringMeasure == null) {
@@ -168,14 +179,14 @@ public class HomeController {
         return new ResponseEntity<String>(sentData, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/getLastMeasureDate", method = RequestMethod.GET)
+    @RequestMapping(value = "/measures/lastdate", method = RequestMethod.GET)
     public ResponseEntity<String> getMeasuresByObsProperty(HttpServletRequest request) {
         JSONArray obj = new JSONArray();
         Users users = (Users) request.getSession().getAttribute("current_user");
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String sentData = null;
         try {
+            //TODO change Date
             sentData = observationProperyService.getLastObservationsDate(users.getUser_id());
         } catch (Exception e) {
             e.printStackTrace();
@@ -187,10 +198,10 @@ public class HomeController {
     }
 
 
-    @RequestMapping(value = "/getLastMeasuresByDate", method = RequestMethod.GET)
+    @RequestMapping(value = "/{mydevice}/measures/last", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<ObservationMeasure> getMeasuresByObsProperty(@RequestParam("identifier") String mydevice, HttpServletRequest request) {
+    List<ObservationMeasure> getMeasuresByObsProperty(@PathVariable("mydevice") String mydevice, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
         List<ObservationMeasure> sentData = new ArrayList<ObservationMeasure>();
         try {
@@ -203,10 +214,10 @@ public class HomeController {
         return sentData;
     }
 
-    @RequestMapping(value = "/lastWateringMeasures", method = RequestMethod.GET)
+    @RequestMapping(value = "/{mydevice}/watering/last", method = RequestMethod.GET)
     public
     @ResponseBody
-    AutomaticWater getLastWateringMeasures(@RequestParam("identifier") String mydevice, HttpServletRequest request) {
+    AutomaticWater getLastWateringMeasures(@PathVariable("mydevice") String mydevice, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
         AutomaticWater sentData = null;
 
@@ -220,9 +231,6 @@ public class HomeController {
         return sentData;
     }
 
-//    @RequestMapping(value = "/{mydevice}/watering/measures", params = {"dtstart", "dtend"}, method = RequestMethod.GET)
-//    public ResponseEntity<String> getMeasuresByObsProperty(@RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request, @PathVariable("mydevice") String mydevice) {
-
     @RequestMapping(value = "/{mydevice}/irrigation/times",params = {"dtfrom", "dtto"}, method = RequestMethod.POST)
     public ResponseEntity setIrrigationDates(@PathVariable("mydevice") String mydevice, @RequestParam("dtfrom") String datefrom, @RequestParam("dtto") String dateto, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
@@ -231,7 +239,6 @@ public class HomeController {
             AutomaticWater automaticWater = new AutomaticWater(datefrom, dateto, new BigDecimal(0), mydevice);
             measureservice.saveMeasure(automaticWater);
             boolean sentData = featureofInterestService.setDeviceIrrigaDate(users.getUser_id(), mydevice, datefrom, dateto);
-//            boolean sentData = featureofInterestService.setDeviceIrrigaDate(1, mydevice, datefrom, dateto);
             if (!sentData)
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
@@ -257,7 +264,7 @@ public class HomeController {
         return new ResponseEntity<String>(jsonInString, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/wateringprofile/saveminmax", method = RequestMethod.POST)
+    @RequestMapping(value = "/wateringprofile/minmax", method = RequestMethod.POST)
     public
     @ResponseBody
     void saveWateringProfile(@RequestBody List<FeatureObsProp> featureObsPropList) {
@@ -272,16 +279,16 @@ public class HomeController {
         }
     }
 
-    @RequestMapping(value = "/automaticwater/getdates", method = RequestMethod.GET)
+    @RequestMapping(value = "{coordinator}/automaticwater/dates", method = RequestMethod.GET)
     public
     @ResponseBody
-    AutomaticWater getAutomaticWaterTimes(HttpServletRequest request, @RequestParam("identifier") String device) {
+    AutomaticWater getAutomaticWaterTimes(@PathVariable("coordinator") String coordinator, HttpServletRequest request) {
 //        String jsonInString = null;
         AutomaticWater automaticWater = null;
 
         try {
             Users users = (Users) request.getSession().getAttribute("current_user");
-            automaticWater = featureofInterestService.getAutomaticWater(users.getUser_id(), device);
+            automaticWater = featureofInterestService.getAutomaticWater(users.getUser_id(), coordinator);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -290,7 +297,7 @@ public class HomeController {
         return automaticWater;
     }
 
-    @RequestMapping(value = "/automaticwater/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/automaticwater/dates", method = RequestMethod.POST)
     public
     @ResponseBody
     void saveAutomacticWatering(HttpServletRequest request, @RequestBody AutomaticWater automaticWatering) {
@@ -303,7 +310,7 @@ public class HomeController {
         }
     }
 
-    @RequestMapping(value = "/myprofile/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/myprofile", method = RequestMethod.POST)
     public
     @ResponseBody
     void postSensor(@RequestBody List<FeatureSensor> featureSensorList) {
@@ -316,6 +323,5 @@ public class HomeController {
             exc.printStackTrace();
         }
     }
-
 
 }

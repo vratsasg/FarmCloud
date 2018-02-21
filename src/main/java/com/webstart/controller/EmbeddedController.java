@@ -29,12 +29,11 @@ public class EmbeddedController {
     @Autowired MeasureService measureService;
     @Autowired UsersService usersService ;
 
-    @RequestMapping(value = "savemeasures", method = RequestMethod.POST)
+    @RequestMapping(value = "measures", method = RequestMethod.POST)
     public @ResponseBody void postSensor(@RequestBody EmbeddedDataWrapper embeddedDataWrapper) {
         try {
             List<String> identList = new ArrayList<String>(new LinkedHashSet<String>(embeddedDataWrapper.GetFeatureIdentifiers()));
             List<FeatureidIdentifier> featureidIdentifiers = featureofInterestService.findFeatureIdByIdentifier(identList);
-            featureofInterestService.setFeatureMeasuringFalse(identList);
 
             for (final EmbeddedData embeddedData : embeddedDataWrapper.getEmList()) {
                 int featureofinterestid = 0;
@@ -48,12 +47,13 @@ public class EmbeddedController {
                 measureService.saveMeasure(seriesId, embeddedData);
             }
             usersService.createNewNotification(featureidIdentifiers.get(0).getUserId(), String.format("save new measures been taken for end devices: %s ", identList.toString()));
+            featureofInterestService.setFeatureMeasuringFalse(identList);
         } catch (Exception exc) {
             exc.printStackTrace();
         }
     }
 
-    @RequestMapping(value = "saveirrigation", method = RequestMethod.POST)
+    @RequestMapping(value = "irrigation", method = RequestMethod.POST)
     public @ResponseBody void postIrrigation(@RequestBody AutomaticWater automaticWater) {
         try {
             measureService.saveMeasure(automaticWater);
@@ -62,8 +62,8 @@ public class EmbeddedController {
         }
     }
 
-    @RequestMapping(value = "setup", method = RequestMethod.GET)
-    public ResponseEntity<String> getSetup(@RequestParam("identifier") String cordIdentifier) {
+    @RequestMapping(value = "{coordinator}/setup", method = RequestMethod.GET)
+    public ResponseEntity<String> getSetup(@PathVariable("coordinator") String cordIdentifier) {
         String JsonResp = null;
         try {
             EmebddedSetupDevicdeDto coordinatorSetuptimes = featureofInterestService.findCoordinatorTimes(cordIdentifier);
@@ -110,24 +110,22 @@ public class EmbeddedController {
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "measureIrrigation", method = RequestMethod.GET)
-    public ResponseEntity<String> getMeasuringIrrigation(@RequestParam("identifier") String coordinator) {
+    @RequestMapping(value = "{coordinator}/irrigation", method = RequestMethod.GET)
+    public ResponseEntity<String> getMeasuringIrrigation(@PathVariable("coordinator") String coordinator, HttpServletRequest request) {
         String JsonResp = null;
         JsonResp = featureofInterestService.findIrrigationAndMeasuring(coordinator);
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "{identifier}/measures", method = RequestMethod.GET)
-    public ResponseEntity<String> startMeasuring(@PathVariable("identifier") String identifier, HttpServletRequest request) {
+    @RequestMapping(value = "{coordinator}/measures", method = RequestMethod.GET)
+    public ResponseEntity<String> startMeasuring(@PathVariable("coordinator") String identifier) {
         String JsonResp = null;
-        //TODO change without userid from ControlPanel Service on angular
-        Users user = (Users) request.getSession().getAttribute("current_user");
         JsonResp = featureofInterestService.changeMeasuringFlag(identifier, FeatureTypeEnum.END_DEVICE.getValue());
         return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "endDeviceAddresses", method = RequestMethod.GET)
-    public ResponseEntity<String> getAllDevicesAddress(@RequestParam("identifier") String coordinator) {
+    @RequestMapping(value = "{coordinator}/enddevices", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllDevicesAddress(@PathVariable("coordinator") String coordinator) {
         String JsonResults = null;
 
         try {
@@ -157,8 +155,8 @@ public class EmbeddedController {
         return new ResponseEntity<String>(JsonResults, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "automaticwatering/save", method = RequestMethod.POST)
-    public @ResponseBody void saveAutomacticWateringObservation(HttpServletRequest request, @RequestBody AutomaticWater automaticWatering) {
+    @RequestMapping(value = "irrigation/automatic", method = RequestMethod.POST)
+    public @ResponseBody void saveAutomacticWateringObservation(@RequestBody AutomaticWater automaticWatering) {
         try {
             List<String> identifiers = Arrays.asList(automaticWatering.getIdentifier());
             Long featureId = featureofInterestService.findIdsByIdentifier(identifiers).get(0);
@@ -170,8 +168,8 @@ public class EmbeddedController {
         }
     }
 
-    @RequestMapping(value = "manualwatering/save", method = RequestMethod.POST)
-    public @ResponseBody void saveAutomacticWatering(HttpServletRequest request, @RequestBody AutomaticWater automaticWatering) {
+    @RequestMapping(value = "irrigation/manual", method = RequestMethod.POST)
+    public @ResponseBody void saveAutomacticWatering(@RequestBody AutomaticWater automaticWatering) {
         try {
             String identifier = automaticWatering.getIdentifier();
             measureService.saveMeasure(automaticWatering);

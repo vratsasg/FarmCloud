@@ -3,10 +3,15 @@ package com.webstart.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.DTO.*;
+import com.webstart.Enums.StatusTimeConverterEnum;
+import com.webstart.Helpers.HelperCls;
 import com.webstart.model.*;
 import com.webstart.repository.FeatureofinterestJpaRepository;
 import com.webstart.repository.ObservablePropertyJpaRepository;
 import com.webstart.repository.ObservationJpaRepository;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 
 import java.sql.Timestamp;
+import java.time.format.ResolverStyle;
 import java.util.*;
 
 
@@ -153,7 +159,12 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             while (itr.hasNext()) {
                 Object[] objec = (Object[]) itr.next();
                 //Object[] objValueTime = new Object[2];
-                Timestamp tTime = (java.sql.Timestamp) objec[2];
+                //TODO change time to timezone
+                DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+                DateTime dt = convertable.GetUTCDateTime(objec[2].toString(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
+//                Timestamp tTime = (java.sql.Timestamp) objec[2];
+                Timestamp tTime = new Timestamp(dt.getMillis());
                 ls.add(new ValueTime((tTime.getTime() - 60L * 60L * 1000L) / 1000L, (BigDecimal) objec[3], tTime));
             }
 
