@@ -24,7 +24,7 @@ public interface ObservationJpaRepository extends JpaRepository<Observation, Lon
             "where fi.identifier = ?1 and obs.phenomenontimestart >= ?2 AND obs.phenomenontimestart <= ?3 " +
             "order by obs.phenomenontimestart",
             nativeQuery = true)
-    List<CurrentMeasure> findCurrentMeasure(String ident, Timestamp t1, Timestamp t2);
+    List<CurrentMeasure> findCurrentMeasure(String identifier, Timestamp t1, Timestamp t2);
 
     @Query(value = "select feat.identifier, obsprop.Description, obs.phenomenontimestart, num.value, u.unit " +
             "from Observation obs " +

@@ -105,7 +105,6 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
             nativeQuery = true)
     List<Object[]> getCoordinatorTimes(@Param("identifier") String identifier);
 
-    // TODO change from hout ro hour because time is on utc
     @Query(value = "select fi.identifier, " +
             "to_char(childfi.datetimefrom, 'HH24') as fromhour, " +
             "to_char(childfi.datetimefrom, 'MI') as fromminute, " +

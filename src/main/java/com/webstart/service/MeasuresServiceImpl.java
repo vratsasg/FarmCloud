@@ -46,6 +46,7 @@ public class MeasuresServiceImpl implements MeasureService {
 
         try {
             Timestamp timestampTo = observationJpaRepository.fiindlastdatetime(id);
+            //substract one day
             Timestamp timestampFrom = new Timestamp(timestampTo.getTime() - 24 * 60 * 60 * 1000);
 
             observationList = observationJpaRepository.findCurrentMeasure(id, timestampFrom, timestampTo);
@@ -63,7 +64,11 @@ public class MeasuresServiceImpl implements MeasureService {
                 JSONArray internvalues = new JSONArray();
 
                 String value = String.valueOf(object[2]);
-                String strTd = String.valueOf(((Timestamp) object[1]).getTime() / 1000L);
+                DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+                DateTime dt = convertable.GetUTCDateTime(object[1].toString(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
+                Timestamp time = new Timestamp(dt.getMillis());
+                String strTd = String.valueOf(time.getTime() / 1000L);
                 internvalues.add(strTd);
                 internvalues.add(value);
 

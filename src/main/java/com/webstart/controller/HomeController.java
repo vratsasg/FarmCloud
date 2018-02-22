@@ -34,8 +34,6 @@ public class HomeController {
     @Autowired
     FeatureofInterestService featureofInterestService;
     @Autowired
-    UsersService usersService;
-    @Autowired
     ObservationProperyService observationProperyService;
     @Autowired
     MeasureService measureservice;
@@ -186,7 +184,6 @@ public class HomeController {
 
         String sentData = null;
         try {
-            //TODO change Date
             sentData = observationProperyService.getLastObservationsDate(users.getUser_id());
         } catch (Exception e) {
             e.printStackTrace();

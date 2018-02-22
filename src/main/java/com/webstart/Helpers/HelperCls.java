@@ -15,7 +15,6 @@ public class HelperCls {
             //TimeZone
             TimeZone tz = TimeZone.getTimeZone(timezone);
 
-            // TODO create a function to reuturn the new datetime
             //Convert time to UTC
             int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
             DateTime irrigdtFrom = LocalDateTime.parse(dt, dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));

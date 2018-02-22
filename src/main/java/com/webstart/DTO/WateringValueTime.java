@@ -1,9 +1,7 @@
 package com.webstart.DTO;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 

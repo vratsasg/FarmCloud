@@ -10,6 +10,7 @@ import com.webstart.repository.FeatureofinterestJpaRepository;
 import com.webstart.repository.ObservablePropertyJpaRepository;
 import com.webstart.repository.ObservationJpaRepository;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
@@ -21,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 
 import java.sql.Timestamp;
-import java.time.format.ResolverStyle;
 import java.util.*;
 
 
@@ -79,12 +79,14 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
 
             Iterator itr = listofObjs.iterator();
             while (itr.hasNext()) {
-                Object[] objec = (Object[]) itr.next();
-                //Object[] objValueTime = new Object[2];
+//                Object[] object = (Object[]) itr.next();
+                Object[] objValueTime = new Object[2];
 
-                Timestamp tTime = (java.sql.Timestamp) objec[2];
-                // TODO change all dates add offset
-                ls.add(new ValueTime((tTime.getTime() - 60L * 60L * 1000L) / 1000L, (BigDecimal) objec[3], tTime));
+                DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+                DateTime dt = convertable.GetUTCDateTime(objValueTime[2].toString(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
+                Timestamp tTime = new Timestamp(dt.getMillis());
+                ls.add(new ValueTime((tTime.getTime() - 60L * 60L * 1000L) / 1000L, (BigDecimal) objValueTime[3], tTime));
             }
 
             obsMeasure.setMeasuredata(ls);
@@ -122,7 +124,11 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             Iterator itr = listofObjs.iterator();
             while (itr.hasNext()) {
                 Object[] objec = (Object[]) itr.next();
-                ls.add(new WateringValueTime((BigDecimal) objec[4], (java.sql.Timestamp) objec[2], (java.sql.Timestamp) objec[3]));
+                DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+                DateTime dtfrom = convertable.GetUTCDateTime(objec[2].toString(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
+                DateTime dtuntil = convertable.GetUTCDateTime(objec[3].toString(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
+                ls.add(new WateringValueTime((BigDecimal) objec[4], new Timestamp(dtfrom.getMillis()), new Timestamp(dtuntil.getMillis())));
             }
 
             wateringMeasure.setMeasuredata(ls);
@@ -158,12 +164,10 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
 
             while (itr.hasNext()) {
                 Object[] objec = (Object[]) itr.next();
-                //Object[] objValueTime = new Object[2];
-                //TODO change time to timezone
+
                 DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
                 HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
                 DateTime dt = convertable.GetUTCDateTime(objec[2].toString(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
-//                Timestamp tTime = (java.sql.Timestamp) objec[2];
                 Timestamp tTime = new Timestamp(dt.getMillis());
                 ls.add(new ValueTime((tTime.getTime() - 60L * 60L * 1000L) / 1000L, (BigDecimal) objec[3], tTime));
             }
@@ -182,6 +186,19 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
 
         try {
             Timestamp lastdate = observationJpaRepository.findlastdatetime(userId);
+
+            //TODO create a function with timestamp
+            //TimeZone
+            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
+
+            //Convert time to UTC
+            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+            Calendar cal = Calendar.getInstance();
+
+            cal.setTimeInMillis(lastdate.getTime());
+            cal.add(Calendar.MILLISECOND, offset);
+            lastdate = new Timestamp(cal.getTime().getTime());
+
             ObjectMapper mapper = new ObjectMapper();
             jsonInString = mapper.writeValueAsString(lastdate);
 
@@ -210,9 +227,13 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             Iterator itr = listMeasures.iterator();
 
             while (itr.hasNext()) {
-                Object[] objec = (Object[]) itr.next();
-                Timestamp tTime = (java.sql.Timestamp) objec[1];
-                ls.add(new ObservationMeasure((tTime.getTime() - 60L * 60L * 1000L) / 1000L, (BigDecimal) objec[2], tTime, objec[3].toString(), objec[0].toString()));
+                Object[] obj = (Object[]) itr.next();
+
+                DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+                DateTime dt = convertable.GetUTCDateTime(obj[2].toString(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
+                Timestamp tTime = new Timestamp(dt.getMillis());
+                ls.add(new ObservationMeasure((tTime.getTime() - 60L * 60L * 1000L) / 1000L, (BigDecimal) obj[2], tTime, obj[3].toString(), obj[0].toString()));
             }
 
             //ObjectMapper mapper = new ObjectMapper();       //Object to JSON in String
@@ -237,10 +258,13 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             }
 
             Iterator itr = listMeasures.iterator();
-            //TODO add offset time for irrigation datetimes
             while (itr.hasNext()) {
-                Object[] object = (Object[]) itr.next();
-                automaticWater = new AutomaticWater(object[1].toString(), object[2].toString(), (BigDecimal) object[3], identifier);
+                Object[] obj = (Object[]) itr.next();
+                DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+                HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+                DateTime dtfrom = convertable.GetUTCDateTime(obj[2].toString(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
+                DateTime dtuntil = convertable.GetUTCDateTime(obj[2].toString(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
+                automaticWater = new AutomaticWater(dtfrom.toDate(), dtuntil.toDate(), (BigDecimal) obj[3], identifier);
             }
         } catch (Exception e) {
             e.printStackTrace();

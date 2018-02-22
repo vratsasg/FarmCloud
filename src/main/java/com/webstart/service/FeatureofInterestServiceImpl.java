@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.DTO.*;
 import com.webstart.Enums.FeatureTypeEnum;
+import com.webstart.Enums.StatusTimeConverterEnum;
+import com.webstart.Helpers.HelperCls;
 import com.webstart.model.*;
 import com.webstart.repository.FeatureofinterestJpaRepository;
 
@@ -422,21 +424,11 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         try {
             automaticWater = featureofinterestJpaRepository.getAutomaticWater(userid, identifier);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-
-            // TODO get timezone from database
-            //TimeZone
-            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
-
-            // TODO create a function to reuturn the new datetime
-            //Convert time to UTC
-            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
-            DateTime irrigdtFrom = LocalDateTime.parse(automaticWater.getFromtime(), dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
-            irrigdtFrom = irrigdtFrom.plusMillis(offset);
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            DateTime irrigdtFrom = convertable.GetUTCDateTime(automaticWater.getFromtime(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
             automaticWater.setFromtime(dtfInput.print(irrigdtFrom));
-            //
-            DateTime irrigdtUntil = LocalDateTime.parse(automaticWater.getUntiltime(), dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
-            irrigdtUntil = irrigdtUntil.plusMillis(offset);
-            automaticWater.setFromtime(dtfInput.print(irrigdtUntil));
+            DateTime irrigdtUntil = convertable.GetUTCDateTime(automaticWater.getUntiltime(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
+            automaticWater.setUntiltime(dtfInput.print(irrigdtUntil));
 
             return automaticWater;
         } catch (Exception exc) {
@@ -449,13 +441,16 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
     public boolean setDeviceIrrigaDate(int usid, String device, String from, String to) {
         try {
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-            //TimeZone
-            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
-            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
-            DateTime irrigdtFrom = LocalDateTime.parse(from, dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
-            irrigdtFrom = irrigdtFrom.minusMillis(offset);
-            DateTime irrigdtUntil = LocalDateTime.parse(to, dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
-            irrigdtUntil = irrigdtUntil.minusMillis(offset);
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            DateTime irrigdtFrom = convertable.GetUTCDateTime(from, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC);
+            DateTime irrigdtUntil = convertable.GetUTCDateTime(to, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC);
+
+//            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
+//            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+//            DateTime irrigdtFrom = LocalDateTime.parse(from, dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
+//            irrigdtFrom = irrigdtFrom.minusMillis(offset);
+//            DateTime irrigdtUntil = LocalDateTime.parse(to, dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
+//            irrigdtUntil = irrigdtUntil.minusMillis(offset);
 
             featureofinterestJpaRepository.setDeviceIrrigDates(usid, device, new Timestamp(irrigdtFrom.getMillis()), new Timestamp(irrigdtUntil.getMillis()));
             return true;
@@ -485,16 +480,11 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         try {
 
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-            //TimeZone
-            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
 
-            // TODO create a function to reuturn the new datetime
             //Convert time to UTC
-            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
-            DateTime irrigdtFrom = LocalDateTime.parse(automaticWater.getFromtime(), dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
-            irrigdtFrom = irrigdtFrom.minusMillis(offset);
-            DateTime irrigdtUntil = LocalDateTime.parse(automaticWater.getUntiltime(), dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
-            irrigdtUntil = irrigdtUntil.minusMillis(offset);
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            DateTime irrigdtFrom = convertable.GetUTCDateTime(automaticWater.getFromtime(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC);
+            DateTime irrigdtUntil = convertable.GetUTCDateTime(automaticWater.getUntiltime(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC);
 
             featureofinterestJpaRepository.setCoordinatorAlgorithmParams(automaticWater.getIdentifier(), new Timestamp(irrigdtFrom.getMillis()), new Timestamp(irrigdtUntil.getMillis()), automaticWater.getWateringConsumption());
         } catch (Exception e) {
