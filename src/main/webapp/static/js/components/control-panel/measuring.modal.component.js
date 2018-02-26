@@ -22,7 +22,7 @@
 
                     model.submit = function () {
                         console.log('you hit me!');
-                        ControlPanelService.setMeasuringFlags(model.coordinator).then(
+                        ControlPanelService.setMeasuringFlags(model.coordinator.identifier).then(
                             function (returnedData) {
                                 defer.resolve(returnedData);
                                 instance.close(returnedData);

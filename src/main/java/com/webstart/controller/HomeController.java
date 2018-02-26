@@ -39,14 +39,14 @@ public class HomeController {
     MeasureService measureservice;
 
 
-    @RequestMapping(value = "/obsproperties", method = RequestMethod.GET)
+    @RequestMapping(value = "/observableproperties", method = RequestMethod.GET)
     public ResponseEntity<String> getObsProperties() {
         JSONObject obj = new JSONObject();
         obj = observationProperyService.getAllObsPropeties();
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    @RequestMapping(value = "/features/profile", method = RequestMethod.GET)
     public ResponseEntity<String> getProfile(HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
         JSONObject obj = featureofInterestService.findCropInfo(users.getUser_id());
@@ -54,7 +54,20 @@ public class HomeController {
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/enddevice", method = RequestMethod.GET)
+    @RequestMapping(value = "/features/profile", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    void postSensor(@RequestBody List<FeatureSensor> featureSensorList) {
+        try {
+            for (final FeatureSensor featureSensor : featureSensorList) {
+                featureofInterestService.setFeatureOfInterestData(featureSensor);
+            }
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "/enddevices", method = RequestMethod.GET)
     public ResponseEntity<String> getFeatureEndDevices(HttpServletRequest request) {
         String jsonresult = null;
 
@@ -70,7 +83,7 @@ public class HomeController {
         return new ResponseEntity<String>(jsonresult, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/coordinator/stationcoords", method = RequestMethod.GET)
+    @RequestMapping(value = "/station/coords", method = RequestMethod.GET)
     public ResponseEntity<String> getStationCoords(HttpServletRequest request) {
         String jsonresult = null;
 
@@ -92,7 +105,7 @@ public class HomeController {
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{observablePropertyId}/{mydevice}/measures/counter", params = {"dtstart", "dtend"}, method = RequestMethod.GET)
+    @RequestMapping(value = "/{mydevice}/{observablePropertyId}/measures/counter", params = {"dtstart", "dtend"}, method = RequestMethod.GET)
     public ResponseEntity<Long> getTotalMeasuresCounter(@PathVariable("observablePropertyId") Long observablePropertyId, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
         Long sentData = 0L;
@@ -114,7 +127,7 @@ public class HomeController {
         return new ResponseEntity<Long>(sentData, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{observablePropertyId}/{mydevice}/measures", params = {"dtstart", "dtend"}, method = RequestMethod.GET)
+    @RequestMapping(value = "/{mydevice}/{observablePropertyId}/measures", params = {"dtstart", "dtend"}, method = RequestMethod.GET)
     public ResponseEntity<String> getMeasuresByObsProperty(@PathVariable("observablePropertyId") Long observablePropertyId, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
         if(users == null) {
@@ -280,8 +293,7 @@ public class HomeController {
     public
     @ResponseBody
     AutomaticWater getAutomaticWaterTimes(@PathVariable("coordinator") String coordinator, HttpServletRequest request) {
-//        String jsonInString = null;
-        AutomaticWater automaticWater = null;
+        AutomaticWater automaticWater;
 
         try {
             Users users = (Users) request.getSession().getAttribute("current_user");
@@ -304,20 +316,6 @@ public class HomeController {
             featureofInterestService.setAutomaticWateringTime(automaticWatering, userid);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    @RequestMapping(value = "/myprofile", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    void postSensor(@RequestBody List<FeatureSensor> featureSensorList) {
-        try {
-            for (final FeatureSensor featureSensor : featureSensorList) {
-                featureofInterestService.setFeatureOfInterestData(featureSensor);
-            }
-
-        } catch (Exception exc) {
-            exc.printStackTrace();
         }
     }
 

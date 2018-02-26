@@ -422,7 +422,7 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         AutomaticWater automaticWater = null;
 
         try {
-            automaticWater = featureofinterestJpaRepository.getAutomaticWater(userid, identifier);
+            automaticWater = featureofinterestJpaRepository.getAutomaticWaterByEndDevice(userid, identifier);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
             DateTime irrigdtFrom = convertable.GetUTCDateTime(automaticWater.getFromtime(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);

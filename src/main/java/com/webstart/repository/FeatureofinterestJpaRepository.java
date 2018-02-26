@@ -121,7 +121,7 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
             "FROM Featureofinterest as fi " +
             "JOIN fi.parentFeature as parent " +
             "WHERE fi.userid = :user_id and fi.identifier = :identifier and fi.featureofinteresttypeid = 3 ")
-    AutomaticWater getAutomaticWater(@Param("user_id") Integer userid, @Param("identifier") String identifier);
+    AutomaticWater getAutomaticWaterByEndDevice(@Param("user_id") Integer userid, @Param("identifier") String identifier);
 
     @Query("select parent.waterConsumption " +
             "from Featureofinterest as fi " +

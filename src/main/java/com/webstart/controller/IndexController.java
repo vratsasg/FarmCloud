@@ -29,9 +29,6 @@ public class IndexController {
     @Autowired
     private UsersService usersService;
 
-    private List<Users> usersList= new ArrayList<Users>();
-
-
     @RequestMapping(value="/",method= RequestMethod.GET)
     public String getIndexPage() {
         //  usersList= usersService.findAll();
@@ -67,10 +64,10 @@ public class IndexController {
 
     @RequestMapping(value = "/topbaruser", method = RequestMethod.GET)
     public ResponseEntity<String> getObsProperties(HttpServletRequest request) throws JsonProcessingException {
-        Users users = new Users();
-        Users finalUser = new Users();
-        JSONObject jsonObject = new JSONObject();
+        Users users;
         users = (Users) request.getSession().getAttribute("current_user");
+        //
+        JSONObject jsonObject;
         jsonObject = usersService.userByJson(users.getUser_id());
 
         return new ResponseEntity<String>(jsonObject.toJSONString(), HttpStatus.OK);

@@ -79,9 +79,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
 
             Iterator itr = listofObjs.iterator();
             while (itr.hasNext()) {
-//                Object[] object = (Object[]) itr.next();
-                Object[] objValueTime = new Object[2];
-
+                Object[] objValueTime = (Object[]) itr.next();
                 DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
                 HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
                 DateTime dt = convertable.GetUTCDateTime(objValueTime[2].toString(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
@@ -231,7 +229,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
 
                 DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
                 HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-                DateTime dt = convertable.GetUTCDateTime(obj[2].toString(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
+                DateTime dt = convertable.GetUTCDateTime(obj[1].toString(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
                 Timestamp tTime = new Timestamp(dt.getMillis());
                 ls.add(new ObservationMeasure((tTime.getTime() - 60L * 60L * 1000L) / 1000L, (BigDecimal) obj[2], tTime, obj[3].toString(), obj[0].toString()));
             }

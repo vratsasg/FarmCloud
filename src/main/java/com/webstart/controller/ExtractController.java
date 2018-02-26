@@ -47,7 +47,7 @@ public class ExtractController {
     @Autowired
     ObservationProperyService observationProperyService;
 
-    @RequestMapping(value = "{observablepropertyid}/{mydevice}/csv", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
+    @RequestMapping(value = "{mydevice}/{observablePropertyId}/csv", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
     public void getCsv(@PathVariable("observablepropertyid") Long observablepropertyid, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/plain");
         String reportName = "Measures.csv";
@@ -150,7 +150,7 @@ public class ExtractController {
     }
 
 
-    @RequestMapping(value = "{observablepropertyid}/{mydevice}/pdf", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
+    @RequestMapping(value = "{mydevice}/{observablePropertyId}/pdf", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
     public ResponseEntity<byte[]> getPDF(@RequestParam("observablepropertyid") Long observablePropertyId, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         ObservableMeasure observableMeasure = null;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -229,7 +229,7 @@ public class ExtractController {
     }
 
 
-    @RequestMapping(value = "{observablepropertyid}/{mydevice}/xls", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
+    @RequestMapping(value = "{mydevice}/{observablePropertyId}/xls", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
     public ResponseEntity<byte[]> getXlsx(@PathVariable("observablepropertyid") Long observablepropertyid, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         ObservableMeasure observableMeasure = null;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

@@ -7,7 +7,7 @@
     module.factory('ObservablePropertyService', ['$http', '$q', '$log', function ($http, $q, $log) {
             return {
                 getDevices: function () {
-                    return $http.get('firstPDev', {headers: {'Cache-Control': 'no-cache'}}).then(
+                    return $http.get('enddevices', {headers: {'Cache-Control': 'no-cache'}}).then(
                         function (response) {
                             console.log(response.data);
                             return response.data;
@@ -19,7 +19,7 @@
                         }
                     );
                 }, getMeasuresTotalCount: function (id, mydevice, datefrom, dateto) {
-                    return $http.get('totalMeasuresCounter?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto, {headers: {'Cache-Control': 'no-cache'}}).then(
+                    return $http.get(mydevice + '/' + id + '/measures/counter?dtstart=' + datefrom + '&dtend=' + dateto, {headers: {'Cache-Control': 'no-cache'}}).then(
                         function (response) {
                             console.log('Total rows: ' + response);
                             return response.data;
@@ -30,7 +30,7 @@
                         }
                     );
                 }, getMeasuresByProperty: function (id, mydevice, datefrom, dateto) {
-                    return $http.get('getObspMeasures?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto, {headers: {'Cache-Control': 'no-cache'}}).then(
+                    return $http.get(mydevice + '/' + id.toString() + '/measures?dtstart=' + datefrom + '&dtend=' + dateto, {headers: {'Cache-Control': 'no-cache'}}).then(
                         //"/search?fname="+fname"+"&lname="+lname
                         function (response) {
                             return response.data;
@@ -42,11 +42,9 @@
                     );
                 }, getMeasuresPdf: function (id, mydevice, datefrom, dateto) {
                     $http({
-                        //url: 'extract/pdf?id=' + id + '&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto,
-                        url: 'extract/pdf',
+                        url: 'extract/' + mydevice + '/' + id.toString() + '/pdf',
                         method: 'POST',
-                        params: {'id': id, 'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
-                        //params: {},
+                        params: {'dtstart': datefrom, 'dtend': dateto},
                         headers: {
                             'Content-type': 'application/pdf',
                         },
@@ -70,9 +68,9 @@
                     });
                 }, getMeasuresCsv: function (id, mydevice, datefrom, dateto) {
                     $http({
-                        url: 'extract/csv',
+                        url: 'extract/' + mydevice + '/' + id.toString() + '/csv',
                         method: 'POST',
-                        params: {'id': id, 'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
+                        params: {'dtstart': datefrom, 'dtend': dateto},
                         headers: {
                             'Content-type': 'application/csv',
                         },
@@ -96,9 +94,9 @@
                     });
                 }, getMeasuresXls: function (id, mydevice, datefrom, dateto) {
                     $http({
-                        url: 'extract/xls',
+                        url: 'extract/' + mydevice + '/' + id.toString() + '/xls',
                         method: 'POST',
-                        params: {'id': id, 'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
+                        params: {'dtstart': datefrom, 'dtend': dateto},
                         headers: {
                             'Content-type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                         },
@@ -121,9 +119,7 @@
                         log.error('Error: ' + status);
                     });
                 }
-
             }
         }]
     );
-
 }());
