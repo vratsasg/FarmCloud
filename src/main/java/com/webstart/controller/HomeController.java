@@ -243,24 +243,23 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/{mydevice}/watering/last", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    AutomaticWater getLastWateringMeasures(@PathVariable("mydevice") String mydevice, HttpServletRequest request) {
+    public ResponseEntity<?> getLastWateringMeasures(@PathVariable("mydevice") String mydevice, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
-        AutomaticWater sentData = null;
+        //AutomaticWater sentData = null;
+        ResponseEntity<AutomaticWater> sentData;
 
         try {
             sentData = observationProperyService.getLastWateringObsbyIdentifier(users.getUser_id(), mydevice);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
         return sentData;
     }
 
     @RequestMapping(value = "/{mydevice}/irrigation/times",params = {"dtfrom", "dtto"}, method = RequestMethod.POST)
-    public ResponseEntity setIrrigationDates(@PathVariable("mydevice") String mydevice, @RequestParam("dtfrom") String datefrom, @RequestParam("dtto") String dateto, HttpServletRequest request) {
+    public ResponseEntity<?> setIrrigationDates(@PathVariable("mydevice") String mydevice, @RequestParam("dtfrom") String datefrom, @RequestParam("dtto") String dateto, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
 
         try {

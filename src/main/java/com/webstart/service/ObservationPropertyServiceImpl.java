@@ -17,6 +17,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -254,7 +256,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
         return ls;
     }
 
-    public AutomaticWater getLastWateringObsbyIdentifier(int userId, String identifier) {
+    public ResponseEntity<AutomaticWater> getLastWateringObsbyIdentifier(int userId, String identifier) {
         AutomaticWater automaticWater = null;
 
         try {
@@ -264,7 +266,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             List<Object[]> listMeasures = observationJpaRepository.findLastWateringMeasures(userId, identifier, lastdate);
 
             if (listMeasures.size() == 0) {
-                return null;
+                return new ResponseEntity("Error: Last measure cannot found", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
             Iterator itr = listMeasures.iterator();
@@ -272,16 +274,16 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 Object[] obj = (Object[]) itr.next();
                 DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
                 HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-                DateTime dtfrom = convertable.GetUTCDateTime(obj[2].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
+                DateTime dtfrom = convertable.GetUTCDateTime(obj[1].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
                 DateTime dtuntil = convertable.GetUTCDateTime(obj[2].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
                 automaticWater = new AutomaticWater(dtfrom.toDate(), dtuntil.toDate(), (BigDecimal) obj[3], identifier);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return automaticWater;
+        return new ResponseEntity<AutomaticWater>(automaticWater, HttpStatus.OK);
     }
 
     public void setObservationMinmaxValues(List<FeatureMinMaxValue> observationMinmaxList) {

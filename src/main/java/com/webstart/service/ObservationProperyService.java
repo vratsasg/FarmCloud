@@ -2,6 +2,7 @@ package com.webstart.service;
 
 import com.webstart.DTO.*;
 import org.json.simple.JSONObject;
+import org.springframework.http.ResponseEntity;
 
 import java.security.Timestamp;
 import java.util.Date;
@@ -21,8 +22,8 @@ public interface ObservationProperyService {
     String getLastObservationsDate(int userId);
 
     List<ObservationMeasure> getLastObservationbyIdentifier(int userId, String identifier);
-
-    AutomaticWater getLastWateringObsbyIdentifier(int userId, String identifier);
-
+    //
+    ResponseEntity<AutomaticWater> getLastWateringObsbyIdentifier(int userId, String identifier);
+    //
     void setObservationMinmaxValues(List<FeatureMinMaxValue> observationMinmaxList);
 }

@@ -115,19 +115,20 @@ public class EmbeddedController {
     }
 
     @RequestMapping(value = "{coordinator}/measures", method = RequestMethod.GET)
-    public HttpStatus startMeasuring(@PathVariable("coordinator") String identifier) {
+    public ResponseEntity<?> startMeasuring(@PathVariable("coordinator") String identifier) {
         boolean status;
         try {
             status = featureofInterestService.changeMeasuringFlag(identifier, FeatureTypeEnum.END_DEVICE.getValue());
         } catch (Exception e){
-            return HttpStatus.INTERNAL_SERVER_ERROR;
+            return new ResponseEntity(e, HttpStatus.BAD_REQUEST);
+//            return HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
         if(!status) {
-            return HttpStatus.INTERNAL_SERVER_ERROR;
+            return new ResponseEntity("Error: measure cannot been saved correctly", HttpStatus.BAD_REQUEST);
         }
 
-        return HttpStatus.OK;
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = "{coordinator}/enddevices", method = RequestMethod.GET)

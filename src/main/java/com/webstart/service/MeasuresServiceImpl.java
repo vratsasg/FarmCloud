@@ -181,7 +181,7 @@ public class MeasuresServiceImpl implements MeasureService {
 
             NumericValue numericValue = new NumericValue();
             numericValue.setObservationid(observation.getObservationid());
-            float diffmilliSec = from.getMillis() - to.getMillis();
+            float diffmilliSec = to.getMillis() - from.getMillis();
             numericValue.setValue(new BigDecimal((diffmilliSec / 1000.0 / 3600.0) * waterCons.doubleValue()));
             numericValueJpaRepository.save(numericValue);
         } catch (Exception e) {
