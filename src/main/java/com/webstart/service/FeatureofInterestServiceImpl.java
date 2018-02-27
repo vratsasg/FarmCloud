@@ -1,5 +1,6 @@
 package com.webstart.service;
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.DTO.*;
@@ -8,9 +9,6 @@ import com.webstart.Enums.StatusTimeConverterEnum;
 import com.webstart.Helpers.HelperCls;
 import com.webstart.model.*;
 import com.webstart.repository.FeatureofinterestJpaRepository;
-
-import com.webstart.repository.NumericValueJpaRepository;
-import com.webstart.repository.ObservationJpaRepository;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -18,12 +16,9 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.Timestamp;
-import java.time.DateTimeException;
 import java.util.*;
 import java.util.List;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -256,8 +251,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             Setup.put("toSeconds", dtTO.getSecondOfDay());
 
             jsonRes = Setup.toJSONString();
-        } catch (DateTimeException exc) {
-            exc.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -429,18 +422,19 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
-    public String changeMeasuringFlag(String identifier, long typeId) {
-        JSONObject returned = new JSONObject();
-
+    public boolean changeMeasuringFlag(String identifier, long typeId) {
         try {
-            featureofinterestJpaRepository.setMeasuringFlag(identifier, typeId);
-            returned.put("Flag", "true");
-            return returned.toString();
+            List<String> endDeviceIdentifiers = featureofinterestJpaRepository.findEndDeviceIdentifiersByStation(identifier);
+            if(endDeviceIdentifiers.size() == 0){
+                throw new Exception("Station's identifier number is wrong");
+            }
+            featureofinterestJpaRepository.setMeasuringFlag(endDeviceIdentifiers, true);
         } catch (Exception e) {
             e.printStackTrace();
-            returned.put("Flag", "false");
-            return returned.toString();
+            return false;
         }
+
+        return true;
     }
 
     public AutomaticWater getAutomaticWater(int userid, String identifier) {
@@ -448,7 +442,9 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
         try {
             Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(identifier);
+            //
             automaticWater = featureofinterestJpaRepository.getAutomaticWaterByEndDevice(userid, identifier);
+            //
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
             DateTime irrigdtFrom = convertable.GetUTCDateTime(automaticWater.getFromtime(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
@@ -467,18 +463,12 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
     public boolean setDeviceIrrigaDate(int usid, String device, String from, String to) {
         try {
             Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(device);
+            //
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
             DateTime irrigdtFrom = convertable.GetUTCDateTime(from, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
             DateTime irrigdtUntil = convertable.GetUTCDateTime(to, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
-
-//            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
-//            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
-//            DateTime irrigdtFrom = LocalDateTime.parse(from, dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
-//            irrigdtFrom = irrigdtFrom.minusMillis(offset);
-//            DateTime irrigdtUntil = LocalDateTime.parse(to, dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
-//            irrigdtUntil = irrigdtUntil.minusMillis(offset);
-
+            //
             featureofinterestJpaRepository.setDeviceIrrigDates(usid, device, new Timestamp(irrigdtFrom.getMillis()), new Timestamp(irrigdtUntil.getMillis()));
             return true;
         } catch (Exception e) {
@@ -489,7 +479,7 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
     public void setFeatureMeasuringFalse(List<String> idertifierList) {
         try {
-            featureofinterestJpaRepository.setMeasuringFlagFalse(idertifierList);
+            featureofinterestJpaRepository.setMeasuringFlag(idertifierList, false);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -23,6 +23,13 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
 
     Featureofinterest getFeatureofinterestByIdentifier(String identifier);
 
+    List<String> getFeatureofinterestsByIdentifier(String identifier);
+
+    @Query("SELECT child.identifier FROM Featureofinterest f " +
+            "inner join f.childrenFeatures as child " +
+            "where f.identifier = :identifier and f.featureofinteresttypeid = 2")
+    List<String> findEndDeviceIdentifiersByStation(@Param("identifier") String identifier);
+
     @Query("select new com.webstart.model.Featureofinterest(fi.featureofinterestid, fi.identifier, fi.name, fi.featureofinteresttypeid) " +
             "from Featureofinterest as fi " +
             "WHERE fi.userid = :userid")
@@ -143,15 +150,19 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     @Transactional
     void setObservableMinmax(@Param("obspropid") Long obspropvalid, @Param("minval") BigDecimal minimum, @Param("maxval") BigDecimal maximum);
 
-    @Modifying
-    @Query("update Featureofinterest f set f.measuring = true where f.identifier = :identifier and f.featureofinteresttypeid = :tpid")
-    @Transactional
-    void setMeasuringFlag(@Param("identifier") String identifier, @Param("tpid") long ftypeid);
+//    @Modifying
+//    @Query("update Featureofinterest f set f.measuring = true where f.identifier = :identifier and f.featureofinteresttypeid = :tpid")
+//    @Modifying
+//    @Query("UPDATE Featureofinterest AS f, featureofinterest AS p SET f.measuring = true " +
+//            " INNER JOIN featureofinterest AS p " +
+//            " WHERE f.parentid = p.featureofinterestid and p.identifier = :identifier and f.featureofinteresttypeid = :tpid")
+//    @Transactional
+//    void setMeasuringFlag(@Param("identifier") String identifier, @Param("tpid") long ftypeid);
 
     @Modifying
-    @Query("update Featureofinterest f set f.measuring = false where f.identifier IN :identifierlist")
+    @Query("update Featureofinterest f set f.measuring = :flag where f.identifier IN :identifierlist")
     @Transactional
-    void setMeasuringFlagFalse(@Param("identifierlist") List<String> identifierlist);
+    void setMeasuringFlag(@Param("identifierlist") List<String> identifierlist, @Param("flag") boolean flag);
 
     @Modifying
     @Query("update Featureofinterest f set f.irrigation = true, f.datetimefrom = :dtfrom, f.datetimeto = :dtto " +

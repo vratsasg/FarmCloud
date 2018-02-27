@@ -7,9 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/**
- * Created by DimDesktop on 9/10/2016.
- */
 public interface SeriesJpaRepository extends JpaRepository<Series, Long> {
     @Query("select serie.seriesid FROM Series as serie " +
             "join serie.featureofinterest as fi " +

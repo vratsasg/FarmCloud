@@ -56,7 +56,6 @@
             },
             //
             getCoordinatorData: function (identifier) {
-                //TODO {coordinator}/automaticwater/dates
                 return $http.get(identifier + '/automaticwater/dates').then(
                     function (response) {
                         return response.data;
@@ -82,7 +81,7 @@
                 console.log(angular.toJson(coordData));
                 return $http({
                     method: 'POST',
-                    url: 'embedded/irrigation',
+                    url: 'automaticwater/dates',
                     data: angular.toJson(coordData),
                     headers: {'Content-Type': 'application/json'}
                 }).then(function (response) {

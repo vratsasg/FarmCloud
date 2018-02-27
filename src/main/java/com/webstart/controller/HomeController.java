@@ -18,13 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,8 +38,13 @@ public class HomeController {
 
 
     @RequestMapping(value = "/observableproperties", method = RequestMethod.GET)
-    public ResponseEntity<String> getObsProperties() {
+    public ResponseEntity<String> getObsProperties(HttpServletRequest request) {
         JSONObject obj = new JSONObject();
+        Users users = (Users) request.getSession().getAttribute("current_user");
+        if(users == null){
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
         obj = observationProperyService.getAllObsPropeties();
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.CREATED);
     }
@@ -50,22 +52,31 @@ public class HomeController {
     @RequestMapping(value = "/features/profile", method = RequestMethod.GET)
     public ResponseEntity<String> getProfile(HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
+        if(users == null){
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
         JSONObject obj = featureofInterestService.findCropInfo(users.getUser_id());
 
         return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/features/profile", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    void postSensor(@RequestBody List<FeatureSensor> featureSensorList) {
+    public @ResponseBody HttpStatus postSensor(@RequestBody List<FeatureSensor> featureSensorList, HttpServletRequest request) {
+        Users users = (Users) request.getSession().getAttribute("current_user");
+        if(users == null){
+            return HttpStatus.UNAUTHORIZED;
+        }
+
         try {
             for (final FeatureSensor featureSensor : featureSensorList) {
                 featureofInterestService.setFeatureOfInterestData(featureSensor);
             }
         } catch (Exception exc) {
             exc.printStackTrace();
+            return HttpStatus.INTERNAL_SERVER_ERROR;
         }
+        return HttpStatus.OK;
     }
 
     @RequestMapping(value = "/enddevices", method = RequestMethod.GET)
@@ -282,9 +293,12 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/wateringprofile/minmax", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    void saveWateringProfile(@RequestBody List<FeatureObsProp> featureObsPropList) {
+    public @ResponseBody ResponseEntity.BodyBuilder saveWateringProfile(@RequestBody List<FeatureObsProp> featureObsPropList, HttpServletRequest request) {
+        Users users = (Users) request.getSession().getAttribute("current_user");
+        if(users == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED);
+        }
+
         try {
             List<FeatureMinMaxValue> featureMinMaxValuesList = new ArrayList<FeatureMinMaxValue>();
             for (FeatureObsProp featureObsProp : featureObsPropList) {
@@ -293,13 +307,14 @@ public class HomeController {
             observationProperyService.setObservationMinmaxValues(featureMinMaxValuesList);
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        return ResponseEntity.status(HttpStatus.OK);
     }
 
     @RequestMapping(value = "{coordinator}/automaticwater/dates", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    AutomaticWater getAutomaticWaterTimes(@PathVariable("coordinator") String coordinator, HttpServletRequest request) {
+    public @ResponseBody AutomaticWater getAutomaticWaterTimes(@PathVariable("coordinator") String coordinator, HttpServletRequest request) {
         AutomaticWater automaticWater;
 
         try {
@@ -314,16 +329,20 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/automaticwater/dates", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    void saveAutomacticWatering(HttpServletRequest request, @RequestBody AutomaticWater automaticWatering) {
+    public @ResponseBody ResponseEntity saveAutomacticWatering(HttpServletRequest request, @RequestBody AutomaticWater automaticWatering) {
         try {
             Users user = (Users) request.getSession().getAttribute("current_user");
+            if(user == null){
+                return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            }
             int userid = user.getUser_id();
             featureofInterestService.setAutomaticWateringTime(automaticWatering, userid);
         } catch (Exception e) {
             e.printStackTrace();
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }

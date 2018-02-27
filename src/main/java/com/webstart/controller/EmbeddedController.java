@@ -5,12 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.DTO.*;
 import com.webstart.Enums.FeatureTypeEnum;
 import com.webstart.Enums.MeasurementTypeEnum;
-import com.webstart.model.*;
 import com.webstart.service.FeatureofInterestService;
 import com.webstart.service.MeasureService;
 import com.webstart.service.UsersService;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +53,7 @@ public class EmbeddedController {
     @RequestMapping(value = "irrigation", method = RequestMethod.POST)
     public @ResponseBody void postIrrigation(@RequestBody AutomaticWater automaticWater) {
         try {
-            measureService.saveMeasure(automaticWater);
+            this.measureService.saveMeasure(automaticWater);
         } catch (Exception exc) {
             exc.printStackTrace();
         }
@@ -118,10 +115,19 @@ public class EmbeddedController {
     }
 
     @RequestMapping(value = "{coordinator}/measures", method = RequestMethod.GET)
-    public ResponseEntity<String> startMeasuring(@PathVariable("coordinator") String identifier) {
-        String JsonResp = null;
-        JsonResp = featureofInterestService.changeMeasuringFlag(identifier, FeatureTypeEnum.END_DEVICE.getValue());
-        return new ResponseEntity<String>(JsonResp, HttpStatus.OK);
+    public ResponseEntity.BodyBuilder startMeasuring(@PathVariable("coordinator") String identifier) {
+        boolean status;
+        try {
+            status = featureofInterestService.changeMeasuringFlag(identifier, FeatureTypeEnum.END_DEVICE.getValue());
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if(!status) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK);
     }
 
     @RequestMapping(value = "{coordinator}/enddevices", method = RequestMethod.GET)

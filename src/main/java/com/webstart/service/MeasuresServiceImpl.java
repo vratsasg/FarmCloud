@@ -54,7 +54,7 @@ public class MeasuresServiceImpl implements MeasureService {
 
             observationList = observationJpaRepository.findCurrentMeasure(id, timestampFrom, timestampTo);
             List<String> observableProperyList = observablePropertyJpaRepository.findallObsProperty();
-            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(observationList.get(0).getIdentifier());
+            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(id);
 
             //Create a hash table with all observable properties
             Hashtable<String, JSONArray> obspropValues = new Hashtable<String, JSONArray>();

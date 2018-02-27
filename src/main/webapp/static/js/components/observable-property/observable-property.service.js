@@ -30,7 +30,7 @@
                         }
                     );
                 }, getMeasuresByProperty: function (id, mydevice, datefrom, dateto) {
-                    return $http.get(mydevice + '/' + id.toString() + '/measures?dtstart=' + datefrom + '&dtend=' + dateto, {headers: {'Cache-Control': 'no-cache'}}).then(
+                    return $http.get(mydevice + '/' + id + '/measures?dtstart=' + datefrom + '&dtend=' + dateto, {headers: {'Cache-Control': 'no-cache'}}).then(
                         //"/search?fname="+fname"+"&lname="+lname
                         function (response) {
                             return response.data;
@@ -42,7 +42,7 @@
                     );
                 }, getMeasuresPdf: function (id, mydevice, datefrom, dateto) {
                     $http({
-                        url: 'extract/' + mydevice + '/' + id.toString() + '/pdf',
+                        url: 'extract/' + mydevice + '/' + id + '/pdf',
                         method: 'POST',
                         params: {'dtstart': datefrom, 'dtend': dateto},
                         headers: {
@@ -59,7 +59,7 @@
                         var a = document.createElement('a');
                         a.href = fileURL;
                         a.target = '_blank';
-                        a.download = 'measures.pdf';
+                        a.download = 'measures-' + moment().format('YYYYMMDD_HHmmss') + '.pdf';
                         document.body.appendChild(a);
                         a.click();
                     }).error(function (data, status, headers, config) {
@@ -68,7 +68,7 @@
                     });
                 }, getMeasuresCsv: function (id, mydevice, datefrom, dateto) {
                     $http({
-                        url: 'extract/' + mydevice + '/' + id.toString() + '/csv',
+                        url: 'extract/' + mydevice + '/' + id + '/csv',
                         method: 'POST',
                         params: {'dtstart': datefrom, 'dtend': dateto},
                         headers: {
@@ -85,7 +85,7 @@
                         var a = document.createElement('a');
                         a.href = fileURL;
                         a.target = '_blank';
-                        a.download = 'measures.csv';
+                        a.download = 'measures-' + moment().format('YYYYMMDD_HHmmss') + '.csv';
                         document.body.appendChild(a);
                         a.click();
                     }).error(function (data, status, headers, config) {
@@ -94,7 +94,7 @@
                     });
                 }, getMeasuresXls: function (id, mydevice, datefrom, dateto) {
                     $http({
-                        url: 'extract/' + mydevice + '/' + id.toString() + '/xls',
+                        url: 'extract/' + mydevice + '/' + id + '/xls',
                         method: 'POST',
                         params: {'dtstart': datefrom, 'dtend': dateto},
                         headers: {
@@ -111,7 +111,7 @@
                         var a = document.createElement('a');
                         a.href = fileURL;
                         a.target = '_blank';
-                        a.download = 'measures.xls';
+                        a.download = 'measures-' + moment().format('YYYYMMDD_HHmmss') + '.xls';
                         document.body.appendChild(a);
                         a.click();
                     }).error(function (data, status, headers, config) {

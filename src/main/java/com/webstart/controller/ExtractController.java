@@ -51,9 +51,11 @@ public class ExtractController {
     @Autowired
     FeatureofInterestService featureofInterestService;
 
-    @RequestMapping(value = "{mydevice}/{observablePropertyId}/csv", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
+    @RequestMapping(value = "{mydevice}/{observablepropertyid}/csv", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
     public void getCsv(@PathVariable("observablepropertyid") Long observablepropertyid, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/plain");
+        DateTime.now().toString("yyyyMMddHHmmss");
+//        String reportName = String.format("Measures-%1$s.csv", DateTime.now().toString("yyyyMMddHHmmss"));
         String reportName = "Measures.csv";
         response.setHeader("Content-disposition", "attachment; filename=" + reportName);
 
@@ -157,8 +159,8 @@ public class ExtractController {
     }
 
 
-    @RequestMapping(value = "{mydevice}/{observablePropertyId}/pdf", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
-    public ResponseEntity<byte[]> getPDF(@RequestParam("observablepropertyid") Long observablePropertyId, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
+    @RequestMapping(value = "{mydevice}/{observablepropertyid}/pdf", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
+    public ResponseEntity<byte[]> getPDF(@PathVariable("observablepropertyid") Long observablePropertyId, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         ObservableMeasure observableMeasure = null;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         byte[] contents;
@@ -238,7 +240,7 @@ public class ExtractController {
     }
 
 
-    @RequestMapping(value = "{mydevice}/{observablePropertyId}/xls", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
+    @RequestMapping(value = "{mydevice}/{observablepropertyid}/xls", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
     public ResponseEntity<byte[]> getXlsx(@PathVariable("observablepropertyid") Long observablepropertyid, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         ObservableMeasure observableMeasure = null;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

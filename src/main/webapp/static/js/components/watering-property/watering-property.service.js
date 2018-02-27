@@ -58,7 +58,7 @@
                         var a = document.createElement('a');
                         a.href = fileURL;
                         a.target = '_blank';
-                        a.download = 'measures.pdf';
+                        a.download = 'measures-' + moment().format('YYYYMMDD_HHmmss') + '.pdf';
                         document.body.appendChild(a);
                         a.click();
                     }).error(function (data, status, headers, config) {
