@@ -6,6 +6,7 @@ import com.webstart.DTO.*;
 import com.webstart.Enums.FeatureTypeEnum;
 import com.webstart.Enums.StatusTimeConverterEnum;
 import com.webstart.Helpers.HelperCls;
+import com.webstart.model.Featureofinterest;
 import com.webstart.model.Users;
 import com.webstart.service.*;
 import jdk.nashorn.internal.runtime.ParserException;
@@ -108,13 +109,17 @@ public class HomeController {
     @RequestMapping(value = "/{mydevice}/{observablePropertyId}/measures/counter", params = {"dtstart", "dtend"}, method = RequestMethod.GET)
     public ResponseEntity<Long> getTotalMeasuresCounter(@PathVariable("observablePropertyId") Long observablePropertyId, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
+        if(users == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
         Long sentData = 0L;
 
         try {
+            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
             sentData = observationProperyService.getObservationsCounter(observablePropertyId, users.getUser_id(), mydevice, from, to);
         } catch (ParserException parseExc) {
             parseExc.printStackTrace();
@@ -131,15 +136,16 @@ public class HomeController {
     public ResponseEntity<String> getMeasuresByObsProperty(@PathVariable("observablePropertyId") Long observablePropertyId, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
         if(users == null) {
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
 
         String sentData = null;
         try {
+            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
             sentData = observationProperyService.getObservationsData(observablePropertyId, users.getUser_id(), mydevice, from, to);
 
             if (sentData == null) {
@@ -148,7 +154,7 @@ public class HomeController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<String>(sentData, HttpStatus.OK);
@@ -162,10 +168,11 @@ public class HomeController {
 
         String sentData = null;
         try {
+            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
             //
             WateringMeasure wateringMeasure = observationProperyService.getWateringData(userid, mydevice, from, to);
 

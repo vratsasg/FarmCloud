@@ -3,18 +3,11 @@ package com.webstart.DTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
-
-import static java.sql.Timestamp.*;
 
 public class EndDeviceStatusDTO {
 
@@ -47,20 +40,21 @@ public class EndDeviceStatusDTO {
     }
 
     public EndDeviceStatusDTO(String identifier, boolean irrigationStatus, boolean measuringStatus, Date fromtime, Date untiltime) {
-        //TimeZone
-        TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
-
-        //Convert time to UTC
-        int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
-        Calendar cal = Calendar.getInstance();
-
-        cal.setTimeInMillis(fromtime.getTime());
-        cal.add(Calendar.MILLISECOND, offset);
-        fromtime = new Timestamp(cal.getTime().getTime());
-
-        cal.setTimeInMillis(untiltime.getTime());
-        cal.add(Calendar.MILLISECOND, offset);
-        untiltime = new Timestamp(cal.getTime().getTime());
+        //TODO remove it from here
+//        //TimeZone
+//        TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
+//
+//        //Convert time to UTC
+//        int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+//        Calendar cal = Calendar.getInstance();
+//
+//        cal.setTimeInMillis(fromtime.getTime());
+//        cal.add(Calendar.MILLISECOND, offset);
+//        fromtime = new Timestamp(cal.getTime().getTime());
+//
+//        cal.setTimeInMillis(untiltime.getTime());
+//        cal.add(Calendar.MILLISECOND, offset);
+//        untiltime = new Timestamp(cal.getTime().getTime());
 
         this.identifier = identifier;
         this.irrigationStatus = irrigationStatus;

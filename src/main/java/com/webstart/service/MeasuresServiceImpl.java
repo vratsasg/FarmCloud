@@ -5,6 +5,7 @@ import com.webstart.DTO.CurrentMeasure;
 import com.webstart.DTO.EmbeddedData;
 import com.webstart.Enums.StatusTimeConverterEnum;
 import com.webstart.Helpers.HelperCls;
+import com.webstart.model.Featureofinterest;
 import com.webstart.model.NumericValue;
 import com.webstart.model.Observation;
 import com.webstart.repository.*;
@@ -39,6 +40,8 @@ public class MeasuresServiceImpl implements MeasureService {
     SeriesJpaRepository seriesJpaRepository;
     @Autowired
     FeatureofinterestJpaRepository featureofinterestJpaRepository;
+    @Autowired
+    FeatureofInterestService featureofInterestService;
 
     public JSONArray findDailyMeasure(String id) {
         JSONArray finalDataList = new JSONArray();
@@ -51,6 +54,7 @@ public class MeasuresServiceImpl implements MeasureService {
 
             observationList = observationJpaRepository.findCurrentMeasure(id, timestampFrom, timestampTo);
             List<String> observableProperyList = observablePropertyJpaRepository.findallObsProperty();
+            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(observationList.get(0).getIdentifier());
 
             //Create a hash table with all observable properties
             Hashtable<String, JSONArray> obspropValues = new Hashtable<String, JSONArray>();
@@ -63,10 +67,11 @@ public class MeasuresServiceImpl implements MeasureService {
                 Object[] object = (Object[]) itr.next();
                 JSONArray internvalues = new JSONArray();
 
+
                 String value = String.valueOf(object[2]);
                 DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
                 HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-                DateTime dt = convertable.GetUTCDateTime(object[1].toString(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
+                DateTime dt = convertable.GetUTCDateTime(object[1].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
                 Timestamp time = new Timestamp(dt.getMillis());
                 String strTd = String.valueOf(time.getTime() / 1000L);
                 internvalues.add(strTd);
@@ -158,10 +163,11 @@ public class MeasuresServiceImpl implements MeasureService {
             DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMddHHmmss");
 
             // DateTime Convertable
+            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(automaticWater.getIdentifier());
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            DateTime from = convertable.GetUTCDateTime(automaticWater.getFromtime(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC);
-            DateTime to = convertable.GetUTCDateTime(automaticWater.getUntiltime(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC);
+            DateTime from = convertable.GetUTCDateTime(automaticWater.getFromtime(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            DateTime to = convertable.GetUTCDateTime(automaticWater.getUntiltime(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
             //
             Observation observation = new Observation();
             observation.setSeriesid(seriesid);

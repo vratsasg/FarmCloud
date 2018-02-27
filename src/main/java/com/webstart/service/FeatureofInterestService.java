@@ -1,6 +1,7 @@
 package com.webstart.service;
 
 import com.webstart.DTO.*;
+import com.webstart.model.Featureofinterest;
 import org.json.simple.JSONObject;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ public interface FeatureofInterestService {
         //READ
         String findByFeatureofinterestid(int id);
         String findFeatureByIdentifier(String identi);
+        Featureofinterest getFeatureofinterestByIdentifier(String identifier);
 
         List<FeatureidIdentifier> findFeatureIdByIdentifier(List<String> stringList);
 

@@ -11,7 +11,9 @@ import com.webstart.DTO.WateringMeasure;
 import com.webstart.DTO.WateringValueTime;
 import com.webstart.Enums.StatusTimeConverterEnum;
 import com.webstart.Helpers.HelperCls;
+import com.webstart.model.Featureofinterest;
 import com.webstart.model.Users;
+import com.webstart.service.FeatureofInterestService;
 import com.webstart.service.ObservationProperyService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -46,6 +48,8 @@ public class ExtractController {
 
     @Autowired
     ObservationProperyService observationProperyService;
+    @Autowired
+    FeatureofInterestService featureofInterestService;
 
     @RequestMapping(value = "{mydevice}/{observablePropertyId}/csv", params = {"dtstart", "dtend"}, method = RequestMethod.POST)
     public void getCsv(@PathVariable("observablepropertyid") Long observablepropertyid, @PathVariable("mydevice") String mydevice, @RequestParam("dtstart") String datetimestart, @RequestParam("dtend") String datetimeend, HttpServletRequest request, HttpServletResponse response) {
@@ -55,11 +59,13 @@ public class ExtractController {
 
         try {
             Users user = (Users) request.getSession().getAttribute("current_user");
+
             // DateTime Convertable
+            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
             //
 //            ObservableMeasure observableMeasure = observationProperyService.getObservationData(observablepropertyid, user.getUser_id(), mydevice, from, to);
             ObservableMeasure observableMeasure = observationProperyService.getObservationData(observablepropertyid, 1, mydevice, from, to);
@@ -104,10 +110,11 @@ public class ExtractController {
         try {
             Users user = (Users) request.getSession().getAttribute("current_user");
             // DateTime Convertable
+            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
             //
             WateringMeasure wateringMeasure = observationProperyService.getWateringData(user.getUser_id(), mydevice, from, to);
             //
@@ -160,10 +167,11 @@ public class ExtractController {
             Users user = (Users) request.getSession().getAttribute("current_user");
 
             // DateTime Convertable
+            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
             //
             observableMeasure = observationProperyService.getObservationData(observablePropertyId, user.getUser_id(), mydevice, from, to);
             //
@@ -199,10 +207,11 @@ public class ExtractController {
         try {
             Users user = (Users) request.getSession().getAttribute("current_user");
             // DateTime Convertable
+            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
             //
             wateringMeasure = observationProperyService.getWateringData(user.getUser_id(), mydevice, from, to);
             //
@@ -239,10 +248,11 @@ public class ExtractController {
             Users user = (Users) request.getSession().getAttribute("current_user");
 
             // DateTime Convertable
+            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
             //
             observableMeasure = observationProperyService.getObservationData(observablepropertyid, user.getUser_id(), mydevice, from, to);
             //Create excel document
@@ -274,10 +284,11 @@ public class ExtractController {
         try {
             Users user = (Users) request.getSession().getAttribute("current_user");
             // DateTime Convertable
+            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC).toDate();
+            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
             //
             wateringMeasure = observationProperyService.getWateringData(user.getUser_id(), mydevice, from, to);
             //Create excel document

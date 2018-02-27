@@ -13,7 +13,6 @@ import com.webstart.repository.NumericValueJpaRepository;
 import com.webstart.repository.ObservationJpaRepository;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +33,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
     @Autowired
     FeatureofinterestJpaRepository featureofinterestJpaRepository;
-    @Autowired
-    ObservationJpaRepository observationJpaRepository;
-    @Autowired
-    NumericValueJpaRepository numericValueJpaRepository;
 
     public boolean addCrop(Crop crop) {
         Featureofinterest featureofinterest = new Featureofinterest();
@@ -270,6 +265,16 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
+    public Featureofinterest getFeatureofinterestByIdentifier(String identifier) {
+        try {
+            Featureofinterest featureofinterest = featureofinterestJpaRepository.getFeatureofinterestByIdentifier(identifier);
+            return featureofinterest;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public List<FeatureidIdentifier> findFeatureIdByIdentifier(List<String> idStr) {
         try {
             List<FeatureidIdentifier> list = featureofinterestJpaRepository.getIdidentif(idStr);
@@ -295,7 +300,8 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             List<Object[]> list = featureofinterestJpaRepository.getEnddevicesTimes(coordinatorAddress);
             List<EmebddedSetupDevicdeDto> endDeviceList = new ArrayList<EmebddedSetupDevicdeDto>();
             //TimeZone
-            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
+            Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(coordinatorAddress);
+            TimeZone tz = TimeZone.getTimeZone(featureofinterest.getTimezone());
 
             //Convert time to UTC
             int offsetHours = DateTimeZone.forID(tz.getID()).getOffset(new DateTime()) / (60 * 60 * 1000);
@@ -332,7 +338,8 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
                 return null;
 
             //TimeZone
-            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
+            Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(coordinatorAddress);
+            TimeZone tz = TimeZone.getTimeZone(featureofinterest.getTimezone());
 
             //Convert time to UTC
             int offsetHours = DateTimeZone.forID(tz.getID()).getOffset(new DateTime()) / (60 * 60 * 1000);
@@ -384,6 +391,8 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         String jsonresult = null;
 
         try {
+            Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(coordinator);
+            //
             Integer idCord = null;
             List<Integer> cordinIds = featureofinterestJpaRepository.getIdbyIdent(coordinator);
 
@@ -394,6 +403,22 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
             Long fidg = Long.valueOf(idCord.longValue());
             List<EndDeviceStatusDTO> identiFlagsObjects = featureofinterestJpaRepository.getIdentifierFlags(fidg);
+
+            //TimeZone
+            TimeZone tz = TimeZone.getTimeZone(featureofinterest.getTimezone());
+            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+
+            for (EndDeviceStatusDTO endDevice : identiFlagsObjects) {
+                Calendar cal = Calendar.getInstance();
+
+                cal.setTimeInMillis(endDevice.getFromtime().getTime());
+                cal.add(Calendar.MILLISECOND, offset);
+                endDevice.setFromtime(new Timestamp(cal.getTime().getTime()));
+
+                cal.setTimeInMillis(endDevice.getUntiltime().getTime());
+                cal.add(Calendar.MILLISECOND, offset);
+                endDevice.setUntiltime(new Timestamp(cal.getTime().getTime()));
+            }
 
             ObjectMapper mapper = new ObjectMapper();
             jsonresult = mapper.writeValueAsString(identiFlagsObjects);
@@ -422,12 +447,13 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         AutomaticWater automaticWater = null;
 
         try {
+            Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(identifier);
             automaticWater = featureofinterestJpaRepository.getAutomaticWaterByEndDevice(userid, identifier);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            DateTime irrigdtFrom = convertable.GetUTCDateTime(automaticWater.getFromtime(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
+            DateTime irrigdtFrom = convertable.GetUTCDateTime(automaticWater.getFromtime(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
             automaticWater.setFromtime(dtfInput.print(irrigdtFrom));
-            DateTime irrigdtUntil = convertable.GetUTCDateTime(automaticWater.getUntiltime(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_TIMEZONE);
+            DateTime irrigdtUntil = convertable.GetUTCDateTime(automaticWater.getUntiltime(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
             automaticWater.setUntiltime(dtfInput.print(irrigdtUntil));
 
             return automaticWater;
@@ -440,10 +466,11 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
     public boolean setDeviceIrrigaDate(int usid, String device, String from, String to) {
         try {
+            Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(device);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            DateTime irrigdtFrom = convertable.GetUTCDateTime(from, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC);
-            DateTime irrigdtUntil = convertable.GetUTCDateTime(to, dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC);
+            DateTime irrigdtFrom = convertable.GetUTCDateTime(from, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            DateTime irrigdtUntil = convertable.GetUTCDateTime(to, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
 
 //            TimeZone tz = TimeZone.getTimeZone("Europe/Athens");
 //            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
@@ -482,9 +509,10 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
             //Convert time to UTC
+            Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(automaticWater.getIdentifier());
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            DateTime irrigdtFrom = convertable.GetUTCDateTime(automaticWater.getFromtime(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC);
-            DateTime irrigdtUntil = convertable.GetUTCDateTime(automaticWater.getUntiltime(), dtfInput, "Europe/Athens", StatusTimeConverterEnum.TO_UTC);
+            DateTime irrigdtFrom = convertable.GetUTCDateTime(automaticWater.getFromtime(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            DateTime irrigdtUntil = convertable.GetUTCDateTime(automaticWater.getUntiltime(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
 
             featureofinterestJpaRepository.setCoordinatorAlgorithmParams(automaticWater.getIdentifier(), new Timestamp(irrigdtFrom.getMillis()), new Timestamp(irrigdtUntil.getMillis()), automaticWater.getWateringConsumption());
         } catch (Exception e) {

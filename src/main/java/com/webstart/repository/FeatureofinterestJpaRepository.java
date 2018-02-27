@@ -21,6 +21,8 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
 
     List<Featureofinterest> findByUseridAndFeatureofinteresttypeid(int id, long l);
 
+    Featureofinterest getFeatureofinterestByIdentifier(String identifier);
+
     @Query("select new com.webstart.model.Featureofinterest(fi.featureofinterestid, fi.identifier, fi.name, fi.featureofinteresttypeid) " +
             "from Featureofinterest as fi " +
             "WHERE fi.userid = :userid")
