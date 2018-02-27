@@ -115,19 +115,19 @@ public class EmbeddedController {
     }
 
     @RequestMapping(value = "{coordinator}/measures", method = RequestMethod.GET)
-    public ResponseEntity.BodyBuilder startMeasuring(@PathVariable("coordinator") String identifier) {
+    public HttpStatus startMeasuring(@PathVariable("coordinator") String identifier) {
         boolean status;
         try {
             status = featureofInterestService.changeMeasuringFlag(identifier, FeatureTypeEnum.END_DEVICE.getValue());
         } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
+            return HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
         if(!status) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST);
+            return HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return ResponseEntity.status(HttpStatus.OK);
+        return HttpStatus.OK;
     }
 
     @RequestMapping(value = "{coordinator}/enddevices", method = RequestMethod.GET)

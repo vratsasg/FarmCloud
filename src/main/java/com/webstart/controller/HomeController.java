@@ -293,10 +293,10 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/wateringprofile/minmax", method = RequestMethod.POST)
-    public @ResponseBody ResponseEntity.BodyBuilder saveWateringProfile(@RequestBody List<FeatureObsProp> featureObsPropList, HttpServletRequest request) {
+    public @ResponseBody HttpStatus saveWateringProfile(@RequestBody List<FeatureObsProp> featureObsPropList, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
         if(users == null){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED);
+            return HttpStatus.UNAUTHORIZED;
         }
 
         try {
@@ -307,10 +307,10 @@ public class HomeController {
             observationProperyService.setObservationMinmaxValues(featureMinMaxValuesList);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
+            return HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return ResponseEntity.status(HttpStatus.OK);
+        return HttpStatus.OK;
     }
 
     @RequestMapping(value = "{coordinator}/automaticwater/dates", method = RequestMethod.GET)
