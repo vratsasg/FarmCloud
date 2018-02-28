@@ -19,6 +19,8 @@ public interface FeatureofInterestService {
         //
         List<Long> findIdsByIdentifier(List<String> idStr);
         //
+        List<String> findEndDevicesIdentifiers(String enddeviceIdentifier);
+        //
         List<FeatureObsPropMinMax> findminmaxObservationValues(String identifier);
         //
         List<EmebddedSetupDevicdeDto> findEndDevicesTimes(String coordinatorAddress);

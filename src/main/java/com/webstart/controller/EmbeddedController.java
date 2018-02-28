@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.DTO.*;
 import com.webstart.Enums.FeatureTypeEnum;
 import com.webstart.Enums.MeasurementTypeEnum;
+import com.webstart.model.Featureofinterest;
 import com.webstart.service.FeatureofInterestService;
 import com.webstart.service.MeasureService;
 import com.webstart.service.UsersService;
@@ -27,8 +28,12 @@ public class EmbeddedController {
     @Autowired UsersService usersService ;
 
     @RequestMapping(value = "measures", method = RequestMethod.POST)
-    public @ResponseBody void postSensor(@RequestBody EmbeddedDataWrapper embeddedDataWrapper) {
+    public ResponseEntity<?> postSensor(@RequestBody EmbeddedDataWrapper embeddedDataWrapper) {
         try {
+            if(embeddedDataWrapper.getEmList() == null || embeddedDataWrapper.getEmList().size() == 0){
+                return new ResponseEntity("Error: No data was sent", HttpStatus.BAD_REQUEST);
+            }
+
             List<String> identList = new ArrayList<String>(new LinkedHashSet<String>(embeddedDataWrapper.GetFeatureIdentifiers()));
             List<FeatureidIdentifier> featureidIdentifiers = featureofInterestService.findFeatureIdByIdentifier(identList);
 
@@ -43,23 +48,32 @@ public class EmbeddedController {
                 Long seriesId = featureofInterestService.findseries(embeddedData.getObservationPropId(), featureofinterestid);
                 measureService.saveMeasure(seriesId, embeddedData);
             }
-            usersService.createNewNotification(featureidIdentifiers.get(0).getUserId(), String.format("save new measures been taken for end devices: %s ", identList.toString()));
-            featureofInterestService.setFeatureMeasuringFalse(identList);
+            //TODO change using webockets
+            usersService.createNewNotification(featureidIdentifiers.get(0).getUserId(), String.format("New measures (temperature, humidity) have been taken for end devices: %s", identList.toString()));
+            List<String> allEndDevices = this.featureofInterestService.findEndDevicesIdentifiers(featureidIdentifiers.get(0).getIdentifier());
+            featureofInterestService.setFeatureMeasuringFalse(allEndDevices);
         } catch (Exception exc) {
             exc.printStackTrace();
+            return new ResponseEntity(exc.getMessage(), HttpStatus.BAD_REQUEST);
         }
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = "irrigation", method = RequestMethod.POST)
     public @ResponseBody void postIrrigation(@RequestBody AutomaticWater automaticWater) {
         try {
             this.measureService.saveMeasure(automaticWater);
+            Featureofinterest featureofinterest =  featureofInterestService.getFeatureofinterestByIdentifier(automaticWater.getIdentifier());
+            //TODO change using webockets
+            usersService.createNewNotification(featureofinterest.getUserid(),
+                    String.format("New irrigation event from: %1$s until %2$s for end device %3$s ", automaticWater.getFromtime(), automaticWater.getUntiltime(), featureofinterest.getName()));
         } catch (Exception exc) {
             exc.printStackTrace();
         }
     }
 
-    @RequestMapping(value = "{coordinator}/setup", method = RequestMethod.GET)
+    @RequestMapping(value = "station/{coordinator}/setup", method = RequestMethod.GET)
     public ResponseEntity<String> getSetup(@PathVariable("coordinator") String cordIdentifier) {
         String JsonResp = null;
         try {
@@ -154,10 +168,10 @@ public class EmbeddedController {
             JsonResults = mapper.writeValueAsString(ls);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            return new ResponseEntity<String>(JsonResults, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<String>(JsonResults, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<String>(JsonResults, HttpStatus.OK);
     }
@@ -167,9 +181,13 @@ public class EmbeddedController {
         try {
             List<String> identifiers = Arrays.asList(automaticWatering.getIdentifier());
             Long featureId = featureofInterestService.findIdsByIdentifier(identifiers).get(0);
+            Featureofinterest featureofinterest =  featureofInterestService.getFeatureofinterestByIdentifier(automaticWatering.getIdentifier());
 
             measureService.saveMeasure(automaticWatering);
             featureofInterestService.setFeatureMeasuringFalse(identifiers);
+            //TODO change using webockets
+            usersService.createNewNotification(featureofinterest.getUserid(),
+                    String.format("New irrigation event from: %1$s until %2$s for end device %3$s ", automaticWatering.getFromtime(), automaticWatering.getUntiltime(), featureofinterest.getName()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -179,8 +197,13 @@ public class EmbeddedController {
     public @ResponseBody void saveAutomacticWatering(@RequestBody AutomaticWater automaticWatering) {
         try {
             String identifier = automaticWatering.getIdentifier();
+            Featureofinterest featureofinterest =  featureofInterestService.getFeatureofinterestByIdentifier(automaticWatering.getIdentifier());
+            //
             measureService.saveMeasure(automaticWatering);
             featureofInterestService.setFeatureWateringFalse(identifier);
+            //TODO change using webockets
+            usersService.createNewNotification(featureofinterest.getUserid(),
+                    String.format("New irrigation event from: %1$s until %2$s for end device %3$s ", automaticWatering.getFromtime(), automaticWatering.getUntiltime(), featureofinterest.getName()));
         } catch (Exception e) {
             e.printStackTrace();
         }

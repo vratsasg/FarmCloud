@@ -288,6 +288,16 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
+    public List<String> findEndDevicesIdentifiers(String enddeviceIdentifier) {
+        try {
+            List<String> identiifers = featureofinterestJpaRepository.getEndDeviceIdentifiersByEndDeviceIdentifier(enddeviceIdentifier);
+            return identiifers;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public List<EmebddedSetupDevicdeDto> findEndDevicesTimes(String coordinatorAddress) {
         try {
             List<Object[]> list = featureofinterestJpaRepository.getEnddevicesTimes(coordinatorAddress);
@@ -424,7 +434,7 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
     public boolean changeMeasuringFlag(String identifier, long typeId) {
         try {
-            List<String> endDeviceIdentifiers = featureofinterestJpaRepository.findEndDeviceIdentifiersByStation(identifier);
+            List<String> endDeviceIdentifiers = featureofinterestJpaRepository.getEndDeviceIdentifiersByStation(identifier);
             if(endDeviceIdentifiers.size() == 0){
                 throw new Exception("Station's identifier number is wrong");
             }
