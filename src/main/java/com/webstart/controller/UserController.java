@@ -59,4 +59,38 @@ public class UserController {
         return notificationList;
     }
 
+    @RequestMapping(value = "notifications/{id}/read", method = RequestMethod.PUT)
+    public ResponseEntity<?> saveUserProfile(@PathVariable("id") int id, HttpServletRequest httpServletRequest) {
+        Users users = (Users) httpServletRequest.getSession().getAttribute("current_user");
+        if(users == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
+        usersService.makeNotificationRead(id);
+
+        return new ResponseEntity<Boolean>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "notifications/all/read", method = RequestMethod.PUT)
+    public ResponseEntity<?> saveUserProfile(HttpServletRequest httpServletRequest) {
+        Users users = (Users) httpServletRequest.getSession().getAttribute("current_user");
+        if(users == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
+        try {
+            List<Notifications> notificationList = usersService.getUserCounterNotifications(users.getUser_id());
+            if(notificationList != null && notificationList.size() > 0) {
+                for (Notifications notification: notificationList) {
+                    usersService.makeNotificationRead(notification.getNotificationid());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }

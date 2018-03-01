@@ -117,19 +117,28 @@ public class UsersServiceImpl implements UsersService{
         return true;
     }
 
-    public void createNewNotification(int userid, String message) {
+    public void makeNotificationRead(int notificationid) {
         try {
-            Notifications notification = new Notifications();
-            notification.setUserid(userid);
-            notification.setDescription(message);
-            notification.setReadable(false);
+            Notifications notification = this.notificationsJpaRepository.getByNotificationid(notificationid);
+            //
+            notification.setIsreaded(true);
+            this.notificationsJpaRepository.save(notification);
+        } catch(Exception e){
+           e.printStackTrace();
+        }
+    }
+
+    public void createNewNotification(int userid, String message, int notificationType) {
+        try {
             //TODO change datetime now to utc
             TimeZone tz = TimeZone.getDefault();
             int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
             DateTime localdt = new DateTime(DateTimeZone.forID(tz.getID()));
             localdt = localdt.minusMillis(offset);
             Timestamp ts = new Timestamp(localdt.getMillis());
-            notification.setDatecreated(ts);
+            //
+            Notifications notification = new Notifications(userid, message, false, ts, notificationType);
+            //
             notificationsJpaRepository.save(notification);
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,7 +149,7 @@ public class UsersServiceImpl implements UsersService{
         List<Notifications> notifications = null;
 
         try {
-            notifications = usersJpaRepository.getNotifByUser(userId);
+            notifications = this.notificationsJpaRepository.getAllByUseridAndIsreaded(userId, false);
             //
             List<Featureofinterest> enddevices = this.featureofinterestJpaRepository.findByUseridAndFeatureofinteresttypeid(userId, FeatureTypeEnum.END_DEVICE.getValue());
             TimeZone tz = TimeZone.getTimeZone(enddevices.get(0).getTimezone());

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.DTO.*;
 import com.webstart.Enums.FeatureTypeEnum;
 import com.webstart.Enums.MeasurementTypeEnum;
+import com.webstart.Enums.NotificationTypeEnum;
 import com.webstart.model.Featureofinterest;
 import com.webstart.service.FeatureofInterestService;
 import com.webstart.service.MeasureService;
@@ -49,7 +50,7 @@ public class EmbeddedController {
                 measureService.saveMeasure(seriesId, embeddedData);
             }
             //TODO change using webockets
-            usersService.createNewNotification(featureidIdentifiers.get(0).getUserId(), String.format("New measures (temperature, humidity) have been taken for end devices: %s", identList.toString()));
+            usersService.createNewNotification(featureidIdentifiers.get(0).getUserId(), String.format("New measures (temperature, humidity) have been taken for end devices: %s", identList.toString()), NotificationTypeEnum.MEASURE.getValue());
             List<String> allEndDevices = this.featureofInterestService.findEndDevicesIdentifiers(featureidIdentifiers.get(0).getIdentifier());
             featureofInterestService.setFeatureMeasuringFalse(allEndDevices);
         } catch (Exception exc) {
@@ -67,7 +68,7 @@ public class EmbeddedController {
             Featureofinterest featureofinterest =  featureofInterestService.getFeatureofinterestByIdentifier(automaticWater.getIdentifier());
             //TODO change using webockets
             usersService.createNewNotification(featureofinterest.getUserid(),
-                    String.format("New irrigation event from: %1$s until %2$s for end device %3$s ", automaticWater.getFromtime(), automaticWater.getUntiltime(), featureofinterest.getName()));
+                    String.format("New irrigation event from: %1$s until %2$s for end device %3$s ", automaticWater.getFromtime(), automaticWater.getUntiltime(), featureofinterest.getName()), NotificationTypeEnum.IRRIGATION.getValue());
         } catch (Exception exc) {
             exc.printStackTrace();
         }
@@ -187,7 +188,7 @@ public class EmbeddedController {
             featureofInterestService.setFeatureMeasuringFalse(identifiers);
             //TODO change using webockets
             usersService.createNewNotification(featureofinterest.getUserid(),
-                    String.format("New irrigation event from: %1$s until %2$s for end device %3$s ", automaticWatering.getFromtime(), automaticWatering.getUntiltime(), featureofinterest.getName()));
+                    String.format("New irrigation event from: %1$s until %2$s for end device %3$s ", automaticWatering.getFromtime(), automaticWatering.getUntiltime(), featureofinterest.getName()), NotificationTypeEnum.IRRIGATION.getValue());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -203,7 +204,7 @@ public class EmbeddedController {
             featureofInterestService.setFeatureWateringFalse(identifier);
             //TODO change using webockets
             usersService.createNewNotification(featureofinterest.getUserid(),
-                    String.format("New irrigation event from: %1$s until %2$s for end device %3$s ", automaticWatering.getFromtime(), automaticWatering.getUntiltime(), featureofinterest.getName()));
+                    String.format("New irrigation event from: %1$s until %2$s for end device %3$s ", automaticWatering.getFromtime(), automaticWatering.getUntiltime(), featureofinterest.getName()), NotificationTypeEnum.IRRIGATION.getValue());
         } catch (Exception e) {
             e.printStackTrace();
         }

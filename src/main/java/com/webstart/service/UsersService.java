@@ -8,18 +8,20 @@ import org.json.simple.JSONObject;
 import java.security.Timestamp;
 import java.util.List;
 
-/**
- * Created by George on 27/12/2015.
- */
 public interface UsersService {
     Users findUser(String username,String password);
+    //
     JSONObject userByJson(Integer userid);
+    //
     String getUserprofileuserByJson(Integer userid);
-
-    UserProfile getUserProfile(Integer userid);
-    boolean saveUserProfiledata(UserProfile usprof);
-    void createNewNotification(int userid, String message);
-
+    //
     List<Notifications> getUserCounterNotifications(Integer userId);
-
+    //
+    UserProfile getUserProfile(Integer userid);
+    //
+    boolean saveUserProfiledata(UserProfile usprof);
+    //
+    void makeNotificationRead(int notificationid);
+    //
+    void createNewNotification(int userid, String message, int notificationType);
 }
