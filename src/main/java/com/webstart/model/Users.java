@@ -4,9 +4,7 @@ package com.webstart.model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-//import com.fasterxml.jackson.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 @Entity
 @Table(name="users")

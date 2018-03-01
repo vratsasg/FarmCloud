@@ -6,8 +6,9 @@
     module.factory('ControlPanelService', ['$http', '$q', '$log', function ($http, $q, $log) {
 
         return {
+
             getDevices: function () {
-                return $http.get('firstPDev').then(
+                return $http.get('enddevices').then(
                     function (response) {
                         return response.data;
                     },
@@ -17,8 +18,9 @@
                     }
                 );
             },
+            //
             getLastMeasureDate: function () {
-                return $http.get('getLastMeasureDate').then(
+                return $http.get('measures/lastdate').then(
                     function (response) {
                         return response.data;
                     },
@@ -28,8 +30,9 @@
                     }
                 );
             },
+            //
             getMeasuresByLastDate: function (identifier) {
-                return $http.get('getLastMeasuresByDate?identifier=' + identifier).then(
+                return $http.get(identifier + '/measures/last').then(
                     function (response) {
                         return response.data;
                     },
@@ -39,8 +42,9 @@
                     }
                 );
             },
+            //
             getWateringMeasuresByLastDate: function (identifier) {
-                return $http.get('lastWateringMeasures?identifier=' + identifier).then(
+                return $http.get(identifier + '/watering/last').then(
                     function (response) {
                         return response.data;
                     },
@@ -50,8 +54,9 @@
                     }
                 );
             },
+            //
             getCoordinatorData: function (identifier) {
-                return $http.get('automaticwater/getdates?identifier=' + identifier).then(
+                return $http.get(identifier + '/automaticwater/dates').then(
                     function (response) {
                         return response.data;
                     },
@@ -61,8 +66,8 @@
                     }
                 );
             },
-            setMeasuringFlags: function () {
-                return $http.get('embedded/measures').then(
+            setMeasuringFlags: function (coordinator) {
+                return $http.get('embedded/' + coordinator + '/measures').then(
                     function (response) {
                         return response.data;
                     },
@@ -76,7 +81,7 @@
                 console.log(angular.toJson(coordData));
                 return $http({
                     method: 'POST',
-                    url: 'automaticwater/save',
+                    url: 'automaticwater/dates',
                     data: angular.toJson(coordData),
                     headers: {'Content-Type': 'application/json'}
                 }).then(function (response) {
@@ -88,7 +93,7 @@
                     });
             },
             setFeatureDates: function (identifier, dtfrom, dtto) {
-                return $http.get('setIrrigationDates?identifier=' + identifier + '&dtfrom=' + dtfrom + '&dtto=' + dtto).then(
+                return $http.post(identifier + '/irrigation/times?dtfrom=' + dtfrom + '&dtto=' + dtto).then(
                     function (response) {
                         return response;
                     },
@@ -101,6 +106,5 @@
         }
 
     }]);
-
 
 }());

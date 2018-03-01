@@ -8,7 +8,7 @@
 
         return {
             getObsproperties: function () {
-                return $http.get('obsproperties').then(
+                return $http.get('observableproperties').then(
                     function (response) {
                         return response.data;
                     },

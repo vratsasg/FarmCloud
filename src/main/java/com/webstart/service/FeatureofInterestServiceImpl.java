@@ -3,28 +3,22 @@ package com.webstart.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itextpdf.text.ExceptionConverter;
 import com.webstart.DTO.*;
 import com.webstart.Enums.FeatureTypeEnum;
+import com.webstart.Enums.StatusTimeConverterEnum;
+import com.webstart.Helpers.HelperCls;
 import com.webstart.model.*;
 import com.webstart.repository.FeatureofinterestJpaRepository;
-
-import com.webstart.repository.NumericValueJpaRepository;
-import com.webstart.repository.ObservationJpaRepository;
 import org.joda.time.DateTime;
-import org.omg.CORBA.ExceptionList;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.DateTimeException;
 import java.util.*;
 import java.util.List;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -34,10 +28,6 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
     @Autowired
     FeatureofinterestJpaRepository featureofinterestJpaRepository;
-    @Autowired
-    ObservationJpaRepository observationJpaRepository;
-    @Autowired
-    NumericValueJpaRepository numericValueJpaRepository;
 
     public boolean addCrop(Crop crop) {
         Featureofinterest featureofinterest = new Featureofinterest();
@@ -261,12 +251,20 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             Setup.put("toSeconds", dtTO.getSecondOfDay());
 
             jsonRes = Setup.toJSONString();
-        } catch (DateTimeException exc) {
-            exc.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             return jsonRes;
+        }
+    }
+
+    public Featureofinterest getFeatureofinterestByIdentifier(String identifier) {
+        try {
+            Featureofinterest featureofinterest = featureofinterestJpaRepository.getFeatureofinterestByIdentifier(identifier);
+            return featureofinterest;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -294,8 +292,28 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         try {
             List<Object[]> list = featureofinterestJpaRepository.getEnddevicesTimes(coordinatorAddress);
             List<EmebddedSetupDevicdeDto> endDeviceList = new ArrayList<EmebddedSetupDevicdeDto>();
+            //TimeZone
+            Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(coordinatorAddress);
+            TimeZone tz = TimeZone.getTimeZone(featureofinterest.getTimezone());
+
+            //Convert time to UTC
+            int offsetHours = DateTimeZone.forID(tz.getID()).getOffset(new DateTime()) / (60 * 60 * 1000);
             for (Object[] obj : list) {
-                endDeviceList.add(new EmebddedSetupDevicdeDto(obj[0].toString(), Integer.parseInt(obj[1].toString()), Integer.parseInt(obj[2].toString()), Integer.parseInt(obj[3].toString()), Integer.parseInt(obj[4].toString())));
+
+                Integer fromhour = Integer.parseInt(obj[1].toString()) + offsetHours;
+                if (fromhour >= 24) {
+                    fromhour = fromhour % 24;
+                } else if(fromhour < 0) {
+                    fromhour = 24 + fromhour;
+                }
+
+                Integer untilhour = Integer.parseInt(obj[3].toString()) + offsetHours;
+                if (untilhour >= 24) {
+                    untilhour = untilhour % 24;
+                } else if(untilhour < 0) {
+                    untilhour  = 24 + untilhour ;
+                }
+                endDeviceList.add(new EmebddedSetupDevicdeDto(obj[0].toString(), fromhour, Integer.parseInt(obj[2].toString()), untilhour, Integer.parseInt(obj[4].toString())));
             }
 
             return endDeviceList;
@@ -312,12 +330,28 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             if (list.size() == 0)
                 return null;
 
+            //TimeZone
+            Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(coordinatorAddress);
+            TimeZone tz = TimeZone.getTimeZone(featureofinterest.getTimezone());
+
+            //Convert time to UTC
+            int offsetHours = DateTimeZone.forID(tz.getID()).getOffset(new DateTime()) / (60 * 60 * 1000);
+            Integer fromhour = Integer.parseInt(list.get(0)[1].toString()) + offsetHours;
+            if (fromhour >= 24) {
+                fromhour = fromhour % 24;
+            } else if(fromhour < 0) {
+                fromhour = 24 + fromhour;
+            }
+
+            Integer untilhour = Integer.parseInt(list.get(0)[3].toString()) + offsetHours;
+            if (untilhour >= 24) {
+                untilhour = untilhour % 24;
+            } else if(untilhour < 0) {
+                untilhour  = 24 + untilhour ;
+            }
+
             EmebddedSetupDevicdeDto coordinatorTimes = new EmebddedSetupDevicdeDto(
-                    coordinatorAddress,
-                    Integer.parseInt(list.get(0)[1].toString()),
-                    Integer.parseInt(list.get(0)[2].toString()),
-                    Integer.parseInt(list.get(0)[3].toString()),
-                    Integer.parseInt(list.get(0)[4].toString()));
+                    coordinatorAddress, fromhour, Integer.parseInt(list.get(0)[2].toString()), untilhour, Integer.parseInt(list.get(0)[4].toString()));
 
             return coordinatorTimes;
         } catch (Exception e) {
@@ -346,12 +380,14 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
     }
 
 
-    public String findIrrigationAndMeasuring(String corD) {
+    public String findIrrigationAndMeasuring(String coordinator) {
         String jsonresult = null;
 
         try {
+            Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(coordinator);
+            //
             Integer idCord = null;
-            List<Integer> cordinIds = featureofinterestJpaRepository.getIdbyIdent(corD);
+            List<Integer> cordinIds = featureofinterestJpaRepository.getIdbyIdent(coordinator);
 
             Iterator itr = cordinIds.iterator();
             while (itr.hasNext()) {
@@ -360,6 +396,22 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
             Long fidg = Long.valueOf(idCord.longValue());
             List<EndDeviceStatusDTO> identiFlagsObjects = featureofinterestJpaRepository.getIdentifierFlags(fidg);
+
+            //TimeZone
+            TimeZone tz = TimeZone.getTimeZone(featureofinterest.getTimezone());
+            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+
+            for (EndDeviceStatusDTO endDevice : identiFlagsObjects) {
+                Calendar cal = Calendar.getInstance();
+
+                cal.setTimeInMillis(endDevice.getFromtime().getTime());
+                cal.add(Calendar.MILLISECOND, offset);
+                endDevice.setFromtime(new Timestamp(cal.getTime().getTime()));
+
+                cal.setTimeInMillis(endDevice.getUntiltime().getTime());
+                cal.add(Calendar.MILLISECOND, offset);
+                endDevice.setUntiltime(new Timestamp(cal.getTime().getTime()));
+            }
 
             ObjectMapper mapper = new ObjectMapper();
             jsonresult = mapper.writeValueAsString(identiFlagsObjects);
@@ -370,25 +422,36 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
-    public String changeMeasuringFlag(int usid, long typeId) {
-        JSONObject returned = new JSONObject();
-
+    public boolean changeMeasuringFlag(String identifier, long typeId) {
         try {
-            featureofinterestJpaRepository.setMeasuringFlag(usid, typeId);
-            returned.put("Flag", "true");
-            return returned.toString();
+            List<String> endDeviceIdentifiers = featureofinterestJpaRepository.findEndDeviceIdentifiersByStation(identifier);
+            if(endDeviceIdentifiers.size() == 0){
+                throw new Exception("Station's identifier number is wrong");
+            }
+            featureofinterestJpaRepository.setMeasuringFlag(endDeviceIdentifiers, true);
         } catch (Exception e) {
             e.printStackTrace();
-            returned.put("Flag", "false");
-            return returned.toString();
+            return false;
         }
+
+        return true;
     }
 
     public AutomaticWater getAutomaticWater(int userid, String identifier) {
         AutomaticWater automaticWater = null;
 
         try {
-            automaticWater = featureofinterestJpaRepository.getAutomaticWater(userid, identifier);
+            Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(identifier);
+            //
+            automaticWater = featureofinterestJpaRepository.getAutomaticWaterByEndDevice(userid, identifier);
+            //
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            DateTime irrigdtFrom = convertable.GetUTCDateTime(automaticWater.getFromtime(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
+            automaticWater.setFromtime(dtfInput.print(irrigdtFrom));
+            DateTime irrigdtUntil = convertable.GetUTCDateTime(automaticWater.getUntiltime(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
+            automaticWater.setUntiltime(dtfInput.print(irrigdtUntil));
+
             return automaticWater;
         } catch (Exception exc) {
             exc.printStackTrace();
@@ -397,9 +460,16 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         }
     }
 
-    public boolean setDeviceIrrigaDate(int usid, String device, Date from, Date to) {
+    public boolean setDeviceIrrigaDate(int usid, String device, String from, String to) {
         try {
-            featureofinterestJpaRepository.setDeviceIrrigDates(usid, device, from, to);
+            Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(device);
+            //
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            DateTime irrigdtFrom = convertable.GetUTCDateTime(from, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            DateTime irrigdtUntil = convertable.GetUTCDateTime(to, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            //
+            featureofinterestJpaRepository.setDeviceIrrigDates(usid, device, new Timestamp(irrigdtFrom.getMillis()), new Timestamp(irrigdtUntil.getMillis()));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -409,7 +479,7 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
     public void setFeatureMeasuringFalse(List<String> idertifierList) {
         try {
-            featureofinterestJpaRepository.setMeasuringFlagFalse(idertifierList);
+            featureofinterestJpaRepository.setMeasuringFlag(idertifierList, false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -425,7 +495,16 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
     public void setAutomaticWateringTime(AutomaticWater automaticWater, int userid) {
         try {
-            featureofinterestJpaRepository.setCoordinatorAlgorithmParams(automaticWater.getIdentifier(), automaticWater.getFromtime(), automaticWater.getUntiltime(), automaticWater.getWateringConsumption());
+
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+
+            //Convert time to UTC
+            Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(automaticWater.getIdentifier());
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            DateTime irrigdtFrom = convertable.GetUTCDateTime(automaticWater.getFromtime(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            DateTime irrigdtUntil = convertable.GetUTCDateTime(automaticWater.getUntiltime(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+
+            featureofinterestJpaRepository.setCoordinatorAlgorithmParams(automaticWater.getIdentifier(), new Timestamp(irrigdtFrom.getMillis()), new Timestamp(irrigdtUntil.getMillis()), automaticWater.getWateringConsumption());
         } catch (Exception e) {
             e.printStackTrace();
         }

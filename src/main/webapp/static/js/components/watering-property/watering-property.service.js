@@ -7,7 +7,7 @@
     module.factory('WateringPropertyService', ['$http', '$q', '$log', function ($http, $q, $log) {
             return {
                 getDevices: function () {
-                    return $http.get('firstPDev', {headers: {'Cache-Control': 'no-cache'}}).then(
+                    return $http.get('enddevices', {headers: {'Cache-Control': 'no-cache'}}).then(
                         function (response) {
                             return response.data;
                         },
@@ -18,7 +18,7 @@
                         }
                     );
                 }, getMeasuresTotalCount: function (mydevice, datefrom, dateto) {
-                    return $http.get('totalMeasuresCounter?id=5&mydevice=' + mydevice + '&dtstart=' + datefrom + '&dtend=' + dateto, {headers: {'Cache-Control': 'no-cache'}}).then(
+                    return $http.get(mydevice + '/5/measures/counter?dtstart=' + datefrom + '&dtend=' + dateto, {headers: {'Cache-Control': 'no-cache'}}).then(
                         function (response) {
                             console.log('Total rows: ' + response);
                             return response.data;
@@ -40,7 +40,7 @@
                     );
                 }, getMeasuresPdf: function (mydevice, datefrom, dateto) {
                     $http({
-                        url: 'extract/' + mydevice + '/wateringPdf',
+                        url: 'extract/' + mydevice + '/watering/pdf',
                         method: 'POST',
                         params: {'dtstart': datefrom, 'dtend': dateto},
                         //params: {},
@@ -58,7 +58,7 @@
                         var a = document.createElement('a');
                         a.href = fileURL;
                         a.target = '_blank';
-                        a.download = 'measures.pdf';
+                        a.download = 'measures-' + moment().format('YYYYMMDD_HHmmss') + '.pdf';
                         document.body.appendChild(a);
                         a.click();
                     }).error(function (data, status, headers, config) {
@@ -67,7 +67,7 @@
                     });
                 }, getMeasuresCsv: function (mydevice, datefrom, dateto) {
                     $http({
-                        url: 'extract/wateringCsv',
+                        url: 'extract/' + mydevice + '/watering/csv',
                         method: 'POST',
                         params: {'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
                         headers: {
@@ -93,7 +93,7 @@
                     });
                 }, getMeasuresXls: function (mydevice, datefrom, dateto) {
                     $http({
-                        url: 'extract/wateringXls',
+                        url: 'extract/' + mydevice + '/watering/xls',
                         method: 'POST',
                         params: {'mydevice': mydevice, 'dtstart': datefrom, 'dtend': dateto},
                         headers: {

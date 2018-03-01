@@ -8,7 +8,7 @@
 
             return {
                 getProfile: function () {
-                    return $http.get('profile').then(
+                    return $http.get('features/profile').then(
                         function (response) {
                             return response.data;
                         },
@@ -19,7 +19,7 @@
                     );
                 },
                 getStationCoords: function () {
-                    return $http.get('coordinator/stationcoords').then(
+                    return $http.get('station/coords').then(
                         function (response) {
                             return response.data;
                         },
@@ -33,7 +33,7 @@
                     console.log(profiledata);
                     return $http({
                         method: 'POST',
-                        url: 'myprofile/save',
+                        url: 'features/profile',
                         data: profiledata,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function (response) {

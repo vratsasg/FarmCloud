@@ -6,9 +6,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by George on 27/12/2015.
- */
 @Entity
 @Table(name="user_role")
 public class UsersRole {
@@ -27,10 +24,6 @@ public class UsersRole {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usersRole", cascade = {CascadeType.ALL})
     private List<Users> users_list= new ArrayList<Users>();
-
-
-
-
 
     public Integer getUser_role_id() {
         return user_role_id;

@@ -16,7 +16,7 @@
                     );
                 },
                 saveUserProfile: function (userprofiledata) {
-                    return $http.post('user/profile/save', userprofiledata).then(
+                    return $http.post('user/profile', userprofiledata).then(
                         function (response) {
                             return response.data;
                         },

@@ -8,7 +8,7 @@
 
         return {
             getDevices: function () {
-                return $http.get('firstPDev').then(
+                return $http.get('enddevices').then(
                     function (response) {
                         return response.data;
                     },
@@ -19,7 +19,7 @@
                 );
             },
             getStationCoords: function () {
-                return $http.get('coordinator/stationcoords').then(
+                return $http.get('station/coords').then(
                     function (response) {
                         return response.data;
                     },

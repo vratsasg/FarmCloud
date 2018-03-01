@@ -35,7 +35,7 @@ public class UserController {
         return userprofile;
     }
 
-    @RequestMapping(value = "profile/save", method = RequestMethod.POST)
+    @RequestMapping(value = "profile", method = RequestMethod.POST)
     public ResponseEntity<Boolean> saveUserProfile(HttpServletRequest httpServletRequest, @RequestBody UserProfile userprofile) {
         Users user = new Users();
         user = (Users) httpServletRequest.getSession().getAttribute("current_user");

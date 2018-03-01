@@ -4,9 +4,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.math.BigDecimal;
 
-/**
- * Created by George on 27/6/2016.
- */
 public class CurrentMeasure {
 
     private String identifier;

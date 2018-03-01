@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 
 
 public interface MeasureService {
+
     JSONArray findDailyMeasure(String id);
 
     void saveMeasure(Long series, EmbeddedData embeddedData);

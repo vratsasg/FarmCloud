@@ -3,7 +3,6 @@ package com.webstart.DTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Calendar;
@@ -21,11 +20,11 @@ public class EndDeviceStatusDTO {
 
     @JsonIgnore
     @Temporal(TemporalType.TIME)
-    private java.util.Date fromtime;
+    private Date fromtime;
 
     @JsonIgnore
     @Temporal(TemporalType.TIME)
-    private java.util.Date untiltime;
+    private Date untiltime;
 
     @JsonProperty("frh")
     private int fromHour;

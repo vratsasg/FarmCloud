@@ -21,6 +21,15 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
 
     List<Featureofinterest> findByUseridAndFeatureofinteresttypeid(int id, long l);
 
+    Featureofinterest getFeatureofinterestByIdentifier(String identifier);
+
+    List<String> getFeatureofinterestsByIdentifier(String identifier);
+
+    @Query("SELECT child.identifier FROM Featureofinterest f " +
+            "inner join f.childrenFeatures as child " +
+            "where f.identifier = :identifier and f.featureofinteresttypeid = 2")
+    List<String> findEndDeviceIdentifiersByStation(@Param("identifier") String identifier);
+
     @Query("select new com.webstart.model.Featureofinterest(fi.featureofinterestid, fi.identifier, fi.name, fi.featureofinteresttypeid) " +
             "from Featureofinterest as fi " +
             "WHERE fi.userid = :userid")
@@ -88,7 +97,7 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     @Query("select fi.featureofinterestid FROM Featureofinterest as fi  WHERE fi.identifier = :tid")
     List<Integer> getIdbyIdent(@Param("tid") String fidentent);
 
-    @Query("select new com.webstart.DTO.EndDeviceStatusDTO(fi.identifier, fi.irrigation, fi.measuring, fi.datetimefrom, fi.datetimeto) " +
+    @Query("select new com.webstart.DTO.EndDeviceStatusDTO(fi.identifier, fi.irrigation, fi.measuring, fi.datetimefrom , fi.datetimeto) " +
             "FROM Featureofinterest as fi " +
             "WHERE fi.parentid = :pid " +
             "order by fi.identifier")
@@ -121,7 +130,7 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
             "FROM Featureofinterest as fi " +
             "JOIN fi.parentFeature as parent " +
             "WHERE fi.userid = :user_id and fi.identifier = :identifier and fi.featureofinteresttypeid = 3 ")
-    AutomaticWater getAutomaticWater(@Param("user_id") Integer userid, @Param("identifier") String identifier);
+    AutomaticWater getAutomaticWaterByEndDevice(@Param("user_id") Integer userid, @Param("identifier") String identifier);
 
     @Query("select parent.waterConsumption " +
             "from Featureofinterest as fi " +
@@ -141,15 +150,19 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     @Transactional
     void setObservableMinmax(@Param("obspropid") Long obspropvalid, @Param("minval") BigDecimal minimum, @Param("maxval") BigDecimal maximum);
 
-    @Modifying
-    @Query("update Featureofinterest f set f.measuring = true where f.userid IN :usid and f.featureofinteresttypeid = :tpid")
-    @Transactional
-    void setMeasuringFlag(@Param("usid") int useid, @Param("tpid") long ftypeid);
+//    @Modifying
+//    @Query("update Featureofinterest f set f.measuring = true where f.identifier = :identifier and f.featureofinteresttypeid = :tpid")
+//    @Modifying
+//    @Query("UPDATE Featureofinterest AS f, featureofinterest AS p SET f.measuring = true " +
+//            " INNER JOIN featureofinterest AS p " +
+//            " WHERE f.parentid = p.featureofinterestid and p.identifier = :identifier and f.featureofinteresttypeid = :tpid")
+//    @Transactional
+//    void setMeasuringFlag(@Param("identifier") String identifier, @Param("tpid") long ftypeid);
 
     @Modifying
-    @Query("update Featureofinterest f set f.measuring = false where f.identifier IN :identifierlist")
+    @Query("update Featureofinterest f set f.measuring = :flag where f.identifier IN :identifierlist")
     @Transactional
-    void setMeasuringFlagFalse(@Param("identifierlist") List<String> identifierlist);
+    void setMeasuringFlag(@Param("identifierlist") List<String> identifierlist, @Param("flag") boolean flag);
 
     @Modifying
     @Query("update Featureofinterest f set f.irrigation = true, f.datetimefrom = :dtfrom, f.datetimeto = :dtto " +
@@ -161,7 +174,7 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
     @Query("update Featureofinterest f set f.datetimefrom = :dtfrom, f.datetimeto = :dtto, f.waterConsumption = :wc " +
             "where  f.identifier = :identifier and f.featureofinteresttypeid = 2")
     @Transactional
-    void setCoordinatorAlgorithmParams(@Param("identifier") String identifier, @Param("dtfrom") Date datetimefrom, @Param("dtto") Date datetimeto, @Param("wc") BigDecimal waterconsumption);
+    void setCoordinatorAlgorithmParams(@Param("identifier") String identifier, @Param("dtfrom") Timestamp datetimefrom, @Param("dtto") Timestamp datetimeto, @Param("wc") BigDecimal waterconsumption);
 
     @Modifying
     @Query("update Featureofinterest f set f.irrigation = :boolvalue where f.identifier = :id")
