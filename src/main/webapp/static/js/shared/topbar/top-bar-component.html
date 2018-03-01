@@ -24,12 +24,36 @@
                 <li class="dropdown">
                     <a class="dropdown-toggle" id="notifanime" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
-                        <span ng-bind="model.notifications.length" id="badge_counter"></span>
+                        <span id="badge_counter">{{model.notifications.length}}</span>
                     </a>
-                    <ul class="dropdown-menu scroll" role="menu" id="dropdown_notifications">
-                        <li ng-repeat="notif in model.notifications" ng-bind="notif.description"></li>
-
-                    </ul>
+                        <ul ng-if="model.notifications.length !== 0" class="dropdown-menu dropdown-messages" role="menu">
+                            <li ng-repeat="notification in model.notifications">
+                                    <div class="media-body">
+                                        <i class="pull-right fa fa-times" style="cursor: pointer" ng-click="model.clearMessage(notification.notificationid)"></i>
+                                        <div ng-if="notification.notificationType===0">
+                                            <small class="pull-left"><span class="flaticon-temperature" aria-hidden="true"></span></small>
+                                        </div>
+                                        <div ng-if="notification.notificationType===1">
+                                            <small class="pull-left"><span class="flaticon-bathroom-faucet-tool" aria-hidden="true"></span></small>
+                                        </div>
+                                        <strong>{{notification.description}}</strong><br>
+                                        <small>{{notification.datecreated}}</small>
+                                    </div>
+                                <div class="divider"></div>
+                            </li>
+                            <li>
+                                <span style="cursor: pointer">
+                                    <i class="pull-right fa fa-times" ng-click="model.clearAllMessages()">
+                                        Clear Alerts
+                                    </i>
+                                </span>
+                            </li>
+                        </ul>
+                        <ul ng-if="model.notifications.length === 0" class="dropdown-menu dropdown-messages" role="menu" id="dropdown_notifications">
+                            <li>
+                                <h4>No unread messages</h4>
+                            </li>
+                        </ul>
                 </li>
 
                 <li class="dropdown topbaritem">
@@ -59,10 +83,7 @@
                 <li role="presentation" class="topbaritem">
                     <a href="" onclick=""><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
                 </li>
-
-
             </ul>
         </div>
-
     </div>
 </div>

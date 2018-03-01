@@ -2,23 +2,26 @@ package com.webstart.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.webstart.Enums.FeatureTypeEnum;
+import com.webstart.model.Featureofinterest;
 import com.webstart.model.Notifications;
 import com.webstart.model.UserProfile;
 import com.webstart.model.Users;
+import com.webstart.repository.FeatureofinterestJpaRepository;
 import com.webstart.repository.NotificationsJpaRepository;
 import com.webstart.repository.UserProfileJpaRepository;
 import com.webstart.repository.UsersJpaRepository;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
-
-/**
- * Created by George on 27/12/2015.
- */
+import java.util.TimeZone;
 
 @Service("usersService")
 @Transactional
@@ -26,12 +29,12 @@ public class UsersServiceImpl implements UsersService{
 
     @Autowired
     private UsersJpaRepository usersJpaRepository;
-
     @Autowired
     private UserProfileJpaRepository userProfileJpaRepository;
-
     @Autowired
     private NotificationsJpaRepository notificationsJpaRepository;
+    @Autowired
+    FeatureofinterestJpaRepository featureofinterestJpaRepository;
 
     public List<Users> findAll(){
         return usersJpaRepository.findAll();
@@ -114,13 +117,28 @@ public class UsersServiceImpl implements UsersService{
         return true;
     }
 
-    public void createNewNotification(int userid, String message) {
+    public void makeNotificationRead(int notificationid) {
         try {
-            Notifications notification = new Notifications();
-            notification.setUserid(userid);
-            notification.setDescription(message);
-            notification.setReadable(false);
-            notification.setDatecreated(new Timestamp(System.currentTimeMillis()));
+            Notifications notification = this.notificationsJpaRepository.getByNotificationid(notificationid);
+            //
+            notification.setIsreaded(true);
+            this.notificationsJpaRepository.save(notification);
+        } catch(Exception e){
+           e.printStackTrace();
+        }
+    }
+
+    public void createNewNotification(int userid, String message, int notificationType) {
+        try {
+            //TODO change datetime now to utc
+            TimeZone tz = TimeZone.getDefault();
+            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+            DateTime localdt = new DateTime(DateTimeZone.forID(tz.getID()));
+            localdt = localdt.minusMillis(offset);
+            Timestamp ts = new Timestamp(localdt.getMillis());
+            //
+            Notifications notification = new Notifications(userid, message, false, ts, notificationType);
+            //
             notificationsJpaRepository.save(notification);
         } catch (Exception e) {
             e.printStackTrace();
@@ -128,14 +146,25 @@ public class UsersServiceImpl implements UsersService{
     }
 
     public List<Notifications> getUserCounterNotifications(Integer userId) {
-        List<Notifications> notifByUser = null;
+        List<Notifications> notifications = null;
 
         try {
-            notifByUser = usersJpaRepository.getNotifByUser(userId);
+            notifications = this.notificationsJpaRepository.getAllByUseridAndIsreaded(userId, false);
+            //
+            List<Featureofinterest> enddevices = this.featureofinterestJpaRepository.findByUseridAndFeatureofinteresttypeid(userId, FeatureTypeEnum.END_DEVICE.getValue());
+            TimeZone tz = TimeZone.getTimeZone(enddevices.get(0).getTimezone());
+            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+            //Convert Datetime created to user timezone
+            for (Notifications notification: notifications) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(notification.getDatecreated().getTime());
+                cal.add(Calendar.MILLISECOND, -offset);
+                notification.setDatecreated(new Timestamp(cal.getTime().getTime()));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            return notifByUser;
+            return notifications;
         }
     }
 

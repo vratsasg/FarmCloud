@@ -37,9 +37,7 @@
 }
 
 .navbar-brand img {
-
     margin-top: 9px;
-
 }
 
 /* AGRIC CLOUD BRAND NAME*/
@@ -150,12 +148,10 @@
 }
 
 .animated2 {
-
     animation: fadein2 4s;
     -moz-animation: fadein2 8s; /* Firefox */
     -webkit-animation: fadein2 4s; /* Safari and Chrome */
     -o-animation: fadein2 4s; /* Opera */
-
 }
 
 @keyframes fadein2 {
@@ -716,3 +712,18 @@ g.dashed.nv-group.nv-series-1 {
     background-color: transparent !important;;
 }
 
+/*NOTIFICATIONS*/
+.dropdown-messages
+{
+    padding: 10px 10px 10px 10px;
+    background-color: transparent !important;
+    width: 300px;
+    height: 350px;
+    overflow: auto;
+}
+
+.dropdown-messages li a
+{
+    color: #000;
+    font-size: 12px;
+}

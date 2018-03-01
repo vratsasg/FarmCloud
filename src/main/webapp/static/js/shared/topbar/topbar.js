@@ -52,6 +52,23 @@
                     model.animationsEnabled = !model.animationsEnabled;
                 };
 
+                model.clearMessage = function (msgid) {
+                    userService.setNotificationRead(msgid).then(
+                        function (data) {
+                            model.notifications = model.notifications.filter((e) => e.notificationid !== msgid);
+                        }, function (errResponse) {
+                            console.error("error fetching user");
+                        });
+                };
+
+                model.clearAllMessages = function () {
+                    userService.setAllNotificationRead().then(
+                        function (data) {
+                            model.notifications = [];
+                        }, function (errResponse) {
+                            console.error("error fetching user");
+                        });
+                }
             }
         }
     });

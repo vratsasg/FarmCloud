@@ -23,12 +23,20 @@ public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofi
 
     Featureofinterest getFeatureofinterestByIdentifier(String identifier);
 
+
+
     List<String> getFeatureofinterestsByIdentifier(String identifier);
+
+    @Query("SELECT child.identifier FROM Featureofinterest f " +
+            "inner join f.parentFeature as parent " +
+            "inner join parent.childrenFeatures as child " +
+            "where f.identifier = :identifier and f.featureofinteresttypeid = 3")
+    List<String> getEndDeviceIdentifiersByEndDeviceIdentifier(@Param("identifier") String identifier);
 
     @Query("SELECT child.identifier FROM Featureofinterest f " +
             "inner join f.childrenFeatures as child " +
             "where f.identifier = :identifier and f.featureofinteresttypeid = 2")
-    List<String> findEndDeviceIdentifiersByStation(@Param("identifier") String identifier);
+    List<String> getEndDeviceIdentifiersByStation(@Param("identifier") String identifier);
 
     @Query("select new com.webstart.model.Featureofinterest(fi.featureofinterestid, fi.identifier, fi.name, fi.featureofinteresttypeid) " +
             "from Featureofinterest as fi " +

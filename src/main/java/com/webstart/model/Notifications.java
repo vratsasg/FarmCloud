@@ -1,5 +1,6 @@
 package com.webstart.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -25,29 +26,33 @@ public class Notifications {
     private boolean isreaded = false;
 
     @Column(name = "datecreated", nullable = false, insertable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp datecreated;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "userid", insertable = false, updatable = false)
     private Users userNotification;
 
+    @Column(name = "notification_type", nullable = false)
+    private int notificationType;
+
     public Notifications() {
     }
 
-    public Notifications(Integer notificationid, Integer userid, String description, boolean isreaded, Timestamp datecreated) {
+    public Notifications(Integer userid, String description, boolean isreaded, Timestamp datecreated, int notificationType) {
         this.userid = userid;
         this.description = description;
         this.isreaded = isreaded;
-        this.notificationid = notificationid;
         this.datecreated = datecreated;
+        this.notificationType = notificationType;
     }
 
 
-    public Integer getNotifid() {
+    public int getNotificationid() {
         return notificationid;
     }
 
-    public void setNotifid(Integer notificationid) {
+    public void setNotificationId(int notificationid) {
         this.notificationid = notificationid;
     }
 
@@ -67,11 +72,11 @@ public class Notifications {
         this.description = description;
     }
 
-    public boolean isReadable() {
+    public boolean getIsreaded() {
         return isreaded;
     }
 
-    public void setReadable(boolean isreaded) {
+    public void setIsreaded(boolean isreaded) {
         this.isreaded = isreaded;
     }
 
@@ -81,6 +86,14 @@ public class Notifications {
 
     public void setDatecreated(Timestamp datecreated) {
         this.datecreated = datecreated;
+    }
+
+    public int getNotificationType() {
+        return notificationType;
+    }
+
+    public void setNotificationType(int notificationType) {
+        this.notificationType = notificationType;
     }
 
 }
