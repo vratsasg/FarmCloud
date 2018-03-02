@@ -58,53 +58,6 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
         return finalobj;
     }
 
-
-    public String getObservationsData(Long obspropId, int userId, String identifier, Date from, Date to) {
-        String jsonInString = null;
-
-        try {
-            java.sql.Timestamp timeFrom = new java.sql.Timestamp(from.getTime());
-            java.sql.Timestamp timeTo = new java.sql.Timestamp(to.getTime());
-
-            Featureofinterest featureofinterest = featureofinterestJpaRepository.getFeatureofinterestByIdentifier(identifier);
-            //
-            List<Object[]> listofObjs = observationJpaRepository.findMeasureByObsPropId(obspropId, userId, identifier, timeFrom, timeTo);
-
-            if (listofObjs.size() == 0) {
-                return null;
-            }
-
-            ObservableMeasure obsMeasure = new ObservableMeasure();
-            Object[] obj = listofObjs.get(0);
-
-            obsMeasure.setIdentifier(String.valueOf(obj[0]));
-            obsMeasure.setObservableProperty(String.valueOf(obj[1]));
-            obsMeasure.setUnit(String.valueOf(obj[4]));
-            List<ValueTime> ls = new ArrayList<ValueTime>();
-
-            Iterator itr = listofObjs.iterator();
-            while (itr.hasNext()) {
-                Object[] objValueTime = (Object[]) itr.next();
-                DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
-                HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-                DateTime dt = convertable.GetUTCDateTime(objValueTime[2].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
-                Timestamp tTime = new Timestamp(dt.getMillis());
-                ls.add(new ValueTime((tTime.getTime() - 60L * 60L * 1000L) / 1000L, (BigDecimal) objValueTime[3], tTime));
-            }
-
-            obsMeasure.setMeasuredata(ls);
-            ObjectMapper mapper = new ObjectMapper();
-
-            //Object to JSON in String
-            jsonInString = mapper.writeValueAsString(obsMeasure);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return jsonInString;
-    }
-
     public WateringMeasure getWateringData(int userId, String identifier, Date from, Date to) {
         WateringMeasure wateringMeasure = new WateringMeasure();
 
@@ -126,14 +79,12 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             wateringMeasure.setUnit(String.valueOf(listofObjs.get(0)[5]));
             List<WateringValueTime> ls = new ArrayList<WateringValueTime>();
 
-            Iterator itr = listofObjs.iterator();
-            while (itr.hasNext()) {
-                Object[] objec = (Object[]) itr.next();
+            for (Object[] objValueTime : listofObjs) {
                 DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
                 HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-                DateTime dtfrom = convertable.GetUTCDateTime(objec[2].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
-                DateTime dtuntil = convertable.GetUTCDateTime(objec[3].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
-                ls.add(new WateringValueTime((BigDecimal) objec[4], new Timestamp(dtfrom.getMillis()), new Timestamp(dtuntil.getMillis())));
+                DateTime dtfrom = convertable.GetUTCDateTime(objValueTime[2].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
+                DateTime dtuntil = convertable.GetUTCDateTime(objValueTime[3].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
+                ls.add(new WateringValueTime((BigDecimal) objValueTime[4], new Timestamp(dtfrom.getMillis()), new Timestamp(dtuntil.getMillis())));
             }
 
             wateringMeasure.setMeasuredata(ls);
@@ -167,11 +118,8 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             obsMeasure.setUnit(String.valueOf(obj[4]));
 
             List<ValueTime> ls = new ArrayList<ValueTime>();
-            Iterator itr = listofObjs.iterator();
 
-            while (itr.hasNext()) {
-                Object[] objec = (Object[]) itr.next();
-
+            for (Object[] objec : listofObjs) {
                 DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
                 HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
                 DateTime dt = convertable.GetUTCDateTime(objec[2].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);

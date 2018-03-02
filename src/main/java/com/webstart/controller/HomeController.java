@@ -157,10 +157,14 @@ public class HomeController {
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
             Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
             Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
-            sentData = observationProperyService.getObservationsData(observablePropertyId, users.getUser_id(), mydevice, from, to);
+            ObservableMeasure observableMeasure = observationProperyService.getObservationData(observablePropertyId, users.getUser_id(), mydevice, from, to);
 
-            if (sentData == null) {
+            if (observableMeasure == null) {
                 sentData = "{\"unit\":\"\",\"measuredata\":[]}";
+            } else {
+                ObjectMapper mapper = new ObjectMapper();
+                //Object to JSON in String
+                sentData = mapper.writeValueAsString(observableMeasure);
             }
 
         } catch (Exception e) {
