@@ -2,22 +2,10 @@
     'use strict';
     var module = angular.module("myApp");
 
-    $("#body").on(
-        "transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd",
-        function () {
-            $("#alertAreaid").html("");
-        }
-    );
-
     module.component('userProfile', {
         templateUrl: 'static/js/components/user-profile/user-profile.component.html',
         controllerAs: "model",
-        link: function (model, element, attrs) {
-            $timeout(function () {
-                element.remove();
-            }, 4000);
-        },
-        controller: function (UserProfileService, $log, $q) {
+        controller: function (UserProfileService, $log, $q, toastr) {
             var model = this;
             model.userprofile = {};
 
@@ -53,17 +41,13 @@
                             UserProfileService.saveUserProfile(model.userprofile).then(
                                 function (response) {
                                     if (response === true || response == "true") {
-                                        var myEl = angular.element(document.querySelector('#alertAreaid'));
-                                        var appenddiv = '<div class="alert alert-success alert_successSave">' +
-                                            '   <strong>Success!</strong>You have succesfully saved your profile!' +
-                                            '</div>';
-                                        myEl.html(appenddiv);
+                                        toastr.success('User profile saved succesfully', 'Success!');
                                     } else {
-                                        //TODO error
+                                        toastr.error('Error on save watering profile data', 'Error');
                                     }
                                 },
                                 function (errResponse) {
-                                    console.error('Error while fetching Currencies');
+                                    toastr.error(errResponse, 'Error');
                                 }
                             );
                         };

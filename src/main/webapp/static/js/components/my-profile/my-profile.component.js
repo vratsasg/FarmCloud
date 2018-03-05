@@ -2,17 +2,10 @@
     'use strict';
     var module = angular.module("myApp");
 
-    $("#body").on(
-        "transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd",
-        function () {
-            $("#alertAreaid").html("");
-        }
-    );
-
     module.component('myProfile', {
         templateUrl: 'static/js/components/my-profile/my-profile.component.html',
         controllerAs: "model",
-        controller: function ($uibModal, $document, ProfileService, $log, $q) {
+        controller: function ($uibModal, $document, ProfileService, $log, $q, toastr) {
             var model = this;
 
             model.myprofile = {};
@@ -26,7 +19,7 @@
                         $log.info('Crop name: ' + model.myprofile.crop.identifier);
                     },
                     function (errResponse) {
-                        console.error('Error while fetching Profile');
+                        toastr.error('Error while fetching Profile: ' + errResponse, 'Error');
                     }
                 );
 
@@ -50,10 +43,9 @@
                                 }
                             }
                         ];
-
                     },
                     function (errResponse) {
-                        console.error('Error while fetching devices for firstpage');
+                        toastr.error(`Save profile error: ${errResponse}`, 'Error');
                     }
                 );
             };
@@ -72,13 +64,9 @@
 
                 ProfileService.saveProfile(angular.toJson(arr)).then(
                     function (response) {
-                        if (response === true || response == "true") {
-                            var myEl = angular.element(document.querySelector('#alertAreaid'));
-                            var appenddiv = '<div class="alert alert-success alert_successSave">' +
-                                '   <strong>Success!</strong> You have succesfully saved your crop\'s information!' +
-                                '</div>';
-                            myEl.html(appenddiv);
-                        }
+                        toastr.success(`You have successfully saved your crop's information!`, 'Success!');
+                    }, function (errResponse) {
+                        toastr.error(`Save profile error: ${errResponse}`, 'Error');
                     }
                 );
 

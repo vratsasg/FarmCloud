@@ -7,7 +7,7 @@
         templateUrl: 'static/js/components/weather-api/weather-chart/weather-chart.component.html',
         controllerAs: "model",
         bindings: {latit: '<', longti: '<'},
-        controller: function (WeatherForecastService, $q) {
+        controller: function (WeatherForecastService, $q, toastr) {
             $('body').on("click", ".day", function () {
                 $(this).parent().parent().find('.day').removeClass('reserved');
                 $(this).addClass('reserved');
@@ -101,7 +101,7 @@
                                     chart.interactiveLayer.tooltip.gravity('');
 
                                     chart.interactiveLayer.tooltip.contentGenerator(function (d) {
-                                        var html = "<div class='wtool col-sm-2'><p><b>" + d.value + "</b></p> <ul>";
+                                        var html = "<div class='wtool col-sm-4'><p><b>" + d.value + "</b></p> <ul>";
 
                                         d.series.forEach(function (elem) {
                                             html += "<li><p><b>" + elem.value + "</b></p></li>";
@@ -153,13 +153,10 @@
                         }
                     },
                     function (errResponse) {
-                        console.error('Error while fetching current weather');
+                        toastr.error(`Error while fetching current weather: ${errResponse}`, 'Error');
                     }
                 );
-
-
             };
-
 
             model.showData = function (parm) {
                 model.tableData = [];
@@ -188,7 +185,6 @@
                     }
                 }
             }
-
         }
     });
 }());

@@ -6,11 +6,11 @@
     module.component('weatherApi', {
         templateUrl: 'static/js/components/weather-api/weather-api.component.html',
         controllerAs: "model",
-        controller: function (WeatherApiService, $q) {
+        controller: function (WeatherApiService, $q, toastr) {
             var model = this;
 
             model.apirespond = {};
-            //initialize api password
+            // Initialize api password
             var apiId = "2482652b83cd5ab077902e528b37ccd1";
 
 
@@ -20,14 +20,11 @@
 
                 WeatherApiService.getStationCoords().then(
                     function (d) {
-                        //TODO set model.center now bitch
                         console.log(d);
                         model.longt = d[0];
                         model.latid = d[1];
 
                         def.resolve(model.longt, model.latid);
-
-
 
                         WeatherApiService.getCurrentWeather(model.longt, model.latid, apiId).then(
                             function (ddat) {
@@ -40,21 +37,14 @@
                                 //(new Date(moment(parseInt(model.apirespond.dt) * 1000))).toString();
                                 model.apirespond.sys.sunrise = moment.unix(parseInt(model.apirespond.sys.sunrise)).format("dddd DD/MM/YYYY HH:mm:ss");
                                 model.apirespond.sys.sunset = moment.unix(parseInt(model.apirespond.sys.sunset)).format("dddd DD/MM/YYYY HH:mm:ss");
-
-
                             },
                             function (errResponse) {
-                                console.error('Error while fetching current weather');
+                                toastr.error(`Error while fetching weather data: ${errResponse}`, 'Error');
                             }
                         );
-
-
-
-
-
                     },
                     function (errResponse) {
-                        console.error('Error while fetching devices for firstpage');
+                        toastr.error(`Error while fetching devices: ${errResponse}`, 'Error');
                     }
                 );
 

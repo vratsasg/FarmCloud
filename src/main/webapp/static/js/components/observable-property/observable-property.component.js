@@ -5,7 +5,7 @@
     module.component('observableProperty', {
         templateUrl: 'static/js/components/observable-property/observable-property.component.html',
         controllerAs: "model",
-        controller: function (ObservablePropertyService, $log, $q, ngTableParams, $filter, $scope) {
+        controller: function (ObservablePropertyService, $log, $q, ngTableParams, $filter, $scope, toastr) {
             var model = this;
 
             model.$routerOnActivate = function (next) {
@@ -118,7 +118,7 @@
 
                     },
                     function (errResponse) {
-                        console.error('Error while fetching devices for firstpage');
+                        toastr.error(errResponse, 'Error');
                     }
                 );
 

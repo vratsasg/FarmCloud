@@ -2,17 +2,10 @@
     'use strict';
     var module = angular.module("myApp");
 
-    $("#body").on(
-        "transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd",
-        function () {
-            $("#alertAreaid").html("");
-        }
-    );
-
     module.component('wateringProfile', {
         templateUrl: 'static/js/components/watering-profile/watering-profile.component.html',
         controllerAs: "model",
-        controller: function (WateringProfileService, $log, $q, $scope) {
+        controller: function (WateringProfileService, $log, $q, $scope, toastr) {
             var model = this;
             model.obspropminmax = {};
 
@@ -32,13 +25,13 @@
                 WateringProfileService.saveWateringProfile(model.obspropminmax).then(
                     function (response) {
                         if (response === true || response == "true") {
-                            var myElement = angular.element(document.querySelector('#alertAreaid'));
-                            var appenddiv =
-                                '<div class="alert alert-success alert_successSave">' +
-                                '   <strong>Success!</strong>You have succesfully saved your profile!' +
-                                '</div>';
-                            myElement.html(appenddiv);
+                            toastr.success('Watering profile saved succesfully', 'Success');
+                        } else {
+                            toastr.error('Error on save watering profile data', 'Error');
                         }
+                    },
+                    function (errResponse) {
+                        toastr.error(errResponse, 'Error!');
                     }
                 );
             };

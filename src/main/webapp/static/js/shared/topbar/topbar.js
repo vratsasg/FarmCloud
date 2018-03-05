@@ -5,7 +5,7 @@
     module.component('topBar', {
         templateUrl: 'static/js/shared/topbar/top-bar-component.html',
         controllerAs: "model",
-        controller: function ($uibModal, $document, userService, $q) {
+        controller: function ($uibModal, $document, userService, $q, toastr) {
             var model = this;
             model.user = {};
             model.notifications = [];
@@ -17,7 +17,7 @@
                     defer.resolve(model.notifications);
                 },
                 function (errResponse) {
-                    console.log("error fetching notifcounter");
+                    toastr.error(`Cannot clear messages: ${errResponse}`, 'Error');
                 }
             );
 
@@ -37,7 +37,7 @@
                         model.notifications = data;
                         defer.resolve(model.notifications);
                     }, function (errResponse) {
-                        console.error("error fetching user");
+                        toastr.error(`Cannot find messages: ${errResponse}`, 'Error');
                     });
 
                 model.showModal = function () {
@@ -58,6 +58,7 @@
                             model.notifications = model.notifications.filter((e) => e.notificationid !== msgid);
                         }, function (errResponse) {
                             console.error("error fetching user");
+                            toastr.error(`Cannot clear messages: ${errResponse}`, 'Error');
                         });
                 };
 
@@ -66,7 +67,7 @@
                         function (data) {
                             model.notifications = [];
                         }, function (errResponse) {
-                            console.error("error fetching user");
+                            toastr.error(`Cannot clear messages: ${errResponse}`, 'Error');
                         });
                 }
             }
