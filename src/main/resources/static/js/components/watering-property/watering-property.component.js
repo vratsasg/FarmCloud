@@ -5,7 +5,7 @@
     module.component('wateringProperty', {
         templateUrl: '/js/components/watering-property/watering-property.component.html',
         controllerAs: "model",
-        controller: function (WateringPropertyService, $log, $q, ngTableParams, $filter, $scope, toastr) {
+        controller: function (WateringPropertyService, $log, $q, ngTableParams, $filter, $scope) {
             var model = this;
             model.measures = "";
 

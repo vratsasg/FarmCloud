@@ -5,7 +5,7 @@
     module.component('observableProperty', {
         templateUrl: '/js/components/observable-property/observable-property.component.html',
         controllerAs: "model",
-        controller: function (ObservablePropertyService, $log, $q, ngTableParams, $filter, $scope, toastr) {
+        controller: function (ObservablePropertyService, $log, $q, ngTableParams, $filter, $scope) {
             var model = this;
 
             model.$routerOnActivate = function (next) {
@@ -118,7 +118,7 @@
 
                     },
                     function (errResponse) {
-                        toastr.error(errResponse, 'Error');
+                        // toastr.error(errResponse, 'Error');
                     }
                 );
 

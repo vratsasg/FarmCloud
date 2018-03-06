@@ -6,7 +6,7 @@
     module.component('weatherApi', {
         templateUrl: '/js/components/weather-api/weather-api.component.html',
         controllerAs: "model",
-        controller: function (WeatherApiService, $q, toastr) {
+        controller: function (WeatherApiService, $q) {
             var model = this;
 
             model.apirespond = {};
@@ -39,12 +39,12 @@
                                 model.apirespond.sys.sunset = moment.unix(parseInt(model.apirespond.sys.sunset)).format("dddd DD/MM/YYYY HH:mm:ss");
                             },
                             function (errResponse) {
-                                toastr.error(`Error while fetching weather data: ${errResponse}`, 'Error');
+                                // toastr.error(`Error while fetching weather data: ${errResponse}`, 'Error');
                             }
                         );
                     },
                     function (errResponse) {
-                        toastr.error(`Error while fetching devices: ${errResponse}`, 'Error');
+                        // toastr.error(`Error while fetching devices: ${errResponse}`, 'Error');
                     }
                 );
 

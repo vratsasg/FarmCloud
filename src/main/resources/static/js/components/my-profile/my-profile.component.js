@@ -19,7 +19,7 @@
                         $log.info('Crop name: ' + model.myprofile.crop.identifier);
                     },
                     function (errResponse) {
-                        toastr.error('Error while fetching Profile: ' + errResponse, 'Error');
+                        // toastr.error('Error while fetching Profile: ' + errResponse, 'Error');
                     }
                 );
 
@@ -45,7 +45,7 @@
                         ];
                     },
                     function (errResponse) {
-                        toastr.error(`Save profile error: ${errResponse}`, 'Error');
+                        // toastr.error(`Save profile error: ${errResponse}`, 'Error');
                     }
                 );
             };
@@ -66,7 +66,7 @@
                     function (response) {
                         toastr.success(`You have successfully saved your crop's information!`, 'Success!');
                     }, function (errResponse) {
-                        toastr.error(`Save profile error: ${errResponse}`, 'Error');
+                        // toastr.error(`Save profile error: ${errResponse}`, 'Error');
                     }
                 );
 
