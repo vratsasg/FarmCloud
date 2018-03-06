@@ -7,7 +7,7 @@
         templateUrl: '/js/components/weather-api/weather-chart/weather-chart.component.html',
         controllerAs: "model",
         bindings: {latit: '<', longti: '<'},
-        controller: function (WeatherForecastService, $q) {
+        controller: function (WeatherForecastService, $q, toastr) {
             $('body').on("click", ".day", function () {
                 $(this).parent().parent().find('.day').removeClass('reserved');
                 $(this).addClass('reserved');
@@ -153,7 +153,7 @@
                         }
                     },
                     function (errResponse) {
-                        // toastr.error(`Error while fetching current weather: ${errResponse}`, 'Error');
+                        toastr.error(`Error while fetching current weather: ${errResponse}`, 'Error');
                         console.error(`Error while fetching current weather: ${errResponse}`);
                     }
                 );

@@ -5,7 +5,7 @@
     module.component('topBar', {
         templateUrl: '/js/shared/topbar/top-bar-component.html',
         controllerAs: "model",
-        controller: function ($uibModal, $document, userService, $q) {
+        controller: function ($uibModal, $document, userService, $q, toastr) {
             var model = this;
             model.user = {};
             model.notifications = [];
@@ -18,7 +18,7 @@
                 },
                 function (errResponse) {
                     console.error(`Cannot clear messages: ${errResponse}`);
-                    // toastr.error(`Cannot clear messages: ${errResponse}`, 'Error');
+                    toastr.error(`Cannot clear messages: ${errResponse}`, 'Error');
                 }
             );
 
@@ -38,7 +38,7 @@
                         model.notifications = data;
                         defer.resolve(model.notifications);
                     }, function (errResponse) {
-                        // toastr.error(`Cannot find messages: ${errResponse}`, 'Error');
+                        toastr.error(`Cannot find messages: ${errResponse}`, 'Error');
                     });
 
                 model.showModal = function () {
@@ -59,7 +59,7 @@
                             model.notifications = model.notifications.filter((e) => e.notificationid !== msgid);
                         }, function (errResponse) {
                             console.error("error fetching user");
-                            // toastr.error(`Cannot clear messages: ${errResponse}`, 'Error');
+                            toastr.error(`Cannot clear messages: ${errResponse}`, 'Error');
                         });
                 };
 
@@ -69,7 +69,7 @@
                             model.notifications = [];
                         }, function (errResponse) {
                             console.error(errResponse);
-                            // toastr.error(`Cannot clear messages: ${errResponse}`, 'Error');
+                            toastr.error(`Cannot clear messages: ${errResponse}`, 'Error');
                         });
                 }
             }

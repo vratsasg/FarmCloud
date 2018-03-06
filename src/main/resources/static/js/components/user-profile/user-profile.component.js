@@ -43,11 +43,11 @@
                                     if (response === true || response == "true") {
                                         toastr.success('User profile saved succesfully', 'Success!');
                                     } else {
-                                        // toastr.error('Error on save watering profile data', 'Error');
+                                        toastr.error('Error on save watering profile data', 'Error');
                                     }
                                 },
                                 function (errResponse) {
-                                    // toastr.error(errResponse, 'Error');
+                                    toastr.error(errResponse, 'Error');
                                 }
                             );
                         };
