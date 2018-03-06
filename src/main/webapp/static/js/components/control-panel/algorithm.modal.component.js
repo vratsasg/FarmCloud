@@ -9,7 +9,7 @@
                 parent: '^controlPanel'
             },
             controllerAs: "model",
-            controller: function (ControlPanelService, $q) {
+            controller: function (ControlPanelService, $q, toastr) {
                 var model = this;
                 var defer = $q.defer();
 
@@ -28,8 +28,9 @@
                             function (returnedData) {
                                 defer.resolve(returnedData);
                                 instance.close(returnedData);
+                                toastr.success("")
                             }, function (errResponse) {
-                                console.error('Error while sending request for starting measuring');
+                                toastr.error(`Error while sending request for starting measuring: ${errResponse}`, 'Error')
                             });
                     };
 

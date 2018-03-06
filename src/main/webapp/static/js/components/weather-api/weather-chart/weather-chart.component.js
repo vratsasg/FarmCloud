@@ -101,7 +101,7 @@
                                     chart.interactiveLayer.tooltip.gravity('');
 
                                     chart.interactiveLayer.tooltip.contentGenerator(function (d) {
-                                        var html = "<div class='wtool col-sm-4'><p><b>" + d.value + "</b></p> <ul>";
+                                        var html = "<div class='wtool col-sm-6'><p><b>" + d.value + "</b></p> <ul>";
 
                                         d.series.forEach(function (elem) {
                                             html += "<li><p><b>" + elem.value + "</b></p></li>";
