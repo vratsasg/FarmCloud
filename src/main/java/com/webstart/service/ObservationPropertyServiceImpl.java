@@ -141,7 +141,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
 
         try {
             Timestamp lastdate = observationJpaRepository.findlastdatetime(userId);
-            Featureofinterest featureofinterest = featureofinterestJpaRepository.findByUseridAndFeatureofinteresttypeid(userId, FeatureTypeEnum.STATION.getValue()).get(0);
+            Featureofinterest featureofinterest = featureofinterestJpaRepository.getAllByUseridAndFeatureofinteresttypeid(userId, FeatureTypeEnum.STATION.getValue()).get(0);
 
             //TODO create a function with timestamp
             //TimeZone

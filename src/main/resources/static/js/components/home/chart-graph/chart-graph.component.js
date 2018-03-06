@@ -5,7 +5,7 @@
 
     module.component('chartGraph', {
 
-        templateUrl: 'static/js/components/home/chart-graph/chart-graph.component.html',
+        templateUrl: '/js/components/home/chart-graph/chart-graph.component.html',
         controllerAs: "model",
         bindings: {enddev: '<'},
         controller: function (chartService, $q) {

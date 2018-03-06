@@ -89,7 +89,7 @@ public class Featureofinterest {
 
     ////Autorelation
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "parentid", insertable = false, updatable = false)
+    @JoinColumn(name = "parentId", referencedColumnName = "parentid", insertable = false, updatable = false)
     private Featureofinterest parentFeature;
 
     @OneToMany(mappedBy = "parentFeature", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})

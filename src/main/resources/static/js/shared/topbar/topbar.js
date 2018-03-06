@@ -3,7 +3,7 @@
     var module = angular.module("myApp");
 
     module.component('topBar', {
-        templateUrl: 'static/js/shared/topbar/top-bar-component.html',
+        templateUrl: '/js/shared/topbar/top-bar-component.html',
         controllerAs: "model",
         controller: function ($uibModal, $document, userService, $q) {
             var model = this;

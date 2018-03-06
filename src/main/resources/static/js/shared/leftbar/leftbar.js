@@ -4,7 +4,7 @@
     var module = angular.module("myApp");
     module.component('leftBar', {
 
-        templateUrl: 'static/js/shared/leftbar/left-bar-component.html',
+        templateUrl: '/js/shared/leftbar/left-bar-component.html',
         controllerAs: "model",
         controller: function (leftbarService, $log, $q) {
             $('body').on("click", "#sidebarleft a", function () {

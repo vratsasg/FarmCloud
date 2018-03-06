@@ -3,7 +3,7 @@
     var module = angular.module("myApp");
 
     module.component('logoutModal', {
-            templateUrl: 'static/js/shared/topbar/logout.modal.component.html',
+            templateUrl: '/js/shared/topbar/logout.modal.component.html',
             replace: true,
             require: {
                 parent: '^topBar'

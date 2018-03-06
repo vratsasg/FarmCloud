@@ -4,7 +4,7 @@
 
     module.component('firstPage', {
 
-        templateUrl: 'static/js/components/home/first-page.component.html',
+        templateUrl: '/js/components/home/first-page.component.html',
         controllerAs: "model",
         controller: function (firstPageDevices, $log, $q) {
             var model = this;

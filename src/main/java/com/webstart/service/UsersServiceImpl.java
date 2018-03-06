@@ -151,7 +151,7 @@ public class UsersServiceImpl implements UsersService{
         try {
             notifications = this.notificationsJpaRepository.getAllByUseridAndIsreaded(userId, false);
             //
-            List<Featureofinterest> enddevices = this.featureofinterestJpaRepository.findByUseridAndFeatureofinteresttypeid(userId, FeatureTypeEnum.END_DEVICE.getValue());
+            List<Featureofinterest> enddevices = this.featureofinterestJpaRepository.getAllByUseridAndFeatureofinteresttypeid(userId, FeatureTypeEnum.END_DEVICE.getValue());
             TimeZone tz = TimeZone.getTimeZone(enddevices.get(0).getTimezone());
             int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
             //Convert Datetime created to user timezone
