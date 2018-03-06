@@ -8,6 +8,7 @@ import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "featureofinterest")
-public class Featureofinterest {
+public class Featureofinterest implements Serializable {
 
     @JsonIgnore
     @Id
@@ -44,7 +45,7 @@ public class Featureofinterest {
     @Column(length = 255, name = "url")
     private String url;
 
-    @Column(name = "parentId")
+    @Column(name = "parentid")
     private Long parentid;
 
     @Column(name = "datetimefrom")
@@ -70,7 +71,6 @@ public class Featureofinterest {
     @Column(name = "geom", columnDefinition = "Point")
     private Point geom;
 
-
     @Column(name = "userid")
     private int userid;
 
@@ -81,18 +81,18 @@ public class Featureofinterest {
     @JoinColumn(name = "userid", insertable = false, updatable = false)
     private Users userfeature;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "featureofinterest", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "featureofinterest")
     private List<Series> seriesList = new ArrayList<Series>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "featureofinterest", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "featureofinterest")
     private List<ObservablePropertyMinMax> obspropminmaxList = new ArrayList<ObservablePropertyMinMax>();
 
     ////Autorelation
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "parentId", referencedColumnName = "parentid", insertable = false, updatable = false)
+    @JoinColumn(name = "parentid", nullable = true, insertable = false, updatable = false)
     private Featureofinterest parentFeature;
 
-    @OneToMany(mappedBy = "parentFeature", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "parentFeature", fetch = FetchType.LAZY)
     private List<Featureofinterest> childrenFeatures;
 
     //@ManyToOne(fetch = FetchType.LAZY, optional = true)

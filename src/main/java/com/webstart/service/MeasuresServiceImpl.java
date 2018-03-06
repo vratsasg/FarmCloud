@@ -45,14 +45,18 @@ public class MeasuresServiceImpl implements MeasureService {
 
     public JSONArray findDailyMeasure(String id) {
         JSONArray finalDataList = new JSONArray();
-        List<CurrentMeasure> observationList = new ArrayList<CurrentMeasure>();
+//        List<CurrentMeasure> observationList = new ArrayList<CurrentMeasure>();
 
         try {
             Timestamp timestampTo = observationJpaRepository.fiindlastdatetime(id);
             //substract one day
             Timestamp timestampFrom = new Timestamp(timestampTo.getTime() - 24 * 60 * 60 * 1000);
 
-            observationList = observationJpaRepository.findCurrentMeasure(id, timestampFrom, timestampTo);
+            List<Object[]> ojectMeasures = observationJpaRepository.findCurrentMeasure(id, timestampFrom, timestampTo);
+//            for (Object[] ojectMeasure : ojectMeasures) {
+//                observationList.add(new CurrentMeasure(ojectMeasure[0].toString(), (Timestamp) ojectMeasure[1], (BigDecimal) ojectMeasure[2]));
+//            }
+
             List<String> observableProperyList = observablePropertyJpaRepository.findallObsProperty();
             Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(id);
 
@@ -62,7 +66,7 @@ public class MeasuresServiceImpl implements MeasureService {
                 obspropValues.put(obsprop, new JSONArray());
             }
 
-            Iterator itr = observationList.iterator();
+            Iterator itr = ojectMeasures.iterator();
             while (itr.hasNext()) {
                 Object[] object = (Object[]) itr.next();
                 JSONArray internvalues = new JSONArray();
