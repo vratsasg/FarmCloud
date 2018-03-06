@@ -10,7 +10,7 @@
     );
 
     module.component('userProfile', {
-        templateUrl: 'static/js/components/user-profile/user-profile.component.html',
+        templateUrl: '/js/components/user-profile/user-profile.component.html',
         controllerAs: "model",
         link: function (model, element, attrs) {
             $timeout(function () {

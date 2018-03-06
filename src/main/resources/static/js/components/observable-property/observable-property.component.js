@@ -3,7 +3,7 @@
     var module = angular.module("myApp");
 
     module.component('observableProperty', {
-        templateUrl: 'static/js/components/observable-property/observable-property.component.html',
+        templateUrl: '/js/components/observable-property/observable-property.component.html',
         controllerAs: "model",
         controller: function (ObservablePropertyService, $log, $q, ngTableParams, $filter, $scope) {
             var model = this;

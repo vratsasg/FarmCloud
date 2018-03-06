@@ -4,7 +4,7 @@
 
     module.component('controlPanel', {
 
-        templateUrl: 'static/js/components/control-panel/control-panel.component.html',
+        templateUrl: '/js/components/control-panel/control-panel.component.html',
         controllerAs: "model",
         controller: function ($uibModal, $document, ControlPanelService, $log, $q) {
             var model = this;

@@ -3,7 +3,7 @@
     var module = angular.module("myApp");
 
     module.component('algorithmModal', {
-            templateUrl: 'static/js/components/control-panel/algorithm.modal.component.html',
+            templateUrl: '/js/components/control-panel/algorithm.modal.component.html',
             replace: true,
             require: {
                 parent: '^controlPanel'

@@ -10,7 +10,7 @@
     );
 
     module.component('wateringProfile', {
-        templateUrl: 'static/js/components/watering-profile/watering-profile.component.html',
+        templateUrl: '/js/components/watering-profile/watering-profile.component.html',
         controllerAs: "model",
         controller: function (WateringProfileService, $log, $q, $scope) {
             var model = this;

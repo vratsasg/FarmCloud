@@ -3,7 +3,7 @@
     var module = angular.module("myApp");
 
     module.component('measuringModal', {
-            templateUrl: 'static/js/components/control-panel/measuring.modal.component.html',
+            templateUrl: '/js/components/control-panel/measuring.modal.component.html',
             replace: true,
             require: {
                 parent: '^controlPanel'

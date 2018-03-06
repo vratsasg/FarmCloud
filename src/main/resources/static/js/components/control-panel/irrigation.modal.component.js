@@ -3,7 +3,7 @@
     var module = angular.module("myApp");
 
     module.component('irrigationModal', {
-            templateUrl: 'static/js/components/control-panel/irrigation.modal.component.html',
+            templateUrl: '/js/components/control-panel/irrigation.modal.component.html',
             replace: true,
             require: {
                 parent: '^controlPanel'

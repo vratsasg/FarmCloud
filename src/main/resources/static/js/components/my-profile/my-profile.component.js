@@ -10,7 +10,7 @@
     );
 
     module.component('myProfile', {
-        templateUrl: 'static/js/components/my-profile/my-profile.component.html',
+        templateUrl: '/js/components/my-profile/my-profile.component.html',
         controllerAs: "model",
         controller: function ($uibModal, $document, ProfileService, $log, $q) {
             var model = this;

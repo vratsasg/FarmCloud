@@ -13,7 +13,6 @@
             {path: "/controlpanel", component: "controlPanel", name: "ControlPanel"},
             {path: "/wateringprofile", component: "wateringProfile", name: "WateringProfile"},
             {path: "/**", component: "firstPage", name: "Firstpage"}
-
         ],
         controller: function () {
         }

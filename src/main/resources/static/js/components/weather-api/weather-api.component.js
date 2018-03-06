@@ -4,7 +4,7 @@
     var module = angular.module("myApp");
 
     module.component('weatherApi', {
-        templateUrl: 'static/js/components/weather-api/weather-api.component.html',
+        templateUrl: '/js/components/weather-api/weather-api.component.html',
         controllerAs: "model",
         controller: function (WeatherApiService, $q) {
             var model = this;

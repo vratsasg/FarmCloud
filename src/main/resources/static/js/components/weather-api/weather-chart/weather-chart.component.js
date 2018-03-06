@@ -4,7 +4,7 @@
     var module = angular.module("myApp");
 
     module.component('weatherChart', {
-        templateUrl: 'static/js/components/weather-api/weather-chart/weather-chart.component.html',
+        templateUrl: '/js/components/weather-api/weather-chart/weather-chart.component.html',
         controllerAs: "model",
         bindings: {latit: '<', longti: '<'},
         controller: function (WeatherForecastService, $q) {
