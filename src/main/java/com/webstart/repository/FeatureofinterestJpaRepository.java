@@ -15,18 +15,14 @@ import java.util.Date;
 import java.util.List;
 
 public interface FeatureofinterestJpaRepository extends JpaRepository<Featureofinterest, Integer> {
-
-
-    List<Featureofinterest> findByUserid(int id);
-
-    List<Featureofinterest> findByUseridAndFeatureofinteresttypeid(int id, long l);
-
+    //
+    List<Featureofinterest> getAllByUseridAndFeatureofinteresttypeid(int userid, long l);
+    //
     Featureofinterest getFeatureofinterestByIdentifier(String identifier);
+    //
+    Featureofinterest getFeatureofinterestByFeatureofinterestid(int id);
 
-
-
-    List<String> getFeatureofinterestsByIdentifier(String identifier);
-
+    //
     @Query("SELECT child.identifier FROM Featureofinterest f " +
             "inner join f.parentFeature as parent " +
             "inner join parent.childrenFeatures as child " +

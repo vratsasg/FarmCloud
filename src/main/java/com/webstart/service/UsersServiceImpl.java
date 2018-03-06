@@ -2,7 +2,6 @@ package com.webstart.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webstart.Enums.FeatureTypeEnum;
 import com.webstart.model.Featureofinterest;
 import com.webstart.model.Notifications;
 import com.webstart.model.UserProfile;
@@ -151,11 +150,11 @@ public class UsersServiceImpl implements UsersService{
         try {
             notifications = this.notificationsJpaRepository.getAllByUseridAndIsreaded(userId, false);
             //
-            List<Featureofinterest> enddevices = this.featureofinterestJpaRepository.findByUseridAndFeatureofinteresttypeid(userId, FeatureTypeEnum.END_DEVICE.getValue());
+            List<Featureofinterest> enddevices = this.featureofinterestJpaRepository.getAllByUseridAndFeatureofinteresttypeid(userId, 3L);
             TimeZone tz = TimeZone.getTimeZone(enddevices.get(0).getTimezone());
             int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
             //Convert Datetime created to user timezone
-            for (Notifications notification: notifications) {
+            for (Notifications notification : notifications) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(notification.getDatecreated().getTime());
                 cal.add(Calendar.MILLISECOND, -offset);
@@ -167,6 +166,5 @@ public class UsersServiceImpl implements UsersService{
             return notifications;
         }
     }
-
 
 }
