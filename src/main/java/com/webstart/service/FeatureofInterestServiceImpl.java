@@ -214,8 +214,8 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
         //Object to JSON in String
         String jsonInString = null;
         int key = 2;
-        Featureofinterest featureofinterest = featureofinterestJpaRepository.findOne(key);
         try {
+            Featureofinterest featureofinterest = featureofinterestJpaRepository.getFeatureofinterestByFeatureofinterestid(key);
             List<Double> coords = Arrays.asList(featureofinterest.getGeom().getX(), featureofinterest.getGeom().getY());
             jsonInString = mapper.writeValueAsString(coords);
             //jsonInString = mapper.writeValueAsString(featureofinterest.getGeom().toString());

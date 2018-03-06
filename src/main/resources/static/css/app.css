@@ -1,0 +1,729 @@
+/*LOGIN PAGE ***********************************************************************************  */
+
+@font-face {
+    font-family: exo-reg;
+    src: url("../fonts/Exo-Regular.otf") format("opentype");
+}
+
+@font-face {
+    font-family: exo-bold;
+    font-weight: bold;
+    src: url("../fonts/Exo-Bold.otf") format("opentype");
+}
+
+@font-face {
+    font-family: exo-med;
+    src: url("../fonts/Exo-Medium.otf") format("opentype");
+}
+
+/* NAVIGATION BAR*/
+.navbar.navbar-fixed-top.navbar-default {
+    position: relative;
+    margin-top: 0px;
+    color: whitesmoke;
+    background: #71843f !important;
+    border-style: none;
+}
+
+.navbar-header {
+    width: auto;
+    height: auto;
+}
+
+.navbar-brand {
+    height: auto;
+    margin-top: -8%;
+
+}
+
+.navbar-brand img {
+    margin-top: 9px;
+}
+
+/* AGRIC CLOUD BRAND NAME*/
+.headerspan {
+    font-family: exo-reg;
+    width: auto;
+    margin-left: 60px;
+    margin-top: -25%;
+    font-size: 20px;
+    color: white;
+}
+
+.topbaritem {
+    font-size: 18px;
+}
+
+.navbar-nav > li > a {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/*quote under navigation bar*/
+.headerp {
+    color: green;
+    font-family: exo-reg;
+
+}
+
+#allheader {
+    height: 73px;
+}
+
+/*login */
+
+#rightlog {
+    border-top-color: green;
+    border-top-style: solid;
+    border-top-width: 3px;
+    border-left-color: green;
+    border-left-style: solid;
+    border-left-width: 1px;
+    box-shadow: 10px 10px 5px #888888;
+    padding-left: 40px;
+    margin-top: 30px;
+}
+
+#rightlog img {
+    margin-left: 90px;
+}
+
+#rightlog h4 {
+    margin-left: 50px;
+}
+
+/*carousel */
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+    width: 100%;
+    margin: auto;
+}
+
+/*footer info quotes*/
+
+.animated1 {
+    animation: fadein 4s;
+    -moz-animation: fadein 4s; /* Firefox */
+    -webkit-animation: fadein 4s; /* Safari and Chrome */
+    -o-animation: fadein 4s; /* Opera */
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadein {
+    /* Firefox */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadein {
+    /* Safari and Chrome */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadein {
+    /* Opera */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.animated2 {
+    animation: fadein2 4s;
+    -moz-animation: fadein2 8s; /* Firefox */
+    -webkit-animation: fadein2 4s; /* Safari and Chrome */
+    -o-animation: fadein2 4s; /* Opera */
+}
+
+@keyframes fadein2 {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadein2 {
+    /* Firefox */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadein2 {
+    /* Safari and Chrome */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadein2 {
+    /* Opera */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.animated3 {
+
+    animation: fadein3 10s;
+    -moz-animation: fadein3 12s; /* Firefox */
+    -webkit-animation: fadein3 4s; /* Safari and Chrome */
+    -o-animation: fadein3 4s; /* Opera */
+
+}
+
+@keyframes fadein3 {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadein3 {
+    /* Firefox */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadein3 {
+    /* Safari and Chrome */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadein3 {
+    /* Opera */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.animated1 h3,
+.animated2 h3,
+.animated3 h3 {
+    font-family: exo-med;
+}
+
+.animated1 p,
+.animated2 p,
+.animated3 p {
+    font-family: exo-med;
+}
+
+#logbutton {
+
+    margin-left: 40px;
+
+}
+
+.alert_successSave {
+    animation: fadeinal 7s;
+    -moz-animation: fadeinal 7s;
+    -webkit-animation: fadeinal 7s;
+    -o-animation: fadeinal 7s;
+    opacity: 0;
+}
+
+@keyframes fadeinal {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@-moz-keyframes fadeinal {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes fadeinal {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+
+}
+
+@-o-keyframes fadeinal {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/*888888888888888888888888888888888888888888   LOGIN PAGE       88888888888888888888888888888888888888888888888888888*/
+
+/* NAVIGATION DEKSIA*/
+.nav.navbar-nav.navbar-right {
+    font-family: exo-reg;
+    font-size: 20px;
+    margin-top: 22px;
+    font-color: white;
+}
+
+.nav.navbar-nav.navbar-right a {
+
+    color: white;
+}
+
+.nav.navbar-nav.navbar-right a:hover {
+    border-radius: 113px 113px 113px 113px;
+    -moz-border-radius: 113px 113px 113px 113px;
+    -webkit-border-radius: 113px 113px 113px 113px;
+    background-color: white;
+    color: black;
+}
+
+.nav.navbar-nav.navbar-right a:focus {
+    border-radius: 113px 113px 113px 113px;
+    -moz-border-radius: 113px 113px 113px 113px;
+    -webkit-border-radius: 113px 113px 113px 113px;
+    background-color: white;
+    color: black;
+}
+
+.nav.navbar-nav.navbar-right a:active {
+    border-radius: 113px 113px 113px 113px;
+    -moz-border-radius: 113px 113px 113px 113px;
+    -webkit-border-radius: 113px 113px 113px 113px;
+    background-color: white;
+    color: black;
+}
+
+.nav.navbar-nav.navbar-right > li > ul {
+
+    background-color: #71843f !important;
+
+}
+
+/*..........NAVIGATION VERTICAL.................................*/
+
+#sidebarleft {
+    color: black;
+    border-radius: 0px 23px 20px 0px;
+    -moz-border-radius: 0px 23px 20px 0px;
+    -webkit-border-radius: 0px 23px 20px 0px;
+    border: 2px solid #71843f;
+    /*height: 100%;*/
+    background-color: #F5F5F5;
+    box-shadow: 5px 5px 15px #888888;
+}
+
+/*.active {*/
+/*/!*background-color: #71843f !important;*!/*/
+/*background-color: #E5E500 !important;*/
+/*color: black;*/
+/*border-radius: 0px 23px 20px 0px;*/
+/*-moz-border-radius: 0px 23px 20px 0px;*/
+/*-webkit-border-radius: 0px 23px 20px 0px;*/
+/*}*/
+
+#sidebarleft li > a {
+    color: black;
+    font-family: exo-reg;
+    font-size: 16px;
+}
+
+#sidebarleft li .active {
+    /*background-color: #FF7F0E !important;*/
+    background-color: #ff7f00 !important;
+    color: whitesmoke !important;
+    border-radius: 0px;
+}
+
+#sidebarleft li:last-child .active {
+    border-bottom-right-radius: 17px !important;
+}
+
+#sidebarleft li:first-child .active {
+    border-top-right-radius: 17px !important;;
+}
+
+#sidebarleft li:first-child:hover a {
+    border-top-right-radius: 17px;
+}
+
+#sidebarleft li:last-child:hover a {
+    border-bottom-right-radius: 17px !important;
+}
+
+#sidebarleft li > a:hover {
+    background-color: #71843f !important;
+    color: whitesmoke;
+    border-radius: 0px;
+}
+
+/* SIZE OF GLYPHICON ICON*/
+span.glyphicon-scale,
+span.glyphicon-grain,
+span.glyphicon-apple,
+span.glyphicon-tint,
+span.glyphicon-leaf,
+span.glyphicon-tree-conifer,
+span.glyphicon-globe {
+    font-size: 1.1em;
+}
+
+/*-----------------------------------------------*/
+
+.killmargin {
+    margin: 0 !important;
+}
+
+#datacontent {
+    background: white;
+    height: 80%;
+}
+
+/* Heading Line hr attribute html5*/
+#headline {
+    height: 10px;
+    border: 0;
+    box-shadow: 0 10px 10px -10px #8c8b8b inset;
+}
+
+/*..........   FOOTER     .................................*/
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
+}
+
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+#logbutton {
+    margin-left: 40px;
+}
+
+/* 888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888*/
+
+/* --------------------------------------VALIDATION FORM INPUTS CSS --------------------------*/
+
+input:focus:invalid, textarea:focus:invalid, input[type=radio]:required, textarea:invalid {
+    border-color: #FF0000;
+    box-shadow: 0 0 5px #FF0000;
+    background: #fff url(../images/invalid.png) 98% center no-repeat;
+    background-size: 22px 22px;
+
+}
+
+input:required, textarea:required {
+    background: white;
+}
+
+input:focus:invalid + div > span {
+    display: block;
+    color: #FF0000;
+}
+
+input:invalid + div > span {
+    display: block;
+    color: #FF0000;
+}
+
+input:required:valid, textarea:required:valid {
+    border-color: #56c93f;
+    box-shadow: 0 0 5px #56c93f;
+    background: #fff url(../images/valid.png) 98% center no-repeat;
+    background-size: 22px 22px;
+    /*@include single-vbox-shadow(#56c93f, 0,0,5px);*/
+}
+
+input:valid, textarea:valid {
+    background-image: none;
+}
+
+/* ----------------------------------------------------------------------------------------------*/
+/*-------------------------   HOME -------------------------------*/
+
+#home-button-bar {
+
+    margin-top: -20px;
+    margin-bottom: 5px;
+
+}
+
+/*-------------------------------------------------------------------*/
+
+/*///////////////////////   ng-errors   ////////////////////////////*/
+.fathersname.ng-dirty.ng-invalid-minlength {
+    background-color: yellow;
+}
+
+.fathersname.ng-dirty.ng-invalid-maxlength {
+    background-color: yellow;
+}
+
+.model.userprofile.firstname.ng-dirty.ng-invalid-minlength {
+    background-color: yellow;
+}
+
+.model.userprofile.firstname.ng-dirty.ng-invalid-maxlength {
+    background-color: yellow;
+}
+
+.lastname.ng-dirty.ng-invalid-minlength {
+    background-color: yellow;
+}
+
+.lastname.ng-dirty.ng-invalid-maxlength {
+    background-color: yellow;
+}
+
+#weather,
+#watering,
+#controlPanel {
+
+    margin-right: 5px;
+}
+
+.table.table-condensed.table-bordered.table-striped {
+    /*border-collapse:separate;*/
+
+    border-color: white;
+    border-width: 2px;
+    border-style: solid;
+
+}
+
+.table.table-condensed.table-bordered.table-striped th {
+    /*-webkit-border-top-left-radius: 25px;*/
+    /*-moz-border-top-left-radius: 25px;*/
+    /*-webkit-border-top-right-radius: 25px;*/
+    /*-moz-border-top-right-radius: 25px;*/
+    /*border-top-left-radius: 25px;*/
+    /*border-top-right-radius: 25px;*/
+    background-color: #C5E1A5 !important;
+    color: black !important;
+    line-height: 1.2;
+}
+
+.table-condensed > tbody > tr :hover {
+    background-color: #9CCC65 !important;
+}
+
+.wtool {
+    background-color: #C5E1A5;
+    border-radius: 15px;
+    margin-right: 20px;
+}
+
+#forecastButt .btn {
+    border-radius: 24px;
+    /*background-color: #9CCC65;*/
+    background-color: #C5E1A5;
+    color: #212121;
+
+}
+
+tr.weatherTable td {
+
+    background-color: #C5E1A5 !important;
+    color: black !important;
+}
+
+.nvtooltip {
+
+}
+
+/*.nvtooltip > table {*/
+/*background-color: beige;*/
+/*border-top-left-radius: 10px;*/
+/*border-top-right-radius: 10px;*/
+/*border-bottom-right-radius: 10px;*/
+/*border-bottom-left-radius: 10px;*/
+
+/*}*/
+
+/*/!*Weather api date toolbar*!/*/
+/*.datetoolbar {*/
+/*color: black;*/
+/*}*/
+
+/*.datetoolbar :hover {*/
+/*background-color: LightGreen ;*/
+/*}*/
+
+/*.datetoolbar :active {*/
+/*background-color: MediumSeaGreen ;*/
+/*color: blanchedalmond;*/
+/*}*/
+
+/*//////////////        DAY        //////////////*/
+.day {
+    text-align: center;
+    color: #71843f;
+    /*width: 11.6%;*/
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: 17px;
+    padding: 2px;
+}
+
+.dayborder {
+    /*border-right: 2px solid #B9B9B9;*/
+    /*border-left: 2px solid #B9B9B9;*/
+    margin-right: 5px;
+    margin-left: 5px;
+    height: 80%;
+    text-align: center;
+}
+
+.day a {
+    color: #71843f;
+";
+}
+
+.day:hover {
+    background-color: #DCDCDC;
+}
+
+.reserved {
+    background-color: orange;
+    color: #fff;
+}
+
+.reserved:hover {
+    background-color: orange;
+}
+
+.reserved a {
+    color: #fff;
+}
+
+/*------- CHART LINES ------*/
+.area {
+    fill-opacity: 0;
+    /*fill: lightsteelblue;*/
+    /*stroke-width: 0;*/
+}
+
+g.nv-group.nv-series-0 {
+    stroke-opacity: 1 !important;
+    stroke-width: 2 !important;
+    fill-opacity: 0 !important;
+    background-color: transparent !important;
+}
+
+g.nv-group.nv-series-1 {
+    stroke-opacity: 1 !important;
+    stroke-width: 2 !important;
+    fill-opacity: 0 !important;
+    background-color: transparent !important;;
+}
+
+/*g.das.nvd3.nv-group.nv-series-0 {*/
+g.dashed.nv-group.nv-series-0 {
+    stroke-opacity: 1 !important;
+    stroke-width: 2 !important;
+    fill-opacity: 0 !important;
+    background-color: transparent !important;
+}
+
+g.dashed.nv-group.nv-series-1 {
+    stroke-opacity: 1 !important;
+    stroke-width: 2 !important;
+    fill-opacity: 0 !important;
+    background-color: transparent !important;;
+}
+
+/*NOTIFICATIONS*/
+.dropdown-messages
+{
+    padding: 10px 10px 10px 10px;
+    background-color: transparent !important;
+    width: 300px;
+    height: 350px;
+    overflow: auto;
+}
+
+.dropdown-messages li a
+{
+    color: #000;
+    font-size: 12px;
+}
