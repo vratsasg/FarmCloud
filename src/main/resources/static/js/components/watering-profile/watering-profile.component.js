@@ -16,12 +16,15 @@
                     function (responsedata) {
                         model.obspropminmax = responsedata;
                         defer.resolve(model.obspropminmax);
-                        console.log(model.obspropminmax)
-                    });
+                    }
+                );
+
+                toastr.info("You can set the minimum and maximum values of your irrigation system. The irrigation will start when the" +
+                    "observable property is bigger than max value or smallen than less value.","Information");
             }
 
             model.saveAllData = function () {
-                console.log(angular.toJson(model.obspropminmax));
+                // console.log(angular.toJson(model.obspropminmax));
                 WateringProfileService.saveWateringProfile(model.obspropminmax).then(
                     function (response) {
                         if (response === true || response == "true") {
@@ -35,9 +38,6 @@
                     }
                 );
             };
-
-
         }
     });
-
 }());

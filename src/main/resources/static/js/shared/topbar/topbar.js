@@ -37,42 +37,43 @@
                     function (data) {
                         model.notifications = data;
                         defer.resolve(model.notifications);
+                        toastr.info(`You have ${model.notifications.length} messages unread`);
                     }, function (errResponse) {
                         toastr.error(`Cannot find messages: ${errResponse}`, 'Error');
                     });
-
-                model.showModal = function () {
-                    model.modalInstance = $uibModal.open({
-                        animation: model.animationsEnabled,
-                        template: '<logout-modal></logout-modal>',
-                        appendTo: $document.find('top-bar')
-                    });
-                };
-
-                model.toggleAnimation = function () {
-                    model.animationsEnabled = !model.animationsEnabled;
-                };
-
-                model.clearMessage = function (msgid) {
-                    userService.setNotificationRead(msgid).then(
-                        function (data) {
-                            model.notifications = model.notifications.filter((e) => e.notificationid !== msgid);
-                        }, function (errResponse) {
-                            console.error("error fetching user");
-                            toastr.error(`Cannot clear messages: ${errResponse}`, 'Error');
-                        });
-                };
-
-                model.clearAllMessages = function () {
-                    userService.setAllNotificationRead().then(
-                        function (data) {
-                            model.notifications = [];
-                        }, function (errResponse) {
-                            console.error(errResponse);
-                            toastr.error(`Cannot clear messages: ${errResponse}`, 'Error');
-                        });
-                }
             }
+
+            model.showModal = function () {
+                model.modalInstance = $uibModal.open({
+                    animation: model.animationsEnabled,
+                    template: '<logout-modal></logout-modal>',
+                    appendTo: $document.find('top-bar')
+                });
+            };
+
+            model.toggleAnimation = function () {
+                model.animationsEnabled = !model.animationsEnabled;
+            };
+
+            model.clearMessage = function (msgid) {
+                userService.setNotificationRead(msgid).then(
+                    function (data) {
+                        model.notifications = model.notifications.filter((e) => e.notificationid !== msgid);
+                        toastr.success("Notification has been  cleared succesfully!", "Success!");
+                    }, function (errResponse) {
+                        toastr.error(`Cannot clear messages: ${errResponse}`, 'Error');
+                    });
+            };
+
+            model.clearAllMessages = function () {
+                userService.setAllNotificationRead().then(
+                    function (data) {
+                        model.notifications = [];
+                        toastr.success("All notification has been cleared succesfully!", "Success!");
+                    }, function (errResponse) {
+                        toastr.error(`Cannot clear messages: ${errResponse}`, "Error!");
+                    });
+            };
         }
     });
 }());

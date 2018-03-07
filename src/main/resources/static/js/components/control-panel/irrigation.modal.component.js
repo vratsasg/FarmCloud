@@ -1,59 +1,60 @@
 (function () {
-    'use strict';
+    "use strict";
     var module = angular.module("myApp");
 
-    module.component('irrigationModal', {
-            templateUrl: '/js/components/control-panel/irrigation.modal.component.html',
+    module.component("irrigationModal", {
+            templateUrl: "/js/components/control-panel/irrigation.modal.component.html",
             replace: true,
             require: {
-                parent: '^controlPanel'
+                parent: "^controlPanel"
             },
             controllerAs: "model",
-            controller: function (ControlPanelService, $q, $scope) {
+            controller: function (ControlPanelService, $q, $scope, toastr) {
                 var model = this;
                 var defer = $q.defer();
+                var instance = null;
 
                 model.$onInit = function () {
                     model.datefrom = moment();
                     model.irrigationDuration = "0 hours and 0 minutes";
                     model.modWaterConsume = 0;
-                    var instance = model.parent.modalInstance;
+                    instance = model.parent.modalInstance;
+                }
 
-                    model.cancel = function () {
-                        instance.dismiss('cancel');
-                    };
-                    model.submit = function () {
-                        //console.log(model.datefrom);
-                        //console.log(model.dateto);
-                        if (model.datefrom && model.dateto) {
-                            //setIrrigationDates
-                            ControlPanelService.setFeatureDates(model.parent.myDevice.identifier, model.datefrom.format("YYYY-MM-DD HH:mm:ss"), model.dateto.format("YYYY-MM-DD HH:mm:ss")).then(
-                                function (returnedData) {
-                                    defer.resolve(returnedData);
-                                    instance.close(returnedData);
-                                }, function (errResponse) {
-                                    console.error('Error while sending request for starting measuring');
-                                });
-                        }
+                model.cancel = function () {
+                    instance.dismiss("cancel");
+                }
+
+                model.submit = function () {
+                    if (model.datefrom && model.dateto) {
+                        // setIrrigationDates
+                        ControlPanelService.setFeatureDates(model.parent.myDevice.identifier, model.datefrom.format("YYYY-MM-DD HH:mm:ss"), model.dateto.format("YYYY-MM-DD HH:mm:ss")).then(
+                            function (returnedData) {
+                                defer.resolve(returnedData);
+                                toastr.success(`New irrigation event for enddevice: ${model.parent.myDevice.identifier} from ${model.datefrom} until ${model.dateto}`,"Success!");
+                                instance.close(returnedData);
+                            }, function (errResponse) {
+                                toastr.error(`Error while sending request for starting measuring: ${errResponse}`,"Error!");
+                                instance.close(errResponse);
+                            });
                     }
-
-                };
+                }
 
                 model.updateDateFrom = function (newstarttime) {
                     var newendtime = model.dateto;
 
                     if (newstarttime && newendtime) {
-                        var totalHours = (newendtime.diff(newstarttime, 'hours'));
+                        var totalHours = (newendtime.diff(newstarttime, "hours"));
                         if (totalHours > 12) { //12 hours of irrigation is too much???
                             model.dateto = "";
                             return;
                         }
 
-                        var totalMinutes = newendtime.diff(newstarttime, 'minutes');
+                        var totalMinutes = newendtime.diff(newstarttime, "minutes");
                         var clearMinutes = totalMinutes % 60;
                         model.irrigationDuration = totalHours + " hours and " + clearMinutes + " minutes";
                         model.modWaterConsume = (totalHours + clearMinutes / 60) * model.parent.coordinator.waterConsumption;
-                        console.log(totalHours + " hours and " + clearMinutes + " minutes");
+                        toastr.info(`${totalHours} hours and ${clearMinutes} minutes`,"Information");
                     }
                 }
 
@@ -61,49 +62,48 @@
                     var newstarttime = model.datefrom;
 
                     if (newstarttime && newendtime) {
-                        var totalHours = (newendtime.diff(newstarttime, 'hours'));
+                        var totalHours = (newendtime.diff(newstarttime, "hours"));
                         if (totalHours > 12) { //12 hours of irrigation is too much???
                             model.dateto = "";
                             return;
                         }
 
-                        var totalMinutes = newendtime.diff(newstarttime, 'minutes');
+                        var totalMinutes = newendtime.diff(newstarttime, "minutes");
                         var clearMinutes = totalMinutes % 60;
                         model.irrigationDuration = totalHours + " hours and " + clearMinutes + " minutes";
                         model.modWaterConsume = (totalHours + clearMinutes / 60) * model.parent.coordinator.waterConsumption;
-                        console.log(totalHours + " hours and " + clearMinutes + " minutes");
+                        toastr.info(`${totalHours} hours and ${clearMinutes} minutes`,"Information");
                     }
                 }
 
                 model.beforeRenderStartDate = function ($view, $dates, $leftDate, $upDate, $rightDate) {
                     var now = moment();
-                    for (var i = 0; i < $dates.length; i++) {
-                        if ($dates[i].localDateValue() < now.valueOf()) {
-                            $dates[i].selectable = false;
+                    $dates.forEach(function(dt) {
+                        if (dt.localDateValue() < now.valueOf()) {
+                            dt.selectable = false;
                         }
-                    }
+                    });
 
                     if (model.dateto) {
                         var activeDate = moment(model.dateto);
-                        for (var i = 0; i < $dates.length; i++) {
-                            if ($dates[i].localDateValue() >= activeDate.valueOf()) {
-                                $dates[i].selectable = false;
+                        $dates.forEach(function(dt) {
+                            if (dt.localDateValue() >= activeDate.valueOf()) {
+                                dt.selectable = false;
                             }
-                        }
+                        });
                     }
                 }
 
                 model.beforeRenderEndDate = function ($view, $dates, $leftDate, $upDate, $rightDate) {
                     if (model.datefrom) {
-                        var activeDate = moment(model.datefrom).subtract(1, $view).add(1, 'minute');
-                        for (var i = 0; i < $dates.length; i++) {
-                            if ($dates[i].localDateValue() <= activeDate.valueOf()) {
-                                $dates[i].selectable = false;
+                        var activeDate = moment(model.datefrom).subtract(1, $view).add(1, "minute");
+                        $dates.forEach(function(dt) {
+                            if (dt.localDateValue() <= activeDate.valueOf()) {
+                                dt.selectable = false;
                             }
-                        }
+                        });
                     }
-                }
-
+                };
             }
         }
     );

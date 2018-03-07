@@ -9,32 +9,36 @@
                 parent: '^controlPanel'
             },
             controllerAs: "model",
-            controller: function (ControlPanelService, $q) {
+            controller: function (ControlPanelService, $q, toastr) {
                 var model = this;
                 var defer = $q.defer();
+                var instance = null;
 
                 model.$onInit = function () {
 
-                    var instance = model.parent.modalInstance;
-                    model.cancel = function () {
-                        instance.dismiss('cancel');
-                    };
-
-                    model.submit = function () {
-                        ControlPanelService.setMeasuringFlags(model.parent.coordinator.identifier).then(
-                            function (returnedData) {
-                                defer.resolve(returnedData);
-                                instance.close(returnedData);
-                            }, function (errResponse) {
-                                console.error('Error while sending request for starting measuring');
-                            });
-                    };
+                    instance = model.parent.modalInstance;
 
                     instance.result.then(function (returnedData) {
                         console.log('testModal Measure');
                     }, function () {
                         console.log('Modal dismissed at: ' + new Date());
                     });
+                }
+
+                model.cancel = function () {
+                    instance.dismiss('cancel');
+                }
+
+                model.submit = function () {
+                    ControlPanelService.setMeasuringFlags(model.parent.coordinator.identifier).then(
+                        function (returnedData) {
+                            defer.resolve(returnedData);
+                            instance.close(returnedData);
+                            toastr.success("New measurement for all end devices has been set succesfully!","Success!");
+                        }, function (errResponse) {
+                            toastr.error(`Failed to set new measurement for all end devices with error: ${errResponse}`, 'Error!');
+                            instance.close(errResponse);
+                        });
                 };
             }
         }
