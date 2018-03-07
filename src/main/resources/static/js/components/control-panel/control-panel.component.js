@@ -1,12 +1,12 @@
 (function () {
-    'use strict';
+    "use strict";
     var module = angular.module("myApp");
 
-    module.component('controlPanel', {
+    module.component("controlPanel", {
 
-        templateUrl: '/js/components/control-panel/control-panel.component.html',
+        templateUrl: "/js/components/control-panel/control-panel.component.html",
         controllerAs: "model",
-        controller: function ($uibModal, $document, ControlPanelService, $log, $q) {
+        controller: function ($uibModal, $document, ControlPanelService, $log, $q, toastr) {
             var model = this;
             //model.devices = {enddevices: [{identifier: ""}]};
             model.myDevice = {};
@@ -40,7 +40,7 @@
                                 model.lastDate = lastDateMeasures[0].phenomenonTime;
                             },
                             function (errResponse) {
-                                console.error('Error while fetching devices for firstpage');
+                                console.error("Error while fetching devices for firstpage");
                             }
                         );
 
@@ -61,7 +61,7 @@
                                 model.coordinator.identifier = coordData.identifier;
                             },
                             function (errResponse) {
-                                console.error('Error while fetching devices for firstpage');
+                                console.error("Error while fetching devices for firstpage");
                             }
                         );
 
@@ -72,14 +72,12 @@
                                 model.wateringConsumption = waterMeasureData.waterConsumption;
                             },
                             function (errResponse) {
-                                console.error('Error while fetching devices for firstpage');
+                                console.error("Error while fetching devices for firstpage");
                             }
                         );
-
-
                     },
                     function (errResponse) {
-                        console.error('Error while fetching devices for firstpage');
+                        console.error("Error while fetching devices for firstpage");
                     }
                 );
             }
@@ -88,8 +86,9 @@
                 var timefrom = moment(model.coordinator.autoIrrigFromTime);
                 var timeto = moment(model.coordinator.autoIrrigUntilTime);
 
-                if (timefrom.isValid() && timeto.isValid())
-                    model.AutomaticTimeDiff = getTimeDiff(timefrom, timeto)
+                if (timefrom.isValid() && timeto.isValid()) {
+                    model.AutomaticTimeDiff = getTimeDiff(timefrom, timeto);
+                }
             }
 
             model.updateMyDevice = function (myD) {
@@ -105,19 +104,19 @@
                         model.lastmeasuresData = lastDateMeasures;
                     },
                     function (errResponse) {
-                        console.error('Error while fetching devices for firstpage');
+                        console.error("Error while fetching devices for firstpage");
                     }
                 );
 
                 ControlPanelService.getWateringMeasuresByLastDate(myD.identifier).then(
                     function (waterMeasureData) {
                         console.log(waterMeasureData);
-                        model.wateringIrrigationDateFrom = moment(waterMeasureData.autoIrrigFromTime).format('dddd, MMMM Do, YYYY h:mma');
-                        model.wateringIrrigationDateTo = moment(waterMeasureData.autoIrrigUntilTime).format('dddd, MMMM Do, YYYY h:mma');
+                        model.wateringIrrigationDateFrom = moment(waterMeasureData.autoIrrigFromTime).format("dddd, MMMM Do, YYYY h:mma");
+                        model.wateringIrrigationDateTo = moment(waterMeasureData.autoIrrigUntilTime).format("dddd, MMMM Do, YYYY h:mma");
                         model.wateringConsumption = waterMeasureData.waterConsumption;
                     },
                     function (errResponse) {
-                        console.error('Error while fetching devices for firstpage');
+                        console.error("Error while fetching devices for firstpage");
                     }
                 );
             };
@@ -125,30 +124,30 @@
             model.showModal = function () {
                 model.modalInstance = $uibModal.open({
                     animation: model.animationsEnabled,
-                    template: '<irrigation-modal></irrigation-modal>',
-                    appendTo: $document.find('control-panel')
+                    template: "<irrigation-modal></irrigation-modal>",
+                    appendTo: $document.find("control-panel")
                 });
             };
 
             model.showModalMeasuring = function () {
                 model.modalInstance = $uibModal.open({
                     animation: model.animationsEnabled,
-                    template: '<measuring-modal></measuring-modal>',
-                    appendTo: $document.find('control-panel')
+                    template: "<measuring-modal></measuring-modal>",
+                    appendTo: $document.find("control-panel")
                 });
 
                 model.modalInstance.result.then(function (selectedItem) {
                     console.log(selectedItem);
                 }, function () {
-                    $log.info('Modal dismissed at: ' + new Date());
+                    $log.info("Modal dismissed at: " + new Date());
                 });
             };
 
             model.showModalSaveCoordData = function () {
                 model.modalInstance = $uibModal.open({
                     animation: model.animationsEnabled,
-                    template: '<algorithm-modal></algorithm-modal>',
-                    appendTo: $document.find('control-panel')
+                    template: "<algorithm-modal></algorithm-modal>",
+                    appendTo: $document.find("control-panel")
                 });
             }
 
@@ -156,28 +155,26 @@
                 model.animationsEnabled = !model.animationsEnabled;
             };
 
+            getTimeDiff = function(timefrom, timeto) {
+                var totalHours = parseInt(timeto.diff(timefrom, "hours"));
+                var totalMinutes = parseInt(timeto.diff(timefrom, "minutes")) % 60;
 
+                if (totalHours === 0) {
+                    if (totalMinutes < 0) {
+                        totalHours = 23;
+                        totalMinutes = 60 + totalMinutes;
+                    }
+                } else if (totalHours < 0) {
+                    if (totalMinutes < 0) {
+                        totalHours = 24 + totalHours - 1;
+                        totalMinutes = 60 + totalMinutes;
+                    } else if (totalMinutes == 0) {
+                        totalHours = 24 + totalHours;
+                    }
+                }
+
+                return (totalHours + " hours and " + totalMinutes + " minutes");
+            }
         }
     });
 }());
-
-function getTimeDiff(timefrom, timeto) {
-    var totalHours = parseInt(timeto.diff(timefrom, 'hours'));
-    var totalMinutes = parseInt(timeto.diff(timefrom, 'minutes')) % 60;
-
-    if (totalHours === 0) {
-        if (totalMinutes < 0) {
-            totalHours = 23;
-            totalMinutes = 60 + totalMinutes;
-        }
-    } else if (totalHours < 0) {
-        if (totalMinutes < 0) {
-            totalHours = 24 + totalHours - 1;
-            totalMinutes = 60 + totalMinutes;
-        } else if (totalMinutes == 0) {
-            totalHours = 24 + totalHours;
-        }
-    }
-
-    return (totalHours + " hours and " + totalMinutes + " minutes");
-}
