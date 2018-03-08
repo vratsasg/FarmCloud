@@ -1,30 +1,33 @@
 <h4><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Settings</h4>
 <hr id="headline">
 
-<div id="alertAreaid"></div>
-
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-md-6">
         <div class="panel panel-success">
             <div class="panel-heading">
                 <h3 class="panel-title">Crop <span class="glyphicon glyphicon-grain"
                                                    style="vertical-align:middle; color: black;"></span></h3>
             </div>
             <div class="panel-body">
-                <div class="form-group col-md-5 col-sm-5 cols-xl-5 xol-xs-5">
+                <div class="form-group cols-lg-4 col-md-6 col-sm-6 xol-xs-12">
                     <label class="control-label">Crop Name</label>
                     <input type="text" class="form-control" ng-model="model.myprofile.crop.identifier"
-                           ng-required="true">
+                           ng-required="true" ng-disabled="true">
                 </div>
-                <div class="form-group col-md-5 col-sm-5 cols-xl-5 xol-xs-5">
+                <div class="form-group cols-lg-4 col-md-6 col-sm-6 xol-xs-12">
                     <label class="control-label">Description</label>
                     <input type="text" class="form-control" ng-model="model.myprofile.crop.description"
                            ng-required="true">
                 </div>
+
+
             </div>
         </div>
     </div>
-    <div class="col-sm-4" ng-repeat="st in model.myprofile.stations">
+</div>
+
+<div class="row">
+    <div class="col-md-6" ng-repeat="st in model.myprofile.stations">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h3 class="panel-title">Station </h3>
@@ -38,12 +41,6 @@
                     <label class="control-label">Description</label>
                     <input type="text" class="form-control" ng-model="st.description" ng-required="true">
                 </div>
-
-                <!--<button class="btn btn-success" style="margin-bottom: 20px;" id="newmeasureid" ng-click="model.showModalMeasuring()"-->
-                <!--ng-disabled="{{model.disableMeasurebtn}}">-->
-                <!--New Measurement-->
-                <!--<span class="flaticon-temperature" style="vertical-align:middle; color: whitesmoke;"></span>-->
-                <!--</button>-->
 
                 <div class="form-group col-md-2 col-sm-2 cols-xl-2 xol-xs-2">
                     <button class="btn btn-info" id="saveCoordbtn" ng-click="model.showModalStationLocation(st.id)"
@@ -59,7 +56,7 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-4" ng-repeat="dv in model.myprofile.devices">
+    <div class="col-md-4" ng-repeat="dv in model.myprofile.devices">
         <div class="panel panel-warning">
             <div class="panel-heading">
                 <h3 class="panel-title">EndDevice {{$index+1}}
@@ -67,13 +64,18 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <div class="form-group col-md-4 col-sm-5 cols-xl-5 xol-xs-5">
-                    <label class="control-label">Identifier</label>
-                    <input type="text" class="form-control" ng-model="dv.identifier" ng-disabled="true">
+                <div class="row">
+                    <div class="form-group col-md-12 col-sm-12 cols-lg-12 xol-xs-12">
+                        <label class="control-label">Identifier</label>
+                        <input type="text" class="form-control" ng-model="dv.identifier" ng-disabled="true">
+                    </div>
                 </div>
-                <div class="form-group col-md-8 col-sm-5 cols-xl-5 xol-xs-5">
-                    <label class="control-label">Description</label>
-                    <input type="text" class="form-control" ng-model="dv.description" ng-required="true">
+
+                <div class="row">
+                    <div class="form-group col-md-12 col-sm-12 cols-lg-12 xol-xs-12">
+                        <label class="control-label">Description</label>
+                        <input type="text" class="form-control" ng-model="dv.description" ng-required="true">
+                    </div>
                 </div>
 
                 <div class="row" style="padding-top: 10px;">

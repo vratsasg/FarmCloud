@@ -49,7 +49,7 @@
                         model.myDevice = model.devices[0];
                     },
                     function (errResponse) {
-                        console.error('Error while fetching devices for firstpage');
+                        $q.error(errResponse);
                     }
                 );
 
@@ -75,13 +75,10 @@
                         ];
                     },
                     function (errResponse) {
-                        console.error('Error while fetching devices for firstpage');
+                        $q.error(errResponse);
                     }
                 );
-
             }
-
-
         }
     });
 }());

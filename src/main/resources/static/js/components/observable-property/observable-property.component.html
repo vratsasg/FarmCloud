@@ -15,7 +15,7 @@
             </select>
         </div>
     </div>
-    <div class='control-group col-lg-2 col-md-4 col-sm-4 col-xs-8'>
+    <div class='control-group col-lg-3 col-md-4 col-sm-4 col-xs-12'>
         <div class="form-group">
             <label class="control-label">Date from</label>
 
@@ -35,7 +35,7 @@
 
         </div>
     </div>
-    <div class='control-group col-lg-2 col-md-4 col-sm-4 col-xs-8'>
+    <div class='control-group col-lg-3 col-md-4 col-sm-4 col-xs-12'>
         <div class="form-group">
             <label class="control-label">Date To</label>
             <div class="dropdown">
@@ -55,7 +55,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <span>Units of measurement:<strong>{{model.measures.unit}}</strong></span>
         <table ng-table="model.tableParams" class="table table table-condensed table-bordered table-striped">
             <tr ng-repeat="row in $data">
@@ -85,7 +85,7 @@
 
     </div>
 
-    <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <nvd3 options="model.options" data="model.data"></nvd3>
     </div>
 </div>

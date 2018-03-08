@@ -5,7 +5,7 @@
     module.component('observableProperty', {
         templateUrl: '/js/components/observable-property/observable-property.component.html',
         controllerAs: "model",
-        controller: function (ObservablePropertyService, $log, $q, ngTableParams, $filter, $scope) {
+        controller: function (ObservablePropertyService, $log, $q, ngTableParams, $filter, $scope, toastr) {
             var model = this;
 
             model.$routerOnActivate = function (next) {
@@ -118,7 +118,7 @@
 
                     },
                     function (errResponse) {
-                        console.error('Error while fetching devices for firstpage');
+                        toastr.error(errResponse, 'Error');
                     }
                 );
 
@@ -219,7 +219,7 @@
                                     chart.interactiveLayer.tooltip.gravity('');
 
                                     chart.interactiveLayer.tooltip.contentGenerator(function (d) {
-                                        var html = "<div class='wtool col-sm-2'><p><b>" + d.value + "</b></p> <ul>";
+                                        var html = "<div class='wtool col-sm-6'><p><b>" + d.value + "</b></p> <ul>";
 
                                         d.series.forEach(function (elem) {
                                             html += "<li><p><b>" + elem.value + "</b></p></li>";

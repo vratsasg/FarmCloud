@@ -1,44 +1,49 @@
 (function () {
-    'use strict';
+    "use strict";
     var module = angular.module("myApp");
 
-    module.component('algorithmModal', {
-            templateUrl: '/js/components/control-panel/algorithm.modal.component.html',
+    module.component("algorithmModal", {
+            templateUrl: "/js/components/control-panel/algorithm.modal.component.html",
             replace: true,
             require: {
-                parent: '^controlPanel'
+                parent: "^controlPanel"
             },
             controllerAs: "model",
-            controller: function (ControlPanelService, $q) {
+            controller: function (ControlPanelService, $q, toastr) {
                 var model = this;
                 var defer = $q.defer();
+                var instance = null;
+                model.coord = null;
 
                 model.$onInit = function () {
-                    var coord = model.parent.coordinator;
-                    coord.autoIrrigFromTime = moment(coord.autoIrrigFromTime).format("YYYY-MM-DD HH:mm:ss");
-                    coord.autoIrrigUntilTime = moment(coord.autoIrrigUntilTime).format("YYYY-MM-DD HH:mm:ss");
+                    model.coord = model.parent.coordinator;
+                    model.coord.autoIrrigFromTime = moment(model.coord.autoIrrigFromTime).format("YYYY-MM-DD HH:mm:ss");
+                    model.coord.autoIrrigUntilTime = moment(model.coord.autoIrrigUntilTime).format("YYYY-MM-DD HH:mm:ss");
 
-                    var instance = model.parent.modalInstance;
-                    model.cancel = function () {
-                        instance.dismiss('cancel');
-                    };
-
-                    model.submit = function () {
-                        ControlPanelService.setAutomaticIrrigationTimes(coord).then(
-                            function (returnedData) {
-                                defer.resolve(returnedData);
-                                instance.close(returnedData);
-                            }, function (errResponse) {
-                                console.error('Error while sending request for starting measuring');
-                            });
-                    };
+                    instance = model.parent.modalInstance;
 
                     instance.result.then(function (returnedData) {
-                        console.log('Modal Automatic Irrigation Time');
+                        console.log("Modal Automatic Irrigation Time");
                     }, function () {
-                        console.log('Modal dismissed at: ' + new Date());
+                        console.log("Modal dismissed at: " + new Date());
                     });
-                };
+                }
+
+                model.cancel = function () {
+                    instance.dismiss("cancel");
+                }
+
+                model.submit = function () {
+                    ControlPanelService.setAutomaticIrrigationTimes(model.coord).then(
+                        function (returnedData) {
+                            defer.resolve(returnedData);
+                            toastr.success("New automatic irrigation times saved succesfully","Algorithm times");
+                            instance.close(returnedData);
+                        }, function (errResponse) {
+                            toastr.error(`New automatic irrigation times failed on save ${errResponse}`,"Error!");
+                            instance.close();
+                        });
+                }
             }
         }
     );

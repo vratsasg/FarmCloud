@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webstart.DTO.*;
 import com.webstart.Enums.FeatureTypeEnum;
+import com.webstart.Enums.NotificationTypeEnum;
 import com.webstart.Enums.StatusTimeConverterEnum;
 import com.webstart.Helpers.HelperCls;
 import com.webstart.model.Featureofinterest;
@@ -29,12 +30,11 @@ import java.util.List;
 @Controller
 public class HomeController {
 
-    @Autowired
-    FeatureofInterestService featureofInterestService;
-    @Autowired
-    ObservationProperyService observationProperyService;
-    @Autowired
-    MeasureService measureservice;
+    @Autowired FeatureofInterestService featureofInterestService;
+    @Autowired ObservationProperyService observationProperyService;
+    @Autowired MeasureService measureservice;
+    @Autowired UsersService usersService;
+
 
 
     @RequestMapping(value = "/observableproperties", method = RequestMethod.GET)
@@ -270,6 +270,9 @@ public class HomeController {
             AutomaticWater automaticWater = new AutomaticWater(datefrom, dateto, new BigDecimal(0), mydevice);
             measureservice.saveMeasure(automaticWater);
             boolean sentData = featureofInterestService.setDeviceIrrigaDate(users.getUser_id(), mydevice, datefrom, dateto);
+            Featureofinterest featureofinterest = this.featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
+            usersService.createNewNotification(users.getUser_id(),
+                    String.format("New irrigation event from: %1$s until %2$s for end device %3$s ", automaticWater.getFromtime(), automaticWater.getUntiltime(), featureofinterest.getName()), NotificationTypeEnum.IRRIGATION.getValue());
             if (!sentData)
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
