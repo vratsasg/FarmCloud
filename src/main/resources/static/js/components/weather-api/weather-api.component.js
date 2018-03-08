@@ -47,12 +47,7 @@
                         toastr.error(`Error while fetching devices: ${errResponse}`, 'Error');
                     }
                 );
-
-
-
             }
-
-
         }
     });
 

@@ -13,3 +13,4 @@ yarn.lock
 *.editorconfig
 .vscode
 out
+application.pid

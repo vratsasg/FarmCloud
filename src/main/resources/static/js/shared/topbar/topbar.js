@@ -5,43 +5,38 @@
     module.component('topBar', {
         templateUrl: '/js/shared/topbar/top-bar-component.html',
         controllerAs: "model",
-        controller: function ($uibModal, $document, userService, $q, toastr) {
+        controller: function ($uibModal, $document, userService, $q, $interval, toastr) {
             var model = this;
             model.user = {};
             model.notifications = [];
 
             var defer = $q.defer();
-            userService.getnotifcounter().then(
-                function (countdata) {
-                    model.notifications = countdata;
-                    defer.resolve(model.notifications);
-                },
-                function (errResponse) {
-                    console.error(`Cannot clear messages: ${errResponse}`);
-                    toastr.error(`Cannot clear messages: ${errResponse}`, 'Error');
-                }
-            );
 
-            //components have lifecycles this is before the component is rendered
+            // components have lifecycles this is before the component is rendered
             model.$onInit = function () {
-                var defer = $q.defer();
                 userService.getuser().then(
                     function (data) {
-                        model.user = data;
                         defer.resolve(model.user);
+                        model.user = data;
                     }, function (errResponse) {
-                        console.error("error fetching user");
-                    });
+                        toastr.error(`Cannot get messages: ${errResponse}`, 'Error');
+                    }
+                );
 
+                $interval(getnotifications(), 120000);
+            };
+
+            var getnotifications = function () {
                 userService.getnotifcounter().then(
                     function (data) {
+                        defer.resolve(data);
                         model.notifications = data;
-                        defer.resolve(model.notifications);
                         toastr.info(`You have ${model.notifications.length} messages unread`);
                     }, function (errResponse) {
                         toastr.error(`Cannot find messages: ${errResponse}`, 'Error');
-                    });
-            }
+                    }
+                );
+            };
 
             model.showModal = function () {
                 model.modalInstance = $uibModal.open({
@@ -58,21 +53,25 @@
             model.clearMessage = function (msgid) {
                 userService.setNotificationRead(msgid).then(
                     function (data) {
+                        defer.resolve(data);
                         model.notifications = model.notifications.filter((e) => e.notificationid !== msgid);
                         toastr.success("Notification has been  cleared succesfully!", "Success!");
                     }, function (errResponse) {
                         toastr.error(`Cannot clear messages: ${errResponse}`, 'Error');
-                    });
+                    }
+                );
             };
 
             model.clearAllMessages = function () {
                 userService.setAllNotificationRead().then(
                     function (data) {
+                        defer.resolve(data);
                         model.notifications = [];
                         toastr.success("All notification has been cleared succesfully!", "Success!");
                     }, function (errResponse) {
                         toastr.error(`Cannot clear messages: ${errResponse}`, "Error!");
-                    });
+                    }
+                );
             };
         }
     });

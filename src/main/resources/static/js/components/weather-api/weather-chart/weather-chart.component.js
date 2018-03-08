@@ -23,6 +23,10 @@
             var apiId = "2482652b83cd5ab077902e528b37ccd1";
 
             model.$onChanges = function (changesObj) {
+                if(changesObj.longti.currentValue == undefined) {
+                    return;
+                }
+
                 var newlongt = changesObj.longti.currentValue;
                 var newlatid = changesObj.latit.currentValue;
 
@@ -34,12 +38,23 @@
 
                         defer.resolve(model.forecastData);
 
-                        for (var l = 0; l < model.forecastData.list.length; l++) {
-                            if (l == 0 || ( l % 8 == 0 && l > 7)) {
-                                model.clickDates.push(moment.unix(parseInt(model.forecastData.list[l].dt)).format("dddd DD/MM"));
-                                model.unixDates.push(parseInt(model.forecastData.list[l].dt));
-                            }
+                        if (model.forecastData == null || model.forecastData.list.length === 0) {
+                            return;
                         }
+
+                        model.forecastData.list.forEach(function (forecast, l) {
+                            if (l == 0 || ( l % 8 == 0 && l > 7)) {
+                                model.clickDates.push(moment.unix(parseInt(forecast.dt)).format("dddd DD/MM"));
+                                model.unixDates.push(parseInt(forecast.dt));
+                            }
+                        });
+
+                        // for (var l = 0; l < model.forecastData.list.length; l++) {
+                        //     if (l == 0 || ( l % 8 == 0 && l > 7)) {
+                        //         model.clickDates.push(moment.unix(parseInt(model.forecastData.list[l].dt)).format("dddd DD/MM"));
+                        //         model.unixDates.push(parseInt(model.forecastData.list[l].dt));
+                        //     }
+                        // }
 
                         var ch = moment.unix(parseInt(model.unixDates[0])).format("DD/MM/YYYY");
                         setWeatherdataIntable(ch);
@@ -133,12 +148,20 @@
 
                         function fillData() {
                             var sin = [];
-                            for (var i = 0; i < model.forecastData.list.length; i++) {
+
+                            model.forecastData.list.forEach(function (forecast) {
                                 sin.push({
-                                    x: (model.forecastData.list[i].dt).toString(),
-                                    y: parseFloat((model.forecastData.list[i].main.temp - 273.15).toFixed(2))
+                                    x: (forecast.dt).toString(),
+                                    y: parseFloat((forecast.main.temp - 273.15).toFixed(2))
                                 });
-                            }
+                            });
+
+                            // for (var i = 0; i < model.forecastData.list.length; i++) {
+                            //     sin.push({
+                            //         x: (model.forecastData.list[i].dt).toString(),
+                            //         y: parseFloat((model.forecastData.list[i].main.temp - 273.15).toFixed(2))
+                            //     });
+                            // }
 
                             //Line chart data should be sent as an array of series objects.
                             return [
@@ -170,21 +193,37 @@
             };
 
             function setWeatherdataIntable(ch) {
-                for (var g = 0; g < model.forecastData.list.length; g++) {
-                    var chk = moment(model.forecastData.list[g].dt_txt).format("DD/MM/YYYY");
+                model.forecastData.list.forEach(function (forecast) {
+                    var chk = moment(forecast.dt_txt).format("DD/MM/YYYY");
 
                     if (ch === chk) {
                         model.tableData.push(
                             {
-                                temp: (model.forecastData.list[g].main.temp - 273.15).toFixed(2),
-                                humidity: model.forecastData.list[g].main.humidity,
-                                datime: model.forecastData.list[g].dt_txt,
-                                weathermain: model.forecastData.list[g].weather[0].main,
-                                wicon: model.forecastData.list[g].weather[0].icon
+                                temp: (forecast.main.temp - 273.15).toFixed(2),
+                                humidity: forecast.main.humidity,
+                                datime: forecast.dt_txt,
+                                weathermain: forecast.weather[0].main,
+                                wicon: forecast.weather[0].icon
                             }
                         );
                     }
-                }
+                });
+
+                // for (var g = 0; g < model.forecastData.list.length; g++) {
+                //     var chk = moment(model.forecastData.list[g].dt_txt).format("DD/MM/YYYY");
+                //
+                //     if (ch === chk) {
+                //         model.tableData.push(
+                //             {
+                //                 temp: (model.forecastData.list[g].main.temp - 273.15).toFixed(2),
+                //                 humidity: model.forecastData.list[g].main.humidity,
+                //                 datime: model.forecastData.list[g].dt_txt,
+                //                 weathermain: model.forecastData.list[g].weather[0].main,
+                //                 wicon: model.forecastData.list[g].weather[0].icon
+                //             }
+                //         );
+                //     }
+                // }
             }
         }
     });
