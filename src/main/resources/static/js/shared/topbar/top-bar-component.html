@@ -65,11 +65,11 @@
                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Profile
                             </a>
                         </li>
-                        <li>
-                            <a ng-link="['Profile']">
-                                <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Informations
-                            </a>
-                        </li>
+                        <!--<li>-->
+                            <!--<a ng-link="['Profile']">-->
+                                <!--<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Informations-->
+                            <!--</a>-->
+                        <!--</li>-->
                         <li data-toggle="modal" style="cursor: pointer"> <!--data-target="#logoutmodal"-->
                             <a ng-click="model.showModal()">
                                 <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout
@@ -77,12 +77,13 @@
                         </li>
                     </ul>
                 </li>
-                <li role="presentation" class="topbaritem"><a href="#" onclick="">Home</a>
+                <li role="presentation" class="topbaritem">
+                    <a href="#" onclick="">Home</a>
                 </li>
 
-                <li role="presentation" class="topbaritem">
-                    <a href="" onclick=""><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
-                </li>
+                <!--<li role="presentation" class="topbaritem">-->
+                    <!--<a href="" onclick=""><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>-->
+                <!--</li>-->
             </ul>
         </div>
     </div>

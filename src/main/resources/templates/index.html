@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -111,9 +112,8 @@
                 <h4>Login to your account</h4>
 
                 <!--<div class="${alert_class}" role="alert"><b>${alert_message}</b></div>-->
-                <form id="login_form" class="form-horizontal" accept-charset="UTF-8" action="login" method="post">
+                <form id="login_form" class="form-horizontal" accept-charset="UTF-8" action="login" method="post" style="padding-top: 30px;">
                     <div class="form-group">
-
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="login-username" placeholder="Username"
                                    name="username_n" th:required ="required"/>
@@ -126,8 +126,8 @@
                                    name="password_n" th:required ="required"/>
                         </div>
                     </div>
-                    <button id="logbutton" type="submit" class="btn btn-primary btn-medium" name="logform" value="LOGIN"
-                            form="login_form">Log in
+                    <button id="logbutton" type="submit" class="btn btn-primary btn-medium pull-right" name="logform" value="LOGIN"
+                            form="login_form" style="margin-bottom: 5px;">Log in
                     </button>
                 </form>
 
@@ -137,5 +137,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>

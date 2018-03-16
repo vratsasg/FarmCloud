@@ -3,9 +3,9 @@
 
 <form ng-submit="model.submit()" name="userProfileForm" class="form-horizontal" method="post" role="form">
 
-    <div class="form-group row">
+    <div class="row">
         <div class="col-md-3 col-xs-4">
-            <label for="inputfirstname" class="control-label">firstname *</label>
+            <label for="inputfirstname" class="control-label">firstname</label>
             <input class="form-control" type="text" id="inputfirstname" name="firstname"
                    ng-model="model.userprofile.firstname" placeholder="Enter your name" required ng-minlength="3"
                    ng-maxlength="20"/>
@@ -18,7 +18,7 @@
         </div>
 
         <div class="col-md-3 col-xs-4">
-            <label for="inputlastname" class="control-label">lastname *</label>
+            <label for="inputlastname" class="control-label">lastname</label>
             <input class="form-control" type="text" id="inputlastname" name="lastname"
                    ng-model="model.userprofile.lastname" placeholder="Enter your lastname" required ng-minlength="3"
                    ng-maxlength="20"/>
@@ -31,7 +31,7 @@
         </div>
 
         <div class="col-md-3 col-xs-4">
-            <label for="inputfathersname" class="control-label">fatherstname*</label>
+            <label for="inputfathersname" class="control-label">fatherstname</label>
             <input class="form-control" type="text" id="inputfathersname" name="fathersname"
                    ng-model="model.userprofile.fathersname" placeholder="Enter your fathersname" required
                    ng-minlength="3" ng-maxlength="20"/>
@@ -44,35 +44,35 @@
         </div>
     </div>
 
-    <div class="form-group row">
+    <div class="row">
         <div class="col-md-3 col-xs-4">
-            <label for="inputaddress" class="control-label">address</label>
+            <label for="inputaddress" class="control-label">Street</label> (optional)
             <input class="form-control" type="text" id="inputaddress" name="address"
                    ng-model="model.userprofile.address"/>
         </div>
 
         <div class="col-md-3 col-xs-4">
-            <label for="inputaddressnum" class="control-label">number</label>
+            <label for="inputaddressnum" class="control-label">Number</label> (optional)
             <input class="form-control" type="text" id="inputaddressnum" name="addressnum"
                    ng-model="model.userprofile.addressnum"/>
         </div>
 
         <div class="col-md-3 col-xs-4">
-            <label for="zipcode" class="control-label">zipcode</label>
+            <label for="zipcode" class="control-label">Zipcode</label> (optional)
             <input class="form-control" type="text" id="zipcode" name="zipcode" ng-model="model.userprofile.zipcode"/>
         </div>
     </div>
 
 
-    <div class="form-group row">
+    <div class="row">
         <div class="col-md-3 col-xs-4">
-            <label for="telephone" class="control-label">telephone</label>
+            <label for="telephone" class="control-label">Telephone</label> (optional)
             <input class="form-control" type="text" id="telephone" name="telephone"
                    ng-model="model.userprofile.telephone"/>
         </div>
 
         <div class="col-md-3 col-xs-4">
-            <label for="mobile" class="control-label">mobile</label>
+            <label for="mobile" class="control-label">Mobile</label> (optional)
             <input class="form-control" type="text" id="mobile" name="mobile" ng-model="model.userprofile.mobile"
                    required/>
 
@@ -82,7 +82,7 @@
         </div>
 
         <div class="col-md-3 col-xs-4">
-            <label for="dateofbirth" class="control-label">dateofbirth *</label>
+            <label for="dateofbirth" class="control-label">Date of birth</label>
 
             <p id="dateofbirth" class="input-group">
                 <input type="text" class="form-control" uib-datepicker-popup="{{model.format}}"
@@ -95,14 +95,12 @@
               </span>
             </p>
         </div>
-
     </div>
 
-    <div clas="col-md-12 col-xs-12">
-        <button type="button" class="btn btn-danger" id="clearUserProfile" ng-click="model.reset()">Clear</button>
-        <button class="btn btn-success" type="submit" id="submitUserProfile" ng-disabled="userProfileForm.$invalid">
+    <div class="row col-md-9">
+        <button type="submit" class="btn btn-success col-md-2 pull-right" style="margin-left: 5px;" id="submitUserProfile" ng-disabled="userProfileForm.$invalid">
             Save
         </button>
+        <button type="button" class="btn btn-default col-md-2 pull-right" id="clearUserProfile" ng-click="model.reset()">Clear</button>
     </div>
-
 </form>

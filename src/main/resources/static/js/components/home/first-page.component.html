@@ -1,22 +1,8 @@
 <h4><span class="glyphicon glyphicon glyphicon-home" aria-hidden="true"></span>Home</h4>
 <hr id="headline">
-<div class="row" id="home-button-bar">
-    <div class="control-group col-sm-2">
-        <label class="control-label">Station of Measurement</label>
-
-        <div class="controls">
-            <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice"
-                    ng-options="dev.description for dev in model.devices track by dev.featureinterestid">
-            </select>
-        </div>
-
-    </div>
-    <!--<div class="col-sm-3"><strong>End Device :</strong> <span ng-bind="model.myDevice">   </span>-->
-    </div>
-</div>
 
 <div class="row">
-    <div class="col-md-4 col-sm-4 col-xs-4">
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <openlayers ol-center="model.center"
                     ol-controls="model.controls"
                     ol-defaults="model.defaults"
@@ -25,5 +11,20 @@
         </openlayers>
     </div>
 
-    <chart-graph ng-if="model.myDevice" enddev="model.myDevice"></chart-graph>
+    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+        <div class="row" id="home-button-bar">
+            <div class="control-group col-lg-4 col-md-5 ">
+                <label class="control-label">Station of Measurement</label>
+                <div class="controls">
+                    <select class="form-control" id="editevent_repeat_time" ng-model="model.myDevice"
+                            ng-options="dev.description for dev in model.devices track by dev.featureinterestid">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <chart-graph ng-if="model.myDevice" enddev="model.myDevice"></chart-graph>
+        </div>
+    </div>
 </div>

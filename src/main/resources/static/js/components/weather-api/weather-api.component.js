@@ -20,7 +20,6 @@
 
                 WeatherApiService.getStationCoords().then(
                     function (d) {
-                        console.log(d);
                         model.longt = d[0];
                         model.latid = d[1];
 
@@ -47,7 +46,7 @@
                         toastr.error(`Error while fetching devices: ${errResponse}`, 'Error');
                     }
                 );
-            }
+            };
         }
     });
 

@@ -1,50 +1,47 @@
-<div id="forecastButt" class="btn-toolbar" role="toolbar">
-    <div ng-repeat="date in model.clickDates" class="btn-group" role="group">
-        <div class="day">
-            <a ng-click="model.showData(model.unixDates[$index]);" class="dayborder">{{date}}</a>
+<div class="col-md-12">
+    <nvd3 options="model.options" data="model.data"></nvd3>
+</div>
+
+<div class="row col-md-12">
+    <div id="forecastButt" class="btn-toolbar" role="toolbar">
+        <div ng-repeat="date in model.clickDates" class="btn-group" role="group">
+            <div class="day">
+                <a ng-click="model.showData(model.unixDates[$index]);" class="dayborder">{{date}}</a>
+            </div>
+            <!--<a ng-click="model.showData(model.unixDates[$index]);" class="btn btn-primary" role="button">{{date}}</a>-->
         </div>
-        <!--<a ng-click="model.showData(model.unixDates[$index]);" class="btn btn-primary" role="button">{{date}}</a>-->
     </div>
 </div>
 
-<div class="col-sm-10">
-    <nvd3 options="model.options" data="model.data"></nvd3>
+<div class="row col-md-12">
+    <table id="weatherTable" class="table table-condensed table-bordered table-striped table-condensed">
+        <tbody>
+        <tr class="weatherTable">
+            <td><b>Date</b></td>
+            <td><b>Temperature</b></td>
+            <td><b>Humidity</b></td>
+            <td><b>Weather</b></td>
+        </tr>
+
+        <tr ng-repeat="tabdata in model.tableData">
+            <td>{{tabdata.datime}}</td>
+            <td>{{tabdata.temp}}</td>
+            <td>{{tabdata.humidity}}</td>
+            <td>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>{{tabdata.weathermain}}</td>
+                        <td><img class="img-responsive" alt="Notifications" width="45" height="45"
+                                 src="http://openweathermap.org/img/w/{{tabdata.wicon}}.png ">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-<table id="weatherTable" class="table table-condensed table-bordered table-striped table-condensed ">
-    <tbody>
-    <tr class="weatherTable">
-        <td><b>Date</b></td>
-        <td><b>Temperature</b></td>
-        <td><b>Humidity</b></td>
-        <td><b>Weather</b></td>
-    </tr>
-
-    <tr ng-repeat="tabdata in model.tableData">
-        <td>{{tabdata.datime}}</td>
-        <td>{{tabdata.temp}}</td>
-        <td>{{tabdata.humidity}}</td>
-
-        <td>
-            <table>
-                <tbody>
-                <tr>
-                    <td>{{tabdata.weathermain}}</td>
-                    <td><img class="img-responsive" alt="Notifications" width="45" height="45"
-                             src="http://openweathermap.org/img/w/{{tabdata.wicon}}.png "></td>
-                </tr>
-                </tbody>
-            </table>
-
-        </td>
-
-        <!--<div style="float:left;">{{tabdata.weathermain}}</div>-->
-        <!--<div style="float:left; margin-bottom:5px; "><img class="img-responsive" alt="Notifications" width="45" height="45"-->
-        <!--src="http://openweathermap.org/img/w/{{tabdata.wicon}}.png ">-->
-        </div>
-        </td>
-
-
-    </tr>
-    </tbody>
-</table>
 

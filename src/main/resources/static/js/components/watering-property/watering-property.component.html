@@ -1,7 +1,7 @@
 <h4><span class="glyphicon glyphicon-scale" aria-hidden="true"></span>Watering Measure</h4>
 <hr id="headline">
 <div class="row">
-    <div class="control-group col-md-2 col-sm-2 col-xs-4">
+    <div class="control-group col-lg-2 col-md-3 col-sm-4 col-xs-12">
         <label class="control-label">View By End Device</label>
 
         <div class="controls">
@@ -12,7 +12,7 @@
             </select>
         </div>
     </div>
-    <div class='col-md-2 col-sm-2 col-xs-4'>
+    <div class='col-lg-2 col-md-3 col-sm-4 col-xs-12'>
         <div class="form-group">
             <label class="control-label">Date from</label>
 
@@ -33,7 +33,7 @@
 
         </div>
     </div>
-    <div class='col-md-2 col-sm-2 col-xs-4'>
+    <div class='col-lg-2 col-md-3 col-sm-4 col-xs-12'>
         <div class="form-group">
             <label class="control-label">Date To</label>
 
@@ -55,7 +55,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-5 col-sm-5 col-xs-6">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <span>Units of measurement:<strong>{{model.measures.unit}}</strong></span>
         <table ng-table="model.tableParams" class="table table table-condensed table-bordered table-striped">
             <tr ng-repeat="row in $data">
@@ -91,7 +91,7 @@
 
     </div>
 
-    <div class="col-md-5 col-sm-5 col-xs-6">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <nvd3 options="model.options" data="model.data"></nvd3>
     </div>
 </div>

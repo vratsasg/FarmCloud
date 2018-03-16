@@ -2,60 +2,50 @@
 <hr id="headline">
 
 <div class="row">
-
-    <div class="col-sm-4">
-
+    <div class="col-md-4">
         <h3>City of {{model.apirespond.name}}</h3>
 
-
-        <h2><img class="img-responsive" alt="Notifications" width="70" height="60"
+        <h2>
+            <img class="img-responsive" alt="Notifications" width="70" height="60"
                  src="http://openweathermap.org/img/w/{{model.apirespond.weather[0].icon}}.png ">{{model.apirespond.main.temp}} &deg;C
         </h2>
 
         <div>{{model.apirespond.weather[0].description}}</div>
-        <div>get at <b>{{model.apirespond.datetimeMeasure}}</b>
-        </div>
+        <!--<div>get at <b>{{model.apirespond.datetimeMeasure}}</b></div>-->
 
         <table class="table-condensed table-bordered table-striped">
             <tbody>
             <tr>
                 <td>Wind</td>
                 <td>Moderate breeze {{model.apirespond.wind.speed}} m/s<br>Wind direction
-                    {{model.apirespond.wind.deg}} &deg;</td>
+                    {{model.apirespond.wind.deg}} &deg;
+                </td>
             </tr>
-
             <tr>
                 <td>Cloudiness</td>
                 <td>{{model.apirespond.clouds.all}}</td>
             </tr>
-
             <tr>
                 <td>Pressure</td>
                 <td>{{model.apirespond.main.pressure}} hpa</td>
             </tr>
-
             <tr>
                 <td>Humidity</td>
                 <td>{{model.apirespond.main.humidity}} %</td>
             </tr>
-
             <tr>
                 <td>Sunrise</td>
                 <td>{{model.apirespond.sys.sunrise}}</td>
             </tr>
-
             <tr>
                 <td>Sunset</td>
                 <td>{{model.apirespond.sys.sunset}}</td>
             </tr>
             </tbody>
-
-
         </table>
-
     </div>
 
-    <div class="col-sm-8">
+    <div class="col-md-8">
         <weather-chart latit="model.latid" longti="model.longt"></weather-chart>
     </div>
 

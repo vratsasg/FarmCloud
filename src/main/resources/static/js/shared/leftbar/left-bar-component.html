@@ -3,7 +3,6 @@
         <ul class="nav nav-pills nav-stacked ">
             <li role="presentation" style="cursor: pointer;" ng-repeat="obs in model.observations.obsprop"
                 id={{obs.observablepropertyid}}>
-                <!--<a ng-href="#/observationproperty?id={{obs.observablepropertyid}}">-->
                 <a ng-link="['ObservableProperty',{id: obs.observablepropertyid,description: obs.description}]">
                     <span ng-class="{'flaticon-temperature': obs.description == 'Temperature' || obs.description == 'Internal Temperature ' ,'glyphicon glyphicon-tint':  obs.description == 'Internal Humidity' || obs.description == 'Soil Moisture'}"
                           aria-hidden="true"></span>
@@ -22,14 +21,18 @@
                 </a>
             </li>
             <li role="presentation" style="cursor: pointer;">
-                <a ng-link="['ControlPanel']">
-                    <span id="controlPanel" class="glyphicon glyphicon-scale menu" aria-hidden="true"></span>Control
-                    Panel
+                <a ng-link="['WeatherApi']">
+                    <span id="weather" class="flaticon-cloud menu" aria-hidden="true"></span>Weather
                 </a>
             </li>
             <li role="presentation" style="cursor: pointer;">
-                <a ng-link="['WeatherApi']">
-                    <span id="weather" class="flaticon-cloud menu" aria-hidden="true"></span>Weather
+                <a ng-link="['ControlPanel']">
+                    <span id="controlPanel" class="glyphicon glyphicon-scale menu" aria-hidden="true"></span>Control Panel
+                </a>
+            </li>
+            <li>
+                <a ng-link="['Profile']">
+                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Devices Informations
                 </a>
             </li>
         </ul>
