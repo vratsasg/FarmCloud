@@ -12,7 +12,7 @@ public interface MeasureService {
 
     JSONArray findDailyMeasure(String id);
 
-    void saveMeasure(Long series, EmbeddedData embeddedData, Timestamp measuredt);
+    void saveMeasure(Long series, EmbeddedData embeddedData);
 
     void saveMeasure(AutomaticWater automaticWater);
 }

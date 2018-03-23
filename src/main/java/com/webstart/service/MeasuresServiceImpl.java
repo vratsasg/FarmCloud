@@ -129,7 +129,7 @@ public class MeasuresServiceImpl implements MeasureService {
 
     }
 
-    public void saveMeasure(Long seriesId, EmbeddedData embeddedData, Timestamp measuredt) {
+    public void saveMeasure(Long seriesId, EmbeddedData embeddedData) {
         try {
             logger.debug("Inside saveMeasure()");
 
@@ -153,10 +153,10 @@ public class MeasuresServiceImpl implements MeasureService {
             Observation observation = new Observation();
             observation.setSeriesid(seriesId);
 
-            observation.setPhenomenontimestart(measuredt);
-            observation.setPhenomenontimeend(measuredt);
+            observation.setPhenomenontimestart(ts);
+            observation.setPhenomenontimeend(ts);
 //            observation.setIdentifier(dtf.print(new DateTime(DateTimeZone.UTC)) + "-" + java.util.UUID.randomUUID());
-            observation.setIdentifier(sdf.format(measuredt) + "-" + java.util.UUID.randomUUID());
+            observation.setIdentifier(sdf.format(ts) + "-" + java.util.UUID.randomUUID());
             observation.setUnitid((long) embeddedData.getUnitId());
 
             observationJpaRepository.save(observation);
