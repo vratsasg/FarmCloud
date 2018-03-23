@@ -18,13 +18,13 @@ public class HelperCls {
             int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
             DateTime zonedatetime = LocalDateTime.parse(dt, dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
 
-            if (convertionType.getValue() == StatusTimeConverterEnum.TO_UTC.getValue()) {
-                //Convert time to UTC
-                zonedatetime = zonedatetime.minusMillis(offset);
-            } else if (convertionType.getValue() == StatusTimeConverterEnum.TO_TIMEZONE.getValue()) {
-                //Convert time to TIMEZONE
-                zonedatetime = zonedatetime.plusMillis(offset);
-            }
+//            if (convertionType.getValue() == StatusTimeConverterEnum.TO_UTC.getValue()) {
+//                //Convert time to UTC
+//                zonedatetime = zonedatetime.minusMillis(offset);
+//            } else if (convertionType.getValue() == StatusTimeConverterEnum.TO_TIMEZONE.getValue()) {
+//                //Convert time to TIMEZONE
+//                zonedatetime = zonedatetime.plusMillis(offset);
+//            }
 
             return zonedatetime;
         }
