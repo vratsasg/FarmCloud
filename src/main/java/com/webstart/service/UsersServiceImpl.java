@@ -129,7 +129,7 @@ public class UsersServiceImpl implements UsersService{
 
     public void createNewNotification(int userid, String message, int notificationType) {
         try {
-            //TODO change datetime now to utc
+            //Convert time to UTC
             TimeZone tz = TimeZone.getDefault();
             int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
             DateTime localdt = new DateTime(DateTimeZone.forID(tz.getID()));

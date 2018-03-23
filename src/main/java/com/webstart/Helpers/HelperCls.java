@@ -15,17 +15,18 @@ public class HelperCls {
             //TimeZone
             TimeZone tz = TimeZone.getTimeZone(timezone);
 
-            //Convert time to UTC
             int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
-            DateTime irrigdtFrom = LocalDateTime.parse(dt, dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
+            DateTime zonedatetime = LocalDateTime.parse(dt, dtfInput).toDateTime(DateTimeZone.forID(tz.getID()));
 
-            if (convertionType.getValue() == StatusTimeConverterEnum.TO_UTC.getValue()){
-                irrigdtFrom = irrigdtFrom.minusMillis(offset);
-            } else if (convertionType.getValue() == StatusTimeConverterEnum.TO_TIMEZONE.getValue()){
-                irrigdtFrom = irrigdtFrom.plusMillis(offset);
+            if (convertionType.getValue() == StatusTimeConverterEnum.TO_UTC.getValue()) {
+                //Convert time to UTC
+                zonedatetime = zonedatetime.minusMillis(offset);
+            } else if (convertionType.getValue() == StatusTimeConverterEnum.TO_TIMEZONE.getValue()) {
+                //Convert time to TIMEZONE
+                zonedatetime = zonedatetime.plusMillis(offset);
             }
 
-            return irrigdtFrom;
-    }
+            return zonedatetime;
+        }
     }
 }

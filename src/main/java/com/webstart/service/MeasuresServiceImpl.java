@@ -16,6 +16,8 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +45,8 @@ public class MeasuresServiceImpl implements MeasureService {
     FeatureofinterestJpaRepository featureofinterestJpaRepository;
     @Autowired
     FeatureofInterestService featureofInterestService;
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public JSONArray findDailyMeasure(String id) {
         JSONArray finalDataList = new JSONArray();
@@ -127,30 +131,32 @@ public class MeasuresServiceImpl implements MeasureService {
 
     public void saveMeasure(Long seriesId, EmbeddedData embeddedData, Timestamp measuredt) {
         try {
+            logger.debug("Inside saveMeasure()");
+
 //            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMddHHmmss");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 
             //Convert time to UTC
-            TimeZone tz = TimeZone.getDefault();
-            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
-            DateTime localdt = new DateTime(DateTimeZone.forID(tz.getID()));
-            localdt = localdt.minusMillis(offset);
-            Timestamp ts = new Timestamp(localdt.getMillis());
+//            TimeZone tz = TimeZone.getDefault();
+//            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+//            DateTime localdt = new DateTime(DateTimeZone.forID(tz.getID()));
+//            localdt = localdt.minusMillis(offset);
+//            Timestamp ts = new Timestamp(localdt.getMillis());
 
             // DateTime Convertable
-//            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(embeddedData.getZigbeeAddress());
-//            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-//            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-//            DateTime dt = convertable.GetUTCDateTime(embeddedData.getDatetimeMeasure(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
-//            Timestamp ts = new Timestamp(dt.getMillis());
+            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(embeddedData.getZigbeeAddress());
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            DateTime dt = convertable.GetUTCDateTime(embeddedData.getDatetimeMeasure(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            Timestamp ts = new Timestamp(dt.getMillis());
 
             Observation observation = new Observation();
             observation.setSeriesid(seriesId);
 
-            observation.setPhenomenontimestart(ts);
-            observation.setPhenomenontimeend(ts);
+            observation.setPhenomenontimestart(measuredt);
+            observation.setPhenomenontimeend(measuredt);
 //            observation.setIdentifier(dtf.print(new DateTime(DateTimeZone.UTC)) + "-" + java.util.UUID.randomUUID());
-            observation.setIdentifier(sdf.format(ts) + "-" + java.util.UUID.randomUUID());
+            observation.setIdentifier(sdf.format(measuredt) + "-" + java.util.UUID.randomUUID());
             observation.setUnitid((long) embeddedData.getUnitId());
 
             observationJpaRepository.save(observation);
@@ -159,6 +165,8 @@ public class MeasuresServiceImpl implements MeasureService {
             numericValue.setObservationid(observation.getObservationid());
             numericValue.setValue(embeddedData.getMeasureValue());
             numericValueJpaRepository.save(numericValue);
+
+            logger.debug("params: dt={}, ts={}", dt, ts);
         } catch (Exception e) {
             e.printStackTrace();
         }
