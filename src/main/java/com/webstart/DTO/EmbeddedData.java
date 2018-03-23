@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class EmbeddedData {
@@ -18,9 +19,9 @@ public class EmbeddedData {
 
     @JsonProperty("dt")
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+2")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Temporal(TemporalType.TIME)
-    private Date datetimeMeasure;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    @Temporal(TemporalType.TIME)
+    private String datetimeMeasure;
 
     @JsonProperty("oid")
     private int ObservationPropId;
@@ -32,7 +33,7 @@ public class EmbeddedData {
 
     }
 
-    public EmbeddedData(String zigbeeAddress, BigDecimal measureValue, Date datetimeMeasure, int ObservationPropId, int UnitId) {
+    public EmbeddedData(String zigbeeAddress, BigDecimal measureValue, String datetimeMeasure, int ObservationPropId, int UnitId) {
         this.zigbeeAddress = zigbeeAddress;
         this.measureValue = measureValue;
         this.datetimeMeasure = datetimeMeasure;
@@ -72,11 +73,11 @@ public class EmbeddedData {
         this.UnitId = unitId;
     }
 
-    public Date getDatetimeMeasure() {
+    public String getDatetimeMeasure() {
         return datetimeMeasure;
     }
 
-    public void setDatetimeMeasure(Date datetimeMeasure) {
+    public void setDatetimeMeasure(String datetimeMeasure) {
         this.datetimeMeasure = datetimeMeasure;
     }
 }

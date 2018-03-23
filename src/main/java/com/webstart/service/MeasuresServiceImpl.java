@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.hibernate.type.descriptor.java.JdbcDateTypeDescriptor.DATE_FORMAT;
@@ -126,21 +127,30 @@ public class MeasuresServiceImpl implements MeasureService {
 
     public void saveMeasure(Long seriesId, EmbeddedData embeddedData) {
         try {
-            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMddHHmmss");
+//            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMddHHmmss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 
             //Convert time to UTC
-            TimeZone tz = TimeZone.getDefault();
-            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
-            DateTime localdt = new DateTime(DateTimeZone.forID(tz.getID()));
-            localdt = localdt.minusMillis(offset);
-            Timestamp ts = new Timestamp(localdt.getMillis());
+//            TimeZone tz = TimeZone.getDefault();
+//            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+//            DateTime localdt = new DateTime(DateTimeZone.forID(tz.getID()));
+//            localdt = localdt.minusMillis(offset);
+//            Timestamp ts = new Timestamp(localdt.getMillis());
+
+            // DateTime Convertable
+            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(embeddedData.getZigbeeAddress());
+            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+            DateTime dt = convertable.GetUTCDateTime(embeddedData.getDatetimeMeasure(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            Timestamp ts = new Timestamp(dt.getMillis());
 
             Observation observation = new Observation();
             observation.setSeriesid(seriesId);
 
             observation.setPhenomenontimestart(ts);
             observation.setPhenomenontimeend(ts);
-            observation.setIdentifier(dtf.print(new DateTime(DateTimeZone.UTC)) + "-" + java.util.UUID.randomUUID());
+//            observation.setIdentifier(dtf.print(new DateTime(DateTimeZone.UTC)) + "-" + java.util.UUID.randomUUID());
+            observation.setIdentifier(sdf.format(ts) + "-" + java.util.UUID.randomUUID());
             observation.setUnitid((long) embeddedData.getUnitId());
 
             observationJpaRepository.save(observation);

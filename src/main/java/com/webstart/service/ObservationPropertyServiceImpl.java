@@ -123,7 +123,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
                 DateTime dt = convertable.GetUTCDateTime(objec[2].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
                 Timestamp tTime = new Timestamp(dt.getMillis());
-                ls.add(new ValueTime((tTime.getTime() - 60L * 60L * 1000L) / 1000L, (BigDecimal) objec[3], tTime));
+                ls.add(new ValueTime(tTime.getTime()/1000L, (BigDecimal) objec[3], tTime));
             }
 
             obsMeasure.setMeasuredata(ls);
@@ -190,7 +190,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
                 DateTime dt = convertable.GetUTCDateTime(obj[1].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
                 Timestamp tTime = new Timestamp(dt.getMillis());
-                ls.add(new ObservationMeasure((tTime.getTime() - 60L * 60L * 1000L) / 1000L, (BigDecimal) obj[2], tTime, obj[3].toString(), obj[0].toString()));
+                ls.add(new ObservationMeasure((tTime.getTime()) / 1000L, (BigDecimal) obj[2], tTime, obj[3].toString(), obj[0].toString()));
             }
 
             //ObjectMapper mapper = new ObjectMapper();       //Object to JSON in String

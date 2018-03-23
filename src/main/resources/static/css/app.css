@@ -582,9 +582,10 @@ input:valid, textarea:valid {
     line-height: 1.2;
 }
 
-.table-condensed > tbody > tr :hover {
-    background-color: #9CCC65 !important;
-}
+/*TODO remove colour*/
+/*.table-condensed > tbody > tr :hover {*/
+    /*background-color: #9CCC65 !important;*/
+/*}*/
 
 .wtool {
     background-color: #C5E1A5;
