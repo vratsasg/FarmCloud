@@ -125,24 +125,24 @@ public class MeasuresServiceImpl implements MeasureService {
 
     }
 
-    public void saveMeasure(Long seriesId, EmbeddedData embeddedData) {
+    public void saveMeasure(Long seriesId, EmbeddedData embeddedData, Timestamp measuredt) {
         try {
 //            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMddHHmmss");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 
             //Convert time to UTC
-//            TimeZone tz = TimeZone.getDefault();
-//            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
-//            DateTime localdt = new DateTime(DateTimeZone.forID(tz.getID()));
-//            localdt = localdt.minusMillis(offset);
-//            Timestamp ts = new Timestamp(localdt.getMillis());
+            TimeZone tz = TimeZone.getDefault();
+            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+            DateTime localdt = new DateTime(DateTimeZone.forID(tz.getID()));
+            localdt = localdt.minusMillis(offset);
+            Timestamp ts = new Timestamp(localdt.getMillis());
 
             // DateTime Convertable
-            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(embeddedData.getZigbeeAddress());
-            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            DateTime dt = convertable.GetUTCDateTime(embeddedData.getDatetimeMeasure(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
-            Timestamp ts = new Timestamp(dt.getMillis());
+//            Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(embeddedData.getZigbeeAddress());
+//            DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+//            HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
+//            DateTime dt = convertable.GetUTCDateTime(embeddedData.getDatetimeMeasure(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+//            Timestamp ts = new Timestamp(dt.getMillis());
 
             Observation observation = new Observation();
             observation.setSeriesid(seriesId);

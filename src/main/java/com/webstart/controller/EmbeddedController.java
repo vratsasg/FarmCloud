@@ -10,6 +10,8 @@ import com.webstart.model.Featureofinterest;
 import com.webstart.service.FeatureofInterestService;
 import com.webstart.service.MeasureService;
 import com.webstart.service.UsersService;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -38,6 +42,16 @@ public class EmbeddedController {
             List<String> identList = new ArrayList<String>(new LinkedHashSet<String>(embeddedDataWrapper.GetFeatureIdentifiers()));
             List<FeatureidIdentifier> featureidIdentifiers = featureofInterestService.findFeatureIdByIdentifier(identList);
 
+            //            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMddHHmmss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+
+            //Convert time to UTC
+            TimeZone tz = TimeZone.getDefault();
+            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+            DateTime localdt = new DateTime(DateTimeZone.forID(tz.getID()));
+            localdt = localdt.minusMillis(offset);
+            Timestamp ts = new Timestamp(localdt.getMillis());
+
             for (final EmbeddedData embeddedData : embeddedDataWrapper.getEmList()) {
                 int featureofinterestid = 0;
                 for (int i = 0; i < featureidIdentifiers.size(); i++) {
@@ -47,7 +61,7 @@ public class EmbeddedController {
                 }
 
                 Long seriesId = featureofInterestService.findseries(embeddedData.getObservationPropId(), featureofinterestid);
-                measureService.saveMeasure(seriesId, embeddedData);
+                measureService.saveMeasure(seriesId, embeddedData, ts);
             }
             //TODO change using webockets
             usersService.createNewNotification(featureidIdentifiers.get(0).getUserId(), String.format("New measures (temperature, humidity) have been taken for end devices: %s", identList.toString()), NotificationTypeEnum.MEASURE.getValue());
