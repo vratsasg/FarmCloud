@@ -31,7 +31,7 @@ public class HelperCls {
                 zonedatetime = zonedatetime.plusMillis(offset);
             }
 
-            logger.debug("params: dtBefore={}, offset={}, conversion={}, datetimeWithZone={}", dt, offset, convertionType.toString(), zonedatetime);
+            logger.debug("GetUTCDateTime() params: dtBefore={}, offset={}, conversion={}, datetimeWithZone={}", dt, offset, convertionType.toString(), zonedatetime);
 
             return zonedatetime;
         }

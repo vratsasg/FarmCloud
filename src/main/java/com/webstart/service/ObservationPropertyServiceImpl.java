@@ -17,6 +17,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.tz.UTCProvider;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,8 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
     ObservationJpaRepository observationJpaRepository;
     @Autowired
     FeatureofinterestJpaRepository featureofinterestJpaRepository;
+    //
+    private final Logger logger =   LoggerFactory.getLogger(HelperCls.class);
 
     public JSONObject getAllObsPropeties() {
 
@@ -91,6 +95,8 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 DateTime dtfrom = convertable.GetUTCDateTime(objValueTime[2].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
                 DateTime dtuntil = convertable.GetUTCDateTime(objValueTime[3].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
                 //substract the default timezone pc offset in milliseconds
+                logger.debug("getWateringData() params: dtfrom={}, offset={} timestamp={}", dtfrom, offset, new Timestamp(dtfrom.getMillis() - offset));
+                logger.debug("getWateringData() params: dtuntil={}, offset={} timestamp={}", dtuntil, offset, new Timestamp(dtuntil.getMillis() - offset));
                 ls.add(new WateringValueTime((BigDecimal) objValueTime[4], new Timestamp(dtfrom.getMillis() - offset), new Timestamp(dtuntil.getMillis() - offset)));
             }
 
@@ -133,6 +139,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
                 DateTime dt = convertable.GetUTCDateTime(objec[2].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
                 Timestamp tTime = new Timestamp(dt.getMillis() - offset);
+                logger.debug("getObservationData() params: datetime={}, offset={} timestamp={}", dt, offset, tTime);
                 ls.add(new ValueTime(tTime.getTime()/1000L, (BigDecimal) objec[3], tTime));
             }
 
