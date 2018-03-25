@@ -11,13 +11,9 @@ import java.util.Date;
 
 public class AutomaticWater {
     @JsonProperty("autoIrrigFromTime")
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+1")
-//    @Temporal(TemporalType.TIME)
     private String fromtime;
 
     @JsonProperty("autoIrrigUntilTime")
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+1")
-//    @Temporal(TemporalType.TIME)
     private String untiltime;
 
     @JsonProperty("waterConsumption")

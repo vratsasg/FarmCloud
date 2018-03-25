@@ -11,8 +11,10 @@ import com.webstart.repository.ObservablePropertyJpaRepository;
 import com.webstart.repository.ObservationJpaRepository;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Instant;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.tz.UTCProvider;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -61,6 +64,8 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
         WateringMeasure wateringMeasure = new WateringMeasure();
 
         try {
+//            DateTimeZone.setDefault(DateTimeZone.UTC);
+//            TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
             java.sql.Timestamp timeFrom = new java.sql.Timestamp(from.getTime());
             java.sql.Timestamp timeTo = new java.sql.Timestamp(to.getTime());
 
@@ -71,6 +76,8 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             if (listofObjs.size() == 0) {
                 return null;
             }
+
+            int offset =  TimeZone.getDefault().getRawOffset();
 
             Object[] obj = listofObjs.get(0);
             wateringMeasure.setIdentifier(String.valueOf(listofObjs.get(0)[0]));
@@ -83,7 +90,8 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
                 DateTime dtfrom = convertable.GetUTCDateTime(objValueTime[2].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
                 DateTime dtuntil = convertable.GetUTCDateTime(objValueTime[3].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
-                ls.add(new WateringValueTime((BigDecimal) objValueTime[4], new Timestamp(dtfrom.getMillis()), new Timestamp(dtuntil.getMillis())));
+                //substract the default timezone pc offset in milliseconds
+                ls.add(new WateringValueTime((BigDecimal) objValueTime[4], new Timestamp(dtfrom.getMillis() - offset), new Timestamp(dtuntil.getMillis() - offset)));
             }
 
             wateringMeasure.setMeasuredata(ls);
@@ -111,6 +119,8 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 return null;
             }
 
+            int offset =  TimeZone.getDefault().getRawOffset();
+
             Object[] obj = listofObjs.get(0);
             obsMeasure.setIdentifier(String.valueOf(obj[0]));
             obsMeasure.setObservableProperty(String.valueOf(obj[1]));
@@ -122,7 +132,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
                 HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
                 DateTime dt = convertable.GetUTCDateTime(objec[2].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
-                Timestamp tTime = new Timestamp(dt.getMillis());
+                Timestamp tTime = new Timestamp(dt.getMillis() - offset);
                 ls.add(new ValueTime(tTime.getTime()/1000L, (BigDecimal) objec[3], tTime));
             }
 
@@ -216,6 +226,8 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 return new ResponseEntity("Error: Last measure cannot found", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+
             Iterator itr = listMeasures.iterator();
             while (itr.hasNext()) {
                 Object[] obj = (Object[]) itr.next();
@@ -223,7 +235,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
                 HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
                 DateTime dtfrom = convertable.GetUTCDateTime(obj[1].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
                 DateTime dtuntil = convertable.GetUTCDateTime(obj[2].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
-                automaticWater = new AutomaticWater(dtfrom.toDate(), dtuntil.toDate(), (BigDecimal) obj[3], identifier);
+                automaticWater = new AutomaticWater(fmt.print(dtfrom), fmt.print(dtuntil), (BigDecimal) obj[3], identifier);
             }
         } catch (Exception e) {
             e.printStackTrace();

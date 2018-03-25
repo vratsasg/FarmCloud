@@ -45,7 +45,7 @@ public class MeasuresServiceImpl implements MeasureService {
     FeatureofinterestJpaRepository featureofinterestJpaRepository;
     @Autowired
     FeatureofInterestService featureofInterestService;
-
+    //
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public JSONArray findDailyMeasure(String id) {
