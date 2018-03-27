@@ -67,7 +67,7 @@
                 );
             },
             setMeasuringFlags: function (coordinator) {
-                return $http.get('embedded/' + coordinator + '/measures').then(
+                return $http.get(`${coordinator}/measures`).then(
                     function (response) {
                         return response.data;
                     },

@@ -62,6 +62,10 @@
 
                         ControlPanelService.getWateringMeasuresByLastDate(devicesdata[0].identifier).then(
                             function (waterMeasureData) {
+                                if (waterMeasureData === null || waterMeasureData === undefined) {
+                                    return;
+                                }
+                                //
                                 model.wateringIrrigationDateFrom = waterMeasureData.autoIrrigFromTime;
                                 model.wateringIrrigationDateTo = waterMeasureData.autoIrrigUntilTime;
                                 model.wateringConsumption = waterMeasureData.waterConsumption;

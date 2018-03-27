@@ -11,6 +11,7 @@ import com.webstart.model.Observation;
 import com.webstart.repository.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Instant;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -131,17 +132,7 @@ public class MeasuresServiceImpl implements MeasureService {
 
     public void saveMeasure(Long seriesId, EmbeddedData embeddedData) {
         try {
-            logger.debug("Inside saveMeasure()");
-
-//            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMddHHmmss");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-
-            //Convert time to UTC
-//            TimeZone tz = TimeZone.getDefault();
-//            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
-//            DateTime localdt = new DateTime(DateTimeZone.forID(tz.getID()));
-//            localdt = localdt.minusMillis(offset);
-//            Timestamp ts = new Timestamp(localdt.getMillis());
 
             // DateTime Convertable
             Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(embeddedData.getZigbeeAddress());
@@ -185,15 +176,18 @@ public class MeasuresServiceImpl implements MeasureService {
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
             DateTime from = convertable.GetUTCDateTime(automaticWater.getFromtime(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
             DateTime to = convertable.GetUTCDateTime(automaticWater.getUntiltime(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            int offset = DateTimeZone.getDefault().getOffset(new Instant());
             //
             Observation observation = new Observation();
             observation.setSeriesid(seriesid);
-            observation.setPhenomenontimestart(new Timestamp(from.getMillis()));
-            observation.setPhenomenontimeend(new Timestamp(to.getMillis()));
+            observation.setPhenomenontimestart(new Timestamp(from.getMillis() - offset));
+            observation.setPhenomenontimeend(new Timestamp(to.getMillis() - offset));
 
             observation.setIdentifier(dtf.print(new DateTime(DateTimeZone.UTC)) + "-" + java.util.UUID.randomUUID());
             observation.setUnitid((long) 22);
-
+            //
+            logger.debug("params: FROM dt_from={}, ts_from={} TO dt_to={}, ts_to={}", from, observation.getPhenomenontimestart(), to , observation.getPhenomenontimeend());
+            //
             observationJpaRepository.save(observation);
 
             NumericValue numericValue = new NumericValue();

@@ -11,6 +11,7 @@ import com.webstart.model.*;
 import com.webstart.repository.FeatureofinterestJpaRepository;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Instant;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -304,10 +305,10 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             List<EmebddedSetupDevicdeDto> endDeviceList = new ArrayList<EmebddedSetupDevicdeDto>();
             //TimeZone
             Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(coordinatorAddress);
-            TimeZone tz = TimeZone.getTimeZone(featureofinterest.getTimezone());
+            DateTimeZone tz = DateTimeZone.forID(featureofinterest.getTimezone());
 
             //Convert time to UTC
-            int offsetHours = DateTimeZone.forID(tz.getID()).getOffset(new DateTime()) / (60 * 60 * 1000);
+            int offsetHours = tz.getOffset(new DateTime()) / (60 * 60 * 1000);
             for (Object[] obj : list) {
 
                 Integer fromhour = Integer.parseInt(obj[1].toString()) + offsetHours;
@@ -342,10 +343,10 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
 
             //TimeZone
             Featureofinterest featureofinterest = this.getFeatureofinterestByIdentifier(coordinatorAddress);
-            TimeZone tz = TimeZone.getTimeZone(featureofinterest.getTimezone());
+            DateTimeZone tz = DateTimeZone.forID(featureofinterest.getTimezone());
 
             //Convert time to UTC
-            int offsetHours = DateTimeZone.forID(tz.getID()).getOffset(new DateTime()) / (60 * 60 * 1000);
+            int offsetHours = tz.getOffset(new DateTime()) / (60 * 60 * 1000);
             Integer fromhour = Integer.parseInt(list.get(0)[1].toString()) + offsetHours;
             if (fromhour >= 24) {
                 fromhour = fromhour % 24;
@@ -408,8 +409,8 @@ public class FeatureofInterestServiceImpl implements FeatureofInterestService {
             List<EndDeviceStatusDTO> identiFlagsObjects = featureofinterestJpaRepository.getIdentifierFlags(fidg);
 
             //TimeZone
-            TimeZone tz = TimeZone.getTimeZone(featureofinterest.getTimezone());
-            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+            DateTimeZone tz = DateTimeZone.forID(featureofinterest.getTimezone());
+            int offset = tz.getOffset(new Instant());
 
             for (EndDeviceStatusDTO endDevice : identiFlagsObjects) {
                 Calendar cal = Calendar.getInstance();

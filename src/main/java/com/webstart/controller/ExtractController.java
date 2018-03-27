@@ -319,9 +319,9 @@ public class ExtractController {
                 observableMeasure.getObservableProperty(), observableMeasure.getUnit(), observableMeasure.getIdentifier(), dtfrom, dtto);
         doc.add(new Paragraph(paragraph));
 
-        PdfPTable table = new PdfPTable(3);
+        PdfPTable table = new PdfPTable(2);
         table.setWidthPercentage(100.0f);
-        table.setWidths(new float[]{3.0f, 2.0f, 2.0f,});
+        table.setWidths(new float[]{4.0f, 2.0f});
         table.setSpacingBefore(10);
 
         // define font for table header row
@@ -340,11 +340,7 @@ public class ExtractController {
         cell.setPhrase(new Phrase("Measure value", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Measure unit", font));
-        table.addCell(cell);
-
         BigDecimal valuemin = new BigDecimal(200.0);
-        ;
         BigDecimal valuemax = new BigDecimal(-100.0);
         BigDecimal valuesum = new BigDecimal(0.0);
 
@@ -355,8 +351,7 @@ public class ExtractController {
             valuemin = valueTime.getValue().min(valuemin);
 
             table.addCell(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(valueTime.getPhenomenonDateTime()));
-            table.addCell(valueTime.getValue().toString());
-            table.addCell(observableMeasure.getUnit());
+            table.addCell(String.format("%1$s %2$s", valueTime.getValue().toString(), observableMeasure.getUnit()));
         }
         BigDecimal avg = valuesum.divide(BigDecimal.valueOf(observableMeasure.getMeasuredata().size()), 2, BigDecimal.ROUND_CEILING);
 
@@ -367,8 +362,6 @@ public class ExtractController {
                         valuemin.toString(), valuemax.toString(), avg.toString()
                 )
         ));
-        //new DecimalFormat("#0.##").format(avg)
-
 
         return doc;
     }
@@ -379,9 +372,9 @@ public class ExtractController {
                 wateringMeasure.getObservableProperty(), wateringMeasure.getUnit(), wateringMeasure.getIdentifier(), dtfrom, dtto);
         doc.add(new Paragraph(paragraph));
 
-        PdfPTable table = new PdfPTable(5);
+        PdfPTable table = new PdfPTable(4);
         table.setWidthPercentage(100.0f);
-        table.setWidths(new float[]{3.0f, 3.0f, 3.0f, 2.0f, 2.0f});
+        table.setWidths(new float[]{3.0f, 3.0f, 3.0f, 3.0f});
         table.setSpacingBefore(10);
 
         // define font for table header row
@@ -402,8 +395,6 @@ public class ExtractController {
         table.addCell(cell);
         cell.setPhrase(new Phrase("Total Consumption", font));
         table.addCell(cell);
-        cell.setPhrase(new Phrase("Unit", font));
-        table.addCell(cell);
 
         BigDecimal valuemin = new BigDecimal(200.0);
         BigDecimal valuemax = new BigDecimal(-100.0);
@@ -418,8 +409,7 @@ public class ExtractController {
             table.addCell(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(valueTime.getPhenomenonDateTimeFrom()));
             table.addCell(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(valueTime.getPhenomenonDateTimeTo()));
             table.addCell(valueTime.getDateTimeDiff());
-            table.addCell(valueTime.getValue().toString());
-            table.addCell(wateringMeasure.getUnit());
+            table.addCell(String.format("%1$s %2$s", valueTime.getValue().toString(), wateringMeasure.getUnit()));
         }
 
         doc.add(table);

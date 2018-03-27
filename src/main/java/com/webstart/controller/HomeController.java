@@ -268,7 +268,6 @@ public class HomeController {
 
         try {
             AutomaticWater automaticWater = new AutomaticWater(datefrom, dateto, new BigDecimal(0), mydevice);
-            measureservice.saveMeasure(automaticWater);
             boolean sentData = featureofInterestService.setDeviceIrrigaDate(users.getUser_id(), mydevice, datefrom, dateto);
             Featureofinterest featureofinterest = this.featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             usersService.createNewNotification(users.getUser_id(),
@@ -346,6 +345,23 @@ public class HomeController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "{coordinator}/measures", method = RequestMethod.GET)
+    public ResponseEntity<?> startMeasuring(@PathVariable("coordinator") String identifier) {
+        boolean status;
+        try {
+            status = featureofInterestService.changeMeasuringFlag(identifier, FeatureTypeEnum.END_DEVICE.getValue());
+        } catch (Exception e){
+            return new ResponseEntity(e, HttpStatus.BAD_REQUEST);
+//            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        if(!status) {
+            return new ResponseEntity("Error: measure cannot been saved correctly", HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity(HttpStatus.OK);

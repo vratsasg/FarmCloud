@@ -161,10 +161,10 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
 
             //TODO create a function with timestamp
             //TimeZone
-            TimeZone tz = TimeZone.getTimeZone(featureofinterest.getTimezone());
+            DateTimeZone tz = DateTimeZone.forID(featureofinterest.getTimezone());
 
             //Convert time to UTC
-            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
+            int offset = tz.getOffset(new DateTime());
             Calendar cal = Calendar.getInstance();
 
             cal.setTimeInMillis(lastdate.getTime());
@@ -227,6 +227,10 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             Featureofinterest featureofinterest = featureofinterestJpaRepository.getFeatureofinterestByIdentifier(identifier);
             //
             Timestamp lastdate = observationJpaRepository.findWateringlastdatetime(userId, identifier);
+            if(lastdate == null) {
+                return null;
+            }
+
             List<Object[]> listMeasures = observationJpaRepository.findLastWateringMeasures(userId, identifier, lastdate);
 
             if (listMeasures.size() == 0) {

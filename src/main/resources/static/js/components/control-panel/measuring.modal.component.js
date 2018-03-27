@@ -15,7 +15,6 @@
                 var instance = null;
 
                 model.$onInit = function () {
-
                     instance = model.parent.modalInstance;
 
                     instance.result.then(function (returnedData) {
@@ -23,11 +22,11 @@
                     }, function () {
                         console.log('Modal dismissed at: ' + new Date());
                     });
-                }
+                };
 
                 model.cancel = function () {
                     instance.dismiss('cancel');
-                }
+                };
 
                 model.submit = function () {
                     ControlPanelService.setMeasuringFlags(model.parent.coordinator.identifier).then(

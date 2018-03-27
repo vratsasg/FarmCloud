@@ -4,7 +4,7 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/agriccloud.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>agriccloud.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <fileNamePattern>agriccloud_%d{yyyy-MM-dd}.log</fileNamePattern>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>%date{"yyyy-MM-dd HH:mm:ss,SSS"} | [%thread] | %-5level | \(%25class{0}:%line\) - %message%n</pattern>

@@ -4,6 +4,7 @@ package com.webstart.Helpers;
 import com.webstart.Enums.StatusTimeConverterEnum;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Instant;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
@@ -18,8 +19,8 @@ public class HelperCls {
     public static class ConvertToDateTime {
         public DateTime GetUTCDateTime(String dt, DateTimeFormatter dtfInput, String timezone, StatusTimeConverterEnum convertionType) {
             //TimeZone
-            TimeZone tz = TimeZone.getTimeZone(timezone);
-            int offset = tz.getRawOffset();
+            DateTimeZone tz = DateTimeZone.forID(timezone);
+            int offset = tz.getOffset(new Instant());
 //            int offset = DateTimeZone.forID(tz.getID()).getOffset(new DateTime());
             DateTime zonedatetime = LocalDateTime.parse(dt, dtfInput).toDateTime(DateTimeZone.UTC);
 

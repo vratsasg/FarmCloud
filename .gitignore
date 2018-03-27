@@ -10,6 +10,7 @@ aot/*
 dist/*
 yarn.lock
 *.log
+*.log.*
 *.editorconfig
 .vscode
 out
