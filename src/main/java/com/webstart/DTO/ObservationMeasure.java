@@ -10,8 +10,8 @@ public class ObservationMeasure extends ValueTime {
     public String unit;
     public String ObservableProperty;
 
-    public ObservationMeasure(Long phenomenonTime, BigDecimal value, Timestamp phenomenonDateTime, String unit, String observableProperty) {
-        super(phenomenonTime, value, phenomenonDateTime);
+    public ObservationMeasure(BigDecimal value, Timestamp phenomenonDateTime, String unit, String observableProperty) {
+        super(phenomenonDateTime, value);
         this.unit = unit;
         ObservableProperty = observableProperty;
     }

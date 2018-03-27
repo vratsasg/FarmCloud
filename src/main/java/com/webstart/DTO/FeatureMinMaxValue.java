@@ -2,9 +2,6 @@ package com.webstart.DTO;
 
 import java.math.BigDecimal;
 
-/**
- * Created by DimDesktop on 7/8/2016.
- */
 public class FeatureMinMaxValue {
     private Long obspropertyid;
     private String obspropertName;

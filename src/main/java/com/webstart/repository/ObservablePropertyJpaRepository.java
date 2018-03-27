@@ -7,15 +7,12 @@ import org.springframework.data.repository.query.Param;
 import com.webstart.Enums.MeasurementTypeEnum;
 import java.util.List;
 
-/**
- * Created by George on 21/6/2016.
- */
 public interface ObservablePropertyJpaRepository extends JpaRepository<ObservableProperty, Integer> {
     List<ObservableProperty> findAll();
 
     @Query("select new com.webstart.model.ObservableProperty(obs.ObservablePropertyId, obs.HibernateDiscriminator, obs.Identifier, obs.Description) " +
             "FROM ObservableProperty as obs " +
-            "WHERE obs.ObservablePropertyId != 5 " +
+            "WHERE obs.ObservablePropertyId <> 5 " +
             "order by obs.Description")
     List<ObservableProperty> findAllExceptWatering();
 

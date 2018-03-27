@@ -1,7 +1,11 @@
 package com.webstart.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
@@ -9,28 +13,36 @@ public class WateringValueTime {
 
     @JsonProperty("value")
     private BigDecimal value;
-    @JsonIgnore
-    private Timestamp phenomenonDateTimeFrom;
-    @JsonIgnore
-    private Timestamp phenomenonDateTimeTo;
+    //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+2")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.TIME)
     @JsonProperty("phenomenonTimeStart")
-    private Long phenomenonNumTimeFrom;
+    private Timestamp phenomenonDateTimeFrom;
+    //
     @JsonProperty("phenomenonTimeEnd")
-    private Long phenomenonNumTimeTo;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.TIME)
+    private Timestamp phenomenonDateTimeTo;
+//
+//    @JsonProperty("phenomenonTimeStart")
+//    private Long phenomenonNumTimeFrom;
+//    @JsonProperty("phenomenonTimeEnd")
+//    private Long phenomenonNumTimeTo;
+//
     @JsonProperty("totalDuration")
     private String dateTimeDiff;
 
+
     public WateringValueTime() {
+
     }
 
     public WateringValueTime(BigDecimal value, Timestamp phenomenonDateTimeFrom, Timestamp phenomenonDateTimeTo) {
         this.value = value;
         this.phenomenonDateTimeFrom = phenomenonDateTimeFrom;
         this.phenomenonDateTimeTo = phenomenonDateTimeTo;
-        this.phenomenonNumTimeFrom = phenomenonDateTimeFrom.getTime();
-        this.phenomenonNumTimeTo = phenomenonDateTimeTo.getTime();
 
-        long diffSeconds = this.phenomenonNumTimeTo - this.phenomenonNumTimeFrom;
+        long diffSeconds = this.phenomenonDateTimeFrom.getTime() - this.phenomenonDateTimeFrom.getTime();
         this.dateTimeDiff = String.format("%1$d hours, %2$d minutes", diffSeconds / (60 * 60 * 1000), diffSeconds / (60 * 1000) % 60);
 
     }
@@ -63,17 +75,17 @@ public class WateringValueTime {
         return this.getPhenomenonDateTimeFrom().getTime();
     }
 
-    public void setPhenomenonNumTimeFrom(Long phenomenonNumTimeFrom) {
-        this.phenomenonNumTimeFrom = phenomenonNumTimeFrom;
-    }
+//    public void setPhenomenonNumTimeFrom(Long phenomenonNumTimeFrom) {
+//        this.phenomenonNumTimeFrom = phenomenonNumTimeFrom;
+//    }
 
     public Long getPhenomenonNumTimeTo() {
         return this.getPhenomenonDateTimeTo().getTime();
     }
 
-    public void setPhenomenonNumTimeTo(Long phenomenonNumTimeTo) {
-        this.phenomenonNumTimeTo = phenomenonNumTimeTo;
-    }
+//    public void setPhenomenonNumTimeTo(Long phenomenonNumTimeTo) {
+//        this.phenomenonNumTimeTo = phenomenonNumTimeTo;
+//    }
 
     public void setDateTimeDiff(String dateTimeDiff) {
         this.dateTimeDiff = dateTimeDiff;
@@ -84,7 +96,11 @@ public class WateringValueTime {
         long diffMinutes = diffSeconds / (60 * 1000) % 60;
         long diffHours = diffSeconds / (60 * 60 * 1000);
 
-        return String.format("%1$d hours, %2$d minutes", diffSeconds / (60 * 60 * 1000), diffSeconds / (60 * 1000) % 60);
+        if(diffHours == 0L){
+            return String.format("%1$d minutes", diffMinutes);
+        }
+
+        return String.format("%1$d hours and %2$d minutes", diffHours, diffMinutes);
     }
 
 

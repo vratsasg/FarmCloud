@@ -1,7 +1,6 @@
 package com.webstart.service;
 
 import com.webstart.DTO.AutomaticWater;
-import com.webstart.DTO.CurrentMeasure;
 import com.webstart.DTO.EmbeddedData;
 import com.webstart.Enums.StatusTimeConverterEnum;
 import com.webstart.Helpers.HelperCls;
@@ -12,7 +11,6 @@ import com.webstart.repository.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Instant;
-import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
@@ -28,7 +26,6 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static org.hibernate.type.descriptor.java.JdbcDateTypeDescriptor.DATE_FORMAT;
 
 @Service("measurement")
 @Transactional

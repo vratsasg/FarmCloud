@@ -1,34 +1,38 @@
 package com.webstart.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-/**
- * Created by DimDesktop on 3/7/2016.
- */
 public class ValueTime {
 
-    private Long phenomenonTime;
+//    private Long phenomenonTime;
     private BigDecimal value;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.TIME)
+    @JsonProperty("phenomenonDateTime")
     private Timestamp phenomenonDateTime;
 
-
-    public ValueTime(Long phenomenonTime, BigDecimal value, Timestamp phenomenonDateTime) {
-        this.phenomenonTime = phenomenonTime;
+    public ValueTime(Timestamp phenomenonDateTime, BigDecimal value) {
         this.value = value;
         this.phenomenonDateTime = phenomenonDateTime;
     }
 
     public ValueTime() {
+
     }
 
-    public Long getPhenomenonTime() {
-        return phenomenonTime;
-    }
-
-    public void setPhenomenonTime(Long phenomenonTime) {
-        this.phenomenonTime = phenomenonTime;
-    }
+//    public Timestamp getPhenomenonTime() {
+//        return phenomenonTime;
+//    }
+//
+//    public void setPhenomenonTime(Timestamp phenomenonTime) {
+//        this.phenomenonTime = phenomenonTime;
+//    }
 
     public BigDecimal getValue() {
         return value;

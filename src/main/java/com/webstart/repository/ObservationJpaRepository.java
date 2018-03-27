@@ -1,15 +1,9 @@
 package com.webstart.repository;
 
 
-import com.webstart.DTO.CurrentMeasure;
 import com.webstart.model.Observation;
-import org.hibernate.annotations.NamedNativeQuery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import javax.persistence.EntityResult;
-import javax.persistence.FieldResult;
-import javax.persistence.SqlResultSetMapping;
 import java.sql.Timestamp;
 import java.util.List;
 

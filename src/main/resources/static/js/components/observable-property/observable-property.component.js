@@ -157,7 +157,8 @@
                                     left: 55
                                 },
                                 x: function (d) {
-                                    var oo = new Date(moment(parseInt(d.x) * 1000));
+                                    // var oo = new Date(moment(parseInt(d.x) * 1000));
+                                    var oo = moment(str, 'YYYY-MM-DD HH:MM:SS').toDate();
                                     return oo;
                                 },
                                 y: function (d) {

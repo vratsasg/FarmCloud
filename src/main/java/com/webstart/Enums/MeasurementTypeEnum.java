@@ -1,8 +1,5 @@
 package com.webstart.Enums;
 
-/**
- * Created by DimDesktop on 30/1/2017.
- */
 public enum MeasurementTypeEnum {
     INTERNAL_HUMIDITY(1),
     INTERNAL_TEMPERATURE(2),

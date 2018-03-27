@@ -19,9 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by George on 23/12/2015.
- */
 @Controller
 @RequestMapping(value="/")
 public class IndexController {

@@ -2,9 +2,6 @@ package com.webstart.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Created by DimDesktop on 30/1/2017.
- */
 public class Sensor {
 
     @JsonProperty(value = "sensorname")

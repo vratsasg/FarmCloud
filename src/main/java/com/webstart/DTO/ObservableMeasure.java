@@ -4,9 +4,6 @@ import com.webstart.DTO.ValueTime;
 
 import java.util.List;
 
-/**
- * Created by DimDesktop on 3/7/2016.
- */
 public class ObservableMeasure {
 
     private String ObservableProperty;
