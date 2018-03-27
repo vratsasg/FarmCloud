@@ -18,6 +18,8 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +37,8 @@ public class EmbeddedController {
     @Autowired FeatureofInterestService featureofInterestService;
     @Autowired MeasureService measureService;
     @Autowired UsersService usersService ;
-
-
+    //
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(value = "measures", method = RequestMethod.POST)
     public ResponseEntity<?> postSensor(@RequestBody EmbeddedDataWrapper embeddedDataWrapper) {

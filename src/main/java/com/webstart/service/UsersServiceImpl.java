@@ -140,13 +140,7 @@ public class UsersServiceImpl implements UsersService{
 
     public void createNewNotification(int userid, String message, int notificationType) {
         try {
-            //Convert time to UTC
-            DateTimeZone tz = DateTimeZone.getDefault();
-            int offset = tz.getOffset(new Instant());
-            DateTime utcdt = new DateTime(DateTimeZone.UTC);
-            Timestamp ts = new Timestamp(utcdt.getMillis() - offset);
-            //
-            Notifications notification = new Notifications(userid, message, false, ts, notificationType);
+            Notifications notification = new Notifications(userid, message, false, notificationType);
             //
             notificationsJpaRepository.save(notification);
         } catch (Exception e) {

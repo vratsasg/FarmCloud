@@ -39,11 +39,10 @@ public class Notifications {
     public Notifications() {
     }
 
-    public Notifications(Integer userid, String description, boolean isreaded, Timestamp datecreated, int notificationType) {
+    public Notifications(Integer userid, String description, boolean isreaded, int notificationType) {
         this.userid = userid;
         this.description = description;
         this.isreaded = isreaded;
-        this.datecreated = datecreated;
         this.notificationType = notificationType;
     }
 
