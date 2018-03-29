@@ -34,7 +34,7 @@
                                         left: 55
                                     },
                                     x: function (d) {
-                                        var dt = moment(parseInt(d.x) * 1000).toDate();
+                                        var dt = moment(parseInt(d.x) * 1000).utc().toDate();
                                         return dt;
                                     },
                                     y: function (d) {

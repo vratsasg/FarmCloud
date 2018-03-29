@@ -242,7 +242,7 @@
 
                         model.data = fillData(model.measures);
                         theMeasures.measuredata.forEach(function(measure) {
-                            measure.phenomenonTime = moment(parseInt(measure.phenomenonDateTime)).format('DD/MM/YYYY HH:mm:ss');
+                            measure.phenomenonTime = moment(parseInt(measure.phenomenonDateTime)).utc().format('DD/MM/YYYY HH:mm:ss');
                             console.log(moment(parseInt(measure.phenomenonDateTime)).format('DD/MM/YYYY HH:mm:ss'));
                             console.log('utc:' + moment(parseInt(measure.phenomenonDateTime)).utc().format('DD/MM/YYYY HH:mm:ss'));
                         });
