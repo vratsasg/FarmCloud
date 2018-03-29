@@ -120,6 +120,7 @@
                                     },
                                     x: function (d) {
                                         var dt = new Date(moment(parseInt(d.x) * 1000));
+                                        console.log(new Date(moment(parseInt(d.x) * 1000)));
                                         return dt;
                                     },
                                     y: function (d) {

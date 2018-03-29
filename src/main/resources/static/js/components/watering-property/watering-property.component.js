@@ -253,7 +253,12 @@
                         model.data = fillData(model.measures);
                         theMeasures.measuredata.forEach(function(measure){
                             measure.phenomenonTimeStart = moment(parseInt(measure.phenomenonTimeStart)).format('DD/MM/YY HH:mm:ss');
+                            console.log(moment(parseInt(measure.phenomenonTimeStart)).format('DD/MM/YYYY HH:mm:ss'));
+                            console.log('utc:' + moment(parseInt(measure.phenomenonTimeStart)).utc().format('DD/MM/YYYY HH:mm:ss'));
+
                             measure.phenomenonTimeEnd = moment(parseInt(measure.phenomenonTimeEnd)).format('DD/MM/YY HH:mm:ss');
+                            console.log(moment(parseInt(measure.phenomenonTimeEnd)).format('DD/MM/YYYY HH:mm:ss'));
+                            console.log('utc:' + moment(parseInt(measure.phenomenonTimeEnd)).utc().format('DD/MM/YYYY HH:mm:ss'));
                         });
                         // for (var i = 0; i < theMeasures.measuredata.length; i++) {
                         //     theMeasures.measuredata[i].phenomenonTimeStart = moment(parseInt(theMeasures.measuredata[i].phenomenonTimeStart)).format('DD/MM/YY HH:mm:ss');
