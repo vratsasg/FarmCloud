@@ -64,14 +64,15 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
         return finalobj;
     }
 
-    public WateringMeasure getWateringData(int userId, String identifier, Date from, Date to) {
+    public WateringMeasure getWateringData(int userId, String identifier, DateTime from, DateTime to) {
         WateringMeasure wateringMeasure = new WateringMeasure();
 
         try {
-//            DateTimeZone.setDefault(DateTimeZone.UTC);
-//            TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
-            java.sql.Timestamp timeFrom = new java.sql.Timestamp(from.getTime());
-            java.sql.Timestamp timeTo = new java.sql.Timestamp(to.getTime());
+            int offset =  DateTimeZone.getDefault().getOffset(new Instant());
+            java.sql.Timestamp timeFrom = new Timestamp(from.getMillis() - offset);
+            java.sql.Timestamp timeTo = new Timestamp(to.getMillis() - offset);
+            logger.debug("getWateringData() params: datetimeFrom={}, timestampFrom={}", from, new Timestamp(from.getMillis() - offset));
+            logger.debug("getWateringData() params: datetimeTo={}, timestampTo={}", to, new Timestamp(to.getMillis() - offset));
 
             Featureofinterest featureofinterest = featureofinterestJpaRepository.getFeatureofinterestByIdentifier(identifier);
             //
@@ -80,8 +81,6 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             if (listofObjs.size() == 0) {
                 return null;
             }
-
-            int offset =  TimeZone.getDefault().getRawOffset();
 
             Object[] obj = listofObjs.get(0);
             wateringMeasure.setIdentifier(String.valueOf(listofObjs.get(0)[0]));
@@ -109,23 +108,28 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
         return wateringMeasure;
     }
 
-    public Long getObservationsCounter(Long obspropId, int userId, String identifier, Date from, Date to) {
-        return observationJpaRepository.findMeasuresCount(obspropId, userId, identifier, new java.sql.Timestamp(from.getTime()), new java.sql.Timestamp(to.getTime()));
+    public Long getObservationsCounter(Long obspropId, int userId, String identifier, DateTime from, DateTime to) {
+        int offset =  DateTimeZone.getDefault().getOffset(new Instant());
+        //
+        return observationJpaRepository.findMeasuresCount(obspropId, userId, identifier, new java.sql.Timestamp(from.getMillis() - offset), new java.sql.Timestamp(to.getMillis() - offset));
     }
 
-    public ObservableMeasure getObservationData(Long obspropId, int userId, String identifier, Date from, Date to) {
+    public ObservableMeasure getObservationData(Long obspropId, int userId, String identifier, DateTime from, DateTime to) {
         ObservableMeasure obsMeasure = new ObservableMeasure();
 
         try {
             Featureofinterest featureofinterest = featureofinterestJpaRepository.getFeatureofinterestByIdentifier(identifier);
             //
-            List<Object[]> listofObjs = observationJpaRepository.findMeasureByObsPropId(obspropId, userId, identifier, new java.sql.Timestamp(from.getTime()), new java.sql.Timestamp(to.getTime()));
+            int offset =  TimeZone.getDefault().getRawOffset();
+            logger.debug("getObservationData() params: datetimeFrom={} timestampFrom={}", from, new Timestamp(from.getMillis() - offset));
+            logger.debug("getObservationData() params: datetimeTo={} timestampTo={}", to, new Timestamp(to.getMillis() - offset));
+            List<Object[]> listofObjs = observationJpaRepository.findMeasureByObsPropId(obspropId, userId, identifier, new Timestamp(from.getMillis() - offset), new Timestamp(to.getMillis() - offset));
 
             if (listofObjs.size() == 0) {
                 return null;
             }
 
-            int offset =  TimeZone.getDefault().getRawOffset();
+//            int offset =  DateTimeZone.getDefault().getOffset(new Instant());
 
             Object[] obj = listofObjs.get(0);
             obsMeasure.setIdentifier(String.valueOf(obj[0]));

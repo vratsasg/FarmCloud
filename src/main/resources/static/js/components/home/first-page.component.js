@@ -10,7 +10,7 @@
             var model = this;
             //model.devices = {enddevices: [{identifier: ""}]};
 
-            //openlayers controls            
+            // openlayers controls
             // model.mapcontrols = [
             //             { name: 'zoom', active: true },
             //             { name: 'rotate', active: true },
@@ -38,8 +38,8 @@
                 //     map: ['pointermove']
                 // }
             };
-                    
-                    
+
+
             model.$onInit = function () {
                 var defer = $q.defer();
                 firstPageDevices.getDevices().then(

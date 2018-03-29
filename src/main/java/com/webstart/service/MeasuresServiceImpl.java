@@ -67,6 +67,7 @@ public class MeasuresServiceImpl implements MeasureService {
                 obspropValues.put(obsprop, new JSONArray());
             }
 
+            int offset = DateTimeZone.getDefault().getOffset(new Instant());
             Iterator itr = ojectMeasures.iterator();
             while (itr.hasNext()) {
                 Object[] object = (Object[]) itr.next();
@@ -77,7 +78,7 @@ public class MeasuresServiceImpl implements MeasureService {
                 DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
                 HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
                 DateTime dt = convertable.GetUTCDateTime(object[1].toString(), dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_TIMEZONE);
-                Timestamp time = new Timestamp(dt.getMillis());
+                Timestamp time = new Timestamp(dt.getMillis() - offset);
                 String strTd = String.valueOf(time.getTime() / 1000L);
                 internvalues.add(strTd);
                 internvalues.add(value);

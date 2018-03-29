@@ -157,7 +157,8 @@
                                     left: 55
                                 },
                                 x: function (d) {
-                                    var oo = new Date(moment(parseInt(d.x) * 1000));
+                                    // var oo = new Date(moment(parseInt(d.x) * 1000));
+                                    var oo = moment(parseInt(d.x) * 1000).toDate();
                                     return oo;
                                 },
                                 y: function (d) {
@@ -227,7 +228,7 @@
                                         html += "</ul></div>"
 
                                         return html;
-                                    })
+                                    });
 
                                     //console.log("!!! lineChart callback !!!");
                                 }
@@ -240,9 +241,12 @@
 
 
                         model.data = fillData(model.measures);
-                        for (var i = 0; i < theMeasures.measuredata.length; i++) {
-                            theMeasures.measuredata[i].phenomenonTime = moment(parseInt(theMeasures.measuredata[i].phenomenonTime) * 1000).format('DD/MM/YYYY HH:mm:ss');
-                        }
+                        theMeasures.measuredata.forEach(function(measure) {
+                            measure.phenomenonTime = moment(parseInt(measure.phenomenonDateTime)).format('DD/MM/YYYY HH:mm:ss');
+                        });
+                        // for (var i = 0; i < theMeasures.measuredata.length; i++) {
+                        //     theMeasures.measuredata[i].phenomenonTime = moment(parseInt(theMeasures.measuredata[i].phenomenonDateTime)).utc().format('DD/MM/YYYY HH:mm:ss');
+                        // }
 
                         params.total(theMeasures.measuredata.length); // recal. page nav controls
                         theMeasures.measuredata = theMeasures.measuredata.slice((params.page() - 1) * params.count(), params.page() * params.count());
@@ -260,12 +264,18 @@
 
             function fillData(dataChart) {
                 var sin = [];
-                for (var i = 0; i < dataChart.measuredata.length; i++) {
+                dataChart.measuredata.forEach(function(measure) {
                     sin.push({
-                        x: (dataChart.measuredata[i].phenomenonTime).toString(),
-                        y: parseFloat(dataChart.measuredata[i].value)
+                        x: measure.phenomenonTime,
+                        y: parseFloat(measure.value)
                     });
-                }
+                });
+                // for (var i = 0; i < dataChart.measuredata.length; i++) {
+                //     sin.push({
+                //         x: dataChart.measuredata[i].phenomenonTime.toString(),
+                //         y: parseFloat(dataChart.measuredata[i].value)
+                //     });
+                // }
 
                 //Line chart data should be sent as an array of series objects.
                 return [

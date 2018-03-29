@@ -28,8 +28,8 @@
                         //Get Last measures by last date
                         ControlPanelService.getMeasuresByLastDate(devicesdata[0].identifier).then(
                             function (lastDateMeasures) {
-                                lastDateMeasures.forEach(function(measure){
-                                    measure.phenomenonTime = moment(parseInt(measure.phenomenonTime * 1000)).format("dddd, MMMM Do h:mma");
+                                lastDateMeasures.forEach(function(measure) {
+                                    measure.phenomenonTime = moment(parseInt(measure.phenomenonDateTime)).utc().format("dddd, MMMM Do h:mma");
                                 });
 
                                 model.lastmeasuresData = lastDateMeasures;
@@ -94,7 +94,7 @@
                 ControlPanelService.getMeasuresByLastDate(myD.identifier).then(
                     function (lastDateMeasures) {
                         lastDateMeasures.forEach(function(measure) {
-                            measure.phenomenonTime = moment(parseInt(measure.phenomenonTime * 1000)).format("dddd, MMMM Do h:mma");
+                            measure.phenomenonTime = moment(parseInt(measure.phenomenonDateTime)).utc().format("dddd, MMMM Do h:mma");
                         });
                         model.lastmeasuresData = lastDateMeasures;
                     },

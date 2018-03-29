@@ -150,7 +150,7 @@
                                     left: 55
                                 },
                                 x: function (d) {
-                                    var oo = new Date(moment(parseInt(d.x)));
+                                    var oo = moment(parseInt(d.x)).toDate();
                                     return oo;
                                 },
                                 y: function (d) {
@@ -218,7 +218,7 @@
                                         html += "</ul></div>"
 
                                         return html;
-                                    })
+                                    });
 
                                     //console.log("!!! lineChart callback !!!");
                                 }
@@ -251,10 +251,14 @@
 
 
                         model.data = fillData(model.measures);
-                        for (var i = 0; i < theMeasures.measuredata.length; i++) {
-                            theMeasures.measuredata[i].phenomenonTimeStart = moment(parseInt(theMeasures.measuredata[i].phenomenonTimeStart)).format('DD/MM/YY HH:mm:ss');
-                            theMeasures.measuredata[i].phenomenonTimeEnd = moment(parseInt(theMeasures.measuredata[i].phenomenonTimeEnd)).format('DD/MM/YY HH:mm:ss');
-                        }
+                        theMeasures.measuredata.forEach(function(measure){
+                            measure.phenomenonTimeStart = moment(parseInt(measure.phenomenonTimeStart)).format('DD/MM/YY HH:mm:ss');
+                            measure.phenomenonTimeEnd = moment(parseInt(measure.phenomenonTimeEnd)).format('DD/MM/YY HH:mm:ss');
+                        });
+                        // for (var i = 0; i < theMeasures.measuredata.length; i++) {
+                        //     theMeasures.measuredata[i].phenomenonTimeStart = moment(parseInt(theMeasures.measuredata[i].phenomenonTimeStart)).format('DD/MM/YY HH:mm:ss');
+                        //     theMeasures.measuredata[i].phenomenonTimeEnd = moment(parseInt(theMeasures.measuredata[i].phenomenonTimeEnd)).format('DD/MM/YY HH:mm:ss');
+                        // }
 
                         params.total(theMeasures.measuredata.length); // recal. page nav controls
                         theMeasures.measuredata = theMeasures.measuredata.slice((params.page() - 1) * params.count(), params.page() * params.count());
@@ -272,12 +276,18 @@
 
             function fillData(dataChart) {
                 var sin = [];
-                for (var i = 0; i < dataChart.measuredata.length; i++) {
+                dataChart.measuredata.forEach(function(measure){
                     sin.push({
-                        x: (dataChart.measuredata[i].phenomenonTimeStart).toString(),
-                        y: parseFloat(dataChart.measuredata[i].value)
+                        x: measure.phenomenonTimeStart.toString(),
+                        y: parseFloat(measure.value)
                     });
-                }
+                });
+                // for (var i = 0; i < dataChart.measuredata.length; i++) {
+                //     sin.push({
+                //         x: (dataChart.measuredata[i].phenomenonTimeStart).toString(),
+                //         y: parseFloat(dataChart.measuredata[i].value)
+                //     });
+                // }
 
                 //Line chart data should be sent as an array of series objects.
                 return [

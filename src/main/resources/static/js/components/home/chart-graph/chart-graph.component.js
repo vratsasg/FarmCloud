@@ -34,7 +34,7 @@
                                         left: 55
                                     },
                                     x: function (d) {
-                                        var dt = new Date(moment(parseInt(d.x) * 1000));
+                                        var dt = moment(parseInt(d.x) * 1000).toDate();
                                         return dt;
                                     },
                                     y: function (d) {
@@ -77,14 +77,12 @@
                                         chart.interactiveLayer.tooltip.gravity('');
 
                                         chart.interactiveLayer.tooltip.contentGenerator(function (d) {
-                                            var html = "<div class='wtool col-sm-6'><p><b>" + d.value + "</b></p> <ul>";
+                                            var html = "<div class='wtool col-md-8'><p><b>" + d.value + "</b></p> <ul>";
 
                                             d.series.forEach(function (elem) {
                                                 html += "<li><p><b>" + elem.key + ":" + elem.value + "</b></p></li>";
                                             })
                                             html += "</ul></div>"
-
-
                                             return html;
                                         })
                                         console.log("!!! lineChart callback !!!");

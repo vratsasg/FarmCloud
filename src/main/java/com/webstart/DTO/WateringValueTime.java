@@ -84,7 +84,11 @@ public class WateringValueTime {
         long diffMinutes = diffSeconds / (60 * 1000) % 60;
         long diffHours = diffSeconds / (60 * 60 * 1000);
 
-        return String.format("%1$d hours, %2$d minutes", diffSeconds / (60 * 60 * 1000), diffSeconds / (60 * 1000) % 60);
+        if(diffHours == 0) {
+            return String.format("%1$d minutes", diffMinutes);
+        }
+
+        return String.format("%1$d hours, %2$d minutes", diffHours, diffMinutes);
     }
 
 

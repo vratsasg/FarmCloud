@@ -11,6 +11,7 @@ import com.webstart.model.Featureofinterest;
 import com.webstart.model.Users;
 import com.webstart.service.*;
 import jdk.nashorn.internal.runtime.ParserException;
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
@@ -129,8 +130,8 @@ public class HomeController {
             Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            DateTime from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            DateTime to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
             sentData = observationProperyService.getObservationsCounter(observablePropertyId, users.getUser_id(), mydevice, from, to);
         } catch (ParserException parseExc) {
             parseExc.printStackTrace();
@@ -155,8 +156,8 @@ public class HomeController {
             Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            DateTime from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            DateTime to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
             ObservableMeasure observableMeasure = observationProperyService.getObservationData(observablePropertyId, users.getUser_id(), mydevice, from, to);
 
             if (observableMeasure == null) {
@@ -186,8 +187,8 @@ public class HomeController {
             Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            DateTime from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            DateTime to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
             //
             WateringMeasure wateringMeasure = observationProperyService.getWateringData(userid, mydevice, from, to);
 

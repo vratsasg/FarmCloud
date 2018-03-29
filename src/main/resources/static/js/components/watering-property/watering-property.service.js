@@ -57,7 +57,6 @@
                         var fileURL = URL.createObjectURL(file);
                         var a = document.createElement('a');
                         a.href = fileURL;
-                        a.target = '_blank';
                         a.download = 'measures-' + moment().format('YYYYMMDD_HHmmss') + '.pdf';
                         document.body.appendChild(a);
                         a.click();
@@ -83,7 +82,6 @@
                         var fileURL = URL.createObjectURL(file);
                         var a = document.createElement('a');
                         a.href = fileURL;
-                        a.target = '_blank';
                         a.download = 'measures.csv';
                         document.body.appendChild(a);
                         a.click();
@@ -109,12 +107,11 @@
                         var fileURL = URL.createObjectURL(file);
                         var a = document.createElement('a');
                         a.href = fileURL;
-                        a.target = '_blank';
                         a.download = 'measures.xls';
                         document.body.appendChild(a);
                         a.click();
                     }).error(function (data, status, headers, config) {
-                        //TODO when WS error
+                        // TODO when WS error
                         log.error('Error: ' + status);
                     });
                 }

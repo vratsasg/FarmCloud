@@ -109,7 +109,7 @@ public interface ObservationJpaRepository extends JpaRepository<Observation, Lon
                     "inner join Series s on obs.seriesid = s.seriesid " +
                     "inner join Featureofinterest feat on s.featureofinterestid = feat.featureofinterestid " +
                     "inner join ObservableProperty obsprop on s.observablepropertyid = obsprop.ObservablePropertyId " +
-                    "where feat.userid = ?1 AND feat.identifier = ?2 AND obs.phenomenontimestart >= ?3 AND obs.phenomenontimeend <= ?4 AND s.observablepropertyid = 5 " +
+                    "where feat.userid = ?1 AND feat.identifier = ?2 AND obs.phenomenontimestart >= ?3 AND obs.phenomenontimestart <= ?4 AND s.observablepropertyid = 5 " +
                     "order by obsprop.Description ",
             nativeQuery = true)
     List<Object[]> findWateringMeasures(int userId, String identifier, Timestamp t1, Timestamp t2);

@@ -58,7 +58,6 @@
                         var fileURL = URL.createObjectURL(file);
                         var a = document.createElement('a');
                         a.href = fileURL;
-                        a.target = '_blank';
                         a.download = 'measures-' + moment().format('YYYYMMDD_HHmmss') + '.pdf';
                         document.body.appendChild(a);
                         a.click();
@@ -84,7 +83,6 @@
                         var fileURL = URL.createObjectURL(file);
                         var a = document.createElement('a');
                         a.href = fileURL;
-                        a.target = '_blank';
                         a.download = 'measures-' + moment().format('YYYYMMDD_HHmmss') + '.csv';
                         document.body.appendChild(a);
                         a.click();
@@ -110,7 +108,6 @@
                         var fileURL = URL.createObjectURL(file);
                         var a = document.createElement('a');
                         a.href = fileURL;
-                        a.target = '_blank';
                         a.download = 'measures-' + moment().format('YYYYMMDD_HHmmss') + '.xls';
                         document.body.appendChild(a);
                         a.click();

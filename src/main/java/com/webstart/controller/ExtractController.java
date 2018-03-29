@@ -66,8 +66,8 @@ public class ExtractController {
             Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            DateTime from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            DateTime to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
             //
 //            ObservableMeasure observableMeasure = observationProperyService.getObservationData(observablepropertyid, user.getUser_id(), mydevice, from, to);
             ObservableMeasure observableMeasure = observationProperyService.getObservationData(observablepropertyid, 1, mydevice, from, to);
@@ -115,8 +115,8 @@ public class ExtractController {
             Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            DateTime from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            DateTime to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
             //
             WateringMeasure wateringMeasure = observationProperyService.getWateringData(user.getUser_id(), mydevice, from, to);
             //
@@ -172,8 +172,8 @@ public class ExtractController {
             Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            DateTime from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            DateTime to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
             //
             observableMeasure = observationProperyService.getObservationData(observablePropertyId, user.getUser_id(), mydevice, from, to);
             //
@@ -212,8 +212,8 @@ public class ExtractController {
             Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            DateTime from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            DateTime to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
             //
             wateringMeasure = observationProperyService.getWateringData(user.getUser_id(), mydevice, from, to);
             //
@@ -253,8 +253,8 @@ public class ExtractController {
             Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            DateTime from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            DateTime to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
             //
             observableMeasure = observationProperyService.getObservationData(observablepropertyid, user.getUser_id(), mydevice, from, to);
             //Create excel document
@@ -289,8 +289,8 @@ public class ExtractController {
             Featureofinterest featureofinterest = featureofInterestService.getFeatureofinterestByIdentifier(mydevice);
             DateTimeFormatter dtfInput = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             HelperCls.ConvertToDateTime convertable = new HelperCls.ConvertToDateTime();
-            Date from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
-            Date to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC).toDate();
+            DateTime from = convertable.GetUTCDateTime(datetimestart, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
+            DateTime to = convertable.GetUTCDateTime(datetimeend, dtfInput, featureofinterest.getTimezone(), StatusTimeConverterEnum.TO_UTC);
             //
             wateringMeasure = observationProperyService.getWateringData(user.getUser_id(), mydevice, from, to);
             //Create excel document
@@ -330,7 +330,7 @@ public class ExtractController {
 
         // define table header cell
         PdfPCell cell = new PdfPCell();
-        cell.setBackgroundColor(BaseColor.GREEN);
+        cell.setBackgroundColor(new BaseColor(197, 255, 165));
         cell.setPadding(5);
 
         // write table header
@@ -340,7 +340,7 @@ public class ExtractController {
         cell.setPhrase(new Phrase("Measure value", font));
         table.addCell(cell);
 
-        BigDecimal valuemin = new BigDecimal(200.0);
+        BigDecimal valuemin = new BigDecimal(200.0);        
         BigDecimal valuemax = new BigDecimal(-100.0);
         BigDecimal valuesum = new BigDecimal(0.0);
 
@@ -383,7 +383,7 @@ public class ExtractController {
 
         // define table header cell
         PdfPCell cell = new PdfPCell();
-        cell.setBackgroundColor(BaseColor.GREEN);
+        cell.setBackgroundColor(new BaseColor(197, 255, 165));
         cell.setPadding(5);
 
         // write table header
@@ -462,8 +462,9 @@ public class ExtractController {
             row.createCell(c++).setCellValue(observableMeasure.getUnit());
         }
 
-        for (int i = 0; i < observableMeasure.getMeasuredata().size(); i++)
+        for (int i = 0; i < observableMeasure.getMeasuredata().size(); i++) {
             sheet.autoSizeColumn(i, true);
+        }
 
         return workbook;
     }
@@ -514,8 +515,9 @@ public class ExtractController {
             row.createCell(c++).setCellValue(wateringMeasure.getUnit());
         }
 
-        for (int i = 0; i < wateringMeasure.getMeasuredata().size(); i++)
+        for (int i = 0; i < wateringMeasure.getMeasuredata().size(); i++) {
             sheet.autoSizeColumn(i, true);
+        }
 
         return workbook;
 
