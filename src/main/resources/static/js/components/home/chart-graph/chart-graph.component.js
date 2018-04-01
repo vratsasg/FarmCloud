@@ -299,10 +299,6 @@
                     function (errResponse) {
                         console.error('Error while fetching chart devices');
                     });
-
-
-                console.log("chargraph");
-                console.log(newValue);
             };
 
             model.$onInit = function () {

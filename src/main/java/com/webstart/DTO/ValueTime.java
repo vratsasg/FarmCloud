@@ -3,9 +3,6 @@ package com.webstart.DTO;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-/**
- * Created by DimDesktop on 3/7/2016.
- */
 public class ValueTime {
 
     private Long phenomenonTime;
@@ -20,6 +17,7 @@ public class ValueTime {
     }
 
     public ValueTime() {
+
     }
 
     public Long getPhenomenonTime() {

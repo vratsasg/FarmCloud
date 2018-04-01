@@ -5,12 +5,28 @@
     module.component('topBar', {
         templateUrl: '/js/shared/topbar/top-bar-component.html',
         controllerAs: "model",
-        controller: function ($uibModal, $document, userService, $q, $interval, toastr) {
+        controller: function ($scope, $uibModal, $document, userService, $q, $interval, toastr) {
             var model = this;
             model.user = {};
             model.notifications = [];
 
             var defer = $q.defer();
+
+            $scope.getnotifications = function () {
+                userService.getnotifcounter().then(
+                    function (data) {
+                        defer.resolve(data);
+                        if (data.length > model.notifications.length) {
+                            toastr.info(`You have ${data.length - model.notifications.length} messages unread`);
+                        }
+                        model.notifications = data;
+                    }, function (errResponse) {
+                        toastr.error(`Cannot find messages: ${errResponse}`, 'Error');
+                    }
+                );
+            };
+
+            $interval( function(){ $scope.getnotifications(); }, 120000);
 
             // components have lifecycles this is before the component is rendered
             model.$onInit = function () {
@@ -23,20 +39,9 @@
                     }
                 );
 
-                $interval(getnotifications(), 120000);
+                $scope.getnotifications();
             };
 
-            var getnotifications = function () {
-                userService.getnotifcounter().then(
-                    function (data) {
-                        defer.resolve(data);
-                        model.notifications = data;
-                        toastr.info(`You have ${model.notifications.length} messages unread`);
-                    }, function (errResponse) {
-                        toastr.error(`Cannot find messages: ${errResponse}`, 'Error');
-                    }
-                );
-            };
 
             model.showModal = function () {
                 model.modalInstance = $uibModal.open({
