@@ -74,19 +74,26 @@ public class EmbeddedController {
     }
 
     @RequestMapping(value = "irrigation", method = RequestMethod.POST)
-    public @ResponseBody void saveAutomacticWateringObservation(@RequestBody AutomaticWater automaticWatering) {
+    public ResponseEntity saveAutomacticWateringObservation(@RequestBody AutomaticWater automaticWatering) {
         try {
-            List<String> identifiers = Arrays.asList(automaticWatering.getIdentifier());
             Featureofinterest featureofinterest =  featureofInterestService.getFeatureofinterestByIdentifier(automaticWatering.getIdentifier());
 
+            if(featureofinterest == null){
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+
             measureService.saveMeasure(automaticWatering);
-            featureofInterestService.setFeatureMeasuringFalse(identifiers);
+            featureofInterestService.setFeatureWateringFalse(automaticWatering.getIdentifier());
             //TODO change using webockets
             usersService.createNewNotification(featureofinterest.getUserid(),
                     String.format("New irrigation event from: %1$s until %2$s for end device %3$s ", automaticWatering.getFromtime(), automaticWatering.getUntiltime(), featureofinterest.getName()), NotificationTypeEnum.IRRIGATION.getValue());
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        } catch (Exception exc) {
+            exc.printStackTrace();
+            return new ResponseEntity(exc.getMessage(), HttpStatus.BAD_REQUEST);
         }
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = "station/{coordinator}/setup", method = RequestMethod.GET)
