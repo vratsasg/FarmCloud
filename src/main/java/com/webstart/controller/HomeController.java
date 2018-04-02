@@ -248,10 +248,9 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/{mydevice}/watering/last", method = RequestMethod.GET)
-    public ResponseEntity<?> getLastWateringMeasures(@PathVariable("mydevice") String mydevice, HttpServletRequest request) {
+    public ResponseEntity<AutomaticWater > getLastWateringMeasures(@PathVariable("mydevice") String mydevice, HttpServletRequest request) {
         Users users = (Users) request.getSession().getAttribute("current_user");
-        //AutomaticWater sentData = null;
-        ResponseEntity<AutomaticWater> sentData;
+        AutomaticWater sentData = null;
 
         try {
             sentData = observationProperyService.getLastWateringObsbyIdentifier(users.getUser_id(), mydevice);
@@ -260,7 +259,7 @@ public class HomeController {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return sentData;
+        return new ResponseEntity(sentData, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{mydevice}/irrigation/times",params = {"dtfrom", "dtto"}, method = RequestMethod.POST)

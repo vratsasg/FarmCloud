@@ -14,21 +14,15 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Instant;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.tz.UTCProvider;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
-
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -224,7 +218,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
         return ls;
     }
 
-    public ResponseEntity<AutomaticWater> getLastWateringObsbyIdentifier(int userId, String identifier) {
+    public AutomaticWater getLastWateringObsbyIdentifier(int userId, String identifier) {
         AutomaticWater automaticWater = null;
 
         try {
@@ -238,7 +232,7 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             List<Object[]> listMeasures = observationJpaRepository.findLastWateringMeasures(userId, identifier, lastdate);
 
             if (listMeasures.size() == 0) {
-                return new ResponseEntity("Error: Last measure cannot found", HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new Exception("Error: Last measure cannot found");
             }
 
             DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
@@ -254,10 +248,10 @@ public class ObservationPropertyServiceImpl implements ObservationProperyService
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+            logger.error(e.getMessage());
         }
 
-        return new ResponseEntity<AutomaticWater>(automaticWater, HttpStatus.OK);
+        return automaticWater;
     }
 
     public void setObservationMinmaxValues(List<FeatureMinMaxValue> observationMinmaxList) {

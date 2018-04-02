@@ -41,7 +41,7 @@ public class EmbeddedController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(value = "measures", method = RequestMethod.POST)
-    public ResponseEntity<?> postSensor(@RequestBody EmbeddedDataWrapper embeddedDataWrapper) {
+    public ResponseEntity postSensor(@RequestBody EmbeddedDataWrapper embeddedDataWrapper) {
         try {
             if(embeddedDataWrapper.getEmList() == null || embeddedDataWrapper.getEmList().size() == 0){
                 return new ResponseEntity("Error: No data was sent", HttpStatus.BAD_REQUEST);
